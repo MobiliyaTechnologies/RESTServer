@@ -1,0 +1,1223 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="PowerGridModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Alert">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Type" Type="nvarchar" MaxLength="50" />
+          <Property Name="Text" Type="nvarchar(max)" />
+          <Property Name="User_Id" Type="int" />
+          <Property Name="Status" Type="smallint" />
+          <Property Name="Timestamp" Type="datetime" />
+        </EntityType>
+        <EntityType Name="DailyConsumptionDetails">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AMPS_SYSTEM_AVG" Type="float" />
+          <Property Name="Building" Type="varchar(max)" />
+          <Property Name="Daily_electric_cost" Type="float" />
+          <Property Name="Daily_KWH_System" Type="float" />
+          <Property Name="Monthly_electric_cost" Type="float" />
+          <Property Name="Monthly_KWH_System" Type="float" />
+          <Property Name="PowerScout" Type="varchar(max)" />
+          <Property Name="Temperature" Type="float" />
+          <Property Name="Timestamp" Type="datetime" />
+          <Property Name="Visibility" Type="float" />
+          <Property Name="kW_System" Type="float" />
+        </EntityType>
+        <EntityType Name="DailyConsumptionPrediction">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PowerScout" Type="varchar(max)" />
+          <Property Name="Timestamp" Type="datetime" />
+          <Property Name="Daily_Predicted_KWH_System" Type="float" />
+          <Property Name="TomorrowPredictedKWH" Type="float" />
+        </EntityType>
+        <EntityType Name="HalfHourlyData">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AMPS_L1" Type="float" />
+          <Property Name="AMPS_L2" Type="float" />
+          <Property Name="AMPS_L3" Type="float" />
+          <Property Name="AMPS_SYSTEM_AVG" Type="float" />
+          <Property Name="Breaker_details" Type="text" />
+          <Property Name="Breaker_label" Type="text" />
+          <Property Name="Building" Type="text" />
+          <Property Name="ClassOccupanyRemaining" Type="int" />
+          <Property Name="ClassOccupiedValue" Type="int" />
+          <Property Name="TotalClassCapacity" Type="int" />
+          <Property Name="Daily_electric_cost" Type="float" />
+          <Property Name="Daily_KWH_System" Type="float" />
+          <Property Name="isClassOccupied" Type="int" />
+          <Property Name="KW_L1" Type="float" />
+          <Property Name="KW_L2" Type="float" />
+          <Property Name="KW_L3" Type="float" />
+          <Property Name="Monthly_electric_cost" Type="float" />
+          <Property Name="Monthly_KWH_System" Type="float" />
+          <Property Name="PowerScout" Type="varchar(max)" />
+          <Property Name="Rated_Amperage" Type="float" />
+          <Property Name="Pressure" Type="float" />
+          <Property Name="Relative_humidity" Type="float" />
+          <Property Name="Rolling_hourly_kwh_system" Type="float" />
+          <Property Name="Serial_number" Type="varchar(max)" />
+          <Property Name="Temperature" Type="float" />
+          <Property Name="Timestamp" Type="datetime" />
+          <Property Name="Type" Type="text" />
+          <Property Name="Visibility" Type="float" />
+          <Property Name="Volts_L1_to_neutral" Type="float" />
+          <Property Name="Volts_L2_to_neutral" Type="float" />
+          <Property Name="Volts_L3_to_neutral" Type="float" />
+          <Property Name="kW_System" Type="float" />
+          <Property Name="days" Type="varchar(max)" />
+          <Property Name="time_period" Type="varchar(max)" />
+          <Property Name="current_week" Type="datetime" />
+          <Property Name="last_week" Type="datetime" />
+          <Property Name="current_day" Type="datetime" />
+          <Property Name="previous_day" Type="datetime" />
+          <Property Name="current_month" Type="datetime" />
+          <Property Name="last_month" Type="datetime" />
+        </EntityType>
+        <EntityType Name="MeterDetails">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="Serial" Type="nvarchar" MaxLength="50" />
+          <Property Name="Latitude" Type="float" />
+          <Property Name="Longitude" Type="float" />
+          <Property Name="Altitude" Type="float" />
+          <Property Name="Description" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="MonthlyConsumptionDetails">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Month" Type="varchar(max)" />
+          <Property Name="Year" Type="varchar(max)" />
+          <Property Name="Powerscout" Type="varchar(max)" />
+          <Property Name="X" Type="float" />
+          <Property Name="Y" Type="float" />
+          <Property Name="Ligne" Type="varchar(max)" />
+          <Property Name="Monthly_KWH_Consumption" Type="float" />
+          <Property Name="Monthly_Electric_Cost" Type="float" />
+        </EntityType>
+        <EntityType Name="MSLiveData">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="AMPS_L1" Type="float" />
+          <Property Name="AMPS_L2" Type="float" />
+          <Property Name="AMPS_L3" Type="float" />
+          <Property Name="AMPS_SYSTEM_AVG" Type="float" />
+          <Property Name="Breaker_details" Type="text" />
+          <Property Name="Breaker_label" Type="text" />
+          <Property Name="Building" Type="text" />
+          <Property Name="ClassOccupanyRemaining" Type="int" />
+          <Property Name="ClassOccupiedValue" Type="int" />
+          <Property Name="TotalClassCapacity" Type="int" />
+          <Property Name="Daily_electric_cost" Type="float" />
+          <Property Name="Daily_KWH_System" Type="float" />
+          <Property Name="isClassOccupied" Type="int" />
+          <Property Name="KW_L1" Type="float" />
+          <Property Name="KW_L2" Type="float" />
+          <Property Name="KW_L3" Type="float" />
+          <Property Name="Monthly_electric_cost" Type="float" />
+          <Property Name="Monthly_KWH_System" Type="float" />
+          <Property Name="PowerScout" Type="varchar(max)" />
+          <Property Name="Rated_Amperage" Type="float" />
+          <Property Name="Pressure" Type="float" />
+          <Property Name="Relative_humidity" Type="float" />
+          <Property Name="Rolling_hourly_kwh_system" Type="float" />
+          <Property Name="Serial_number" Type="varchar(max)" />
+          <Property Name="Temperature" Type="float" />
+          <Property Name="Timestamp" Type="datetime" />
+          <Property Name="Type" Type="text" />
+          <Property Name="Visibility" Type="float" />
+          <Property Name="Volts_L1_to_neutral" Type="float" />
+          <Property Name="Volts_L2_to_neutral" Type="float" />
+          <Property Name="Volts_L3_to_neutral" Type="float" />
+          <Property Name="kW_System" Type="float" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'PowerGrid.dbo.PowergridAzureMLData' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="PowergridAzureMLData">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="AMPS_L1" Type="float" />
+          <Property Name="AMPS_L2" Type="float" />
+          <Property Name="AMPS_L3" Type="float" />
+          <Property Name="AMPS_SYSTEM_AVG" Type="float" />
+          <Property Name="Building" Type="text" />
+          <Property Name="ClassOccupanyRemaining" Type="int" />
+          <Property Name="ClassOccupiedValue" Type="int" />
+          <Property Name="TotalClassCapacity" Type="int" />
+          <Property Name="Daily_electric_cost" Type="float" />
+          <Property Name="Daily_KWH_System" Type="float" />
+          <Property Name="isClassOccupied" Type="int" />
+          <Property Name="KW_L1" Type="float" />
+          <Property Name="KW_L2" Type="float" />
+          <Property Name="KW_L3" Type="float" />
+          <Property Name="Monthly_electric_cost" Type="float" />
+          <Property Name="Monthly_KWH_System" Type="float" />
+          <Property Name="PowerScout" Type="text" />
+          <Property Name="Rated_Amperage" Type="float" />
+          <Property Name="Pressure" Type="float" />
+          <Property Name="Relative_humidity" Type="float" />
+          <Property Name="Rolling_hourly_kwh_system" Type="float" />
+          <Property Name="Serial_number" Type="text" />
+          <Property Name="Temperature" Type="float" />
+          <Property Name="Timestamp" Type="datetime" />
+          <Property Name="Type" Type="text" />
+          <Property Name="Visibility" Type="float" />
+          <Property Name="Volts_L1_to_neutral" Type="float" />
+          <Property Name="Volts_L2_to_neutral" Type="float" />
+          <Property Name="Volts_L3_to_neutral" Type="float" />
+          <Property Name="kW_System" Type="float" />
+          <Property Name="PredictedKwH" Type="float" />
+        </EntityType>
+        <EntityType Name="Role">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Role" Type="nvarchar" MaxLength="50" />
+          <Property Name="Description" Type="nvarchar(max)" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'PowerGrid.dbo.TempMLData' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="TempMLData">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="AMPS_L1" Type="float" />
+          <Property Name="AMPS_L2" Type="float" />
+          <Property Name="AMPS_L3" Type="float" />
+          <Property Name="AMPS_SYSTEM_AVG" Type="float" />
+          <Property Name="Building" Type="text" />
+          <Property Name="ClassOccupanyRemaining" Type="int" />
+          <Property Name="ClassOccupiedValue" Type="int" />
+          <Property Name="TotalClassCapacity" Type="int" />
+          <Property Name="Daily_electric_cost" Type="float" />
+          <Property Name="Daily_KWH_System" Type="float" />
+          <Property Name="Daily_Relative_KWH" Type="float" />
+          <Property Name="isClassOccupied" Type="int" />
+          <Property Name="KW_L1" Type="float" />
+          <Property Name="KW_L2" Type="float" />
+          <Property Name="KW_L3" Type="float" />
+          <Property Name="Monthly_electric_cost" Type="float" />
+          <Property Name="Monthly_KWH_System" Type="float" />
+          <Property Name="PowerScout" Type="text" />
+          <Property Name="Rated_Amperage" Type="float" />
+          <Property Name="Pressure" Type="float" />
+          <Property Name="Relative_humidity" Type="float" />
+          <Property Name="Rolling_hourly_kwh_system" Type="float" />
+          <Property Name="Serial_number" Type="text" />
+          <Property Name="Temperature" Type="float" />
+          <Property Name="Timestamp" Type="datetime" />
+          <Property Name="Type" Type="text" />
+          <Property Name="Visibility" Type="float" />
+          <Property Name="Volts_L1_to_neutral" Type="float" />
+          <Property Name="Volts_L2_to_neutral" Type="float" />
+          <Property Name="Volts_L3_to_neutral" Type="float" />
+          <Property Name="kW_System" Type="float" />
+          <Property Name="PredictedKwH" Type="float" />
+        </EntityType>
+        <EntityType Name="TempMSLiveData">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="AMPS_L1" Type="float" />
+          <Property Name="AMPS_L2" Type="float" />
+          <Property Name="AMPS_L3" Type="float" />
+          <Property Name="AMPS_SYSTEM_AVG" Type="float" />
+          <Property Name="Breaker_details" Type="text" />
+          <Property Name="Breaker_label" Type="text" />
+          <Property Name="Building" Type="text" />
+          <Property Name="ClassOccupanyRemaining" Type="int" />
+          <Property Name="ClassOccupiedValue" Type="int" />
+          <Property Name="TotalClassCapacity" Type="int" />
+          <Property Name="Daily_electric_cost" Type="float" />
+          <Property Name="Daily_KWH_System" Type="float" />
+          <Property Name="isClassOccupied" Type="int" />
+          <Property Name="KW_L1" Type="float" />
+          <Property Name="KW_L2" Type="float" />
+          <Property Name="KW_L3" Type="float" />
+          <Property Name="Monthly_electric_cost" Type="float" />
+          <Property Name="Monthly_KWH_System" Type="float" />
+          <Property Name="PowerScout" Type="varchar(max)" />
+          <Property Name="Rated_Amperage" Type="float" />
+          <Property Name="Pressure" Type="float" />
+          <Property Name="Relative_humidity" Type="float" />
+          <Property Name="Rolling_hourly_kwh_system" Type="float" />
+          <Property Name="Serial_number" Type="varchar(max)" />
+          <Property Name="Temperature" Type="float" />
+          <Property Name="Timestamp" Type="datetime" />
+          <Property Name="Type" Type="text" />
+          <Property Name="Visibility" Type="float" />
+          <Property Name="Volts_L1_to_neutral" Type="float" />
+          <Property Name="Volts_L2_to_neutral" Type="float" />
+          <Property Name="Volts_L3_to_neutral" Type="float" />
+          <Property Name="kW_System" Type="float" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="First_Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="Last_Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="Email_Id" Type="nvarchar" MaxLength="50" />
+          <Property Name="Password" Type="nvarchar" MaxLength="50" />
+          <Property Name="Status" Type="smallint" />
+          <Property Name="Creation_Date" Type="datetime" />
+        </EntityType>
+        <EntityType Name="UserRole">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="User_Id" Type="int" />
+          <Property Name="Role_Id" Type="int" />
+        </EntityType>
+        <EntityType Name="UserSession">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="User_Id" Type="int" />
+          <Property Name="Last_Login_Time" Type="datetime" />
+        </EntityType>
+        <EntityType Name="WeeklyConsumptionPrediction">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Start_Time" Type="datetime" />
+          <Property Name="End_Time" Type="datetime" />
+          <Property Name="PowerScout" Type="varchar(max)" />
+          <Property Name="Weekly_Predicted_KWH_System" Type="float" />
+        </EntityType>
+        <Association Name="FK_Alert_User">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="Alert" Type="Self.Alert" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Alert">
+              <PropertyRef Name="User_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserRole_Role">
+          <End Role="Role" Type="Self.Role" Multiplicity="0..1" />
+          <End Role="UserRole" Type="Self.UserRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Role">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserRole">
+              <PropertyRef Name="Role_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserRole_User">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="UserRole" Type="Self.UserRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserRole">
+              <PropertyRef Name="User_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserSession_User">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="UserSession" Type="Self.UserSession" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserSession">
+              <PropertyRef Name="User_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="PowerGridModelStoreContainer">
+          <EntitySet Name="Alert" EntityType="Self.Alert" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DailyConsumptionDetails" EntityType="Self.DailyConsumptionDetails" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DailyConsumptionPrediction" EntityType="Self.DailyConsumptionPrediction" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="HalfHourlyData" EntityType="Self.HalfHourlyData" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MeterDetails" EntityType="Self.MeterDetails" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MonthlyConsumptionDetails" EntityType="Self.MonthlyConsumptionDetails" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MSLiveData" EntityType="Self.MSLiveData" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Role" EntityType="Self.Role" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TempMSLiveData" EntityType="Self.TempMSLiveData" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserRole" EntityType="Self.UserRole" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserSession" EntityType="Self.UserSession" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WeeklyConsumptionPrediction" EntityType="Self.WeeklyConsumptionPrediction" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PowergridAzureMLData" EntityType="Self.PowergridAzureMLData" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [PowergridAzureMLData].[Id] AS [Id], 
+    [PowergridAzureMLData].[AMPS_L1] AS [AMPS_L1], 
+    [PowergridAzureMLData].[AMPS_L2] AS [AMPS_L2], 
+    [PowergridAzureMLData].[AMPS_L3] AS [AMPS_L3], 
+    [PowergridAzureMLData].[AMPS_SYSTEM_AVG] AS [AMPS_SYSTEM_AVG], 
+    [PowergridAzureMLData].[Building] AS [Building], 
+    [PowergridAzureMLData].[ClassOccupanyRemaining] AS [ClassOccupanyRemaining], 
+    [PowergridAzureMLData].[ClassOccupiedValue] AS [ClassOccupiedValue], 
+    [PowergridAzureMLData].[TotalClassCapacity] AS [TotalClassCapacity], 
+    [PowergridAzureMLData].[Daily_electric_cost] AS [Daily_electric_cost], 
+    [PowergridAzureMLData].[Daily_KWH_System] AS [Daily_KWH_System], 
+    [PowergridAzureMLData].[isClassOccupied] AS [isClassOccupied], 
+    [PowergridAzureMLData].[KW_L1] AS [KW_L1], 
+    [PowergridAzureMLData].[KW_L2] AS [KW_L2], 
+    [PowergridAzureMLData].[KW_L3] AS [KW_L3], 
+    [PowergridAzureMLData].[Monthly_electric_cost] AS [Monthly_electric_cost], 
+    [PowergridAzureMLData].[Monthly_KWH_System] AS [Monthly_KWH_System], 
+    [PowergridAzureMLData].[PowerScout] AS [PowerScout], 
+    [PowergridAzureMLData].[Rated_Amperage] AS [Rated_Amperage], 
+    [PowergridAzureMLData].[Pressure] AS [Pressure], 
+    [PowergridAzureMLData].[Relative_humidity] AS [Relative_humidity], 
+    [PowergridAzureMLData].[Rolling_hourly_kwh_system] AS [Rolling_hourly_kwh_system], 
+    [PowergridAzureMLData].[Serial_number] AS [Serial_number], 
+    [PowergridAzureMLData].[Temperature] AS [Temperature], 
+    [PowergridAzureMLData].[Timestamp] AS [Timestamp], 
+    [PowergridAzureMLData].[Type] AS [Type], 
+    [PowergridAzureMLData].[Visibility] AS [Visibility], 
+    [PowergridAzureMLData].[Volts_L1_to_neutral] AS [Volts_L1_to_neutral], 
+    [PowergridAzureMLData].[Volts_L2_to_neutral] AS [Volts_L2_to_neutral], 
+    [PowergridAzureMLData].[Volts_L3_to_neutral] AS [Volts_L3_to_neutral], 
+    [PowergridAzureMLData].[kW_System] AS [kW_System], 
+    [PowergridAzureMLData].[PredictedKwH] AS [PredictedKwH]
+    FROM [dbo].[PowergridAzureMLData] AS [PowergridAzureMLData]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="TempMLData" EntityType="Self.TempMLData" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [TempMLData].[Id] AS [Id], 
+    [TempMLData].[AMPS_L1] AS [AMPS_L1], 
+    [TempMLData].[AMPS_L2] AS [AMPS_L2], 
+    [TempMLData].[AMPS_L3] AS [AMPS_L3], 
+    [TempMLData].[AMPS_SYSTEM_AVG] AS [AMPS_SYSTEM_AVG], 
+    [TempMLData].[Building] AS [Building], 
+    [TempMLData].[ClassOccupanyRemaining] AS [ClassOccupanyRemaining], 
+    [TempMLData].[ClassOccupiedValue] AS [ClassOccupiedValue], 
+    [TempMLData].[TotalClassCapacity] AS [TotalClassCapacity], 
+    [TempMLData].[Daily_electric_cost] AS [Daily_electric_cost], 
+    [TempMLData].[Daily_KWH_System] AS [Daily_KWH_System], 
+    [TempMLData].[Daily_Relative_KWH] AS [Daily_Relative_KWH], 
+    [TempMLData].[isClassOccupied] AS [isClassOccupied], 
+    [TempMLData].[KW_L1] AS [KW_L1], 
+    [TempMLData].[KW_L2] AS [KW_L2], 
+    [TempMLData].[KW_L3] AS [KW_L3], 
+    [TempMLData].[Monthly_electric_cost] AS [Monthly_electric_cost], 
+    [TempMLData].[Monthly_KWH_System] AS [Monthly_KWH_System], 
+    [TempMLData].[PowerScout] AS [PowerScout], 
+    [TempMLData].[Rated_Amperage] AS [Rated_Amperage], 
+    [TempMLData].[Pressure] AS [Pressure], 
+    [TempMLData].[Relative_humidity] AS [Relative_humidity], 
+    [TempMLData].[Rolling_hourly_kwh_system] AS [Rolling_hourly_kwh_system], 
+    [TempMLData].[Serial_number] AS [Serial_number], 
+    [TempMLData].[Temperature] AS [Temperature], 
+    [TempMLData].[Timestamp] AS [Timestamp], 
+    [TempMLData].[Type] AS [Type], 
+    [TempMLData].[Visibility] AS [Visibility], 
+    [TempMLData].[Volts_L1_to_neutral] AS [Volts_L1_to_neutral], 
+    [TempMLData].[Volts_L2_to_neutral] AS [Volts_L2_to_neutral], 
+    [TempMLData].[Volts_L3_to_neutral] AS [Volts_L3_to_neutral], 
+    [TempMLData].[kW_System] AS [kW_System], 
+    [TempMLData].[PredictedKwH] AS [PredictedKwH]
+    FROM [dbo].[TempMLData] AS [TempMLData]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_Alert_User" Association="Self.FK_Alert_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="Alert" EntitySet="Alert" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserRole_Role" Association="Self.FK_UserRole_Role">
+            <End Role="Role" EntitySet="Role" />
+            <End Role="UserRole" EntitySet="UserRole" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserRole_User" Association="Self.FK_UserRole_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="UserRole" EntitySet="UserRole" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserSession_User" Association="Self.FK_UserSession_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="UserSession" EntitySet="UserSession" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="PowerGridModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Alert">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Text" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="User_Id" Type="Int32" />
+          <Property Name="Status" Type="Int16" />
+          <Property Name="Timestamp" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="User" Relationship="Self.FK_Alert_User" FromRole="Alert" ToRole="User" />
+        </EntityType>
+        <EntityType Name="DailyConsumptionDetails">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AMPS_SYSTEM_AVG" Type="Double" />
+          <Property Name="Building" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Daily_electric_cost" Type="Double" />
+          <Property Name="Daily_KWH_System" Type="Double" />
+          <Property Name="Monthly_electric_cost" Type="Double" />
+          <Property Name="Monthly_KWH_System" Type="Double" />
+          <Property Name="PowerScout" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Temperature" Type="Double" />
+          <Property Name="Timestamp" Type="DateTime" Precision="3" />
+          <Property Name="Visibility" Type="Double" />
+          <Property Name="kW_System" Type="Double" />
+        </EntityType>
+        <EntityType Name="DailyConsumptionPrediction">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PowerScout" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Timestamp" Type="DateTime" Precision="3" />
+          <Property Name="Daily_Predicted_KWH_System" Type="Double" />
+          <Property Name="TomorrowPredictedKWH" Type="Double" />
+        </EntityType>
+        <EntityType Name="HalfHourlyData">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AMPS_L1" Type="Double" />
+          <Property Name="AMPS_L2" Type="Double" />
+          <Property Name="AMPS_L3" Type="Double" />
+          <Property Name="AMPS_SYSTEM_AVG" Type="Double" />
+          <Property Name="Breaker_details" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Breaker_label" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Building" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="ClassOccupanyRemaining" Type="Int32" />
+          <Property Name="ClassOccupiedValue" Type="Int32" />
+          <Property Name="TotalClassCapacity" Type="Int32" />
+          <Property Name="Daily_electric_cost" Type="Double" />
+          <Property Name="Daily_KWH_System" Type="Double" />
+          <Property Name="isClassOccupied" Type="Int32" />
+          <Property Name="KW_L1" Type="Double" />
+          <Property Name="KW_L2" Type="Double" />
+          <Property Name="KW_L3" Type="Double" />
+          <Property Name="Monthly_electric_cost" Type="Double" />
+          <Property Name="Monthly_KWH_System" Type="Double" />
+          <Property Name="PowerScout" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Rated_Amperage" Type="Double" />
+          <Property Name="Pressure" Type="Double" />
+          <Property Name="Relative_humidity" Type="Double" />
+          <Property Name="Rolling_hourly_kwh_system" Type="Double" />
+          <Property Name="Serial_number" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Temperature" Type="Double" />
+          <Property Name="Timestamp" Type="DateTime" Precision="3" />
+          <Property Name="Type" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Visibility" Type="Double" />
+          <Property Name="Volts_L1_to_neutral" Type="Double" />
+          <Property Name="Volts_L2_to_neutral" Type="Double" />
+          <Property Name="Volts_L3_to_neutral" Type="Double" />
+          <Property Name="kW_System" Type="Double" />
+          <Property Name="days" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="time_period" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="current_week" Type="DateTime" Precision="3" />
+          <Property Name="last_week" Type="DateTime" Precision="3" />
+          <Property Name="current_day" Type="DateTime" Precision="3" />
+          <Property Name="previous_day" Type="DateTime" Precision="3" />
+          <Property Name="current_month" Type="DateTime" Precision="3" />
+          <Property Name="last_month" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="MeterDetails">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Serial" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Latitude" Type="Double" />
+          <Property Name="Longitude" Type="Double" />
+          <Property Name="Altitude" Type="Double" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="MonthlyConsumptionDetails">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Month" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Year" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Powerscout" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="X" Type="Double" />
+          <Property Name="Y" Type="Double" />
+          <Property Name="Ligne" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Monthly_KWH_Consumption" Type="Double" />
+          <Property Name="Monthly_Electric_Cost" Type="Double" />
+        </EntityType>
+        <EntityType Name="MSLiveData">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="AMPS_L1" Type="Double" />
+          <Property Name="AMPS_L2" Type="Double" />
+          <Property Name="AMPS_L3" Type="Double" />
+          <Property Name="AMPS_SYSTEM_AVG" Type="Double" />
+          <Property Name="Breaker_details" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Breaker_label" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Building" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="ClassOccupanyRemaining" Type="Int32" />
+          <Property Name="ClassOccupiedValue" Type="Int32" />
+          <Property Name="TotalClassCapacity" Type="Int32" />
+          <Property Name="Daily_electric_cost" Type="Double" />
+          <Property Name="Daily_KWH_System" Type="Double" />
+          <Property Name="isClassOccupied" Type="Int32" />
+          <Property Name="KW_L1" Type="Double" />
+          <Property Name="KW_L2" Type="Double" />
+          <Property Name="KW_L3" Type="Double" />
+          <Property Name="Monthly_electric_cost" Type="Double" />
+          <Property Name="Monthly_KWH_System" Type="Double" />
+          <Property Name="PowerScout" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Rated_Amperage" Type="Double" />
+          <Property Name="Pressure" Type="Double" />
+          <Property Name="Relative_humidity" Type="Double" />
+          <Property Name="Rolling_hourly_kwh_system" Type="Double" />
+          <Property Name="Serial_number" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Temperature" Type="Double" />
+          <Property Name="Timestamp" Type="DateTime" Precision="3" />
+          <Property Name="Type" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Visibility" Type="Double" />
+          <Property Name="Volts_L1_to_neutral" Type="Double" />
+          <Property Name="Volts_L2_to_neutral" Type="Double" />
+          <Property Name="Volts_L3_to_neutral" Type="Double" />
+          <Property Name="kW_System" Type="Double" />
+        </EntityType>
+        <EntityType Name="Role">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Role1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="UserRole" Relationship="Self.FK_UserRole_Role" FromRole="Role" ToRole="UserRole" />
+        </EntityType>
+        <EntityType Name="TempMSLiveData">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="AMPS_L1" Type="Double" />
+          <Property Name="AMPS_L2" Type="Double" />
+          <Property Name="AMPS_L3" Type="Double" />
+          <Property Name="AMPS_SYSTEM_AVG" Type="Double" />
+          <Property Name="Breaker_details" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Breaker_label" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Building" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="ClassOccupanyRemaining" Type="Int32" />
+          <Property Name="ClassOccupiedValue" Type="Int32" />
+          <Property Name="TotalClassCapacity" Type="Int32" />
+          <Property Name="Daily_electric_cost" Type="Double" />
+          <Property Name="Daily_KWH_System" Type="Double" />
+          <Property Name="isClassOccupied" Type="Int32" />
+          <Property Name="KW_L1" Type="Double" />
+          <Property Name="KW_L2" Type="Double" />
+          <Property Name="KW_L3" Type="Double" />
+          <Property Name="Monthly_electric_cost" Type="Double" />
+          <Property Name="Monthly_KWH_System" Type="Double" />
+          <Property Name="PowerScout" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Rated_Amperage" Type="Double" />
+          <Property Name="Pressure" Type="Double" />
+          <Property Name="Relative_humidity" Type="Double" />
+          <Property Name="Rolling_hourly_kwh_system" Type="Double" />
+          <Property Name="Serial_number" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Temperature" Type="Double" />
+          <Property Name="Timestamp" Type="DateTime" Precision="3" />
+          <Property Name="Type" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Visibility" Type="Double" />
+          <Property Name="Volts_L1_to_neutral" Type="Double" />
+          <Property Name="Volts_L2_to_neutral" Type="Double" />
+          <Property Name="Volts_L3_to_neutral" Type="Double" />
+          <Property Name="kW_System" Type="Double" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="First_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Last_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Email_Id" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Status" Type="Int16" />
+          <Property Name="Creation_Date" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Alert" Relationship="Self.FK_Alert_User" FromRole="User" ToRole="Alert" />
+          <NavigationProperty Name="UserRole" Relationship="Self.FK_UserRole_User" FromRole="User" ToRole="UserRole" />
+          <NavigationProperty Name="UserSession" Relationship="Self.FK_UserSession_User" FromRole="User" ToRole="UserSession" />
+        </EntityType>
+        <EntityType Name="UserRole">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="User_Id" Type="Int32" />
+          <Property Name="Role_Id" Type="Int32" />
+          <NavigationProperty Name="Role" Relationship="Self.FK_UserRole_Role" FromRole="UserRole" ToRole="Role" />
+          <NavigationProperty Name="User" Relationship="Self.FK_UserRole_User" FromRole="UserRole" ToRole="User" />
+        </EntityType>
+        <EntityType Name="UserSession">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="User_Id" Type="Int32" />
+          <Property Name="Last_Login_Time" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="User" Relationship="Self.FK_UserSession_User" FromRole="UserSession" ToRole="User" />
+        </EntityType>
+        <EntityType Name="WeeklyConsumptionPrediction">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Start_Time" Type="DateTime" Precision="3" />
+          <Property Name="End_Time" Type="DateTime" Precision="3" />
+          <Property Name="PowerScout" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Weekly_Predicted_KWH_System" Type="Double" />
+        </EntityType>
+        <EntityType Name="PowergridAzureMLData">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="AMPS_L1" Type="Double" />
+          <Property Name="AMPS_L2" Type="Double" />
+          <Property Name="AMPS_L3" Type="Double" />
+          <Property Name="AMPS_SYSTEM_AVG" Type="Double" />
+          <Property Name="Building" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="ClassOccupanyRemaining" Type="Int32" />
+          <Property Name="ClassOccupiedValue" Type="Int32" />
+          <Property Name="TotalClassCapacity" Type="Int32" />
+          <Property Name="Daily_electric_cost" Type="Double" />
+          <Property Name="Daily_KWH_System" Type="Double" />
+          <Property Name="isClassOccupied" Type="Int32" />
+          <Property Name="KW_L1" Type="Double" />
+          <Property Name="KW_L2" Type="Double" />
+          <Property Name="KW_L3" Type="Double" />
+          <Property Name="Monthly_electric_cost" Type="Double" />
+          <Property Name="Monthly_KWH_System" Type="Double" />
+          <Property Name="PowerScout" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Rated_Amperage" Type="Double" />
+          <Property Name="Pressure" Type="Double" />
+          <Property Name="Relative_humidity" Type="Double" />
+          <Property Name="Rolling_hourly_kwh_system" Type="Double" />
+          <Property Name="Serial_number" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Temperature" Type="Double" />
+          <Property Name="Timestamp" Type="DateTime" Precision="3" />
+          <Property Name="Type" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Visibility" Type="Double" />
+          <Property Name="Volts_L1_to_neutral" Type="Double" />
+          <Property Name="Volts_L2_to_neutral" Type="Double" />
+          <Property Name="Volts_L3_to_neutral" Type="Double" />
+          <Property Name="kW_System" Type="Double" />
+          <Property Name="PredictedKwH" Type="Double" />
+        </EntityType>
+        <EntityType Name="TempMLData">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="AMPS_L1" Type="Double" />
+          <Property Name="AMPS_L2" Type="Double" />
+          <Property Name="AMPS_L3" Type="Double" />
+          <Property Name="AMPS_SYSTEM_AVG" Type="Double" />
+          <Property Name="Building" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="ClassOccupanyRemaining" Type="Int32" />
+          <Property Name="ClassOccupiedValue" Type="Int32" />
+          <Property Name="TotalClassCapacity" Type="Int32" />
+          <Property Name="Daily_electric_cost" Type="Double" />
+          <Property Name="Daily_KWH_System" Type="Double" />
+          <Property Name="Daily_Relative_KWH" Type="Double" />
+          <Property Name="isClassOccupied" Type="Int32" />
+          <Property Name="KW_L1" Type="Double" />
+          <Property Name="KW_L2" Type="Double" />
+          <Property Name="KW_L3" Type="Double" />
+          <Property Name="Monthly_electric_cost" Type="Double" />
+          <Property Name="Monthly_KWH_System" Type="Double" />
+          <Property Name="PowerScout" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Rated_Amperage" Type="Double" />
+          <Property Name="Pressure" Type="Double" />
+          <Property Name="Relative_humidity" Type="Double" />
+          <Property Name="Rolling_hourly_kwh_system" Type="Double" />
+          <Property Name="Serial_number" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Temperature" Type="Double" />
+          <Property Name="Timestamp" Type="DateTime" Precision="3" />
+          <Property Name="Type" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Visibility" Type="Double" />
+          <Property Name="Volts_L1_to_neutral" Type="Double" />
+          <Property Name="Volts_L2_to_neutral" Type="Double" />
+          <Property Name="Volts_L3_to_neutral" Type="Double" />
+          <Property Name="kW_System" Type="Double" />
+          <Property Name="PredictedKwH" Type="Double" />
+        </EntityType>
+        <Association Name="FK_Alert_User">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="Alert" Type="Self.Alert" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Alert">
+              <PropertyRef Name="User_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserRole_Role">
+          <End Role="Role" Type="Self.Role" Multiplicity="0..1" />
+          <End Role="UserRole" Type="Self.UserRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Role">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserRole">
+              <PropertyRef Name="Role_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserRole_User">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="UserRole" Type="Self.UserRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserRole">
+              <PropertyRef Name="User_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserSession_User">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="UserSession" Type="Self.UserSession" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserSession">
+              <PropertyRef Name="User_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="PowerGridEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Alert" EntityType="Self.Alert" />
+          <EntitySet Name="DailyConsumptionDetails" EntityType="Self.DailyConsumptionDetails" />
+          <EntitySet Name="DailyConsumptionPrediction" EntityType="Self.DailyConsumptionPrediction" />
+          <EntitySet Name="HalfHourlyData" EntityType="Self.HalfHourlyData" />
+          <EntitySet Name="MeterDetails" EntityType="Self.MeterDetails" />
+          <EntitySet Name="MonthlyConsumptionDetails" EntityType="Self.MonthlyConsumptionDetails" />
+          <EntitySet Name="MSLiveData" EntityType="Self.MSLiveData" />
+          <EntitySet Name="Role" EntityType="Self.Role" />
+          <EntitySet Name="TempMSLiveData" EntityType="Self.TempMSLiveData" />
+          <EntitySet Name="User" EntityType="Self.User" />
+          <EntitySet Name="UserRole" EntityType="Self.UserRole" />
+          <EntitySet Name="UserSession" EntityType="Self.UserSession" />
+          <EntitySet Name="WeeklyConsumptionPrediction" EntityType="Self.WeeklyConsumptionPrediction" />
+          <EntitySet Name="PowergridAzureMLData" EntityType="Self.PowergridAzureMLData" />
+          <EntitySet Name="TempMLData" EntityType="Self.TempMLData" />
+          <AssociationSet Name="FK_Alert_User" Association="Self.FK_Alert_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="Alert" EntitySet="Alert" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserRole_Role" Association="Self.FK_UserRole_Role">
+            <End Role="Role" EntitySet="Role" />
+            <End Role="UserRole" EntitySet="UserRole" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserRole_User" Association="Self.FK_UserRole_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="UserRole" EntitySet="UserRole" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserSession_User" Association="Self.FK_UserSession_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="UserSession" EntitySet="UserSession" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="PowerGridModelStoreContainer" CdmEntityContainer="PowerGridEntities">
+          <EntitySetMapping Name="Alert">
+            <EntityTypeMapping TypeName="PowerGridModel.Alert">
+              <MappingFragment StoreEntitySet="Alert">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Text" ColumnName="Text" />
+                <ScalarProperty Name="User_Id" ColumnName="User_Id" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DailyConsumptionDetails">
+            <EntityTypeMapping TypeName="PowerGridModel.DailyConsumptionDetails">
+              <MappingFragment StoreEntitySet="DailyConsumptionDetails">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="AMPS_SYSTEM_AVG" ColumnName="AMPS_SYSTEM_AVG" />
+                <ScalarProperty Name="Building" ColumnName="Building" />
+                <ScalarProperty Name="Daily_electric_cost" ColumnName="Daily_electric_cost" />
+                <ScalarProperty Name="Daily_KWH_System" ColumnName="Daily_KWH_System" />
+                <ScalarProperty Name="Monthly_electric_cost" ColumnName="Monthly_electric_cost" />
+                <ScalarProperty Name="Monthly_KWH_System" ColumnName="Monthly_KWH_System" />
+                <ScalarProperty Name="PowerScout" ColumnName="PowerScout" />
+                <ScalarProperty Name="Temperature" ColumnName="Temperature" />
+                <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
+                <ScalarProperty Name="Visibility" ColumnName="Visibility" />
+                <ScalarProperty Name="kW_System" ColumnName="kW_System" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DailyConsumptionPrediction">
+            <EntityTypeMapping TypeName="PowerGridModel.DailyConsumptionPrediction">
+              <MappingFragment StoreEntitySet="DailyConsumptionPrediction">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="PowerScout" ColumnName="PowerScout" />
+                <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
+                <ScalarProperty Name="Daily_Predicted_KWH_System" ColumnName="Daily_Predicted_KWH_System" />
+                <ScalarProperty Name="TomorrowPredictedKWH" ColumnName="TomorrowPredictedKWH" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="HalfHourlyData">
+            <EntityTypeMapping TypeName="PowerGridModel.HalfHourlyData">
+              <MappingFragment StoreEntitySet="HalfHourlyData">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="AMPS_L1" ColumnName="AMPS_L1" />
+                <ScalarProperty Name="AMPS_L2" ColumnName="AMPS_L2" />
+                <ScalarProperty Name="AMPS_L3" ColumnName="AMPS_L3" />
+                <ScalarProperty Name="AMPS_SYSTEM_AVG" ColumnName="AMPS_SYSTEM_AVG" />
+                <ScalarProperty Name="Breaker_details" ColumnName="Breaker_details" />
+                <ScalarProperty Name="Breaker_label" ColumnName="Breaker_label" />
+                <ScalarProperty Name="Building" ColumnName="Building" />
+                <ScalarProperty Name="ClassOccupanyRemaining" ColumnName="ClassOccupanyRemaining" />
+                <ScalarProperty Name="ClassOccupiedValue" ColumnName="ClassOccupiedValue" />
+                <ScalarProperty Name="TotalClassCapacity" ColumnName="TotalClassCapacity" />
+                <ScalarProperty Name="Daily_electric_cost" ColumnName="Daily_electric_cost" />
+                <ScalarProperty Name="Daily_KWH_System" ColumnName="Daily_KWH_System" />
+                <ScalarProperty Name="isClassOccupied" ColumnName="isClassOccupied" />
+                <ScalarProperty Name="KW_L1" ColumnName="KW_L1" />
+                <ScalarProperty Name="KW_L2" ColumnName="KW_L2" />
+                <ScalarProperty Name="KW_L3" ColumnName="KW_L3" />
+                <ScalarProperty Name="Monthly_electric_cost" ColumnName="Monthly_electric_cost" />
+                <ScalarProperty Name="Monthly_KWH_System" ColumnName="Monthly_KWH_System" />
+                <ScalarProperty Name="PowerScout" ColumnName="PowerScout" />
+                <ScalarProperty Name="Rated_Amperage" ColumnName="Rated_Amperage" />
+                <ScalarProperty Name="Pressure" ColumnName="Pressure" />
+                <ScalarProperty Name="Relative_humidity" ColumnName="Relative_humidity" />
+                <ScalarProperty Name="Rolling_hourly_kwh_system" ColumnName="Rolling_hourly_kwh_system" />
+                <ScalarProperty Name="Serial_number" ColumnName="Serial_number" />
+                <ScalarProperty Name="Temperature" ColumnName="Temperature" />
+                <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Visibility" ColumnName="Visibility" />
+                <ScalarProperty Name="Volts_L1_to_neutral" ColumnName="Volts_L1_to_neutral" />
+                <ScalarProperty Name="Volts_L2_to_neutral" ColumnName="Volts_L2_to_neutral" />
+                <ScalarProperty Name="Volts_L3_to_neutral" ColumnName="Volts_L3_to_neutral" />
+                <ScalarProperty Name="kW_System" ColumnName="kW_System" />
+                <ScalarProperty Name="days" ColumnName="days" />
+                <ScalarProperty Name="time_period" ColumnName="time_period" />
+                <ScalarProperty Name="current_week" ColumnName="current_week" />
+                <ScalarProperty Name="last_week" ColumnName="last_week" />
+                <ScalarProperty Name="current_day" ColumnName="current_day" />
+                <ScalarProperty Name="previous_day" ColumnName="previous_day" />
+                <ScalarProperty Name="current_month" ColumnName="current_month" />
+                <ScalarProperty Name="last_month" ColumnName="last_month" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MeterDetails">
+            <EntityTypeMapping TypeName="PowerGridModel.MeterDetails">
+              <MappingFragment StoreEntitySet="MeterDetails">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Serial" ColumnName="Serial" />
+                <ScalarProperty Name="Latitude" ColumnName="Latitude" />
+                <ScalarProperty Name="Longitude" ColumnName="Longitude" />
+                <ScalarProperty Name="Altitude" ColumnName="Altitude" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MonthlyConsumptionDetails">
+            <EntityTypeMapping TypeName="PowerGridModel.MonthlyConsumptionDetails">
+              <MappingFragment StoreEntitySet="MonthlyConsumptionDetails">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Month" ColumnName="Month" />
+                <ScalarProperty Name="Year" ColumnName="Year" />
+                <ScalarProperty Name="Powerscout" ColumnName="Powerscout" />
+                <ScalarProperty Name="X" ColumnName="X" />
+                <ScalarProperty Name="Y" ColumnName="Y" />
+                <ScalarProperty Name="Ligne" ColumnName="Ligne" />
+                <ScalarProperty Name="Monthly_KWH_Consumption" ColumnName="Monthly_KWH_Consumption" />
+                <ScalarProperty Name="Monthly_Electric_Cost" ColumnName="Monthly_Electric_Cost" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MSLiveData">
+            <EntityTypeMapping TypeName="PowerGridModel.MSLiveData">
+              <MappingFragment StoreEntitySet="MSLiveData">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="AMPS_L1" ColumnName="AMPS_L1" />
+                <ScalarProperty Name="AMPS_L2" ColumnName="AMPS_L2" />
+                <ScalarProperty Name="AMPS_L3" ColumnName="AMPS_L3" />
+                <ScalarProperty Name="AMPS_SYSTEM_AVG" ColumnName="AMPS_SYSTEM_AVG" />
+                <ScalarProperty Name="Breaker_details" ColumnName="Breaker_details" />
+                <ScalarProperty Name="Breaker_label" ColumnName="Breaker_label" />
+                <ScalarProperty Name="Building" ColumnName="Building" />
+                <ScalarProperty Name="ClassOccupanyRemaining" ColumnName="ClassOccupanyRemaining" />
+                <ScalarProperty Name="ClassOccupiedValue" ColumnName="ClassOccupiedValue" />
+                <ScalarProperty Name="TotalClassCapacity" ColumnName="TotalClassCapacity" />
+                <ScalarProperty Name="Daily_electric_cost" ColumnName="Daily_electric_cost" />
+                <ScalarProperty Name="Daily_KWH_System" ColumnName="Daily_KWH_System" />
+                <ScalarProperty Name="isClassOccupied" ColumnName="isClassOccupied" />
+                <ScalarProperty Name="KW_L1" ColumnName="KW_L1" />
+                <ScalarProperty Name="KW_L2" ColumnName="KW_L2" />
+                <ScalarProperty Name="KW_L3" ColumnName="KW_L3" />
+                <ScalarProperty Name="Monthly_electric_cost" ColumnName="Monthly_electric_cost" />
+                <ScalarProperty Name="Monthly_KWH_System" ColumnName="Monthly_KWH_System" />
+                <ScalarProperty Name="PowerScout" ColumnName="PowerScout" />
+                <ScalarProperty Name="Rated_Amperage" ColumnName="Rated_Amperage" />
+                <ScalarProperty Name="Pressure" ColumnName="Pressure" />
+                <ScalarProperty Name="Relative_humidity" ColumnName="Relative_humidity" />
+                <ScalarProperty Name="Rolling_hourly_kwh_system" ColumnName="Rolling_hourly_kwh_system" />
+                <ScalarProperty Name="Serial_number" ColumnName="Serial_number" />
+                <ScalarProperty Name="Temperature" ColumnName="Temperature" />
+                <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Visibility" ColumnName="Visibility" />
+                <ScalarProperty Name="Volts_L1_to_neutral" ColumnName="Volts_L1_to_neutral" />
+                <ScalarProperty Name="Volts_L2_to_neutral" ColumnName="Volts_L2_to_neutral" />
+                <ScalarProperty Name="Volts_L3_to_neutral" ColumnName="Volts_L3_to_neutral" />
+                <ScalarProperty Name="kW_System" ColumnName="kW_System" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Role">
+            <EntityTypeMapping TypeName="PowerGridModel.Role">
+              <MappingFragment StoreEntitySet="Role">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Role1" ColumnName="Role" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TempMSLiveData">
+            <EntityTypeMapping TypeName="PowerGridModel.TempMSLiveData">
+              <MappingFragment StoreEntitySet="TempMSLiveData">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="AMPS_L1" ColumnName="AMPS_L1" />
+                <ScalarProperty Name="AMPS_L2" ColumnName="AMPS_L2" />
+                <ScalarProperty Name="AMPS_L3" ColumnName="AMPS_L3" />
+                <ScalarProperty Name="AMPS_SYSTEM_AVG" ColumnName="AMPS_SYSTEM_AVG" />
+                <ScalarProperty Name="Breaker_details" ColumnName="Breaker_details" />
+                <ScalarProperty Name="Breaker_label" ColumnName="Breaker_label" />
+                <ScalarProperty Name="Building" ColumnName="Building" />
+                <ScalarProperty Name="ClassOccupanyRemaining" ColumnName="ClassOccupanyRemaining" />
+                <ScalarProperty Name="ClassOccupiedValue" ColumnName="ClassOccupiedValue" />
+                <ScalarProperty Name="TotalClassCapacity" ColumnName="TotalClassCapacity" />
+                <ScalarProperty Name="Daily_electric_cost" ColumnName="Daily_electric_cost" />
+                <ScalarProperty Name="Daily_KWH_System" ColumnName="Daily_KWH_System" />
+                <ScalarProperty Name="isClassOccupied" ColumnName="isClassOccupied" />
+                <ScalarProperty Name="KW_L1" ColumnName="KW_L1" />
+                <ScalarProperty Name="KW_L2" ColumnName="KW_L2" />
+                <ScalarProperty Name="KW_L3" ColumnName="KW_L3" />
+                <ScalarProperty Name="Monthly_electric_cost" ColumnName="Monthly_electric_cost" />
+                <ScalarProperty Name="Monthly_KWH_System" ColumnName="Monthly_KWH_System" />
+                <ScalarProperty Name="PowerScout" ColumnName="PowerScout" />
+                <ScalarProperty Name="Rated_Amperage" ColumnName="Rated_Amperage" />
+                <ScalarProperty Name="Pressure" ColumnName="Pressure" />
+                <ScalarProperty Name="Relative_humidity" ColumnName="Relative_humidity" />
+                <ScalarProperty Name="Rolling_hourly_kwh_system" ColumnName="Rolling_hourly_kwh_system" />
+                <ScalarProperty Name="Serial_number" ColumnName="Serial_number" />
+                <ScalarProperty Name="Temperature" ColumnName="Temperature" />
+                <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Visibility" ColumnName="Visibility" />
+                <ScalarProperty Name="Volts_L1_to_neutral" ColumnName="Volts_L1_to_neutral" />
+                <ScalarProperty Name="Volts_L2_to_neutral" ColumnName="Volts_L2_to_neutral" />
+                <ScalarProperty Name="Volts_L3_to_neutral" ColumnName="Volts_L3_to_neutral" />
+                <ScalarProperty Name="kW_System" ColumnName="kW_System" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="User">
+            <EntityTypeMapping TypeName="PowerGridModel.User">
+              <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="First_Name" ColumnName="First_Name" />
+                <ScalarProperty Name="Last_Name" ColumnName="Last_Name" />
+                <ScalarProperty Name="Email_Id" ColumnName="Email_Id" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Creation_Date" ColumnName="Creation_Date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserRole">
+            <EntityTypeMapping TypeName="PowerGridModel.UserRole">
+              <MappingFragment StoreEntitySet="UserRole">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="User_Id" ColumnName="User_Id" />
+                <ScalarProperty Name="Role_Id" ColumnName="Role_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserSession">
+            <EntityTypeMapping TypeName="PowerGridModel.UserSession">
+              <MappingFragment StoreEntitySet="UserSession">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="User_Id" ColumnName="User_Id" />
+                <ScalarProperty Name="Last_Login_Time" ColumnName="Last_Login_Time" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WeeklyConsumptionPrediction">
+            <EntityTypeMapping TypeName="PowerGridModel.WeeklyConsumptionPrediction">
+              <MappingFragment StoreEntitySet="WeeklyConsumptionPrediction">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Start_Time" ColumnName="Start_Time" />
+                <ScalarProperty Name="End_Time" ColumnName="End_Time" />
+                <ScalarProperty Name="PowerScout" ColumnName="PowerScout" />
+                <ScalarProperty Name="Weekly_Predicted_KWH_System" ColumnName="Weekly_Predicted_KWH_System" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PowergridAzureMLData">
+            <EntityTypeMapping TypeName="PowerGridModel.PowergridAzureMLData">
+              <MappingFragment StoreEntitySet="PowergridAzureMLData">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="AMPS_L1" ColumnName="AMPS_L1" />
+                <ScalarProperty Name="AMPS_L2" ColumnName="AMPS_L2" />
+                <ScalarProperty Name="AMPS_L3" ColumnName="AMPS_L3" />
+                <ScalarProperty Name="AMPS_SYSTEM_AVG" ColumnName="AMPS_SYSTEM_AVG" />
+                <ScalarProperty Name="Building" ColumnName="Building" />
+                <ScalarProperty Name="ClassOccupanyRemaining" ColumnName="ClassOccupanyRemaining" />
+                <ScalarProperty Name="ClassOccupiedValue" ColumnName="ClassOccupiedValue" />
+                <ScalarProperty Name="TotalClassCapacity" ColumnName="TotalClassCapacity" />
+                <ScalarProperty Name="Daily_electric_cost" ColumnName="Daily_electric_cost" />
+                <ScalarProperty Name="Daily_KWH_System" ColumnName="Daily_KWH_System" />
+                <ScalarProperty Name="isClassOccupied" ColumnName="isClassOccupied" />
+                <ScalarProperty Name="KW_L1" ColumnName="KW_L1" />
+                <ScalarProperty Name="KW_L2" ColumnName="KW_L2" />
+                <ScalarProperty Name="KW_L3" ColumnName="KW_L3" />
+                <ScalarProperty Name="Monthly_electric_cost" ColumnName="Monthly_electric_cost" />
+                <ScalarProperty Name="Monthly_KWH_System" ColumnName="Monthly_KWH_System" />
+                <ScalarProperty Name="PowerScout" ColumnName="PowerScout" />
+                <ScalarProperty Name="Rated_Amperage" ColumnName="Rated_Amperage" />
+                <ScalarProperty Name="Pressure" ColumnName="Pressure" />
+                <ScalarProperty Name="Relative_humidity" ColumnName="Relative_humidity" />
+                <ScalarProperty Name="Rolling_hourly_kwh_system" ColumnName="Rolling_hourly_kwh_system" />
+                <ScalarProperty Name="Serial_number" ColumnName="Serial_number" />
+                <ScalarProperty Name="Temperature" ColumnName="Temperature" />
+                <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Visibility" ColumnName="Visibility" />
+                <ScalarProperty Name="Volts_L1_to_neutral" ColumnName="Volts_L1_to_neutral" />
+                <ScalarProperty Name="Volts_L2_to_neutral" ColumnName="Volts_L2_to_neutral" />
+                <ScalarProperty Name="Volts_L3_to_neutral" ColumnName="Volts_L3_to_neutral" />
+                <ScalarProperty Name="kW_System" ColumnName="kW_System" />
+                <ScalarProperty Name="PredictedKwH" ColumnName="PredictedKwH" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TempMLData">
+            <EntityTypeMapping TypeName="PowerGridModel.TempMLData">
+              <MappingFragment StoreEntitySet="TempMLData">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="AMPS_L1" ColumnName="AMPS_L1" />
+                <ScalarProperty Name="AMPS_L2" ColumnName="AMPS_L2" />
+                <ScalarProperty Name="AMPS_L3" ColumnName="AMPS_L3" />
+                <ScalarProperty Name="AMPS_SYSTEM_AVG" ColumnName="AMPS_SYSTEM_AVG" />
+                <ScalarProperty Name="Building" ColumnName="Building" />
+                <ScalarProperty Name="ClassOccupanyRemaining" ColumnName="ClassOccupanyRemaining" />
+                <ScalarProperty Name="ClassOccupiedValue" ColumnName="ClassOccupiedValue" />
+                <ScalarProperty Name="TotalClassCapacity" ColumnName="TotalClassCapacity" />
+                <ScalarProperty Name="Daily_electric_cost" ColumnName="Daily_electric_cost" />
+                <ScalarProperty Name="Daily_KWH_System" ColumnName="Daily_KWH_System" />
+                <ScalarProperty Name="Daily_Relative_KWH" ColumnName="Daily_Relative_KWH" />
+                <ScalarProperty Name="isClassOccupied" ColumnName="isClassOccupied" />
+                <ScalarProperty Name="KW_L1" ColumnName="KW_L1" />
+                <ScalarProperty Name="KW_L2" ColumnName="KW_L2" />
+                <ScalarProperty Name="KW_L3" ColumnName="KW_L3" />
+                <ScalarProperty Name="Monthly_electric_cost" ColumnName="Monthly_electric_cost" />
+                <ScalarProperty Name="Monthly_KWH_System" ColumnName="Monthly_KWH_System" />
+                <ScalarProperty Name="PowerScout" ColumnName="PowerScout" />
+                <ScalarProperty Name="Rated_Amperage" ColumnName="Rated_Amperage" />
+                <ScalarProperty Name="Pressure" ColumnName="Pressure" />
+                <ScalarProperty Name="Relative_humidity" ColumnName="Relative_humidity" />
+                <ScalarProperty Name="Rolling_hourly_kwh_system" ColumnName="Rolling_hourly_kwh_system" />
+                <ScalarProperty Name="Serial_number" ColumnName="Serial_number" />
+                <ScalarProperty Name="Temperature" ColumnName="Temperature" />
+                <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Visibility" ColumnName="Visibility" />
+                <ScalarProperty Name="Volts_L1_to_neutral" ColumnName="Volts_L1_to_neutral" />
+                <ScalarProperty Name="Volts_L2_to_neutral" ColumnName="Volts_L2_to_neutral" />
+                <ScalarProperty Name="Volts_L3_to_neutral" ColumnName="Volts_L3_to_neutral" />
+                <ScalarProperty Name="kW_System" ColumnName="kW_System" />
+                <ScalarProperty Name="PredictedKwH" ColumnName="PredictedKwH" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
