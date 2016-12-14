@@ -51,35 +51,42 @@ namespace RestService.Utilities
             }
         }
 
-        public bool SignInValidator(UserCredentials userCredentials)
+        public ResponseModel SignInValidator(UserCredentials userCredentials)
         {
             try
             {
                 if (!string.IsNullOrEmpty(userCredentials.Email) && !string.IsNullOrEmpty(userCredentials.Password))
                 {
                     //check email
-                    bool isValidEmail = EmailIdValidator(userCredentials.Email);
-
-                    //check password
-                    bool isValidPassword = false;
-                    if (userCredentials.Email.Length > 2)
+                    if (EmailIdValidator(userCredentials.Email))
                     {
-                        isValidPassword = true;
+                        //check password
+                        if (userCredentials.Password.Length > 2)
+                        {
+                            return new ResponseModel { Status_Code = (int)Constants.StatusCode.Ok, Message = "" };
+                        }
+                        else
+                        {
+                            return new ResponseModel { Status_Code = (int)Constants.StatusCode.Error, Message = "Invalid Password" };
+                        }
                     }
-                    //Validation Successful
-                    return (isValidEmail && isValidPassword);
+                    else
+                    {
+                        return new ResponseModel { Status_Code = (int)Constants.StatusCode.Error, Message = "Invalid Email" };
+                    }
                 }
                 else
                 {
-                    //Validation Unsuccessful
-                    return false;
+                    //Email or password is empty
+                    return new ResponseModel { Status_Code = (int)Constants.StatusCode.Error, Message = "Email or Password is empty" };
                 }
             }
             catch (Exception ex)
             {
-                return false;
+                return new ResponseModel { Status_Code = (int)Constants.StatusCode.Error, Message = ex.Message };
             }
         }
+
         public bool ChangePasswordValidator(UserCredentials userCredentials)
         {
             try

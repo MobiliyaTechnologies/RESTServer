@@ -73,21 +73,32 @@ namespace RestService.Service
 
         public ResponseUserModel SignInUser(UserCredentials userCredentials)
         {
-            ResponseUserModel response;
-            if (validator.SignInValidator(userCredentials))
+            try
             {
-                //validation successful
-                User userInfo = Converter.UserCredentialsToUserEntity(userCredentials);
-                response = userFacade.SignIn(userInfo);
-                return response;
+                userCredentials.Email = userCredentials.Email.Replace(" ", string.Empty);
+                userCredentials.Password = userCredentials.Password.Replace(" ", string.Empty);
+
+                ResponseUserModel userResponse;
+                ResponseModel response = validator.SignInValidator(userCredentials); //Check for correct credential format
+                if (response.Status_Code == (int)Constants.StatusCode.Ok)
+                {
+                    //validation successful
+
+                    userResponse = userFacade.SignIn(userCredentials);
+                    return userResponse;
+                }
+                else
+                {
+                    //validation unsuccessful
+                    userResponse = new ResponseUserModel();
+                    userResponse.Status_Code = Convert.ToInt16(Constants.StatusCode.Error);
+                    userResponse.Message = response.Message;
+                    return userResponse;
+                }
             }
-            else
+            catch (Exception ex)
             {
-                //validation unsuccessful
-                response = new ResponseUserModel();
-                response.Status_Code = Convert.ToInt16(Constants.StatusCode.Error);
-                response.Message = "Invalid user";
-                return response;
+                return new ResponseUserModel { Status_Code = (int)Constants.StatusCode.Error, Message = ex.Message };
             }
         }
 

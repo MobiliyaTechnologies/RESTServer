@@ -100,12 +100,12 @@ namespace RestService.Facade
             return response;
         }
 
-        public ResponseUserModel SignIn(User userDetails)
+        public ResponseUserModel SignIn(UserCredentials userDetails)
         {
             ResponseUserModel response = new ResponseUserModel();
             try
             {
-                var user = (from u in dbEntity.User where u.Email_Id.Equals(userDetails.Email_Id) && u.Password.Equals(userDetails.Password) select u).SingleOrDefault();
+                var user = (from data in dbEntity.User where data.Email_Id.Equals(userDetails.Email) && data.Password.Equals(userDetails.Password) select data).SingleOrDefault();
                 if (user == null)
                 {
                     //Invalid User
@@ -125,7 +125,7 @@ namespace RestService.Facade
                  
                 //create user session
                 UserSession ssn = new UserSession { User_Id = user.Id, Last_Login_Time = DateTime.Now };
-                UserSession userSession = dbEntity.UserSession.Add(ssn);
+                dbEntity.UserSession.Add(ssn);
                 dbEntity.SaveChanges();
 
                 //update user session
