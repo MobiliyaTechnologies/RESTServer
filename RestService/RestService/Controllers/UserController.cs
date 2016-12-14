@@ -55,11 +55,11 @@ namespace RestService.Controllers
             return response;
         }
 
-        [Route("api/resetpassword")]
+        [Route("api/forgotpassword")]
         [HttpPost]
-        public ResponseModel ResetPassword([FromBody] UserDataModel userDetails)
+        public ResponseModel ForgottPassword([FromBody] UserCredentials userCredentials)
         {
-            response = accountService.ResetPassword(userDetails);
+            response = accountService.ForgotPassword(userCredentials);
             return response;
         }
 

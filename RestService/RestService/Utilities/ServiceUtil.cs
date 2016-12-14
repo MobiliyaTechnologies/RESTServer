@@ -9,9 +9,10 @@ namespace RestService.Utilities
 {
     public class ServiceUtil
     {
-        public static ResponseModel SendEmail(string emailId)
+        public static ResponseModel SendEmail(string emailId, string password)
         {
             ResponseModel response = new ResponseModel();
+            /*
             System.Net.Mail.MailMessage mail = new System.Net.Mail.MailMessage();
             mail.To.Add(emailId);
             mail.From = new MailAddress("", "Password Reset Request", System.Text.Encoding.UTF8);
@@ -37,6 +38,9 @@ namespace RestService.Utilities
                 response.Status_Code = Convert.ToInt16(Constants.StatusCode.Error);
                 response.Message = ex.Message;
             }
+            */
+            response.Status_Code = Convert.ToInt16(Constants.StatusCode.Error);
+            response.Message = "Failed to send Email";
             return response;
         }
     }

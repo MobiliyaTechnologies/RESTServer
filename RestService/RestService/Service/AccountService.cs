@@ -44,33 +44,6 @@ namespace RestService.Service
             }
         }
 
-        public ResponseModel ResetPassword(UserDataModel userDetails)
-        {
-            if(validator.ResetPasswordValidator(userDetails))
-            {
-                //validation successful
-                response = userFacade.CheckEmail(userDetails);
-                if(response.Status_Code == Convert.ToInt16(Constants.StatusCode.Ok))
-                {
-                    //Send Email
-                    response = ServiceUtil.SendEmail(userDetails.Email);
-                }
-                else
-                {
-                    response.Status_Code = Convert.ToInt16(Constants.StatusCode.Error);
-                    response.Message = "Email not registered";
-                }
-                return response;
-            }
-            else
-            {
-                //validation unsuccessful
-                response.Status_Code = Convert.ToInt16(Constants.StatusCode.Error);
-                response.Message = "Validation Faliure";
-                return response;
-            }
-        }
-
         public ResponseUserModel SignInUser(UserCredentials userCredentials)
         {
             try
@@ -108,6 +81,13 @@ namespace RestService.Service
             if (validator.ChangePasswordValidator(userCredentials))
             {
                 //validation successful
+                if (userCredentials.New_Password.Equals(userCredentials.Password))
+                {
+                    response = new ResponseUserModel();
+                    response.Status_Code = Convert.ToInt16(Constants.StatusCode.Error);
+                    response.Message = "New password and old password can not be same";
+                    return response;
+                }
                 User userInfo = Converter.UserCredentialsToUserEntity(userCredentials);
                 response = userFacade.ChangePassword(userInfo, userCredentials.New_Password);
                 return response;
@@ -118,6 +98,37 @@ namespace RestService.Service
                 response = new ResponseUserModel();
                 response.Status_Code = Convert.ToInt16(Constants.StatusCode.Error);
                 response.Message = "Invalid user";
+                return response;
+            }
+        }
+
+        public ResponseModel ForgotPassword(UserCredentials userCredentials)
+        {
+            if (validator.ResetPasswordValidator(userCredentials))
+            {
+                //validation successful
+                response = userFacade.CheckEmail(userCredentials);
+                if (response.Status_Code == Convert.ToInt16(Constants.StatusCode.Ok))
+                {
+                    User userInfo = Converter.UserCredentialsToUserEntity(userCredentials);
+                    string pw = userFacade.GetPassword(userInfo);
+
+                    //Send Email
+                    response = ServiceUtil.SendEmail(userCredentials.Email, pw);
+                    return response;
+                }
+                else
+                {
+                    response.Status_Code = Convert.ToInt16(Constants.StatusCode.Error);
+                    response.Message = "Email not registered";
+                }
+                return response;
+            }
+            else
+            {
+                //validation unsuccessful
+                response.Status_Code = Convert.ToInt16(Constants.StatusCode.Error);
+                response.Message = "Validation Faliure";
                 return response;
             }
         }
