@@ -150,5 +150,10 @@ namespace RestService.Service
                 return response;
             }
         }
+
+        public bool ValidateUser(int UserId)
+        {
+            return userFacade.ValidateUser(UserId);
+        }
     }
 }

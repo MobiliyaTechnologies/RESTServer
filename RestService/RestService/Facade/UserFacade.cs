@@ -212,6 +212,22 @@ namespace RestService.Facade
             }
             return response;
         }
+        
+        public bool ValidateUser(int UserId)
+        {
+            try
+            {
+                var user = (from data in dbEntity.User where data.Id == UserId select data).FirstOrDefault();
+                if (user == null)
+                    return false;
+                else
+                    return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
 
         public string GetPassword(User userDetails)
         {
@@ -260,5 +276,5 @@ namespace RestService.Facade
             }
             return response;
         }
-    }
+     }
 }
