@@ -12,40 +12,84 @@ namespace RestService.Service
     public class DataService
     {
         DataFacade dataFacade;
+        AccountService accountService;
         public DataService()
         {
             dataFacade = new DataFacade();
+            accountService = new AccountService();
         }
 
-        public List<MeterDataModel> GetMeterList()
+        public List<MeterDetails> GetMeterList(int UserId)
         {
-            List<MeterDetails> meterData = dataFacade.GetMeters();
-            if (meterData != null && meterData.Count > 0)
+
+            try
             {
-                List<MeterDataModel> meterModelList = new List<MeterDataModel>();
-                foreach (var meterDataItem in meterData)
+                if (accountService.ValidateUser(UserId))
                 {
-                    MonthlyConsumptionDetails meterMonthlyConsumption = dataFacade.GetMeterConsumption(meterDataItem);
-                    DailyConsumptionDetails meterDailyConsumption = dataFacade.GetDailyConsumption(meterDataItem);
-                    meterModelList.Add(Converter.MeterEntityToModel(meterDataItem));
-                    if (meterMonthlyConsumption != null)
+                    List<MeterDetails> meterData = dataFacade.GetMeters();
+                    if (meterData != null && meterData.Count > 0)
                     {
-                        meterModelList.Where(meter => meter.Serial.Equals(meterDataItem.Serial)).LastOrDefault().MonthlyConsumption = (double)meterMonthlyConsumption.Monthly_KWH_Consumption;
-                        meterModelList.Where(meter => meter.Serial.Equals(meterDataItem.Serial)).LastOrDefault().MonthlyElectricCost = (double)meterMonthlyConsumption.Monthly_Electric_Cost;
+                        return meterData;
                     }
-                    if (meterDailyConsumption != null)
+                    else
                     {
-                        meterModelList.Where(meter => meter.Serial.Equals(meterDataItem.Serial)).LastOrDefault().DailyConsumption = (double)meterDailyConsumption.Daily_KWH_System;
-                        meterModelList.Where(meter => meter.Serial.Equals(meterDataItem.Serial)).LastOrDefault().DailyElectricCost = (double)meterDailyConsumption.Daily_electric_cost;
+                        return new List<MeterDetails>();
                     }
                 }
-                return meterModelList;
-            }
-            else
-            {
-                return new List<MeterDataModel>();
-            }
+                else
+                {
+                    return null;
+                }
 
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
+
+        //public List<MonthlyConsumptionModel> GetMeterMonthlyConsumption()
+        //{
+        //    List<MeterDetails> meterData = dataFacade.GetMeters();
+        //    if (meterData != null && meterData.Count > 0)
+        //    {
+        //        List<MonthlyConsumptionModel> meterModelList = new List<MonthlyConsumptionModel>();
+        //        foreach (var meterDataItem in meterData)
+        //        {
+        //            MonthlyConsumptionDetails meterMonthlyConsumption = dataFacade.GetMeterConsumption(meterDataItem);
+        //            if (meterMonthlyConsumption != null)
+        //            {
+        //                meterModelList.Add(Converter.MeterMonthlyEntityToModel(meterMonthlyConsumption));
+        //            }
+        //        }
+        //        return meterModelList;
+        //    }
+        //    else
+        //    {
+        //        return new List<MonthlyConsumptionModel>();
+        //    }
+        //}
+
+        //public List<DailyConsumptionModel> GetMeterDailyConsumption()
+        //{
+        //    List<MeterDetails> meterData = dataFacade.GetMeters();
+        //    if (meterData != null && meterData.Count > 0)
+        //    {
+        //        List<DailyConsumptionModel> meterModelList = new List<DailyConsumptionModel>();
+        //        foreach (var meterDataItem in meterData)
+        //        {
+        //            DailyConsumptionDetails meterDailyConsumption = dataFacade.GetDailyConsumption(meterDataItem);
+        //            if (meterDailyConsumption != null)
+        //            {
+        //                meterModelList.Add(Converter.MeterDailyEntityToModel(meterDailyConsumption));
+        //            }
+        //        }
+        //        return meterModelList;
+        //    }
+        //    else
+        //    {
+        //        return new List<DailyConsumptionModel>();
+        //    }
+        //}
     }
 }

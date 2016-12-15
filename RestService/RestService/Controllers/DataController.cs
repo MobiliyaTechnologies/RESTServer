@@ -1,4 +1,5 @@
-﻿using RestService.Models;
+﻿using RestService.Entities;
+using RestService.Models;
 using RestService.Service;
 using System;
 using System.Collections.Generic;
@@ -44,10 +45,26 @@ namespace RestService.Controllers
         {
         }
 
-        [Route("api/getmeters")]
-        public List<MeterDataModel> GetMeterList()
+        [Route("api/getmeterlist/{Id}")]
+        public HttpResponseMessage GetMeterList(int Id)
         {
-            return dataService.GetMeterList();
+            HttpResponseMessage response;
+            try
+            {
+                var data = dataService.GetMeterList(Id);
+                response = data == null ? Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Invalid User") : Request.CreateResponse(HttpStatusCode.OK, data);
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response = Request.CreateErrorResponse(HttpStatusCode.ServiceUnavailable, ex);
+                return response;
+            }
         }
+
+        //public List<MonthlyConsumptionModel> GetMeterMonthlyConsumption()
+        //{
+        //    return dataService.GetMeterMonthlyConsumption();
+        //}
     }
 }
