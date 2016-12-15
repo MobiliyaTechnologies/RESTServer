@@ -74,11 +74,11 @@ namespace RestService.Facade
             return response;
         }
 
-        public ResponseModel CheckEmail(UserDataModel userDetails)
+        public ResponseModel CheckEmail(UserCredentials userCredentials)
         {
             try
             {
-                var data = (from record in dbEntity.User where record.Email_Id.Equals(userDetails.Email) select record).SingleOrDefault();
+                var data = (from record in dbEntity.User where record.Email_Id.Equals(userCredentials.Email) select record).SingleOrDefault();
                 if (data != null)
                 {
                     //Email Registered
@@ -203,6 +203,54 @@ namespace RestService.Facade
                 response = Converter.UserToResponseUserModel(user);
                 response.Status_Code = Convert.ToInt16(Constants.StatusCode.Ok);
                 response.Message = "Successfully changed password";
+
+            }
+            catch (Exception ex)
+            {
+                response.Status_Code = Convert.ToInt16(Constants.StatusCode.Error);
+                response.Message = ex.Message;
+            }
+            return response;
+        }
+
+        public string GetPassword(User userDetails)
+        {
+            string data = null;
+            try
+            {
+                var user = (from u in dbEntity.User where u.Email_Id.Equals(userDetails.Email_Id) select u).SingleOrDefault();
+                if (user != null)
+                {
+                    //Valid User
+                    data = user.Password;
+                }
+            }
+            catch (Exception ex) { }
+            return data;
+        }
+
+        public ResponseModel ResetPassword(User userDetails)
+        {
+            ResponseModel response = new ResponseModel();
+            try
+            {
+                var user = (from u in dbEntity.User where u.Email_Id.Equals(userDetails.Email_Id) select u).SingleOrDefault();
+                if (user == null)
+                {
+                    //Invalid User
+                    response.Status_Code = Convert.ToInt16(Constants.StatusCode.Error);
+                    response.Message = "Invalid email id";
+                    return response;
+                }
+                //Valid User
+                //update password
+                var usr = dbEntity.User.FirstOrDefault(c => c.Id == user.Id);
+                usr.Password = userDetails.Password;
+                dbEntity.SaveChanges();
+
+                //send response
+                response.Status_Code = Convert.ToInt16(Constants.StatusCode.Ok);
+                response.Message = "Password successfully reset";
 
             }
             catch (Exception ex)

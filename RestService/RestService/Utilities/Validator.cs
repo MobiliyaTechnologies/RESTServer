@@ -30,25 +30,11 @@ namespace RestService.Utilities
             }
         }
 
-        public bool ResetPasswordValidator(UserDataModel userDetails)
+        public bool ResetPasswordValidator(UserCredentials userCredentials)
         {
-            try
-            {
-                if (!string.IsNullOrEmpty(userDetails.Email))
-                {
-                    //validation successful
-                    return true;
-                }
-                else
-                {
-                    //validation unsuccessful
-                    return false;
-                }
-            }
-            catch (Exception ex)
-            {
-                return false;
-            }
+
+            //check email
+            return EmailIdValidator(userCredentials.Email);
         }
 
         public ResponseModel SignInValidator(UserCredentials userCredentials)
