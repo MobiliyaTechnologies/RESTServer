@@ -52,9 +52,6 @@ namespace RestService.Controllers
             try
             {
                 var data = dataService.GetMeterList(Id);
-<<<<<<< Updated upstream
-                response = data == null ? Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Invalid User") : Request.CreateResponse(HttpStatusCode.OK, data);
-=======
                 response = data == null ? Request.CreateErrorResponse(HttpStatusCode.Forbidden, "Invalid User") : Request.CreateResponse(HttpStatusCode.OK, data);
                 return response;
             }
@@ -90,7 +87,6 @@ namespace RestService.Controllers
             {
                 var data = dataService.GetMeterDailyConsumption(Id);
                 response = data == null ? Request.CreateErrorResponse(HttpStatusCode.Forbidden, "Invalid User") : Request.CreateResponse(HttpStatusCode.OK, data);
->>>>>>> Stashed changes
                 return response;
             }
             catch (Exception ex)
