@@ -114,6 +114,8 @@
           <Property Name="Ligne" Type="varchar(max)" />
           <Property Name="Monthly_KWH_Consumption" Type="float" />
           <Property Name="Monthly_Electric_Cost" Type="float" />
+          <Property Name="Current_Month" Type="datetime" />
+          <Property Name="Last_Month" Type="datetime" />
         </EntityType>
         <EntityType Name="MSLiveData">
           <Key>
@@ -583,6 +585,8 @@ warning 6002: The table/view 'PowerGrid.dbo.TempMLData' does not have a primary 
           <Property Name="Ligne" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="Monthly_KWH_Consumption" Type="Double" />
           <Property Name="Monthly_Electric_Cost" Type="Double" />
+          <Property Name="Current_Month" Type="DateTime" Precision="3" />
+          <Property Name="Last_Month" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="MSLiveData">
           <Key>
@@ -988,6 +992,8 @@ warning 6002: The table/view 'PowerGrid.dbo.TempMLData' does not have a primary 
                 <ScalarProperty Name="Ligne" ColumnName="Ligne" />
                 <ScalarProperty Name="Monthly_KWH_Consumption" ColumnName="Monthly_KWH_Consumption" />
                 <ScalarProperty Name="Monthly_Electric_Cost" ColumnName="Monthly_Electric_Cost" />
+                <ScalarProperty Name="Current_Month" ColumnName="Current_Month" />
+                <ScalarProperty Name="Last_Month" ColumnName="Last_Month" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

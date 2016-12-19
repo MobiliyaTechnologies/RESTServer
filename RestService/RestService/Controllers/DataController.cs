@@ -52,7 +52,45 @@ namespace RestService.Controllers
             try
             {
                 var data = dataService.GetMeterList(Id);
+<<<<<<< Updated upstream
                 response = data == null ? Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Invalid User") : Request.CreateResponse(HttpStatusCode.OK, data);
+=======
+                response = data == null ? Request.CreateErrorResponse(HttpStatusCode.Forbidden, "Invalid User") : Request.CreateResponse(HttpStatusCode.OK, data);
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response = Request.CreateErrorResponse(HttpStatusCode.ServiceUnavailable, ex);
+                return response;
+            }
+        }
+
+        [Route("api/getmonthlyconsumption/{Id}")]
+        public HttpResponseMessage GetMeterMonthlyConsumption(int Id)
+        {
+            HttpResponseMessage response;
+            try
+            {
+                var data = dataService.GetMeterMonthlyConsumption(Id);
+                response = data == null ? Request.CreateErrorResponse(HttpStatusCode.Forbidden, "Invalid User") : Request.CreateResponse(HttpStatusCode.OK, data);
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response = Request.CreateErrorResponse(HttpStatusCode.ServiceUnavailable, ex);
+                return response;
+            }
+        }
+
+        [Route("api/getdailyconsumption/{Id}")]
+        public HttpResponseMessage GetMeterDailyConsumption(int Id)
+        {
+            HttpResponseMessage response;
+            try
+            {
+                var data = dataService.GetMeterDailyConsumption(Id);
+                response = data == null ? Request.CreateErrorResponse(HttpStatusCode.Forbidden, "Invalid User") : Request.CreateResponse(HttpStatusCode.OK, data);
+>>>>>>> Stashed changes
                 return response;
             }
             catch (Exception ex)

@@ -46,6 +46,81 @@ namespace RestService.Service
             {
                 throw new Exception(ex.Message);
             }
+<<<<<<< Updated upstream
+=======
+        }
+
+        public List<MonthlyConsumptionDetails> GetMeterMonthlyConsumption(int UserId)
+        {
+            try
+            {
+                if (accountService.ValidateUser(UserId))
+                {
+                    List<MeterDetails> meterData = dataFacade.GetMeters();
+                    if (meterData != null && meterData.Count > 0)
+                    {
+                        List<MonthlyConsumptionDetails> meterModelList = new List<MonthlyConsumptionDetails>();
+                        foreach (var meterDataItem in meterData)
+                        {
+                            MonthlyConsumptionDetails meterMonthlyConsumption = dataFacade.GetMeterConsumption(meterDataItem);
+                            if (meterMonthlyConsumption != null)
+                            {
+                                meterModelList.Add(meterMonthlyConsumption);
+                            }
+                        }
+                        return meterModelList;
+                    }
+                    else
+                    {
+                        return new List<MonthlyConsumptionDetails>();
+                    }
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public List<DailyConsumptionDetails> GetMeterDailyConsumption(int UserId)
+        {
+            try
+            {
+                if (accountService.ValidateUser(UserId))
+                {
+                    List<MeterDetails> meterData = dataFacade.GetMeters();
+                    if (meterData != null && meterData.Count > 0)
+                    {
+                        List<DailyConsumptionDetails> meterModelList = new List<DailyConsumptionDetails>();
+                        foreach (var meterDataItem in meterData)
+                        {
+                            DailyConsumptionDetails meterMonthlyConsumption = dataFacade.GetDailyConsumption(meterDataItem);
+                            if (meterMonthlyConsumption != null)
+                            {
+                                meterModelList.Add(meterMonthlyConsumption);
+                            }
+                        }
+                        return meterModelList;
+                    }
+                    else
+                    {
+                        return new List<DailyConsumptionDetails>();
+                    }
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+>>>>>>> Stashed changes
         }
 
         //public List<MonthlyConsumptionModel> GetMeterMonthlyConsumption()

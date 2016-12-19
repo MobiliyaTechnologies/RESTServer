@@ -212,7 +212,11 @@ namespace RestService.Facade
             }
             return response;
         }
+<<<<<<< Updated upstream
         
+=======
+
+>>>>>>> Stashed changes
         public bool ValidateUser(int UserId)
         {
             try
@@ -228,6 +232,7 @@ namespace RestService.Facade
                 return false;
             }
         }
+<<<<<<< Updated upstream
 
         public string GetPassword(User userDetails)
         {
@@ -277,4 +282,7 @@ namespace RestService.Facade
             return response;
         }
      }
+=======
+    }
+>>>>>>> Stashed changes
 }
