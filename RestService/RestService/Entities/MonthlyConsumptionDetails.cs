@@ -23,5 +23,7 @@ namespace RestService.Entities
         public string Ligne { get; set; }
         public Nullable<double> Monthly_KWH_Consumption { get; set; }
         public Nullable<double> Monthly_Electric_Cost { get; set; }
+        public Nullable<System.DateTime> Current_Month { get; set; }
+        public Nullable<System.DateTime> Last_Month { get; set; }
     }
 }

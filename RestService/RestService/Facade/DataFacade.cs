@@ -22,13 +22,15 @@ namespace RestService.Facade
 
         public MonthlyConsumptionDetails GetMeterConsumption(MeterDetails meter)
         {
-            var meterConsumption = (from data in dbEntity.MonthlyConsumptionDetails where meter.Name.Equals(data.Powerscout) orderby data.Id select data).ToList();
-            return meterConsumption.LastOrDefault();
+            string currentMonth = DateTime.UtcNow.ToString("MMM");
+            var meterConsumption = (from data in dbEntity.MonthlyConsumptionDetails where meter.Name.Equals(data.Powerscout) && currentMonth.Equals(data.Month) select data).FirstOrDefault();
+            return meterConsumption;
         }
 
         public DailyConsumptionDetails GetDailyConsumption(MeterDetails meter)
         {
-            var meterConsumption = (from data in dbEntity.DailyConsumptionDetails where meter.Name.Equals(data.PowerScout) orderby data.Id select data).ToList();
+            DateTime today = DateTime.UtcNow;
+            var meterConsumption = (from data in dbEntity.DailyConsumptionDetails where meter.Name.Equals(data.PowerScout) && today.Day == ((DateTime)data.Timestamp).Day && today.Month == ((DateTime)data.Timestamp).Month && today.Year == ((DateTime)data.Timestamp).Year select data).ToList();
             return meterConsumption.LastOrDefault();
         }
     }
