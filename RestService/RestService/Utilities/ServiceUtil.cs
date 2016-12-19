@@ -9,39 +9,41 @@ namespace RestService.Utilities
 {
     public class ServiceUtil
     {
-        public static ResponseModel SendEmail(string emailId, string password)
+
+        static string _sender = "itadmin@admindomain.onmicrosoft.com";
+        static string _password = "Microsoft!@#$";
+        
+        public static ResponseModel SendMail(string recipient, string subject, string message)
         {
             ResponseModel response = new ResponseModel();
-            /*
-            System.Net.Mail.MailMessage mail = new System.Net.Mail.MailMessage();
-            mail.To.Add(emailId);
-            mail.From = new MailAddress("", "Password Reset Request", System.Text.Encoding.UTF8);
-            mail.Subject = "Password Reset Request";
-            mail.SubjectEncoding = System.Text.Encoding.UTF8;
-            mail.Body = "Please click on the link below to reset you password\n\nhttp://reset.csupoc.com/";
-            mail.BodyEncoding = System.Text.Encoding.UTF8;
-            mail.IsBodyHtml = true;
-            mail.Priority = MailPriority.High;
-            SmtpClient client = new SmtpClient();
-            client.Credentials = new System.Net.NetworkCredential("", "");
-            client.Port = 587;
-            client.Host = "smtp.gmail.com";
-            client.EnableSsl = true;
             try
             {
+                SmtpClient client = new SmtpClient("smtp.office365.com");
+
+                client.Port = 587;
+                client.DeliveryMethod = SmtpDeliveryMethod.Network;
+                client.UseDefaultCredentials = false;
+                System.Net.NetworkCredential credentials =
+                    new System.Net.NetworkCredential(_sender, _password);
+                client.EnableSsl = true;
+                client.Credentials = credentials;
+
+
+                var mail = new MailMessage(_sender.Trim(), recipient.Trim());
+                mail.Subject = subject;
+                mail.Body = message;
                 client.Send(mail);
-                response.Status_Code = Convert.ToInt16(Constants.StatusCode.Ok);
-                response.Message = "Email sent successfully";
+                response.Status_Code = (int)Constants.StatusCode.Ok;
+                response.Message = "Email Sent successfully";
+                return response;
             }
             catch (Exception ex)
             {
-                response.Status_Code = Convert.ToInt16(Constants.StatusCode.Error);
+                Console.WriteLine(ex.Message);
+                response.Status_Code = (int)Constants.StatusCode.Error;
                 response.Message = ex.Message;
+                return response;
             }
-            */
-            response.Status_Code = Convert.ToInt16(Constants.StatusCode.Error);
-            response.Message = "Failed to send Email";
-            return response;
         }
     }
 }

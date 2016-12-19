@@ -46,8 +46,7 @@ namespace RestService.Service
             {
                 throw new Exception(ex.Message);
             }
-<<<<<<< Updated upstream
-=======
+
         }
 
         public List<MonthlyConsumptionDetails> GetMeterMonthlyConsumption(int UserId)
@@ -120,7 +119,6 @@ namespace RestService.Service
             {
                 throw new Exception(ex.Message);
             }
->>>>>>> Stashed changes
         }
 
         //public List<MonthlyConsumptionModel> GetMeterMonthlyConsumption()

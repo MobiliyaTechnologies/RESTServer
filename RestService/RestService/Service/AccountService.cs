@@ -114,7 +114,7 @@ namespace RestService.Service
                     string pw = userFacade.GetPassword(userInfo);
 
                     //Send Email
-                    response = ServiceUtil.SendEmail(userCredentials.Email, pw);
+                    response = ServiceUtil.SendMail("surabh.shah@mobiliya.com", "[Subject]", "[message]");
                     return response;
                 }
                 else

@@ -70,7 +70,7 @@ namespace RestService.Facade
                 response.Status_Code = Convert.ToInt16(Constants.StatusCode.Error);
                 response.Message = ex.Message;
             }
-            
+
             return response;
         }
 
@@ -122,7 +122,7 @@ namespace RestService.Facade
                     dbEntity.UserSession.RemoveRange(session);
                     dbEntity.SaveChanges();
                 }
-                 
+
                 //create user session
                 UserSession ssn = new UserSession { User_Id = user.Id, Last_Login_Time = DateTime.Now };
                 dbEntity.UserSession.Add(ssn);
@@ -164,7 +164,9 @@ namespace RestService.Facade
                     //Invalid User
                     response.Status_Code = Convert.ToInt16(Constants.StatusCode.Error);
                     response.Message = "User not logged in";
-                } else {
+                }
+                else
+                {
                     //delete previous session
                     dbEntity.UserSession.Remove(session);
                     dbEntity.SaveChanges();
@@ -212,11 +214,7 @@ namespace RestService.Facade
             }
             return response;
         }
-<<<<<<< Updated upstream
-        
-=======
 
->>>>>>> Stashed changes
         public bool ValidateUser(int UserId)
         {
             try
@@ -232,7 +230,6 @@ namespace RestService.Facade
                 return false;
             }
         }
-<<<<<<< Updated upstream
 
         public string GetPassword(User userDetails)
         {
@@ -281,8 +278,5 @@ namespace RestService.Facade
             }
             return response;
         }
-     }
-=======
     }
->>>>>>> Stashed changes
 }
