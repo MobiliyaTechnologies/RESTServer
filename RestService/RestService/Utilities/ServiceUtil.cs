@@ -31,6 +31,7 @@ namespace RestService.Utilities
 
                 var mail = new MailMessage(_sender.Trim(), recipient.Trim());
                 mail.Subject = subject;
+                mail.IsBodyHtml = true;
                 mail.Body = message;
                 client.Send(mail);
                 response.Status_Code = (int)Constants.StatusCode.Ok;
