@@ -215,6 +215,38 @@ namespace RestService.Facade
             return response;
         }
 
+        public ResponseModel ResetPassword(User userDetails, string newPassword)
+        {
+            ResponseModel response = new ResponseModel();
+            try
+            {
+                var user = (from u in dbEntity.User where u.Email_Id.Equals(userDetails.Email_Id) select u).SingleOrDefault();
+                if (user == null)
+                {
+                    //Invalid User
+                    response.Status_Code = Convert.ToInt16(Constants.StatusCode.Error);
+                    response.Message = "Username is incorrect";
+                    return response;
+                }
+                //Valid User
+                //update password
+                var usr = dbEntity.User.FirstOrDefault(c => c.Id == user.Id);
+                usr.Password = newPassword;
+                dbEntity.SaveChanges();
+
+                //send response
+                response.Status_Code = Convert.ToInt16(Constants.StatusCode.Ok);
+                response.Message = "Successfully reset password";
+
+            }
+            catch (Exception ex)
+            {
+                response.Status_Code = Convert.ToInt16(Constants.StatusCode.Error);
+                response.Message = ex.Message;
+            }
+            return response;
+        }
+
         public bool ValidateUser(int UserId)
         {
             try

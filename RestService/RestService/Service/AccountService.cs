@@ -110,11 +110,27 @@ namespace RestService.Service
                 response = userFacade.CheckEmail(userCredentials);
                 if (response.Status_Code == Convert.ToInt16(Constants.StatusCode.Ok))
                 {
+                    string newPw = RandomString(8);
+                    //changePassword
                     User userInfo = Converter.UserCredentialsToUserEntity(userCredentials);
-                    string pw = userFacade.GetPassword(userInfo);
+                    response = userFacade.ResetPassword(userInfo, newPw);
 
-                    //Send Email
-                    response = ServiceUtil.SendMail("surabh.shah@mobiliya.com", "[Subject]", "[message]");
+                    if (response.Status_Code == Convert.ToInt16(Constants.StatusCode.Ok))
+                    {
+                        //Send Email
+                        string messageBody = "Your CSU password has been reset." + 
+                            
+                            "</br></br>username: <b>" + userCredentials.Email + 
+                            "</b></br>password: <b>" + newPw +
+
+                            "</b></br></br><p>Please change your password when you " +
+                            "<a href=\"http://13.72.102.73/CSU/#/login\">login</a> to CSU.</p>" +
+                            
+                            "</br></br></br><i>Mobiliya Team</i>";
+
+                        response = ServiceUtil.SendMail(userCredentials.Email, "CSU Password Reset", messageBody);
+                        return response;
+                    }
                     return response;
                 }
                 else
@@ -131,6 +147,15 @@ namespace RestService.Service
                 response.Message = "Validation Faliure";
                 return response;
             }
+        }
+
+        
+        public string RandomString(int length)
+        {
+            Random random = new Random();
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz";
+            return new string(Enumerable.Repeat(chars, length)
+              .Select(s => s[random.Next(s.Length)]).ToArray());
         }
 
         public ResponseModel SignOutUser(UserDataModel userDetails)
