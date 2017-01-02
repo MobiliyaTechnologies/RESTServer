@@ -18,6 +18,8 @@ namespace RestService.Models
 
         public string Email { get; set; }
 
+        public string Avatar { get; set; }
+
         public int User_Id { get; set; }
 
         //public ICollection<UserRole> Role_Id { get; set; }

@@ -14,6 +14,9 @@ namespace RestService
             config.Filters.Add(new HostAuthenticationFilter(OAuthDefaults.AuthenticationType));
             var cors = new EnableCorsAttribute("*", "*", "*");
             config.EnableCors(cors);
+
+            log4net.Config.XmlConfigurator.Configure();
+
             // Web API routes
             config.MapHttpAttributeRoutes();
             // Web API routes

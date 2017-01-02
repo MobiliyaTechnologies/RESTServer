@@ -5,6 +5,7 @@ using RestService.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Web;
 
 namespace RestService.Service
@@ -13,6 +14,7 @@ namespace RestService.Service
     {
         DataFacade dataFacade;
         AccountService accountService;
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         public DataService()
         {
             dataFacade = new DataFacade();
@@ -24,6 +26,7 @@ namespace RestService.Service
 
             try
             {
+                log.Debug("GetMeterList called");
                 if (accountService.ValidateUser(UserId))
                 {
                     List<MeterDetails> meterData = dataFacade.GetMeters();
@@ -33,17 +36,20 @@ namespace RestService.Service
                     }
                     else
                     {
+                        log.Debug("GetMeterList->No data found");
                         return new List<MeterDetails>();
                     }
                 }
                 else
                 {
+                    log.Debug("GetMeterList user validation unsuccessful");
                     return null;
                 }
 
             }
             catch (Exception ex)
             {
+                log.Debug("Exception occurred in GetMeterList as: " + ex);
                 throw new Exception(ex.Message);
             }
 
@@ -53,6 +59,7 @@ namespace RestService.Service
         {
             try
             {
+                log.Debug("GetMeterMonthlyConsumption called");
                 if (accountService.ValidateUser(UserId))
                 {
                     List<MeterDetails> meterData = dataFacade.GetMeters();
@@ -71,16 +78,19 @@ namespace RestService.Service
                     }
                     else
                     {
+                        log.Debug("GetMeterMonthlyConsumption->No data found");
                         return new List<MonthlyConsumptionDetails>();
                     }
                 }
                 else
                 {
+                    log.Debug("GetMeterMonthlyConsumption->User validation failed");
                     return null;
                 }
             }
             catch (Exception ex)
             {
+                log.Debug("Exception occurred in GetMonthlyConsumption as: " + ex);
                 throw new Exception(ex.Message);
             }
         }
@@ -89,6 +99,7 @@ namespace RestService.Service
         {
             try
             {
+                log.Debug("GetMeterDailyConsumption called");
                 if (accountService.ValidateUser(UserId))
                 {
                     List<MeterDetails> meterData = dataFacade.GetMeters();
@@ -107,62 +118,47 @@ namespace RestService.Service
                     }
                     else
                     {
+                        log.Debug("GetMeterDailyConsumption->No Data found");
                         return new List<DailyConsumptionDetails>();
                     }
                 }
                 else
                 {
+                    log.Debug("GetMeterDailyConsumption->User validation failed");
                     return null;
                 }
             }
             catch (Exception ex)
             {
+                log.Debug("Exception occurred in GetMeterDailyConsumption as: " + ex);
                 throw new Exception(ex.Message);
             }
         }
 
-        //public List<MonthlyConsumptionModel> GetMeterMonthlyConsumption()
-        //{
-        //    List<MeterDetails> meterData = dataFacade.GetMeters();
-        //    if (meterData != null && meterData.Count > 0)
-        //    {
-        //        List<MonthlyConsumptionModel> meterModelList = new List<MonthlyConsumptionModel>();
-        //        foreach (var meterDataItem in meterData)
-        //        {
-        //            MonthlyConsumptionDetails meterMonthlyConsumption = dataFacade.GetMeterConsumption(meterDataItem);
-        //            if (meterMonthlyConsumption != null)
-        //            {
-        //                meterModelList.Add(Converter.MeterMonthlyEntityToModel(meterMonthlyConsumption));
-        //            }
-        //        }
-        //        return meterModelList;
-        //    }
-        //    else
-        //    {
-        //        return new List<MonthlyConsumptionModel>();
-        //    }
-        //}
-
-        //public List<DailyConsumptionModel> GetMeterDailyConsumption()
-        //{
-        //    List<MeterDetails> meterData = dataFacade.GetMeters();
-        //    if (meterData != null && meterData.Count > 0)
-        //    {
-        //        List<DailyConsumptionModel> meterModelList = new List<DailyConsumptionModel>();
-        //        foreach (var meterDataItem in meterData)
-        //        {
-        //            DailyConsumptionDetails meterDailyConsumption = dataFacade.GetDailyConsumption(meterDataItem);
-        //            if (meterDailyConsumption != null)
-        //            {
-        //                meterModelList.Add(Converter.MeterDailyEntityToModel(meterDailyConsumption));
-        //            }
-        //        }
-        //        return meterModelList;
-        //    }
-        //    else
-        //    {
-        //        return new List<DailyConsumptionModel>();
-        //    }
-        //}
+        public MeterURLKey GetPowerBIUrl(int UserId, string MeterSerial)
+        {
+            try
+            {
+                if (accountService.ValidateUser(UserId))
+                {
+                    log.Debug("GetPowerBIUrl called");
+                    string methodName = "GetURL_" + MeterSerial;
+                    Type thisType = typeof(PowerBIUtil);
+                    MethodInfo theMethod = thisType.GetMethod(methodName);
+                    PowerBIUtil powerBIUtil = new PowerBIUtil();
+                    return (MeterURLKey) theMethod.Invoke(powerBIUtil, null);
+                }
+                else
+                {
+                    log.Debug("GetPowerBIUrl->User validation failed");
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                log.Error("Exception occurred in GetPowerBIUrl as: " + ex);
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }

@@ -29,6 +29,7 @@ namespace RestService.Entities
         public virtual DbSet<DailyConsumptionDetails> DailyConsumptionDetails { get; set; }
         public virtual DbSet<DailyConsumptionPrediction> DailyConsumptionPrediction { get; set; }
         public virtual DbSet<HalfHourlyData> HalfHourlyData { get; set; }
+        public virtual DbSet<HalfYearlyData> HalfYearlyData { get; set; }
         public virtual DbSet<MeterDetails> MeterDetails { get; set; }
         public virtual DbSet<MonthlyConsumptionDetails> MonthlyConsumptionDetails { get; set; }
         public virtual DbSet<MSLiveData> MSLiveData { get; set; }

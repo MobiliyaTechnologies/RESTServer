@@ -6,18 +6,18 @@ using System.Net.Http;
 using System.Web.Http;
 using RestService.Models;
 using RestService.Service;
+using RestService.Utilities;
 
 namespace RestService.Controllers
 {
     public class UserController : ApiController
     {
         private AccountService accountService;
-        private ResponseModel response;
-        
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         public UserController()
         {
             accountService = new AccountService();
-            response = new ResponseModel();
         }
 
         // GET: api/User
@@ -51,22 +51,47 @@ namespace RestService.Controllers
         [HttpPost]
         public ResponseModel SignUp([FromBody] UserDataModel userDetails)
         {
-            response = accountService.RegisterUser(userDetails);
-            return response;
+            ResponseModel response = new ResponseModel();
+            try
+            {
+                log.Debug("Sign Up API called");
+                response = accountService.RegisterUser(userDetails);
+                return response;
+            }
+            catch (Exception ex)
+            {
+                log.Error("Exception occurred in SignUp API as: " + ex);
+                response.Message = ex.Message;
+                response.Status_Code = (int)Constants.StatusCode.Error;
+                return response;
+            }
         }
 
         [Route("api/forgotpassword")]
         [HttpPost]
-        public ResponseModel ForgottPassword([FromBody] UserCredentials userCredentials)
+        public ResponseModel ForgotPassword([FromBody] UserCredentials userCredentials)
         {
-            response = accountService.ForgotPassword(userCredentials);
-            return response;
+            ResponseModel response = new ResponseModel();
+            try
+            {
+                log.Debug("Forgot Password API called");
+                response = accountService.ForgotPassword(userCredentials);
+                return response;
+            }
+            catch (Exception ex)
+            {
+                log.Error("Exception occurred in ForgotPassword as: " + ex);
+                response.Message = ex.Message;
+                response.Status_Code = (int)Constants.StatusCode.Error;
+                return response;
+            }
         }
 
         [Route("api/signin")]
         [HttpPost]
         public ResponseUserModel SignIn([FromBody] UserCredentials userCredentials)
         {
+            log.Debug("Sign In API called");
             return accountService.SignInUser(userCredentials);
         }
 
@@ -74,6 +99,7 @@ namespace RestService.Controllers
         [HttpPost]
         public ResponseUserModel ChangePassword([FromBody] UserCredentials userCredentials)
         {
+            log.Debug("Change Password API called");
             return accountService.ChangePassword(userCredentials);
         }
 
@@ -81,7 +107,16 @@ namespace RestService.Controllers
         [HttpPost]
         public ResponseModel SignOut([FromBody] UserDataModel userDetails)
         {
+            log.Debug("Sign Out API called");
             return accountService.SignOutUser(userDetails);
+        }
+
+        [Route("api/changeavatar")]
+        [HttpPost]
+        public ResponseUserModel ChangeAvatar([FromBody] UserDataModel userDetails )
+        {
+            log.Debug("Change Avatar API called");
+            return accountService.ChangeAvatar(userDetails);
         }
     }
 }

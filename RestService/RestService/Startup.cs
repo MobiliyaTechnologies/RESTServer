@@ -2,6 +2,7 @@
 using Owin;
 
 [assembly: OwinStartupAttribute(typeof(RestService.Startup))]
+[assembly: log4net.Config.XmlConfigurator(Watch = true)]
 namespace RestService
 {
     public partial class Startup

@@ -27,6 +27,7 @@ namespace RestService.Entities
         public string Last_Name { get; set; }
         public string Email_Id { get; set; }
         public string Password { get; set; }
+        public string Avatar { get; set; }
         public Nullable<short> Status { get; set; }
         public Nullable<System.DateTime> Creation_Date { get; set; }
     
