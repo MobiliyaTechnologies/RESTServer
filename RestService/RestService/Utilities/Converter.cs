@@ -42,13 +42,14 @@ namespace RestService.Utilities
             response.Last_Name = user.Last_Name;
             response.Email = user.Email_Id;
             response.User_Id = user.Id;
+            response.Avatar = user.Avatar;
             //response.Role_Id = user.UserRole;
             return response;
         }
 
-        public static MeterDataModel MeterEntityToModel(MeterDetails meterData)
+        public static MeterGeneralDataModel MeterEntityToModel(MeterDetails meterData)
         {
-            MeterDataModel meterModel = new MeterDataModel();
+            MeterGeneralDataModel meterModel = new MeterGeneralDataModel();
             meterModel.Name = meterData.Name;
             meterModel.Serial = meterData.Serial;
             meterModel.Latitude = (double)meterData.Latitude;

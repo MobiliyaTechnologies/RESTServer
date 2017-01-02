@@ -12,6 +12,7 @@ namespace RestService.Facade
     {
         PowerGridEntities dbEntity;
         ResponseModel response;
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         public UserFacade()
         {
             dbEntity = new PowerGridEntities();
@@ -251,14 +252,22 @@ namespace RestService.Facade
         {
             try
             {
+                log.Debug("ValidateUser called");
                 var user = (from data in dbEntity.User where data.Id == UserId select data).FirstOrDefault();
                 if (user == null)
+                {
+                    log.Debug("User not found");
                     return false;
+                }
                 else
+                {
+                    log.Debug("User found");
                     return true;
+                }
             }
             catch (Exception ex)
             {
+                log.Error("Exception occurred in ValidateUser as: " + ex);
                 return false;
             }
         }
@@ -309,6 +318,28 @@ namespace RestService.Facade
                 response.Message = ex.Message;
             }
             return response;
+        }
+
+        public ResponseUserModel ChangeAvatar(UserDataModel userDetails)
+        {
+            ResponseUserModel response = new ResponseUserModel();
+            var user = (from data in dbEntity.User where data.Id == userDetails.Id select data).FirstOrDefault();
+            if(user == null)
+            {
+                response.Avatar = "";
+                response.Status_Code = (int)Constants.StatusCode.Error;
+                response.Message = "User not found";
+                return response;
+            }
+            else
+            {
+                user.Avatar = userDetails.Avatar;
+                dbEntity.SaveChanges();
+                response = Converter.UserToResponseUserModel(user);
+                response.Message = "Avatar changed successfully";
+                response.Status_Code = (int)Constants.StatusCode.Ok;
+                return response;
+            }
         }
     }
 }

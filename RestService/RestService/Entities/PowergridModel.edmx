@@ -89,6 +89,54 @@
           <Property Name="current_month" Type="datetime" />
           <Property Name="last_month" Type="datetime" />
         </EntityType>
+        <EntityType Name="HalfYearlyData">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AMPS_L1" Type="float" />
+          <Property Name="AMPS_L2" Type="float" />
+          <Property Name="AMPS_L3" Type="float" />
+          <Property Name="AMPS_SYSTEM_AVG" Type="float" />
+          <Property Name="Breaker_details" Type="text" />
+          <Property Name="Breaker_label" Type="text" />
+          <Property Name="Building" Type="text" />
+          <Property Name="ClassOccupanyRemaining" Type="int" />
+          <Property Name="ClassOccupiedValue" Type="int" />
+          <Property Name="TotalClassCapacity" Type="int" />
+          <Property Name="Daily_electric_cost" Type="float" />
+          <Property Name="Daily_KWH_System" Type="float" />
+          <Property Name="isClassOccupied" Type="int" />
+          <Property Name="KW_L1" Type="float" />
+          <Property Name="KW_L2" Type="float" />
+          <Property Name="KW_L3" Type="float" />
+          <Property Name="Monthly_electric_cost" Type="float" />
+          <Property Name="Monthly_KWH_System" Type="float" />
+          <Property Name="PowerScout" Type="varchar(max)" />
+          <Property Name="Rated_Amperage" Type="float" />
+          <Property Name="Pressure" Type="float" />
+          <Property Name="Relative_humidity" Type="float" />
+          <Property Name="Rolling_hourly_kwh_system" Type="float" />
+          <Property Name="Serial_number" Type="varchar(max)" />
+          <Property Name="Temperature" Type="float" />
+          <Property Name="Timestamp" Type="datetime" />
+          <Property Name="Type" Type="text" />
+          <Property Name="Visibility" Type="float" />
+          <Property Name="Volts_L1_to_neutral" Type="float" />
+          <Property Name="Volts_L2_to_neutral" Type="float" />
+          <Property Name="Volts_L3_to_neutral" Type="float" />
+          <Property Name="kW_System" Type="float" />
+          <Property Name="days" Type="varchar(max)" />
+          <Property Name="time_period" Type="varchar(max)" />
+          <Property Name="current_week" Type="datetime" />
+          <Property Name="last_week" Type="datetime" />
+          <Property Name="current_day" Type="datetime" />
+          <Property Name="previous_day" Type="datetime" />
+          <Property Name="current_month" Type="datetime" />
+          <Property Name="last_month" Type="datetime" />
+          <Property Name="current_quarter" Type="datetime" />
+          <Property Name="last_quarter" Type="datetime" />
+        </EntityType>
         <EntityType Name="MeterDetails">
           <Key>
             <PropertyRef Name="Id" />
@@ -289,6 +337,7 @@ warning 6002: The table/view 'PowerGrid.dbo.TempMLData' does not have a primary 
           <Property Name="Last_Name" Type="nvarchar" MaxLength="50" />
           <Property Name="Email_Id" Type="nvarchar" MaxLength="50" />
           <Property Name="Password" Type="nvarchar" MaxLength="50" />
+          <Property Name="Avatar" Type="nvarchar" MaxLength="50" />
           <Property Name="Status" Type="smallint" />
           <Property Name="Creation_Date" Type="datetime" />
         </EntityType>
@@ -371,6 +420,7 @@ warning 6002: The table/view 'PowerGrid.dbo.TempMLData' does not have a primary 
           <EntitySet Name="DailyConsumptionDetails" EntityType="Self.DailyConsumptionDetails" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DailyConsumptionPrediction" EntityType="Self.DailyConsumptionPrediction" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="HalfHourlyData" EntityType="Self.HalfHourlyData" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="HalfYearlyData" EntityType="Self.HalfYearlyData" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MeterDetails" EntityType="Self.MeterDetails" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MonthlyConsumptionDetails" EntityType="Self.MonthlyConsumptionDetails" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MSLiveData" EntityType="Self.MSLiveData" Schema="dbo" store:Type="Tables" />
@@ -560,6 +610,54 @@ warning 6002: The table/view 'PowerGrid.dbo.TempMLData' does not have a primary 
           <Property Name="current_month" Type="DateTime" Precision="3" />
           <Property Name="last_month" Type="DateTime" Precision="3" />
         </EntityType>
+        <EntityType Name="HalfYearlyData">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AMPS_L1" Type="Double" />
+          <Property Name="AMPS_L2" Type="Double" />
+          <Property Name="AMPS_L3" Type="Double" />
+          <Property Name="AMPS_SYSTEM_AVG" Type="Double" />
+          <Property Name="Breaker_details" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Breaker_label" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Building" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="ClassOccupanyRemaining" Type="Int32" />
+          <Property Name="ClassOccupiedValue" Type="Int32" />
+          <Property Name="TotalClassCapacity" Type="Int32" />
+          <Property Name="Daily_electric_cost" Type="Double" />
+          <Property Name="Daily_KWH_System" Type="Double" />
+          <Property Name="isClassOccupied" Type="Int32" />
+          <Property Name="KW_L1" Type="Double" />
+          <Property Name="KW_L2" Type="Double" />
+          <Property Name="KW_L3" Type="Double" />
+          <Property Name="Monthly_electric_cost" Type="Double" />
+          <Property Name="Monthly_KWH_System" Type="Double" />
+          <Property Name="PowerScout" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Rated_Amperage" Type="Double" />
+          <Property Name="Pressure" Type="Double" />
+          <Property Name="Relative_humidity" Type="Double" />
+          <Property Name="Rolling_hourly_kwh_system" Type="Double" />
+          <Property Name="Serial_number" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Temperature" Type="Double" />
+          <Property Name="Timestamp" Type="DateTime" Precision="3" />
+          <Property Name="Type" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Visibility" Type="Double" />
+          <Property Name="Volts_L1_to_neutral" Type="Double" />
+          <Property Name="Volts_L2_to_neutral" Type="Double" />
+          <Property Name="Volts_L3_to_neutral" Type="Double" />
+          <Property Name="kW_System" Type="Double" />
+          <Property Name="days" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="time_period" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="current_week" Type="DateTime" Precision="3" />
+          <Property Name="last_week" Type="DateTime" Precision="3" />
+          <Property Name="current_day" Type="DateTime" Precision="3" />
+          <Property Name="previous_day" Type="DateTime" Precision="3" />
+          <Property Name="current_month" Type="DateTime" Precision="3" />
+          <Property Name="last_month" Type="DateTime" Precision="3" />
+          <Property Name="current_quarter" Type="DateTime" Precision="3" />
+          <Property Name="last_quarter" Type="DateTime" Precision="3" />
+        </EntityType>
         <EntityType Name="MeterDetails">
           <Key>
             <PropertyRef Name="Id" />
@@ -682,6 +780,7 @@ warning 6002: The table/view 'PowerGrid.dbo.TempMLData' does not have a primary 
           <Property Name="Last_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Email_Id" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Avatar" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Status" Type="Int16" />
           <Property Name="Creation_Date" Type="DateTime" Precision="3" />
           <NavigationProperty Name="Alert" Relationship="Self.FK_Alert_User" FromRole="User" ToRole="Alert" />
@@ -845,6 +944,7 @@ warning 6002: The table/view 'PowerGrid.dbo.TempMLData' does not have a primary 
           <EntitySet Name="DailyConsumptionDetails" EntityType="Self.DailyConsumptionDetails" />
           <EntitySet Name="DailyConsumptionPrediction" EntityType="Self.DailyConsumptionPrediction" />
           <EntitySet Name="HalfHourlyData" EntityType="Self.HalfHourlyData" />
+          <EntitySet Name="HalfYearlyData" EntityType="Self.HalfYearlyData" />
           <EntitySet Name="MeterDetails" EntityType="Self.MeterDetails" />
           <EntitySet Name="MonthlyConsumptionDetails" EntityType="Self.MonthlyConsumptionDetails" />
           <EntitySet Name="MSLiveData" EntityType="Self.MSLiveData" />
@@ -964,6 +1064,55 @@ warning 6002: The table/view 'PowerGrid.dbo.TempMLData' does not have a primary 
                 <ScalarProperty Name="previous_day" ColumnName="previous_day" />
                 <ScalarProperty Name="current_month" ColumnName="current_month" />
                 <ScalarProperty Name="last_month" ColumnName="last_month" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="HalfYearlyData">
+            <EntityTypeMapping TypeName="PowerGridModel.HalfYearlyData">
+              <MappingFragment StoreEntitySet="HalfYearlyData">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="AMPS_L1" ColumnName="AMPS_L1" />
+                <ScalarProperty Name="AMPS_L2" ColumnName="AMPS_L2" />
+                <ScalarProperty Name="AMPS_L3" ColumnName="AMPS_L3" />
+                <ScalarProperty Name="AMPS_SYSTEM_AVG" ColumnName="AMPS_SYSTEM_AVG" />
+                <ScalarProperty Name="Breaker_details" ColumnName="Breaker_details" />
+                <ScalarProperty Name="Breaker_label" ColumnName="Breaker_label" />
+                <ScalarProperty Name="Building" ColumnName="Building" />
+                <ScalarProperty Name="ClassOccupanyRemaining" ColumnName="ClassOccupanyRemaining" />
+                <ScalarProperty Name="ClassOccupiedValue" ColumnName="ClassOccupiedValue" />
+                <ScalarProperty Name="TotalClassCapacity" ColumnName="TotalClassCapacity" />
+                <ScalarProperty Name="Daily_electric_cost" ColumnName="Daily_electric_cost" />
+                <ScalarProperty Name="Daily_KWH_System" ColumnName="Daily_KWH_System" />
+                <ScalarProperty Name="isClassOccupied" ColumnName="isClassOccupied" />
+                <ScalarProperty Name="KW_L1" ColumnName="KW_L1" />
+                <ScalarProperty Name="KW_L2" ColumnName="KW_L2" />
+                <ScalarProperty Name="KW_L3" ColumnName="KW_L3" />
+                <ScalarProperty Name="Monthly_electric_cost" ColumnName="Monthly_electric_cost" />
+                <ScalarProperty Name="Monthly_KWH_System" ColumnName="Monthly_KWH_System" />
+                <ScalarProperty Name="PowerScout" ColumnName="PowerScout" />
+                <ScalarProperty Name="Rated_Amperage" ColumnName="Rated_Amperage" />
+                <ScalarProperty Name="Pressure" ColumnName="Pressure" />
+                <ScalarProperty Name="Relative_humidity" ColumnName="Relative_humidity" />
+                <ScalarProperty Name="Rolling_hourly_kwh_system" ColumnName="Rolling_hourly_kwh_system" />
+                <ScalarProperty Name="Serial_number" ColumnName="Serial_number" />
+                <ScalarProperty Name="Temperature" ColumnName="Temperature" />
+                <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Visibility" ColumnName="Visibility" />
+                <ScalarProperty Name="Volts_L1_to_neutral" ColumnName="Volts_L1_to_neutral" />
+                <ScalarProperty Name="Volts_L2_to_neutral" ColumnName="Volts_L2_to_neutral" />
+                <ScalarProperty Name="Volts_L3_to_neutral" ColumnName="Volts_L3_to_neutral" />
+                <ScalarProperty Name="kW_System" ColumnName="kW_System" />
+                <ScalarProperty Name="days" ColumnName="days" />
+                <ScalarProperty Name="time_period" ColumnName="time_period" />
+                <ScalarProperty Name="current_week" ColumnName="current_week" />
+                <ScalarProperty Name="last_week" ColumnName="last_week" />
+                <ScalarProperty Name="current_day" ColumnName="current_day" />
+                <ScalarProperty Name="previous_day" ColumnName="previous_day" />
+                <ScalarProperty Name="current_month" ColumnName="current_month" />
+                <ScalarProperty Name="last_month" ColumnName="last_month" />
+                <ScalarProperty Name="current_quarter" ColumnName="current_quarter" />
+                <ScalarProperty Name="last_quarter" ColumnName="last_quarter" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1092,6 +1241,7 @@ warning 6002: The table/view 'PowerGrid.dbo.TempMLData' does not have a primary 
                 <ScalarProperty Name="Last_Name" ColumnName="Last_Name" />
                 <ScalarProperty Name="Email_Id" ColumnName="Email_Id" />
                 <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Avatar" ColumnName="Avatar" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="Creation_Date" ColumnName="Creation_Date" />
               </MappingFragment>

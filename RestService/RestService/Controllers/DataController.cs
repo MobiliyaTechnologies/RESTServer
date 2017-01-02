@@ -13,6 +13,7 @@ namespace RestService.Controllers
     public class DataController : ApiController
     {
         DataService dataService;
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         public DataController()
         {
             dataService = new DataService();
@@ -51,12 +52,14 @@ namespace RestService.Controllers
             HttpResponseMessage response;
             try
             {
+                log.Debug("GetMeterList API called");
                 var data = dataService.GetMeterList(Id);
                 response = data == null ? Request.CreateErrorResponse(HttpStatusCode.Forbidden, "Invalid User") : Request.CreateResponse(HttpStatusCode.OK, data);
                 return response;
             }
             catch (Exception ex)
             {
+                log.Error("Exception occurred in GetMeterList as: " + ex);
                 response = Request.CreateErrorResponse(HttpStatusCode.ServiceUnavailable, ex);
                 return response;
             }
@@ -68,12 +71,14 @@ namespace RestService.Controllers
             HttpResponseMessage response;
             try
             {
+                log.Debug("GetMonthlyConsumption API called");
                 var data = dataService.GetMeterMonthlyConsumption(Id);
                 response = data == null ? Request.CreateErrorResponse(HttpStatusCode.Forbidden, "Invalid User") : Request.CreateResponse(HttpStatusCode.OK, data);
                 return response;
             }
             catch (Exception ex)
             {
+                log.Debug("Exception occurred in GetMonthlyConsumption as: " + ex);
                 response = Request.CreateErrorResponse(HttpStatusCode.ServiceUnavailable, ex);
                 return response;
             }
@@ -85,20 +90,37 @@ namespace RestService.Controllers
             HttpResponseMessage response;
             try
             {
+                log.Debug("GetMeterDailyConsumption API called");
                 var data = dataService.GetMeterDailyConsumption(Id);
                 response = data == null ? Request.CreateErrorResponse(HttpStatusCode.Forbidden, "Invalid User") : Request.CreateResponse(HttpStatusCode.OK, data);
                 return response;
             }
             catch (Exception ex)
             {
+                log.Error("Exception occurred in GetMeterDailyConsumption as: " + ex);
                 response = Request.CreateErrorResponse(HttpStatusCode.ServiceUnavailable, ex);
                 return response;
             }
         }
 
-        //public List<MonthlyConsumptionModel> GetMeterMonthlyConsumption()
-        //{
-        //    return dataService.GetMeterMonthlyConsumption();
-        //}
+        [Route("api/getpowerbiurl/{Id}/{MeterSerial}")]
+        public HttpResponseMessage GetPowerBIURL(int Id,string MeterSerial)
+        {
+            HttpResponseMessage response;
+            try
+            {
+                log.Debug("GetPowerBIURL API called");
+                var data = dataService.GetPowerBIUrl(Id, MeterSerial);
+                response = data == null ? Request.CreateErrorResponse(HttpStatusCode.Forbidden, "Invalid User") : Request.CreateResponse(HttpStatusCode.OK, data);
+                return response;
+            }
+            catch (Exception ex)
+            {
+                log.Error("Exception occurred in GetPowerBIURL as: " + ex);
+                response = Request.CreateErrorResponse(HttpStatusCode.ServiceUnavailable, ex);
+                return response;
+            }
+            
+        }
     }
 }

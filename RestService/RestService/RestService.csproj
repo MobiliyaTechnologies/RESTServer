@@ -45,6 +45,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="log4net, Version=1.2.15.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.5\lib\net45-full\log4net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.AI.Agent.Intercept, Version=1.2.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.ApplicationInsights.Agent.Intercept.1.2.1\lib\net45\Microsoft.AI.Agent.Intercept.dll</HintPath>
       <Private>True</Private>
@@ -241,6 +245,9 @@
     <Compile Include="Entities\HalfHourlyData.cs">
       <DependentUpon>PowergridModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\HalfYearlyData.cs">
+      <DependentUpon>PowergridModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\MeterDetails.cs">
       <DependentUpon>PowergridModel.tt</DependentUpon>
     </Compile>
@@ -308,6 +315,7 @@
     <Compile Include="Startup.cs" />
     <Compile Include="Utilities\Constants.cs" />
     <Compile Include="Utilities\Converter.cs" />
+    <Compile Include="Utilities\PowerBIUtil.cs" />
     <Compile Include="Utilities\ServiceUtil.cs" />
     <Compile Include="Utilities\Validator.cs" />
   </ItemGroup>
@@ -337,6 +345,7 @@
     <Content Include="Entities\PowergridModel.edmx.diagram">
       <DependentUpon>PowergridModel.edmx</DependentUpon>
     </Content>
+    <None Include="Properties\PublishProfiles\PowergridRESTService - Web Deploy %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\PowergridRESTService - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
