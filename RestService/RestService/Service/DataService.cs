@@ -50,7 +50,7 @@ namespace RestService.Service
             catch (Exception ex)
             {
                 log.Debug("Exception occurred in GetMeterList as: " + ex);
-                throw new Exception(ex.Message);
+                throw new Exception(ex.Message, ex);
             }
 
         }
@@ -91,7 +91,7 @@ namespace RestService.Service
             catch (Exception ex)
             {
                 log.Debug("Exception occurred in GetMonthlyConsumption as: " + ex);
-                throw new Exception(ex.Message);
+                throw new Exception(ex.Message,ex);
             }
         }
 
@@ -131,7 +131,7 @@ namespace RestService.Service
             catch (Exception ex)
             {
                 log.Debug("Exception occurred in GetMeterDailyConsumption as: " + ex);
-                throw new Exception(ex.Message);
+                throw new Exception(ex.Message,ex);
             }
         }
 
@@ -157,7 +157,48 @@ namespace RestService.Service
             catch (Exception ex)
             {
                 log.Error("Exception occurred in GetPowerBIUrl as: " + ex);
-                throw new Exception(ex.Message);
+                throw new Exception(ex.Message,ex);
+            }
+        }
+
+        public List<MeterMonthWiseConsumption> GetMonthWiseConsumption(int UserId, int Year)
+        {
+            try
+            {
+                log.Debug("GetMonthWiseConsumption called");
+                if (accountService.ValidateUser(UserId))
+                {
+                    List<MeterDetails> meterData = dataFacade.GetMeters();
+                    if (meterData != null && meterData.Count > 0)
+                    {
+                        List<MeterMonthWiseConsumption> meterDataList = new List<MeterMonthWiseConsumption>();
+                        foreach (var meterDataItem in meterData)
+                        {
+                            MeterMonthWiseConsumption meterMonthWiseConsumption = dataFacade.GetMeterMonthWiseConsumption(meterDataItem, Year);
+                            if (meterMonthWiseConsumption != null)
+                            {
+                                meterMonthWiseConsumption.PowerScout = meterDataItem.Serial;
+                                meterDataList.Add(meterMonthWiseConsumption);
+                            }
+                        }
+                        return meterDataList;
+                    }
+                    else
+                    {
+                        log.Debug("GetMonthWiseConsumption->No data found");
+                        return new List<MeterMonthWiseConsumption>();
+                    }
+                }
+                else
+                {
+                    log.Debug("GetMonthWiseConsumption -> User validation failed");
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                log.Error("Exception occurred in GetMonthWiseConsumption as: " + ex);
+                throw new Exception(ex.Message,ex);
             }
         }
     }
