@@ -122,5 +122,24 @@ namespace RestService.Controllers
             }
             
         }
+
+        [Route("api/getmonthwiseconsumption/{Id}/{Year}")]
+        public HttpResponseMessage GetMonthWiseConsumption(int Id, int Year)
+        {
+            HttpResponseMessage response;
+            try
+            {
+                log.Debug("GetMonthWiseConsumption API called");
+                var data = dataService.GetMonthWiseConsumption(Id, Year);
+                response = data == null ? Request.CreateErrorResponse(HttpStatusCode.Forbidden, "Invalid User") : Request.CreateResponse(HttpStatusCode.OK, data);
+                return response;
+            }
+            catch (Exception ex)
+            {
+                log.Error("Exception occurred in GetMonthWiseConsumption as: " + ex);
+                response = Request.CreateErrorResponse(HttpStatusCode.ServiceUnavailable, ex);
+                return response;
+            }
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using RestService.Entities;
+using RestService.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,6 +37,68 @@ namespace RestService.Facade
             DateTime today = DateTime.UtcNow.AddHours(-6);
             var meterConsumption = (from data in dbEntity.DailyConsumptionDetails where meter.Serial.Equals(data.PowerScout) && today.Day == ((DateTime)data.Timestamp).Day && today.Month == ((DateTime)data.Timestamp).Month && today.Year == ((DateTime)data.Timestamp).Year select data).ToList();
             return meterConsumption.LastOrDefault();
+        }
+
+        public MeterMonthWiseConsumption GetMeterMonthWiseConsumption(MeterDetails meterData, int Year)
+        {
+            var meterDataList = (from data in dbEntity.MonthlyConsumptionDetails where data.Powerscout.Equals(meterData.Serial) && (data.Year).Equals(Year.ToString()) select data).ToList();
+            MeterMonthWiseConsumption meterConsumption = new MeterMonthWiseConsumption();
+            meterDataList.All(meterDataItem =>
+            {
+            switch (meterDataItem.Month.ToLower()){
+                    case "jan":
+                        meterConsumption.MonthWiseConsumption.Jan = meterConsumption.MonthWiseConsumption.Jan + (double)meterDataItem.Monthly_KWH_Consumption;
+                        break;
+
+                    case "feb":
+                        meterConsumption.MonthWiseConsumption.Feb = meterConsumption.MonthWiseConsumption.Feb + (double)meterDataItem.Monthly_KWH_Consumption;
+                        break;
+
+                    case "mar":
+                        meterConsumption.MonthWiseConsumption.Mar = meterConsumption.MonthWiseConsumption.Mar + (double)meterDataItem.Monthly_KWH_Consumption;
+                        break;
+
+                    case "apr":
+                        meterConsumption.MonthWiseConsumption.Apr = meterConsumption.MonthWiseConsumption.Apr + (double)meterDataItem.Monthly_KWH_Consumption;
+                        break;
+
+                    case "may":
+                        meterConsumption.MonthWiseConsumption.May = meterConsumption.MonthWiseConsumption.May + (double)meterDataItem.Monthly_KWH_Consumption;
+                        break;
+
+                    case "jun":
+                        meterConsumption.MonthWiseConsumption.Jun = meterConsumption.MonthWiseConsumption.Jun + (double)meterDataItem.Monthly_KWH_Consumption;
+                        break;
+
+                    case "jul":
+                        meterConsumption.MonthWiseConsumption.Jul = meterConsumption.MonthWiseConsumption.Jul + (double)meterDataItem.Monthly_KWH_Consumption;
+                        break;
+
+                    case "aug":
+                        meterConsumption.MonthWiseConsumption.Aug = meterConsumption.MonthWiseConsumption.Aug + (double)meterDataItem.Monthly_KWH_Consumption;
+                        break;
+
+                    case "sep":
+                        meterConsumption.MonthWiseConsumption.Sep = meterConsumption.MonthWiseConsumption.Sep + (double)meterDataItem.Monthly_KWH_Consumption;
+                        break;
+
+                    case "oct":
+                        meterConsumption.MonthWiseConsumption.Oct = meterConsumption.MonthWiseConsumption.Oct + (double)meterDataItem.Monthly_KWH_Consumption;
+                        break;
+
+                    case "nov":
+                        meterConsumption.MonthWiseConsumption.Nov = meterConsumption.MonthWiseConsumption.Nov + (double)meterDataItem.Monthly_KWH_Consumption;
+                        break;
+
+                    case "dec":
+                        meterConsumption.MonthWiseConsumption.Dec = meterConsumption.MonthWiseConsumption.Dec + (double)meterDataItem.Monthly_KWH_Consumption;
+                        break;
+
+                }
+                return true;
+            });
+
+            return meterConsumption;
         }
     }
 }
