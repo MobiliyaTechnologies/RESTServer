@@ -18,6 +18,7 @@ namespace RestService.Entities
         public Nullable<System.DateTime> Start_Time { get; set; }
         public Nullable<System.DateTime> End_Time { get; set; }
         public string PowerScout { get; set; }
+        public string Breaker_details { get; set; }
         public Nullable<double> Weekly_Predicted_KWH_System { get; set; }
     }
 }

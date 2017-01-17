@@ -47,14 +47,45 @@ namespace RestService.Utilities
             return response;
         }
 
+        public static MeterDetailsModel MeterDetailsEntityToModel(MeterDetails meterData)
+        {
+            MeterDetailsModel meterModel = new MeterDetailsModel();
+            meterModel.Id = meterData.Id;
+            meterModel.PowerScout = meterData.PowerScout;
+            meterModel.Altitude = (double)meterData.Altitude;
+            meterModel.Description = meterData.Description;
+            meterModel.Latitude = (double)meterData.Latitude;
+            meterModel.Longitude = (double)meterData.Longitude;
+            meterModel.Name = meterData.Breaker_details;
+            meterModel.Serial = meterData.Serial;
+            return meterModel;
+        }
+
         public static MeterGeneralDataModel MeterEntityToModel(MeterDetails meterData)
         {
             MeterGeneralDataModel meterModel = new MeterGeneralDataModel();
-            meterModel.Name = meterData.Name;
+            meterModel.Name = meterData.Breaker_details;
             meterModel.Serial = meterData.Serial;
             meterModel.Latitude = (double)meterData.Latitude;
             meterModel.Longitude = (double)meterData.Longitude;
             meterModel.Altitude = (double)meterData.Altitude;
+            return meterModel;
+        }
+
+        public static MeterMonthlyConsumptionModel MeterMonthlyEntityToModel(MonthlyConsumptionDetails meterData)
+        {
+            MeterMonthlyConsumptionModel meterModel = new MeterMonthlyConsumptionModel();
+            meterModel.Id = meterData.Id;
+            meterModel.Month = meterData.Month;
+            meterModel.Year = meterData.Year;
+            meterModel.Powerscout = meterData.PowerScout;
+            meterModel.X = (double)meterData.X;
+            meterModel.Y = (double)meterData.Y;
+            meterModel.Ligne = meterData.Ligne;
+            meterModel.Monthly_KWH_Consumption = (double)meterData.Monthly_KWH_System;
+            meterModel.Monthly_Electric_Cost = (double)meterData.Monthly_electric_cost;
+            meterModel.Current_Month = (DateTime)meterData.current_month;
+            meterModel.Last_Month = (DateTime)meterData.last_month;
             return meterModel;
         }
     }

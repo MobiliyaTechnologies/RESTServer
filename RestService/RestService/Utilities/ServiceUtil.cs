@@ -46,5 +46,33 @@ namespace RestService.Utilities
                 return response;
             }
         }
+
+        public static int GetDayOfWeek(string Day)
+        {
+            switch (Day.ToLower())
+            {
+                case "mon":
+                    return (int)Constants.DayofWeek.Mon;
+
+                case "tue":
+                    return (int)Constants.DayofWeek.Tue;
+
+                case "wed":
+                    return (int)Constants.DayofWeek.Wed;
+
+                case "thu":
+                    return (int)Constants.DayofWeek.Thu;
+
+                case "fri":
+                    return (int)Constants.DayofWeek.Fri;
+
+                case "sat":
+                    return (int)Constants.DayofWeek.Sat;
+
+                case "sun":
+                    return (int)Constants.DayofWeek.Sun;
+            }
+            return 1;
+        }
     }
 }

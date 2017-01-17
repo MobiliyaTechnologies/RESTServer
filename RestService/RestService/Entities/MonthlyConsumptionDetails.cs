@@ -17,13 +17,14 @@ namespace RestService.Entities
         public int Id { get; set; }
         public string Month { get; set; }
         public string Year { get; set; }
-        public string Powerscout { get; set; }
+        public string PowerScout { get; set; }
+        public string Breaker_details { get; set; }
         public Nullable<double> X { get; set; }
         public Nullable<double> Y { get; set; }
         public string Ligne { get; set; }
-        public Nullable<double> Monthly_KWH_Consumption { get; set; }
-        public Nullable<double> Monthly_Electric_Cost { get; set; }
-        public Nullable<System.DateTime> Current_Month { get; set; }
-        public Nullable<System.DateTime> Last_Month { get; set; }
+        public Nullable<double> Monthly_KWH_System { get; set; }
+        public Nullable<double> Monthly_electric_cost { get; set; }
+        public Nullable<System.DateTime> current_month { get; set; }
+        public Nullable<System.DateTime> last_month { get; set; }
     }
 }

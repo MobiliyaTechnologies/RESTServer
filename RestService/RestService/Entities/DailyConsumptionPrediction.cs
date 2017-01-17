@@ -16,7 +16,9 @@ namespace RestService.Entities
     {
         public int Id { get; set; }
         public string PowerScout { get; set; }
+        public string Breaker_details { get; set; }
         public Nullable<System.DateTime> Timestamp { get; set; }
+        public Nullable<double> Daily_KWH_System { get; set; }
         public Nullable<double> Daily_Predicted_KWH_System { get; set; }
         public Nullable<double> TomorrowPredictedKWH { get; set; }
     }

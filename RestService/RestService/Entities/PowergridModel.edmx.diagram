@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="efe70d868dd74b0e92c561728b59dd62" Name="Diagram1">
+      <Diagram DiagramId="a7d32414e38247efb27783579ae8e59f" Name="Diagram1">
         <EntityTypeShape EntityType="PowerGridModel.Alert" Width="1.5" PointX="3" PointY="4.25" IsExpanded="true" />
         <EntityTypeShape EntityType="PowerGridModel.DailyConsumptionDetails" Width="1.5" PointX="5.75" PointY="9.375" IsExpanded="true" />
         <EntityTypeShape EntityType="PowerGridModel.DailyConsumptionPrediction" Width="1.5" PointX="5.75" PointY="2.375" IsExpanded="true" />
