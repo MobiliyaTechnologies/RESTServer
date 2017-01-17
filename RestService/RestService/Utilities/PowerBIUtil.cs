@@ -21,19 +21,19 @@ namespace RestService.Utilities
                 keyValue.Weather = WeatherURL;
                 keyValue.QuarterlyConsumption = "";
                 keyValue.LastQuarterlyConsumption = "";
-                keyValue.MonthlyConsumption = "https://app.powerbi.com/embed?dashboardId=40306835-aee6-4b6a-9c06-9725f0824103&tileId=0f8871ea-7682-49f1-8522-71fc9b23b7d6";
-                keyValue.LastMonthlyConsumption = "https://app.powerbi.com/embed?dashboardId=40306835-aee6-4b6a-9c06-9725f0824103&tileId=fda51db5-58f8-44ab-8501-cbf588c74e6b";
-                keyValue.WeeklyConsumption = "https://app.powerbi.com/embed?dashboardId=40306835-aee6-4b6a-9c06-9725f0824103&tileId=8ef4203a-1f0e-4603-acf2-61ba47f6dd62";
-                keyValue.LastWeeklyConsumption = "https://app.powerbi.com/embed?dashboardId=40306835-aee6-4b6a-9c06-9725f0824103&tileId=4a1442d4-8bc0-404d-8e30-cf747c71365c";
-                keyValue.DailyConsumption = "https://app.powerbi.com/embed?dashboardId=40306835-aee6-4b6a-9c06-9725f0824103&tileId=795b7a1f-35f5-47ad-86cc-9985237e33a3";
-                keyValue.YesterdayConsumption = "https://app.powerbi.com/embed?dashboardId=40306835-aee6-4b6a-9c06-9725f0824103&tileId=92be8229-a892-473d-93ab-2028dae7e66d";
+                keyValue.MonthlyConsumption = "https://app.powerbi.com/embed?dashboardId=d2ac4bab-1867-48eb-a640-22655ea791c4&tileId=a7d25902-9ab1-48c7-b256-ea7f5e50a8e1";
+                keyValue.LastMonthlyConsumption = "https://app.powerbi.com/embed?dashboardId=d2ac4bab-1867-48eb-a640-22655ea791c4&tileId=12d69022-7b7f-4eb5-997f-727e87ec19e4";
+                keyValue.WeeklyConsumption = "https://app.powerbi.com/embed?dashboardId=d2ac4bab-1867-48eb-a640-22655ea791c4&tileId=30a49d22-eb3e-4a12-b050-080e804527aa";
+                keyValue.LastWeeklyConsumption = "https://app.powerbi.com/embed?dashboardId=d2ac4bab-1867-48eb-a640-22655ea791c4&tileId=9f66f329-15a2-4d5b-82af-e74009a4aef1";
+                keyValue.DailyConsumption = "https://app.powerbi.com/embed?dashboardId=d2ac4bab-1867-48eb-a640-22655ea791c4&tileId=9609cd02-715e-4d13-b7b3-14956350b67a";
+                keyValue.YesterdayConsumption = "https://app.powerbi.com/embed?dashboardId=d2ac4bab-1867-48eb-a640-22655ea791c4&tileId=0781911b-d988-4b37-893a-5b9be41fe07e";
 
-                keyValue.MonthlyKWh = "https://app.powerbi.com/embed?dashboardId=40306835-aee6-4b6a-9c06-9725f0824103&tileId=5276948c-7cc8-488e-a635-319a9e8bb8b3";
-                keyValue.MonthlyCost = "https://app.powerbi.com/embed?dashboardId=40306835-aee6-4b6a-9c06-9725f0824103&tileId=95eeaba9-24fb-45e7-a85b-06fabd096b19";
-                keyValue.DayWiseConsumption = "https://app.powerbi.com/embed?dashboardId=40306835-aee6-4b6a-9c06-9725f0824103&tileId=5d573747-f736-4f29-af18-3c7d2ebc3d06";
-                keyValue.PeriodWiseConsumption = "https://app.powerbi.com/embed?dashboardId=40306835-aee6-4b6a-9c06-9725f0824103&tileId=f91192e4-4343-4cf5-ace4-cfbd4bd01b06";
+                keyValue.MonthlyKWh = "https://app.powerbi.com/embed?dashboardId=d2ac4bab-1867-48eb-a640-22655ea791c4&tileId=70bdef51-f6d6-4c91-a275-4bcc795f925a";
+                keyValue.MonthlyCost = "https://app.powerbi.com/embed?dashboardId=d2ac4bab-1867-48eb-a640-22655ea791c4&tileId=7d206df8-9c25-4d86-b834-4c9c04d3ce83";
+                keyValue.DayWiseConsumption = "https://app.powerbi.com/embed?dashboardId=d2ac4bab-1867-48eb-a640-22655ea791c4&tileId=89d88778-d35c-4ccd-965a-e23df46aa493";
+                keyValue.PeriodWiseConsumption = "https://app.powerbi.com/embed?dashboardId=d2ac4bab-1867-48eb-a640-22655ea791c4&tileId=03b7765c-bf65-4481-a82f-763988b37791";
 
-                keyValue.Report = "https://app.powerbi.com/reportEmbed?reportId=e42884df-a83a-4dc5-96d0-cb6080c9858d";
+                keyValue.Report = "https://app.powerbi.com/reportEmbed?reportId=7aadbc0e-afb1-4c01-bf88-55d4971ddb40";
                 return keyValue;
             }
             catch (Exception ex)
@@ -53,19 +53,19 @@ namespace RestService.Utilities
                 keyValue.Weather = WeatherURL;
                 keyValue.QuarterlyConsumption = "";
                 keyValue.LastQuarterlyConsumption = "";
-                keyValue.MonthlyConsumption = "https://app.powerbi.com/embed?dashboardId=45ea78d2-9320-4cd9-b4e0-6feafbc4aab9&tileId=568fc243-fedd-49e8-9cb6-d0a56f013a6b";
-                keyValue.LastMonthlyConsumption = "https://app.powerbi.com/embed?dashboardId=45ea78d2-9320-4cd9-b4e0-6feafbc4aab9&tileId=42a1acda-4978-4c0e-bc11-c51f0e54e0ef";
-                keyValue.WeeklyConsumption = "https://app.powerbi.com/embed?dashboardId=45ea78d2-9320-4cd9-b4e0-6feafbc4aab9&tileId=2f6d523b-fc45-4d0c-9734-78590706ebb3";
-                keyValue.LastWeeklyConsumption = "https://app.powerbi.com/embed?dashboardId=45ea78d2-9320-4cd9-b4e0-6feafbc4aab9&tileId=f9c49387-9e5a-4fe6-a143-4da8d9dee810";
-                keyValue.DailyConsumption = "https://app.powerbi.com/embed?dashboardId=45ea78d2-9320-4cd9-b4e0-6feafbc4aab9&tileId=afe27612-f12c-46ba-8914-e091ee644cd7";
-                keyValue.YesterdayConsumption = "https://app.powerbi.com/embed?dashboardId=45ea78d2-9320-4cd9-b4e0-6feafbc4aab9&tileId=432aa9e8-3ad6-4637-964b-b88ed6a38266";
+                keyValue.MonthlyConsumption = "https://app.powerbi.com/embed?dashboardId=472d1742-e075-45c6-97cc-2d64a8f7c367&tileId=849cf81d-c017-4ebe-bc3c-8be47ece43d2";
+                keyValue.LastMonthlyConsumption = "https://app.powerbi.com/embed?dashboardId=472d1742-e075-45c6-97cc-2d64a8f7c367&tileId=ee726709-8aa3-4247-979c-e54d1ed824ba";
+                keyValue.WeeklyConsumption = "https://app.powerbi.com/embed?dashboardId=472d1742-e075-45c6-97cc-2d64a8f7c367&tileId=85b4389b-2652-4b2f-8f7c-d9e5104c8cf4";
+                keyValue.LastWeeklyConsumption = "https://app.powerbi.com/embed?dashboardId=472d1742-e075-45c6-97cc-2d64a8f7c367&tileId=e4ae2321-d888-491e-8b54-e8e0d4ab1e4f";
+                keyValue.DailyConsumption = "https://app.powerbi.com/embed?dashboardId=472d1742-e075-45c6-97cc-2d64a8f7c367&tileId=ab5a5c9b-7006-4fe7-a7f4-7f6b71a88a54";
+                keyValue.YesterdayConsumption = "https://app.powerbi.com/embed?dashboardId=472d1742-e075-45c6-97cc-2d64a8f7c367&tileId=c6497fd9-9b8d-4268-be17-a1e4f5612031";
 
-                keyValue.MonthlyKWh = "https://app.powerbi.com/embed?dashboardId=45ea78d2-9320-4cd9-b4e0-6feafbc4aab9&tileId=beb9f365-7c48-4886-b1da-9e5814f15bf7";
-                keyValue.MonthlyCost = "https://app.powerbi.com/embed?dashboardId=45ea78d2-9320-4cd9-b4e0-6feafbc4aab9&tileId=603896d4-1468-43d2-a91c-c76fda71c675";
-                keyValue.DayWiseConsumption = "https://app.powerbi.com/embed?dashboardId=45ea78d2-9320-4cd9-b4e0-6feafbc4aab9&tileId=22a4ec9e-2cc2-4e34-b724-c5549c7d6754";
-                keyValue.PeriodWiseConsumption = "https://app.powerbi.com/embed?dashboardId=45ea78d2-9320-4cd9-b4e0-6feafbc4aab9&tileId=39f7b1b1-1cbc-4102-a67b-74b13bbc3b4d";
+                keyValue.MonthlyKWh = "https://app.powerbi.com/embed?dashboardId=472d1742-e075-45c6-97cc-2d64a8f7c367&tileId=84e6fdd5-b164-4635-8cbc-1562ebd96d2c";
+                keyValue.MonthlyCost = "https://app.powerbi.com/embed?dashboardId=472d1742-e075-45c6-97cc-2d64a8f7c367&tileId=e7b6991e-7341-4a8d-969c-875ae7a35115";
+                keyValue.DayWiseConsumption = "https://app.powerbi.com/embed?dashboardId=472d1742-e075-45c6-97cc-2d64a8f7c367&tileId=9124bdae-f0a5-4edc-a326-4cdff9083640";
+                keyValue.PeriodWiseConsumption = "https://app.powerbi.com/embed?dashboardId=472d1742-e075-45c6-97cc-2d64a8f7c367&tileId=715f3524-8c91-49a0-b76a-4fe3f1b59103";
 
-                keyValue.Report = "https://app.powerbi.com/reportEmbed?reportId=7e3554a5-cded-4893-b956-6a83a2fcef58";
+                keyValue.Report = "https://app.powerbi.com/reportEmbed?reportId=8c74c0fb-9fb7-453a-a79e-0508bba70db2";
                 return keyValue;
             }
             catch (Exception ex)
@@ -85,21 +85,21 @@ namespace RestService.Utilities
                 keyValue.Weather = WeatherURL;
                 keyValue.QuarterlyConsumption = "";
                 keyValue.LastQuarterlyConsumption = "";
-                keyValue.MonthlyConsumption = "https://app.powerbi.com/embed?dashboardId=7b93337b-422d-4403-b703-1be55f4f793f&tileId=7784efa0-a6b9-43d4-ba26-241c0965dbd9";
-                keyValue.LastMonthlyConsumption = "https://app.powerbi.com/embed?dashboardId=7b93337b-422d-4403-b703-1be55f4f793f&tileId=b6c2083d-68d6-4f25-a970-0fb8bd122910";
+                keyValue.MonthlyConsumption = "https://app.powerbi.com/embed?dashboardId=472d1742-e075-45c6-97cc-2d64a8f7c367&tileId=849cf81d-c017-4ebe-bc3c-8be47ece43d2";
+                keyValue.LastMonthlyConsumption = "https://app.powerbi.com/embed?dashboardId=472d1742-e075-45c6-97cc-2d64a8f7c367&tileId=ee726709-8aa3-4247-979c-e54d1ed824ba";
 
-                keyValue.WeeklyConsumption = "https://app.powerbi.com/embed?dashboardId=7b93337b-422d-4403-b703-1be55f4f793f&tileId=98e5fc70-a071-41db-b1c9-bf38ea9ce105";
-                keyValue.LastWeeklyConsumption = "https://app.powerbi.com/embed?dashboardId=7b93337b-422d-4403-b703-1be55f4f793f&tileId=015071b5-7e7e-4ecd-9c8b-aec4be7aa39d";
+                keyValue.WeeklyConsumption = "https://app.powerbi.com/embed?dashboardId=472d1742-e075-45c6-97cc-2d64a8f7c367&tileId=85b4389b-2652-4b2f-8f7c-d9e5104c8cf4";
+                keyValue.LastWeeklyConsumption = "https://app.powerbi.com/embed?dashboardId=472d1742-e075-45c6-97cc-2d64a8f7c367&tileId=e4ae2321-d888-491e-8b54-e8e0d4ab1e4f";
 
-                keyValue.DailyConsumption = "https://app.powerbi.com/embed?dashboardId=7b93337b-422d-4403-b703-1be55f4f793f&tileId=5d9488af-ae6e-420c-90fe-a426cefb39c5";
-                keyValue.YesterdayConsumption = "https://app.powerbi.com/embed?dashboardId=7b93337b-422d-4403-b703-1be55f4f793f&tileId=aeb16edb-3b46-4197-86c5-b8b6dddc7873";
+                keyValue.DailyConsumption = "https://app.powerbi.com/embed?dashboardId=472d1742-e075-45c6-97cc-2d64a8f7c367&tileId=ab5a5c9b-7006-4fe7-a7f4-7f6b71a88a54";
+                keyValue.YesterdayConsumption = "https://app.powerbi.com/embed?dashboardId=472d1742-e075-45c6-97cc-2d64a8f7c367&tileId=c6497fd9-9b8d-4268-be17-a1e4f5612031";
 
-                keyValue.MonthlyKWh = "https://app.powerbi.com/embed?dashboardId=7b93337b-422d-4403-b703-1be55f4f793f&tileId=249cabc6-5056-4527-b2c3-ed81954781fb";
-                keyValue.MonthlyCost = "https://app.powerbi.com/embed?dashboardId=7b93337b-422d-4403-b703-1be55f4f793f&tileId=195bd57a-46d4-4cb7-a9bb-80bffe6838d0";
-                keyValue.DayWiseConsumption = "https://app.powerbi.com/embed?dashboardId=7b93337b-422d-4403-b703-1be55f4f793f&tileId=dbcb976e-fc70-4f73-96cb-be241c6d81cd";
-                keyValue.PeriodWiseConsumption = "https://app.powerbi.com/embed?dashboardId=7b93337b-422d-4403-b703-1be55f4f793f&tileId=d1415c76-66e8-419d-82b2-05009445f6ec";
+                keyValue.MonthlyKWh = "https://app.powerbi.com/embed?dashboardId=472d1742-e075-45c6-97cc-2d64a8f7c367&tileId=84e6fdd5-b164-4635-8cbc-1562ebd96d2c";
+                keyValue.MonthlyCost = "https://app.powerbi.com/embed?dashboardId=472d1742-e075-45c6-97cc-2d64a8f7c367&tileId=e7b6991e-7341-4a8d-969c-875ae7a35115";
+                keyValue.DayWiseConsumption = "https://app.powerbi.com/embed?dashboardId=472d1742-e075-45c6-97cc-2d64a8f7c367&tileId=9124bdae-f0a5-4edc-a326-4cdff9083640";
+                keyValue.PeriodWiseConsumption = "https://app.powerbi.com/embed?dashboardId=472d1742-e075-45c6-97cc-2d64a8f7c367&tileId=715f3524-8c91-49a0-b76a-4fe3f1b59103";
 
-                keyValue.Report = "https://app.powerbi.com/reportEmbed?reportId=4840e4df-37dd-4b40-8adb-bac55d250059";
+                keyValue.Report = "https://app.powerbi.com/reportEmbed?reportId=b24ab241-1a11-431d-bf2e-53ea05638c7c";
                 return keyValue;
             }
             catch (Exception ex)
@@ -120,21 +120,21 @@ namespace RestService.Utilities
                 keyValue.QuarterlyConsumption = "";
                 keyValue.LastQuarterlyConsumption = "";
 
-                keyValue.MonthlyConsumption = "https://app.powerbi.com/embed?dashboardId=72400f08-77c2-499a-8521-c4cc9e6af55f&tileId=68128d85-11f9-46a7-8177-a1c9b4dc8127";
-                keyValue.LastMonthlyConsumption = "https://app.powerbi.com/embed?dashboardId=72400f08-77c2-499a-8521-c4cc9e6af55f&tileId=9e481a1d-2d3a-4b0c-9d6b-0007449e0ab5";
+                keyValue.MonthlyConsumption = "https://app.powerbi.com/embed?dashboardId=6ed10559-97e2-48b8-ab17-d2b8a612c5dc&tileId=4a38360e-3d10-4d32-b413-3b3c65c6b9ec";
+                keyValue.LastMonthlyConsumption = "https://app.powerbi.com/embed?dashboardId=6ed10559-97e2-48b8-ab17-d2b8a612c5dc&tileId=36084b50-ff4c-4f48-9185-baa7be3d1db2";
 
-                keyValue.WeeklyConsumption = "https://app.powerbi.com/embed?dashboardId=72400f08-77c2-499a-8521-c4cc9e6af55f&tileId=d15fd53d-b925-4d38-96d9-1a34c39dda3b";
-                keyValue.LastWeeklyConsumption = "https://app.powerbi.com/embed?dashboardId=72400f08-77c2-499a-8521-c4cc9e6af55f&tileId=3ff0f7ac-64fc-4cda-9716-59fcdb142490";
+                keyValue.WeeklyConsumption = "https://app.powerbi.com/embed?dashboardId=6ed10559-97e2-48b8-ab17-d2b8a612c5dc&tileId=23ec9bc0-3aea-4195-aacd-846164fdde41";
+                keyValue.LastWeeklyConsumption = "https://app.powerbi.com/embed?dashboardId=6ed10559-97e2-48b8-ab17-d2b8a612c5dc&tileId=3b96e189-a0db-4a00-be71-a72cdb9d7a6f";
 
-                keyValue.DailyConsumption = "https://app.powerbi.com/embed?dashboardId=72400f08-77c2-499a-8521-c4cc9e6af55f&tileId=7876ab96-a431-420a-80de-38acf82d3235";
-                keyValue.YesterdayConsumption = "https://app.powerbi.com/embed?dashboardId=72400f08-77c2-499a-8521-c4cc9e6af55f&tileId=70849e9c-cd0b-4ec3-9959-87e88f38e60c";
+                keyValue.DailyConsumption = "https://app.powerbi.com/embed?dashboardId=6ed10559-97e2-48b8-ab17-d2b8a612c5dc&tileId=5f6ddc44-be5a-49f5-bf11-4c56451ca282";
+                keyValue.YesterdayConsumption = "https://app.powerbi.com/embed?dashboardId=6ed10559-97e2-48b8-ab17-d2b8a612c5dc&tileId=d4dc1655-6690-4fd1-b227-408b0cd9508a";
 
-                keyValue.MonthlyKWh = "https://app.powerbi.com/embed?dashboardId=72400f08-77c2-499a-8521-c4cc9e6af55f&tileId=c70668ca-da0e-4c8d-baea-214b04f36972";
-                keyValue.MonthlyCost = "https://app.powerbi.com/embed?dashboardId=72400f08-77c2-499a-8521-c4cc9e6af55f&tileId=dea80679-4836-435b-85cb-a8fd786a53dd";
-                keyValue.DayWiseConsumption = "https://app.powerbi.com/embed?dashboardId=72400f08-77c2-499a-8521-c4cc9e6af55f&tileId=815a01bf-f6bc-48b5-9913-f52e21afcd07";
-                keyValue.PeriodWiseConsumption = "https://app.powerbi.com/embed?dashboardId=72400f08-77c2-499a-8521-c4cc9e6af55f&tileId=457bb8c2-c074-40d1-bf5e-9d01a88bf89f";
+                keyValue.MonthlyKWh = "https://app.powerbi.com/embed?dashboardId=6ed10559-97e2-48b8-ab17-d2b8a612c5dc&tileId=c9c95496-3bb7-4018-a998-e50c0bda9589";
+                keyValue.MonthlyCost = "https://app.powerbi.com/embed?dashboardId=6ed10559-97e2-48b8-ab17-d2b8a612c5dc&tileId=c8e5bfb6-8ac0-463c-b20c-6f0534861113";
+                keyValue.DayWiseConsumption = "https://app.powerbi.com/embed?dashboardId=6ed10559-97e2-48b8-ab17-d2b8a612c5dc&tileId=b17996c0-f89c-4f95-954f-d145ac3835b2";
+                keyValue.PeriodWiseConsumption = "https://app.powerbi.com/embed?dashboardId=6ed10559-97e2-48b8-ab17-d2b8a612c5dc&tileId=b7fe4c91-b76a-4d68-93e8-166930b31273";
 
-                keyValue.Report = "https://app.powerbi.com/reportEmbed?reportId=e1d6b6cc-9e9a-4a05-a6c1-cb079c833a0f";
+                keyValue.Report = "https://app.powerbi.com/reportEmbed?reportId=96f08b80-3aae-4f19-9860-1cbd8ffbaa2d";
                 return keyValue;
             }
             catch (Exception ex)
@@ -155,21 +155,21 @@ namespace RestService.Utilities
                 keyValue.QuarterlyConsumption = "";
                 keyValue.LastQuarterlyConsumption = "";
 
-                keyValue.MonthlyConsumption = "https://app.powerbi.com/embed?dashboardId=336abc2a-4412-4347-a140-e0f47485b24f&tileId=f00cce37-1d2f-45d8-a6fa-cae609dabf53";
-                keyValue.LastMonthlyConsumption = "https://app.powerbi.com/embed?dashboardId=336abc2a-4412-4347-a140-e0f47485b24f&tileId=1fb619bc-7bdb-431b-9ffd-1c384761a482";
+                keyValue.MonthlyConsumption = "https://app.powerbi.com/embed?dashboardId=4ef68b94-654e-461a-9203-ebe080e12ef7&tileId=93b31c5b-0b58-4f6f-985c-dc3979f14173";
+                keyValue.LastMonthlyConsumption = "https://app.powerbi.com/embed?dashboardId=4ef68b94-654e-461a-9203-ebe080e12ef7&tileId=9bd39a49-e905-4283-98e5-62ec53b2980c";
 
-                keyValue.WeeklyConsumption = "https://app.powerbi.com/embed?dashboardId=336abc2a-4412-4347-a140-e0f47485b24f&tileId=ec70d2b8-998a-4595-b645-b97bdbc8d66f";
-                keyValue.LastWeeklyConsumption = "https://app.powerbi.com/embed?dashboardId=336abc2a-4412-4347-a140-e0f47485b24f&tileId=568d97d9-19cd-40ea-8e52-bad204e1d43a";
+                keyValue.WeeklyConsumption = "https://app.powerbi.com/embed?dashboardId=4ef68b94-654e-461a-9203-ebe080e12ef7&tileId=eb9209c6-86ad-4f56-8525-011d7b2609da";
+                keyValue.LastWeeklyConsumption = "https://app.powerbi.com/embed?dashboardId=4ef68b94-654e-461a-9203-ebe080e12ef7&tileId=7d78e21e-2712-4fc4-9b2d-8216d7568588";
 
-                keyValue.DailyConsumption = "https://app.powerbi.com/embed?dashboardId=336abc2a-4412-4347-a140-e0f47485b24f&tileId=f42c8567-fb63-478a-a84e-48dac0b41b32";
-                keyValue.YesterdayConsumption = "https://app.powerbi.com/embed?dashboardId=336abc2a-4412-4347-a140-e0f47485b24f&tileId=cd2f209d-aa14-426a-b84c-b05dd0c5b4c8";
+                keyValue.DailyConsumption = "https://app.powerbi.com/embed?dashboardId=4ef68b94-654e-461a-9203-ebe080e12ef7&tileId=9c7f17ac-fac6-4d77-8de7-777e5b770b48";
+                keyValue.YesterdayConsumption = "https://app.powerbi.com/embed?dashboardId=4ef68b94-654e-461a-9203-ebe080e12ef7&tileId=8f50762e-ff0b-4c66-a20b-0fd2da405ab2";
 
-                keyValue.MonthlyKWh = "https://app.powerbi.com/embed?dashboardId=336abc2a-4412-4347-a140-e0f47485b24f&tileId=84090c8d-ea5d-4913-b1d8-4f98307567e8";
-                keyValue.MonthlyCost = "https://app.powerbi.com/embed?dashboardId=336abc2a-4412-4347-a140-e0f47485b24f&tileId=78491c8a-5fe0-40d1-98ef-d9262eb15941";
-                keyValue.DayWiseConsumption = "https://app.powerbi.com/embed?dashboardId=336abc2a-4412-4347-a140-e0f47485b24f&tileId=fb4a3f9d-b554-489c-926a-083af7646cb8";
-                keyValue.PeriodWiseConsumption = "https://app.powerbi.com/embed?dashboardId=336abc2a-4412-4347-a140-e0f47485b24f&tileId=79183a53-84c0-4dea-b36c-bdd78249ce0e";
+                keyValue.MonthlyKWh = "https://app.powerbi.com/embed?dashboardId=4ef68b94-654e-461a-9203-ebe080e12ef7&tileId=f8c9df68-0afa-44c8-88cd-4c171a9ab16e";
+                keyValue.MonthlyCost = "https://app.powerbi.com/embed?dashboardId=4ef68b94-654e-461a-9203-ebe080e12ef7&tileId=65843992-39f6-4a3f-8a35-1a36c1376bc1";
+                keyValue.DayWiseConsumption = "https://app.powerbi.com/embed?dashboardId=4ef68b94-654e-461a-9203-ebe080e12ef7&tileId=004a0217-8b54-4fb1-94ca-f5b34d8a909a";
+                keyValue.PeriodWiseConsumption = "https://app.powerbi.com/embed?dashboardId=4ef68b94-654e-461a-9203-ebe080e12ef7&tileId=6b471ed4-9dbe-4069-b048-6476f355ffbd";
 
-                keyValue.Report = "https://app.powerbi.com/reportEmbed?reportId=a9159cbb-e7e5-4fb7-8054-f25755c95f47";
+                keyValue.Report = "https://app.powerbi.com/reportEmbed?reportId=0b6a83f7-c168-4053-a173-6544332dfb96";
                 return keyValue;
             }
             catch (Exception ex)
@@ -190,21 +190,21 @@ namespace RestService.Utilities
                 keyValue.QuarterlyConsumption = "";
                 keyValue.LastQuarterlyConsumption = "";
 
-                keyValue.MonthlyConsumption = "https://app.powerbi.com/embed?dashboardId=c54b10f7-2551-4d62-9e4d-0b8772383abe&tileId=c9025706-0509-4b9f-9c25-c978ad81dd5b";
-                keyValue.LastMonthlyConsumption = "https://app.powerbi.com/embed?dashboardId=c54b10f7-2551-4d62-9e4d-0b8772383abe&tileId=bb9d40ff-219f-4dc5-b3d3-f765103d31a9";
+                keyValue.MonthlyConsumption = "https://app.powerbi.com/embed?dashboardId=d43d8ae2-247d-4f01-8007-3562e36d1cfa&tileId=94451cce-6364-4ef7-ae0c-03af25a77dd4";
+                keyValue.LastMonthlyConsumption = "https://app.powerbi.com/embed?dashboardId=d43d8ae2-247d-4f01-8007-3562e36d1cfa&tileId=02b63744-24ab-4dbe-8d20-0a5ede912a79";
 
-                keyValue.WeeklyConsumption = "https://app.powerbi.com/embed?dashboardId=c54b10f7-2551-4d62-9e4d-0b8772383abe&tileId=966ac473-c323-4b36-b483-b5ff8b01cd8e";
-                keyValue.LastWeeklyConsumption = "https://app.powerbi.com/embed?dashboardId=c54b10f7-2551-4d62-9e4d-0b8772383abe&tileId=28f7d675-5f43-4271-ad9b-9ba23726cb5b";
+                keyValue.WeeklyConsumption = "https://app.powerbi.com/embed?dashboardId=d43d8ae2-247d-4f01-8007-3562e36d1cfa&tileId=791498e5-6d6a-4795-94db-ed3245c0dedb";
+                keyValue.LastWeeklyConsumption = "https://app.powerbi.com/embed?dashboardId=d43d8ae2-247d-4f01-8007-3562e36d1cfa&tileId=18760432-4b7e-4707-a795-a14ae3361783";
 
-                keyValue.DailyConsumption = "https://app.powerbi.com/embed?dashboardId=c54b10f7-2551-4d62-9e4d-0b8772383abe&tileId=d67ae53e-a005-4dbd-beac-ecda2a5ca6ab";
-                keyValue.YesterdayConsumption = "https://app.powerbi.com/embed?dashboardId=c54b10f7-2551-4d62-9e4d-0b8772383abe&tileId=7c39da34-b2b2-4c4f-9bb8-ce77c90b18c1";
+                keyValue.DailyConsumption = "https://app.powerbi.com/embed?dashboardId=d43d8ae2-247d-4f01-8007-3562e36d1cfa&tileId=75161e40-f103-44a9-ad9e-50a3c9efa911";
+                keyValue.YesterdayConsumption = "https://app.powerbi.com/embed?dashboardId=d43d8ae2-247d-4f01-8007-3562e36d1cfa&tileId=75f93c18-5688-4a8b-9111-4d61387b7a91";
 
-                keyValue.MonthlyKWh = "https://app.powerbi.com/embed?dashboardId=c54b10f7-2551-4d62-9e4d-0b8772383abe&tileId=c7b6c94f-37ad-48d2-b1ed-35bb1545d591";
-                keyValue.MonthlyCost = "https://app.powerbi.com/embed?dashboardId=c54b10f7-2551-4d62-9e4d-0b8772383abe&tileId=f49dbe63-0b21-4946-9ce1-20a6d8c8d8e7";
-                keyValue.DayWiseConsumption = "https://app.powerbi.com/embed?dashboardId=c54b10f7-2551-4d62-9e4d-0b8772383abe&tileId=a73e3f67-9081-441b-bfb5-cf39fa6fa89e";
-                keyValue.PeriodWiseConsumption = "https://app.powerbi.com/embed?dashboardId=c54b10f7-2551-4d62-9e4d-0b8772383abe&tileId=ec321112-b0d5-49e8-bb53-cc4395f838d2";
+                keyValue.MonthlyKWh = "https://app.powerbi.com/embed?dashboardId=d43d8ae2-247d-4f01-8007-3562e36d1cfa&tileId=7feef563-d247-4f02-afa8-4974ee8e1a2c";
+                keyValue.MonthlyCost = "https://app.powerbi.com/embed?dashboardId=d43d8ae2-247d-4f01-8007-3562e36d1cfa&tileId=ad82b0c8-4942-4c96-a766-6bd5d0eb5b36";
+                keyValue.DayWiseConsumption = "https://app.powerbi.com/embed?dashboardId=d43d8ae2-247d-4f01-8007-3562e36d1cfa&tileId=b0ca63ef-e290-471b-a711-308de2e3a0f9";
+                keyValue.PeriodWiseConsumption = "https://app.powerbi.com/embed?dashboardId=d43d8ae2-247d-4f01-8007-3562e36d1cfa&tileId=3b94f102-7b1b-4071-9d4c-7ebb4f0d234d";
 
-                keyValue.Report = "https://app.powerbi.com/reportEmbed?reportId=d11751dd-4889-4880-8257-a5fb4aa8e1e5";
+                keyValue.Report = "https://app.powerbi.com/reportEmbed?reportId=31db8bf7-0509-4413-aac5-1ef7bbd29a38";
                 return keyValue;
             }
             catch (Exception ex)
@@ -225,21 +225,21 @@ namespace RestService.Utilities
                 keyValue.QuarterlyConsumption = "";
                 keyValue.LastQuarterlyConsumption = "";
 
-                keyValue.MonthlyConsumption = "https://app.powerbi.com/embed?dashboardId=939ac96d-e4a0-4e66-853b-d5dbfc1c3279&tileId=56dea74e-86c6-481e-b84f-27a04e68ccaf";
-                keyValue.LastMonthlyConsumption = "https://app.powerbi.com/embed?dashboardId=939ac96d-e4a0-4e66-853b-d5dbfc1c3279&tileId=09954fb8-41e6-4112-b09d-aa5f0d024cca";
+                keyValue.MonthlyConsumption = "https://app.powerbi.com/embed?dashboardId=a55133bd-3fda-4248-9ace-4852e8b07b2b&tileId=aeafb4ad-abf9-4eea-a257-41d975b9f73f";
+                keyValue.LastMonthlyConsumption = "https://app.powerbi.com/embed?dashboardId=a55133bd-3fda-4248-9ace-4852e8b07b2b&tileId=019e0199-35d0-40af-9725-e73addbcf361";
 
-                keyValue.WeeklyConsumption = "https://app.powerbi.com/embed?dashboardId=939ac96d-e4a0-4e66-853b-d5dbfc1c3279&tileId=ac3e5c37-6a2b-4142-98cc-babe5e720695";
-                keyValue.LastWeeklyConsumption = "https://app.powerbi.com/embed?dashboardId=939ac96d-e4a0-4e66-853b-d5dbfc1c3279&tileId=be405191-2799-4c8f-90bd-c82025c542da";
+                keyValue.WeeklyConsumption = "https://app.powerbi.com/embed?dashboardId=a55133bd-3fda-4248-9ace-4852e8b07b2b&tileId=1e7f55d8-372b-40c1-9baf-a6a66b6defa7";
+                keyValue.LastWeeklyConsumption = "https://app.powerbi.com/embed?dashboardId=a55133bd-3fda-4248-9ace-4852e8b07b2b&tileId=ea40551f-c79a-463d-b738-ab9d2735f7c6";
 
-                keyValue.DailyConsumption = "https://app.powerbi.com/embed?dashboardId=939ac96d-e4a0-4e66-853b-d5dbfc1c3279&tileId=cb1cfa6b-b02c-42c1-aecf-3da0cac1e31c";
-                keyValue.YesterdayConsumption = "https://app.powerbi.com/embed?dashboardId=939ac96d-e4a0-4e66-853b-d5dbfc1c3279&tileId=c9a90343-c4c6-4ffb-8ea9-63beaa3e2090";
+                keyValue.DailyConsumption = "https://app.powerbi.com/embed?dashboardId=a55133bd-3fda-4248-9ace-4852e8b07b2b&tileId=9b230ef1-f47f-42ed-aa19-1fea315e749f";
+                keyValue.YesterdayConsumption = "https://app.powerbi.com/embed?dashboardId=a55133bd-3fda-4248-9ace-4852e8b07b2b&tileId=b948cfde-60ee-4125-9fb8-21807886bcf0";
 
-                keyValue.MonthlyKWh = "https://app.powerbi.com/embed?dashboardId=939ac96d-e4a0-4e66-853b-d5dbfc1c3279&tileId=a70fc3dd-ea0f-48f2-81fd-95e12b5b35b7";
-                keyValue.MonthlyCost = "https://app.powerbi.com/embed?dashboardId=939ac96d-e4a0-4e66-853b-d5dbfc1c3279&tileId=0450955e-ad14-43c8-be05-8053b2fb3e50";
-                keyValue.DayWiseConsumption = "https://app.powerbi.com/embed?dashboardId=939ac96d-e4a0-4e66-853b-d5dbfc1c3279&tileId=069526aa-3118-440b-9e73-e37f44c7f56d";
-                keyValue.PeriodWiseConsumption = "https://app.powerbi.com/embed?dashboardId=939ac96d-e4a0-4e66-853b-d5dbfc1c3279&tileId=151702fc-33ac-48a3-8665-a9ef6ae69fd3";
+                keyValue.MonthlyKWh = "https://app.powerbi.com/embed?dashboardId=a55133bd-3fda-4248-9ace-4852e8b07b2b&tileId=868f9549-63b3-47a1-a135-21abed867d03";
+                keyValue.MonthlyCost = "https://app.powerbi.com/embed?dashboardId=a55133bd-3fda-4248-9ace-4852e8b07b2b&tileId=2d975f61-3103-4dcb-9a85-2453f55a438f";
+                keyValue.DayWiseConsumption = "https://app.powerbi.com/embed?dashboardId=a55133bd-3fda-4248-9ace-4852e8b07b2b&tileId=510ebefd-786a-4c36-97b0-ad63f9a6c54f";
+                keyValue.PeriodWiseConsumption = "https://app.powerbi.com/embed?dashboardId=a55133bd-3fda-4248-9ace-4852e8b07b2b&tileId=08415552-9de2-4936-812a-e4e3371ab76b";
 
-                keyValue.Report = "https://app.powerbi.com/reportEmbed?reportId=6653ae58-27ad-4a50-b4f1-0cab4e8eb255";
+                keyValue.Report = "https://app.powerbi.com/reportEmbed?reportId=d2d26e40-a0de-486d-b95b-118b1eed49b9";
                 return keyValue;
             }
             catch (Exception ex)

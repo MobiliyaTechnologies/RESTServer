@@ -15,7 +15,8 @@ namespace RestService.Entities
     public partial class MeterDetails
     {
         public int Id { get; set; }
-        public string Name { get; set; }
+        public string PowerScout { get; set; }
+        public string Breaker_details { get; set; }
         public string Serial { get; set; }
         public Nullable<double> Latitude { get; set; }
         public Nullable<double> Longitude { get; set; }

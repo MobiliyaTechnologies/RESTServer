@@ -5,6 +5,19 @@ using System.Web;
 
 namespace RestService.Models
 {
+
+    public class MeterDetailsModel
+    {
+        public int Id { get; set; }
+        public string PowerScout { get; set; }
+        public string Name { get; set; }
+        public string Serial { get; set; }
+        public double Latitude { get; set; }
+        public double Longitude { get; set; }
+        public double Altitude { get; set; }
+        public string Description { get; set; }
+    }
+
     public class MeterGeneralDataModel
     {
         public string Name { get; set; }
@@ -25,6 +38,33 @@ namespace RestService.Models
 
         public double MonthlyElectricCost { get; set; }
 
+    }
+
+    public class MeterMonthlyConsumptionModel
+    {
+        public int Id { get; set; }
+
+        public string Name { get; set; }
+
+        public string Month { get; set; }
+
+        public string Year { get; set; }
+
+        public string Powerscout { get; set; }
+
+        public double X { get; set; }
+
+        public double Y { get; set; }
+
+        public string Ligne { get; set; }
+
+        public double Monthly_KWH_Consumption { get; set; }
+
+        public double Monthly_Electric_Cost { get; set; }
+
+        public DateTime Current_Month { get; set; }
+
+        public DateTime Last_Month { get; set; }
     }
 
     public class MeterURLKey
@@ -62,6 +102,8 @@ namespace RestService.Models
     {
         public string PowerScout { get; set; }
 
+        public string Name { get; set; }
+
         public MonthList MonthWiseConsumption { get; set; }
 
         public MeterMonthWiseConsumption()
@@ -95,5 +137,17 @@ namespace RestService.Models
         public double Nov { get; set; }
 
         public double Dec { get; set; }
+    }
+
+    public class MeterWeekWiseMonthlyConsumption
+    {
+        public string PowerScout { get; set; }
+
+        public List<Double> WeekWiseConsumption { get; set; }
+
+        public MeterWeekWiseMonthlyConsumption()
+        {
+            WeekWiseConsumption = new List<double>();
+        }
     }
 }

@@ -23,6 +23,7 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="AMPS_SYSTEM_AVG" Type="float" />
           <Property Name="Building" Type="varchar(max)" />
+          <Property Name="Breaker_details" Type="varchar(max)" />
           <Property Name="Daily_electric_cost" Type="float" />
           <Property Name="Daily_KWH_System" Type="float" />
           <Property Name="Monthly_electric_cost" Type="float" />
@@ -39,7 +40,9 @@
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="PowerScout" Type="varchar(max)" />
+          <Property Name="Breaker_details" Type="varchar(max)" />
           <Property Name="Timestamp" Type="datetime" />
+          <Property Name="Daily_KWH_System" Type="float" />
           <Property Name="Daily_Predicted_KWH_System" Type="float" />
           <Property Name="TomorrowPredictedKWH" Type="float" />
         </EntityType>
@@ -142,7 +145,8 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="PowerScout" Type="nvarchar" MaxLength="50" />
+          <Property Name="Breaker_details" Type="varchar(max)" />
           <Property Name="Serial" Type="nvarchar" MaxLength="50" />
           <Property Name="Latitude" Type="float" />
           <Property Name="Longitude" Type="float" />
@@ -156,14 +160,15 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Month" Type="varchar(max)" />
           <Property Name="Year" Type="varchar(max)" />
-          <Property Name="Powerscout" Type="varchar(max)" />
+          <Property Name="PowerScout" Type="varchar(max)" />
+          <Property Name="Breaker_details" Type="varchar(max)" />
           <Property Name="X" Type="float" />
           <Property Name="Y" Type="float" />
           <Property Name="Ligne" Type="varchar(max)" />
-          <Property Name="Monthly_KWH_Consumption" Type="float" />
-          <Property Name="Monthly_Electric_Cost" Type="float" />
-          <Property Name="Current_Month" Type="datetime" />
-          <Property Name="Last_Month" Type="datetime" />
+          <Property Name="Monthly_KWH_System" Type="float" />
+          <Property Name="Monthly_electric_cost" Type="float" />
+          <Property Name="current_month" Type="datetime" />
+          <Property Name="last_month" Type="datetime" />
         </EntityType>
         <EntityType Name="MSLiveData">
           <Key>
@@ -365,6 +370,7 @@ warning 6002: The table/view 'PowerGrid.dbo.TempMLData' does not have a primary 
           <Property Name="Start_Time" Type="datetime" />
           <Property Name="End_Time" Type="datetime" />
           <Property Name="PowerScout" Type="varchar(max)" />
+          <Property Name="Breaker_details" Type="varchar(max)" />
           <Property Name="Weekly_Predicted_KWH_System" Type="float" />
         </EntityType>
         <Association Name="FK_Alert_User">
@@ -544,6 +550,7 @@ warning 6002: The table/view 'PowerGrid.dbo.TempMLData' does not have a primary 
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="AMPS_SYSTEM_AVG" Type="Double" />
           <Property Name="Building" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Breaker_details" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="Daily_electric_cost" Type="Double" />
           <Property Name="Daily_KWH_System" Type="Double" />
           <Property Name="Monthly_electric_cost" Type="Double" />
@@ -560,7 +567,9 @@ warning 6002: The table/view 'PowerGrid.dbo.TempMLData' does not have a primary 
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="PowerScout" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Breaker_details" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="Timestamp" Type="DateTime" Precision="3" />
+          <Property Name="Daily_KWH_System" Type="Double" />
           <Property Name="Daily_Predicted_KWH_System" Type="Double" />
           <Property Name="TomorrowPredictedKWH" Type="Double" />
         </EntityType>
@@ -663,7 +672,8 @@ warning 6002: The table/view 'PowerGrid.dbo.TempMLData' does not have a primary 
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PowerScout" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Breaker_details" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="Serial" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Latitude" Type="Double" />
           <Property Name="Longitude" Type="Double" />
@@ -677,14 +687,15 @@ warning 6002: The table/view 'PowerGrid.dbo.TempMLData' does not have a primary 
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Month" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="Year" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="Powerscout" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="PowerScout" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Breaker_details" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="X" Type="Double" />
           <Property Name="Y" Type="Double" />
           <Property Name="Ligne" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="Monthly_KWH_Consumption" Type="Double" />
-          <Property Name="Monthly_Electric_Cost" Type="Double" />
-          <Property Name="Current_Month" Type="DateTime" Precision="3" />
-          <Property Name="Last_Month" Type="DateTime" Precision="3" />
+          <Property Name="Monthly_KWH_System" Type="Double" />
+          <Property Name="Monthly_electric_cost" Type="Double" />
+          <Property Name="current_month" Type="DateTime" Precision="3" />
+          <Property Name="last_month" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="MSLiveData">
           <Key>
@@ -814,6 +825,7 @@ warning 6002: The table/view 'PowerGrid.dbo.TempMLData' does not have a primary 
           <Property Name="Start_Time" Type="DateTime" Precision="3" />
           <Property Name="End_Time" Type="DateTime" Precision="3" />
           <Property Name="PowerScout" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Breaker_details" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="Weekly_Predicted_KWH_System" Type="Double" />
         </EntityType>
         <EntityType Name="PowergridAzureMLData">
@@ -997,6 +1009,7 @@ warning 6002: The table/view 'PowerGrid.dbo.TempMLData' does not have a primary 
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="AMPS_SYSTEM_AVG" ColumnName="AMPS_SYSTEM_AVG" />
                 <ScalarProperty Name="Building" ColumnName="Building" />
+                <ScalarProperty Name="Breaker_details" ColumnName="Breaker_details" />
                 <ScalarProperty Name="Daily_electric_cost" ColumnName="Daily_electric_cost" />
                 <ScalarProperty Name="Daily_KWH_System" ColumnName="Daily_KWH_System" />
                 <ScalarProperty Name="Monthly_electric_cost" ColumnName="Monthly_electric_cost" />
@@ -1014,7 +1027,9 @@ warning 6002: The table/view 'PowerGrid.dbo.TempMLData' does not have a primary 
               <MappingFragment StoreEntitySet="DailyConsumptionPrediction">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="PowerScout" ColumnName="PowerScout" />
+                <ScalarProperty Name="Breaker_details" ColumnName="Breaker_details" />
                 <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
+                <ScalarProperty Name="Daily_KWH_System" ColumnName="Daily_KWH_System" />
                 <ScalarProperty Name="Daily_Predicted_KWH_System" ColumnName="Daily_Predicted_KWH_System" />
                 <ScalarProperty Name="TomorrowPredictedKWH" ColumnName="TomorrowPredictedKWH" />
               </MappingFragment>
@@ -1120,7 +1135,8 @@ warning 6002: The table/view 'PowerGrid.dbo.TempMLData' does not have a primary 
             <EntityTypeMapping TypeName="PowerGridModel.MeterDetails">
               <MappingFragment StoreEntitySet="MeterDetails">
                 <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="PowerScout" ColumnName="PowerScout" />
+                <ScalarProperty Name="Breaker_details" ColumnName="Breaker_details" />
                 <ScalarProperty Name="Serial" ColumnName="Serial" />
                 <ScalarProperty Name="Latitude" ColumnName="Latitude" />
                 <ScalarProperty Name="Longitude" ColumnName="Longitude" />
@@ -1135,14 +1151,15 @@ warning 6002: The table/view 'PowerGrid.dbo.TempMLData' does not have a primary 
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Month" ColumnName="Month" />
                 <ScalarProperty Name="Year" ColumnName="Year" />
-                <ScalarProperty Name="Powerscout" ColumnName="Powerscout" />
+                <ScalarProperty Name="PowerScout" ColumnName="PowerScout" />
+                <ScalarProperty Name="Breaker_details" ColumnName="Breaker_details" />
                 <ScalarProperty Name="X" ColumnName="X" />
                 <ScalarProperty Name="Y" ColumnName="Y" />
                 <ScalarProperty Name="Ligne" ColumnName="Ligne" />
-                <ScalarProperty Name="Monthly_KWH_Consumption" ColumnName="Monthly_KWH_Consumption" />
-                <ScalarProperty Name="Monthly_Electric_Cost" ColumnName="Monthly_Electric_Cost" />
-                <ScalarProperty Name="Current_Month" ColumnName="Current_Month" />
-                <ScalarProperty Name="Last_Month" ColumnName="Last_Month" />
+                <ScalarProperty Name="Monthly_KWH_System" ColumnName="Monthly_KWH_System" />
+                <ScalarProperty Name="Monthly_electric_cost" ColumnName="Monthly_electric_cost" />
+                <ScalarProperty Name="current_month" ColumnName="current_month" />
+                <ScalarProperty Name="last_month" ColumnName="last_month" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1272,6 +1289,7 @@ warning 6002: The table/view 'PowerGrid.dbo.TempMLData' does not have a primary 
                 <ScalarProperty Name="Start_Time" ColumnName="Start_Time" />
                 <ScalarProperty Name="End_Time" ColumnName="End_Time" />
                 <ScalarProperty Name="PowerScout" ColumnName="PowerScout" />
+                <ScalarProperty Name="Breaker_details" ColumnName="Breaker_details" />
                 <ScalarProperty Name="Weekly_Predicted_KWH_System" ColumnName="Weekly_Predicted_KWH_System" />
               </MappingFragment>
             </EntityTypeMapping>
