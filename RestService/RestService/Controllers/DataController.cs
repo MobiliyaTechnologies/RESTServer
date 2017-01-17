@@ -160,5 +160,23 @@ namespace RestService.Controllers
                 return response;
             }
         }
+
+        public HttpResponseMessage GetDayWiseMonthlyConsumption(int Id, string Month, int Year)
+        {
+            HttpResponseMessage response;
+            try
+            {
+                log.Debug("GetDayWiseMonthlyConsumption called");
+                var data = dataService.GetDayWiseMonthlyConsumption(Id, Month, Year);
+                response = data == null ? Request.CreateErrorResponse(HttpStatusCode.Forbidden, "Invalid User") : data;
+                return response;
+            }
+            catch (Exception ex)
+            {
+                log.Debug("Exception occurred in the GetDayWiseMonthlyConsumption as: " + ex);
+                response = Request.CreateErrorResponse(HttpStatusCode.ServiceUnavailable, ex);
+                return response;
+            }
+        }
     }
 }

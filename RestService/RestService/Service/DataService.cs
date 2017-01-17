@@ -308,5 +308,47 @@ namespace RestService.Service
                 return new MeterWeekWiseMonthlyConsumption { PowerScout = dailyConsumptionList.FirstOrDefault().PowerScout };
             }
         }
+
+        public List<MeterDayWiseMonthlyConsumption> GetDayWiseMonthlyConsumption(int UserId, string Month, int Year)
+        {
+            try
+            {
+                log.Debug("GetDayWiseMonthlyConsumption called");
+                if (accountService.ValidateUser(UserId))
+                {
+                    var meterData = dataFacade.GetMeters();
+                    if (meterData != null && meterData.Count > 0)
+                    {
+                        List<MeterDayWiseMonthlyConsumption> dayWiseConsumptionList = new List<MeterDayWiseMonthlyConsumption>();
+                        foreach (var meter in meterData)
+                        {
+                            List<DailyConsumptionDetails> meterDailyConsumption = dataFacade.GetDailyConsumptionForMonth(meter, Month, Year);
+                            if(meterDailyConsumption == null || meterDailyConsumption.Count < 1)
+                            {
+                                log.Debug("GetDayWiseMonthlyConsumption -> No Data found");
+                                return new List<MeterDayWiseMonthlyConsumption>();
+                            }
+                            //Conversion from Entity to Model
+                        }
+                        return dayWiseConsumptionList;
+                    }
+                    else
+                    {
+                        log.Debug("GetDayWiseMonthlyConsumption -> No Data found");
+                        return new List<MeterDayWiseMonthlyConsumption>();
+                    }
+                }
+                else
+                {
+                    log.Debug("GetDayWiseMonthlyConsumption -> User valdation failed");
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                log.Error("Exception occurred in GetDayWiseMonthlyConsumption as: " + ex);
+                throw new Exception(ex.Message, ex);
+            }
+        }
     }
 }
