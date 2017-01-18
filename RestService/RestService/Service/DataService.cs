@@ -353,7 +353,48 @@ namespace RestService.Service
             }
         }
 
+        public List<MeterDayWiseMonthlyConsumptionPrediction> GetDayWiseCurrentMonthPrediction(int UserId, string Month, int Year)
+        {
+            try
+            {
+                log.Debug("GetDayWiseCurrentMonthPrediction called");
+                if (accountService.ValidateUser(UserId))
+                {
+                    var meterData = dataFacade.GetMeters();
+                    if (meterData != null && meterData.Count > 0)
+                    {
+                        List<MeterDayWiseMonthlyConsumptionPrediction> dayWisePredictionList = new List<MeterDayWiseMonthlyConsumptionPrediction>();
+                        foreach (var meter in meterData)
+                        {
+                            var dailyPredictionList = dataFacade.GetDayWiseNextMonthPrediction(meter, Month, Year);
+                            if (dailyPredictionList == null || dailyPredictionList.Count < 1)
+                            {
+                                log.Debug("GetDayWiseCurrentMonthPrediction -> No Data found");
+                                return new List<MeterDayWiseMonthlyConsumptionPrediction>();
+                            }
+                            dayWisePredictionList.Add(Converter.MeterDayWiseMonthlyPredictionEntityToModel(dailyPredictionList));
+                        }
+                        return dayWisePredictionList;
+                    }
+                    else
+                    {
+                        log.Debug("GetDayWiseCurrentMonthPrediction -> No data found");
+                        return new List<MeterDayWiseMonthlyConsumptionPrediction>();
+                    }
+                }
+                else
+                {
+                    log.Debug("GetDayWiseCurrentMonthPrediction -> User validation failed");
+                    return null;
+                }
 
+            }
+            catch (Exception ex)
+            {
+                log.Error("Exception occurred in GetDayWiseCurrentMonthPrediction as: " + ex);
+                return new List<MeterDayWiseMonthlyConsumptionPrediction>();
+            }
+        }
         public List<MeterDayWiseMonthlyConsumptionPrediction> GetDayWiseNextMonthPrediction(int UserId, string Month, int Year)
         {
             try
