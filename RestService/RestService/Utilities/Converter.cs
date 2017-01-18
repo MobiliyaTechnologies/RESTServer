@@ -88,7 +88,6 @@ namespace RestService.Utilities
             meterModel.Last_Month = (DateTime)meterData.last_month;
             return meterModel;
         }
-
         public static MeterDayWiseMonthlyConsumption MeterDayWiseEntityToModel(List<DailyConsumptionDetails> dailyConsumptionList)
         {
             MeterDayWiseMonthlyConsumption dayWiseConsumption = new MeterDayWiseMonthlyConsumption();
@@ -99,6 +98,18 @@ namespace RestService.Utilities
                 return true;
             });
             return dayWiseConsumption;
+        }
+
+        public static MeterDayWiseMonthlyConsumptionPrediction MeterDayWiseMonthlyPredictionEntityToModel(List<DailyConsumptionPrediction> dailyConsumptionPredictionList)
+        {
+            MeterDayWiseMonthlyConsumptionPrediction dayWiseConsumptionPrediction = new MeterDayWiseMonthlyConsumptionPrediction();
+            dayWiseConsumptionPrediction.PowerScout = dailyConsumptionPredictionList.FirstOrDefault().PowerScout;
+            dailyConsumptionPredictionList.All(data =>
+            {
+                dayWiseConsumptionPrediction.DayWiseConsumptionPrediction.Add((double)data.Daily_Predicted_KWH_System);
+                return true;
+            });
+            return dayWiseConsumptionPrediction;
         }
     }
 }

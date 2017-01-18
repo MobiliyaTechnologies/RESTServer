@@ -104,7 +104,7 @@ namespace RestService.Controllers
         }
 
         [Route("api/getpowerbiurl/{Id}/{MeterSerial}")]
-        public HttpResponseMessage GetPowerBIURL(int Id,string MeterSerial)
+        public HttpResponseMessage GetPowerBIURL(int Id, string MeterSerial)
         {
             HttpResponseMessage response;
             try
@@ -120,7 +120,7 @@ namespace RestService.Controllers
                 response = Request.CreateErrorResponse(HttpStatusCode.ServiceUnavailable, ex);
                 return response;
             }
-            
+
         }
 
         [Route("api/getmonthwiseconsumption/{Id}/{Year}")]
@@ -169,12 +169,31 @@ namespace RestService.Controllers
             {
                 log.Debug("GetDayWiseMonthlyConsumption called");
                 var data = dataService.GetDayWiseMonthlyConsumption(Id, Month, Year);
-                response = data == null ? Request.CreateErrorResponse(HttpStatusCode.Forbidden, "Invalid User") : Request.CreateResponse(HttpStatusCode.OK,data);
+                response = data == null ? Request.CreateErrorResponse(HttpStatusCode.Forbidden, "Invalid User") : Request.CreateResponse(HttpStatusCode.OK, data);
                 return response;
             }
             catch (Exception ex)
             {
                 log.Debug("Exception occurred in the GetDayWiseMonthlyConsumption as: " + ex);
+                response = Request.CreateErrorResponse(HttpStatusCode.ServiceUnavailable, ex);
+                return response;
+            }
+        }
+
+        [Route("api/getdaywisenextmonthprediction/{Id}/{Month}/{Year}")]
+        public HttpResponseMessage GetDayWiseNextMonthConsumptionPrediction(int Id, string Month, int Year)
+        {
+            HttpResponseMessage response;
+            try
+            {
+                log.Debug("GetDayWiseNextMonthConsumptionPrediction API called");
+                var data = dataService.GetDayWiseNextMonthPrediction(Id, Month, Year);
+                response = data == null ? Request.CreateErrorResponse(HttpStatusCode.Forbidden, "Invalid User") : Request.CreateResponse(HttpStatusCode.OK, data);
+                return response;
+            }
+            catch (Exception ex)
+            {
+                log.Error("Exception occurred in GetDayWiseNextMonthConsumptionPrediction as: " + ex);
                 response = Request.CreateErrorResponse(HttpStatusCode.ServiceUnavailable, ex);
                 return response;
             }

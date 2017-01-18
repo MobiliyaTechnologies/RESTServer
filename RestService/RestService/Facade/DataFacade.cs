@@ -45,7 +45,8 @@ namespace RestService.Facade
             MeterMonthWiseConsumption meterConsumption = new MeterMonthWiseConsumption();
             meterDataList.All(meterDataItem =>
             {
-            switch (meterDataItem.Month.ToLower()){
+                switch (meterDataItem.Month.ToLower())
+                {
                     case "jan":
                         meterConsumption.MonthWiseConsumption.Jan = meterConsumption.MonthWiseConsumption.Jan + (double)meterDataItem.Monthly_KWH_System;
                         break;
@@ -107,6 +108,14 @@ namespace RestService.Facade
             DateTime.TryParse("01-" + Month + "-" + Year, out monthDate);
             var DailyConsumptionList = (from data in dbEntity.DailyConsumptionDetails where meter.Serial.Equals(data.PowerScout) && monthDate.Month == ((DateTime)data.Timestamp).Month && monthDate.Year == ((DateTime)data.Timestamp).Year select data).ToList();
             return DailyConsumptionList;
+        }
+
+        public List<DailyConsumptionPrediction> GetDayWiseNextMonthPrediction(MeterDetails meter, string Month, int Year)
+        {
+            DateTime monthDate;
+            DateTime.TryParse("01-" + Month + "-" + Year, out monthDate);
+            var dailyConsumptionPrediction = (from data in dbEntity.DailyConsumptionPrediction where meter.Serial.Equals(data.PowerScout) && monthDate.Month == ((DateTime)data.Timestamp).Month && monthDate.Year == ((DateTime)data.Timestamp).Year select data).ToList();
+            return dailyConsumptionPrediction;
         }
     }
 }
