@@ -150,4 +150,16 @@ namespace RestService.Models
             WeekWiseConsumption = new List<double>();
         }
     }
+
+    public class MeterDayWiseMonthlyConsumption
+    {
+        public string PowerScout { get; set; }
+
+        public List<double> DayWiseConsumption { get; set; }
+
+        public MeterDayWiseMonthlyConsumption()
+        {
+            DayWiseConsumption = new List<double>();
+        }
+    }
 }
