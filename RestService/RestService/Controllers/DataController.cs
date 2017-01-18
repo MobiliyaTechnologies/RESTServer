@@ -161,6 +161,7 @@ namespace RestService.Controllers
             }
         }
 
+        [Route("api/getdaywisemonthlyconsumption/{Id}/{Month}/{Year}")]
         public HttpResponseMessage GetDayWiseMonthlyConsumption(int Id, string Month, int Year)
         {
             HttpResponseMessage response;
@@ -168,7 +169,7 @@ namespace RestService.Controllers
             {
                 log.Debug("GetDayWiseMonthlyConsumption called");
                 var data = dataService.GetDayWiseMonthlyConsumption(Id, Month, Year);
-                response = data == null ? Request.CreateErrorResponse(HttpStatusCode.Forbidden, "Invalid User") : data;
+                response = data == null ? Request.CreateErrorResponse(HttpStatusCode.Forbidden, "Invalid User") : Request.CreateResponse(HttpStatusCode.OK,data);
                 return response;
             }
             catch (Exception ex)

@@ -329,6 +329,9 @@ namespace RestService.Service
                                 return new List<MeterDayWiseMonthlyConsumption>();
                             }
                             //Conversion from Entity to Model
+                            var dayWiseConsumption = Converter.MeterDayWiseEntityToModel(meterDailyConsumption);
+                            if (dayWiseConsumption != null)
+                                dayWiseConsumptionList.Add(dayWiseConsumption);
                         }
                         return dayWiseConsumptionList;
                     }

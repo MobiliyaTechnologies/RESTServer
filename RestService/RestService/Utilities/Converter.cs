@@ -88,5 +88,17 @@ namespace RestService.Utilities
             meterModel.Last_Month = (DateTime)meterData.last_month;
             return meterModel;
         }
+
+        public static MeterDayWiseMonthlyConsumption MeterDayWiseEntityToModel(List<DailyConsumptionDetails> dailyConsumptionList)
+        {
+            MeterDayWiseMonthlyConsumption dayWiseConsumption = new MeterDayWiseMonthlyConsumption();
+            dayWiseConsumption.PowerScout = dailyConsumptionList.FirstOrDefault().PowerScout;
+            dailyConsumptionList.All(data =>
+            {
+                dayWiseConsumption.DayWiseConsumption.Add((double)data.Daily_KWH_System);
+                return true;
+            });
+            return dayWiseConsumption;
+        }
     }
 }
