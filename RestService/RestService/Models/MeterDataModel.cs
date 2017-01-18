@@ -151,7 +151,7 @@ namespace RestService.Models
         }
     }
 
-    public class MeterDayWiseMonthlyConsumption
+public class MeterDayWiseMonthlyConsumption
     {
         public string PowerScout { get; set; }
 
@@ -162,4 +162,15 @@ namespace RestService.Models
             DayWiseConsumption = new List<double>();
         }
     }
-}
+
+public class MeterDayWiseMonthlyConsumptionPrediction
+    {
+        public string PowerScout { get; set; }
+
+        public List<double> DayWiseConsumptionPrediction { get; set; }
+
+        public MeterDayWiseMonthlyConsumptionPrediction()
+        {
+            DayWiseConsumptionPrediction = new List<double>();
+        }
+    }}

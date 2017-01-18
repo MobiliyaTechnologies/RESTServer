@@ -224,7 +224,7 @@ namespace RestService.Service
                         foreach (var meter in meterData)
                         {
                             List<DailyConsumptionDetails> dailyConsumptionListForMonth = dataFacade.GetDailyConsumptionForMonth(meter, Month, Year);
-                            if(dailyConsumptionListForMonth == null || dailyConsumptionListForMonth.Count < 1)
+                            if (dailyConsumptionListForMonth == null || dailyConsumptionListForMonth.Count < 1)
                             {
                                 log.Debug("GetWeekWiseMonthlyConsumption -> No data found");
                                 return new List<MeterWeekWiseMonthlyConsumption>();
@@ -308,7 +308,6 @@ namespace RestService.Service
                 return new MeterWeekWiseMonthlyConsumption { PowerScout = dailyConsumptionList.FirstOrDefault().PowerScout };
             }
         }
-
         public List<MeterDayWiseMonthlyConsumption> GetDayWiseMonthlyConsumption(int UserId, string Month, int Year)
         {
             try
@@ -323,7 +322,7 @@ namespace RestService.Service
                         foreach (var meter in meterData)
                         {
                             List<DailyConsumptionDetails> meterDailyConsumption = dataFacade.GetDailyConsumptionForMonth(meter, Month, Year);
-                            if(meterDailyConsumption == null || meterDailyConsumption.Count < 1)
+                            if (meterDailyConsumption == null || meterDailyConsumption.Count < 1)
                             {
                                 log.Debug("GetDayWiseMonthlyConsumption -> No Data found");
                                 return new List<MeterDayWiseMonthlyConsumption>();
@@ -351,6 +350,55 @@ namespace RestService.Service
             {
                 log.Error("Exception occurred in GetDayWiseMonthlyConsumption as: " + ex);
                 throw new Exception(ex.Message, ex);
+            }
+        }
+
+
+        public List<MeterDayWiseMonthlyConsumptionPrediction> GetDayWiseNextMonthPrediction(int UserId, string Month, int Year)
+        {
+            try
+            {
+                log.Debug("GetDayWiseNextMonthPrediction called");
+                if (accountService.ValidateUser(UserId))
+                {
+                    var meterData = dataFacade.GetMeters();
+                    if (meterData != null && meterData.Count > 0)
+                    {
+                        List<MeterDayWiseMonthlyConsumptionPrediction> dayWisePredictionList = new List<MeterDayWiseMonthlyConsumptionPrediction>();
+                        DateTime monthDate;
+                        DateTime.TryParse("01-" + Month + "-" + Year, out monthDate);
+                        monthDate = monthDate.AddMonths(1);
+                        Month = monthDate.ToString("MMM");
+                        Year = monthDate.Year;
+                        foreach (var meter in meterData)
+                        {
+                            var dailyPredictionList = dataFacade.GetDayWiseNextMonthPrediction(meter, Month, Year);
+                            if (dailyPredictionList == null || dailyPredictionList.Count < 1)
+                            {
+                                log.Debug("GetDayWiseNextMonthPrediction -> No Data found");
+                                return new List<MeterDayWiseMonthlyConsumptionPrediction>();
+                            }
+                            dayWisePredictionList.Add(Converter.MeterDayWiseMonthlyPredictionEntityToModel(dailyPredictionList));
+                        }
+                        return dayWisePredictionList;
+                    }
+                    else
+                    {
+                        log.Debug("GetDayWiseNextMonthPrediction -> No data found");
+                        return new List<MeterDayWiseMonthlyConsumptionPrediction>();
+                    }
+                }
+                else
+                {
+                    log.Debug("GetDayWiseMonthlyPrediction -> User validation failed");
+                    return null;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                log.Error("Exception occurred in GetDayWiseNextMonthPrediction as: " + ex);
+                return new List<MeterDayWiseMonthlyConsumptionPrediction>();
             }
         }
     }
