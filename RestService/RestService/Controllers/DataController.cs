@@ -198,5 +198,24 @@ namespace RestService.Controllers
                 return response;
             }
         }
+
+        [Route("api/getdaywisecurrentmonthprediction/{Id}/{Month}/{Year}")]
+        public HttpResponseMessage GetDayWiseCurrentMonthConsumptionPrediction(int Id, string Month, int Year)
+        {
+            HttpResponseMessage response;
+            try
+            {
+                log.Debug("GetDayWiseCurrentMonthConsumptionPrediction API called");
+                var data = dataService.GetDayWiseCurrentMonthPrediction(Id, Month, Year);
+                response = data == null ? Request.CreateErrorResponse(HttpStatusCode.Forbidden, "Invalid User") : Request.CreateResponse(HttpStatusCode.OK, data);
+                return response;
+            }
+            catch (Exception ex)
+            {
+                log.Error("Exception occurred in GetDayWiseCurrentMonthConsumptionPrediction as: " + ex);
+                response = Request.CreateErrorResponse(HttpStatusCode.ServiceUnavailable, ex);
+                return response;
+            }
+        }
     }
 }
