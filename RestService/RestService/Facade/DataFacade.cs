@@ -102,6 +102,15 @@ namespace RestService.Facade
             return meterConsumption;
         }
 
+        public List<MonthlyConsumptionDetails> GetMeterMonthWiseConsumptionForOffset(MeterDetails meterData, string Month, int Year, int Offset)
+        {
+            DateTime endDate;
+            DateTime.TryParse("01-" + Month + "-" + Year, out endDate);
+            DateTime startDate = endDate.AddMonths(-Offset);
+            var meterDataList = (from data in dbEntity.MonthlyConsumptionDetails where data.PowerScout.Equals(meterData.PowerScout) && (data.Year.Equals(startDate.Year.ToString()) || data.Year.Equals(endDate.Year.ToString())) orderby data.Id descending select data).ToList();
+            return meterDataList;
+        }
+
         public List<DailyConsumptionDetails> GetDailyConsumptionForMonth(MeterDetails meter, string Month, int Year)
         {
             DateTime monthDate;
