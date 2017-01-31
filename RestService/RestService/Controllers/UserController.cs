@@ -49,20 +49,27 @@ namespace RestService.Controllers
 
         [Route("api/signup")]
         [HttpPost]
-        public ResponseModel SignUp([FromBody] UserDataModel userDetails)
+        public HttpResponseMessage SignUp([FromBody] UserDataModel userDetails)
         {
-            ResponseModel response = new ResponseModel();
+            HttpResponseMessage response;
             try
             {
                 log.Debug("Sign Up API called");
-                response = accountService.RegisterUser(userDetails);
+                if (ModelState.IsValid)
+                {
+                    var data = accountService.RegisterUser(userDetails);
+                    response = Request.CreateResponse(HttpStatusCode.OK, data);
+                    return response; 
+                }
+                //Create an error message for returning
+                string messages = string.Join("; ", ModelState.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage));
+                response = Request.CreateResponse(HttpStatusCode.BadRequest, messages);
                 return response;
             }
             catch (Exception ex)
             {
                 log.Error("Exception occurred in SignUp API as: " + ex);
-                response.Message = ex.Message;
-                response.Status_Code = (int)Constants.StatusCode.Error;
+                response = Request.CreateErrorResponse(HttpStatusCode.ServiceUnavailable, ex);
                 return response;
             }
         }
