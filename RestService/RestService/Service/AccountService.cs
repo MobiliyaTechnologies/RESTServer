@@ -26,27 +26,15 @@ namespace RestService.Service
         {
             try
             {
-                log.Debug("Register User called");
-                if (validator.SignUpValidator(userDetails))
+                log.Debug("RegisterUser called");
+                User userInfo = Converter.UserModelToUserEntity(userDetails);
+                response = userFacade.RegisterUser(userInfo);
+                if (response.Status_Code == (int)Constants.StatusCode.Ok)
                 {
-                    //Validation Successful
-                    User userInfo = Converter.UserModelToUserEntity(userDetails);
-                    response = userFacade.RegisterUser(userInfo);
-                    if (response.Status_Code == Convert.ToInt16(Constants.StatusCode.Ok))
-                    {
-                        UserRole userRoleInfo = Converter.UserModelToUserRoleEntity(userDetails);
-                        response = userFacade.AddUserRoleMapping(userInfo, userRoleInfo);
-                    }
-                    return response;
+                    UserRole userRoleInfo = Converter.UserModelToUserRoleEntity(userDetails);
+                    response = userFacade.AddUserRoleMapping(userInfo, userRoleInfo);
                 }
-                else
-                {
-                    //validation Unsuccessful
-                    log.Debug("RegisterUser-> Validation failed");
-                    response.Status_Code = Convert.ToInt16(Constants.StatusCode.Error);
-                    response.Message = "Validation Faliure";
-                    return response;
-                }
+                return response;
             }
             catch (Exception ex)
             {
