@@ -142,6 +142,25 @@ namespace RestService.Controllers
             }
         }
 
+        [Route("api/getmonthwiseconsumptionforoffset/{Id}/{Month}/{Year}/{Offset}")]
+        public HttpResponseMessage GetMonthWiseConsumptionForOffset(int Id, string Month, int Year, int Offset)
+        {
+            HttpResponseMessage response;
+            try
+            {
+                log.Debug("GetMonthWiseConsumptionForOffset API called");
+                var data = dataService.GetMonthWiseConsumptionForOffset(Id, Month, Year, Offset);
+                response = data == null ? Request.CreateErrorResponse(HttpStatusCode.Forbidden, "Invalid User") : Request.CreateResponse(HttpStatusCode.OK, data);
+                return response;
+            }
+            catch (Exception ex)
+            {
+                log.Error("Exception occurred in GetMonthWiseConsumptionForOffset as: " + ex);
+                response = Request.CreateErrorResponse(HttpStatusCode.ServiceUnavailable, ex);
+                return response;
+            }
+        }
+
         [Route("api/getweekwisemonthlyconsumption/{Id}/{Month}/{Year}")]
         public HttpResponseMessage GetWeekWiseMonthlyConsumption(int Id, string Month, int Year)
         {

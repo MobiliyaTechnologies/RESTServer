@@ -210,6 +210,52 @@ namespace RestService.Service
             }
         }
 
+        public List<MeterMonthWiseConsumption> GetMonthWiseConsumptionForOffset(int UserId, string Month, int Year, int Offset)
+        {
+            try
+            {
+                log.Debug("GetMonthWiseConsumptionForOffset called");
+                if (accountService.ValidateUser(UserId))
+                {
+                    List<MeterDetails> meterData = dataFacade.GetMeters();
+                    if (meterData != null && meterData.Count > 0)
+                    {
+                        List<MeterMonthWiseConsumption> monthWiseDataList = new List<MeterMonthWiseConsumption>();
+                        foreach (var meterDataItem in meterData)
+                        {
+                            List<MonthlyConsumptionDetails> monthlyDataList = dataFacade.GetMeterMonthWiseConsumptionForOffset(meterDataItem, Month, Year, Offset);
+                            if(monthlyDataList == null || monthlyDataList.Count < 1)
+                            {
+                                log.Debug("GetMonthwiseConsumptionForOffset -> No Data found for meter: " + meterDataItem.PowerScout);
+                                monthWiseDataList.Add(new MeterMonthWiseConsumption { PowerScout = meterDataItem.PowerScout, Name = meterDataItem.Breaker_details });
+                                continue;
+                            }
+                            if (monthlyDataList.Count > Offset)
+                                monthlyDataList.RemoveRange(Offset, monthlyDataList.Count - Offset);
+
+                            monthWiseDataList.Add(Converter.MeterMonthWiseEntityToModel(monthlyDataList));
+                        }
+                        return monthWiseDataList;
+                    }
+                    else
+                    {
+                        log.Debug("GetMonthWiseConsumptionForOffset -> No data found");
+                        return new List<MeterMonthWiseConsumption>();
+                    }
+                }
+                else
+                {
+                    log.Debug("GetMonthWiseConsumptionForOffset -> User validation failed");
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                log.Error("Exception occurred in GetMonthWiseConsumptionForOffset as: " + ex);
+                throw new Exception(ex.Message, ex);
+            }
+        }
+
         public List<MeterWeekWiseMonthlyConsumption> GetWeekWiseMonthlyConsumption(int UserId, string Month, int Year)
         {
             try
