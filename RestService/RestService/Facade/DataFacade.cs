@@ -106,8 +106,9 @@ namespace RestService.Facade
         {
             DateTime endDate;
             DateTime.TryParse("01-" + Month + "-" + Year, out endDate);
+            endDate = endDate.AddMonths(1).AddDays(-1);
             DateTime startDate = endDate.AddMonths(-Offset);
-            var meterDataList = (from data in dbEntity.MonthlyConsumptionDetails where data.PowerScout.Equals(meterData.PowerScout) && (data.Year.Equals(startDate.Year.ToString()) || data.Year.Equals(endDate.Year.ToString())) orderby data.Id descending select data).ToList();
+            var meterDataList = (from data in dbEntity.MonthlyConsumptionDetails where data.PowerScout.Equals(meterData.PowerScout) && (data.Year.Equals(startDate.Year.ToString()) || data.Year.Equals(endDate.Year.ToString())) orderby data.Id descending select data).ToList().Where(data => ((DateTime)data.Timestamp).Date > startDate.Date && ((DateTime)data.Timestamp).Date <= endDate.Date).ToList();
             return meterDataList;
         }
 
