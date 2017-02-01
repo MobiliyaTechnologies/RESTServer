@@ -236,5 +236,24 @@ namespace RestService.Controllers
                 return response;
             }
         }
+
+        [Route("api/getpowerbigeneralurl/{Id}")]
+        public HttpResponseMessage GetPowerBIGeneralURL(int Id)
+        {
+            HttpResponseMessage response;
+            try
+            {
+                log.Debug("GetPowerBIGeneralURL API called");
+                var data = dataService.GetPowerBIGeneralURL(Id);
+                response = data == null ? Request.CreateErrorResponse(HttpStatusCode.Forbidden, "Invalid User") : Request.CreateResponse(HttpStatusCode.OK, data);
+                return response;
+            }
+            catch (Exception ex)
+            {
+                log.Error("Exception occurred in GetPowerBIGeneralURL as: " + ex);
+                response = Request.CreateErrorResponse(HttpStatusCode.ServiceUnavailable, ex);
+                return response;
+            }
+        }
     }
 }

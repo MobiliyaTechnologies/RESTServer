@@ -168,6 +168,28 @@ namespace RestService.Service
             }
         }
 
+        public PowerBIGeneralURL GetPowerBIGeneralURL(int UserId)
+        {
+            try
+            {
+                log.Debug("GetPowerBIGeneralURL called");
+                if (accountService.ValidateUser(UserId))
+                {
+                    return new PowerBIGeneralURL();
+                }
+                else
+                {
+                    log.Debug("GetPowerBIGeneralURL -> User Validation failed");
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                log.Error("Exception occurred in GetPowerBIGeneralURL as: " + ex);
+                throw new Exception(ex.Message, ex);
+            }
+        }
+
         public List<MeterMonthWiseConsumption> GetMonthWiseConsumption(int UserId, int Year)
         {
             try
