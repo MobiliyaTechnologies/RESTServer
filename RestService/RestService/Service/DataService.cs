@@ -246,7 +246,7 @@ namespace RestService.Service
                         foreach (var meterDataItem in meterData)
                         {
                             List<MonthlyConsumptionDetails> monthlyDataList = dataFacade.GetMeterMonthWiseConsumptionForOffset(meterDataItem, Month, Year, Offset);
-                            if(monthlyDataList == null || monthlyDataList.Count < 1)
+                            if (monthlyDataList == null || monthlyDataList.Count < 1)
                             {
                                 log.Debug("GetMonthwiseConsumptionForOffset -> No Data found for meter: " + meterDataItem.PowerScout);
                                 monthWiseDataList.Add(new MeterMonthWiseConsumption { PowerScout = meterDataItem.PowerScout, Name = meterDataItem.Breaker_details });
@@ -294,8 +294,9 @@ namespace RestService.Service
                             List<DailyConsumptionDetails> dailyConsumptionListForMonth = dataFacade.GetDailyConsumptionForMonth(meter, Month, Year);
                             if (dailyConsumptionListForMonth == null || dailyConsumptionListForMonth.Count < 1)
                             {
-                                log.Debug("GetWeekWiseMonthlyConsumption -> No data found");
-                                return new List<MeterWeekWiseMonthlyConsumption>();
+                                log.Debug("GetWeekWiseMonthlyConsumption -> No data found for meter: " + meter.PowerScout);
+                                weekWiseConsumption.Add(new MeterWeekWiseMonthlyConsumption {PowerScout = meter.PowerScout, Name = meter.Breaker_details });
+                                continue;
                             }
                             var meterWeekWiseConsumption = GetWeekWiseConsumptionFromMonthly(dailyConsumptionListForMonth);
                             weekWiseConsumption.Add(meterWeekWiseConsumption);
@@ -318,6 +319,72 @@ namespace RestService.Service
             catch (Exception ex)
             {
                 log.Error("Exception occurred in GetWeekWiseMonthlyConsumption as: " + ex);
+                throw new Exception(ex.Message, ex);
+            }
+        }
+
+        public List<MeterWeekWiseMonthlyConsumption> GetWeekWiseMonthlyConsumptionForOffset(int UserId, string Month, int Year, int Offset)
+        {
+            try
+            {
+                log.Debug("GetWeekWiseMonthlyConsumptionForOffset called");
+                if (accountService.ValidateUser(UserId))
+                {
+                    List<MeterDetails> meterData = dataFacade.GetMeters();
+                    if (meterData != null && meterData.Count > 0)
+                    {
+                        List<MeterWeekWiseMonthlyConsumption> weekWiseConsumption = new List<MeterWeekWiseMonthlyConsumption>();
+                        foreach (var meter in meterData)
+                        {
+                            MeterWeekWiseMonthlyConsumption meterWeekWiseConsumption = new MeterWeekWiseMonthlyConsumption();
+                            DateTime monthDate = DateTime.Parse("01/" + Month + "/" + Year);
+                            string month = Month;
+                            int year = Year;
+                            while (meterWeekWiseConsumption.WeekWiseConsumption.Count < Offset)
+                            {
+                                
+                                List<DailyConsumptionDetails> dailyConsumptionListForMonth = dataFacade.GetDailyConsumptionForMonth(meter, month, year);
+                                if (dailyConsumptionListForMonth == null || dailyConsumptionListForMonth.Count < 1)
+                                {
+                                    log.Debug("GetWeekWiseMonthlyConsumptionForOffset -> No data found for meter: " + meter.PowerScout);
+                                    weekWiseConsumption.Add(new MeterWeekWiseMonthlyConsumption { PowerScout = meter.PowerScout, Name = meter.Breaker_details });
+                                    break;
+                                }
+                                var weekWiseList = GetWeekWiseConsumptionFromMonthly(dailyConsumptionListForMonth).WeekWiseConsumption;
+                                if(weekWiseList.Count + meterWeekWiseConsumption.WeekWiseConsumption.Count > Offset)
+                                {
+                                    weekWiseList.Reverse();
+                                    meterWeekWiseConsumption.WeekWiseConsumption.AddRange(weekWiseList.Take(Offset - meterWeekWiseConsumption.WeekWiseConsumption.Count));
+                                }
+                                else
+                                {
+                                    meterWeekWiseConsumption.WeekWiseConsumption.AddRange(weekWiseList);
+                                }
+                                month = monthDate.AddMonths(-1).ToString("MMM");
+                                year = monthDate.AddMonths(-1).Year;
+                            }
+                            meterWeekWiseConsumption.PowerScout = meter.PowerScout;
+                            meterWeekWiseConsumption.Name = meter.Breaker_details;
+
+                            weekWiseConsumption.Add(meterWeekWiseConsumption);
+                        }
+                        return weekWiseConsumption;
+                    }
+                    else
+                    {
+                        log.Debug("GetWeekWiseMonthlyConsumptionForOffset -> No data found");
+                        return new List<MeterWeekWiseMonthlyConsumption>();
+                    }
+                }
+                else
+                {
+                    log.Debug("GetWeekWiseMonthlyConsumptionForOffset -> User Validation failed");
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                log.Error("Exception occurred in GetWeekWiseMonthlyConsumptionForOffset as: " + ex);
                 throw new Exception(ex.Message, ex);
             }
         }

@@ -143,6 +143,8 @@ namespace RestService.Models
     {
         public string PowerScout { get; set; }
 
+        public string Name { get; set; }
+
         public List<Double> WeekWiseConsumption { get; set; }
 
         public MeterWeekWiseMonthlyConsumption()

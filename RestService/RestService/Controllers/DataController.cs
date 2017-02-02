@@ -167,7 +167,7 @@ namespace RestService.Controllers
             HttpResponseMessage response;
             try
             {
-                log.Debug("GetWeekWiseMonthlyConsumption called");
+                log.Debug("GetWeekWiseMonthlyConsumption API called");
                 var data = dataService.GetWeekWiseMonthlyConsumption(Id, Month, Year);
                 response = data == null ? Request.CreateErrorResponse(HttpStatusCode.Forbidden, "Invalid User") : Request.CreateResponse(HttpStatusCode.OK, data);
                 return response;
@@ -175,6 +175,25 @@ namespace RestService.Controllers
             catch (Exception ex)
             {
                 log.Error("Exception occurred in GetWeekWiseMonthlyConsumption as: " + ex);
+                response = Request.CreateErrorResponse(HttpStatusCode.ServiceUnavailable, ex);
+                return response;
+            }
+        }
+
+        [Route("api/getweekwisemonthlyconsumptionforoffset/{Id}/{Month}/{Year}/{Offset}")]
+        public HttpResponseMessage GetWeekWiseMonthlyConsumptionForOffset(int Id, string Month, int Year, int Offset)
+        {
+            HttpResponseMessage response;
+            try
+            {
+                log.Debug("GetWeekWiseMonthlyConsumptionForOffset API called ");
+                var data = dataService.GetWeekWiseMonthlyConsumptionForOffset(Id, Month, Year, Offset);
+                response = data == null ? Request.CreateErrorResponse(HttpStatusCode.Forbidden, "Invalid User") : Request.CreateResponse(HttpStatusCode.OK, data);
+                return response;
+            }
+            catch (Exception ex)
+            {
+                log.Error("Exception occurred in GetWeekWiseMonthlyConsumptionForOffset as: " + ex);
                 response = Request.CreateErrorResponse(HttpStatusCode.ServiceUnavailable, ex);
                 return response;
             }
