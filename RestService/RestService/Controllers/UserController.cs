@@ -96,10 +96,29 @@ namespace RestService.Controllers
 
         [Route("api/signin")]
         [HttpPost]
-        public ResponseUserModel SignIn([FromBody] UserCredentials userCredentials)
+        public HttpResponseMessage SignIn([FromBody] UserCredentials userCredentials)
         {
             log.Debug("Sign In API called");
-            return accountService.SignInUser(userCredentials);
+            HttpResponseMessage response;
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var data = accountService.SignInUser(userCredentials);
+                    response = data.Status_Code == (int)Constants.StatusCode.Error ? Request.CreateResponse(HttpStatusCode.Forbidden, data.Message) : Request.CreateResponse(HttpStatusCode.OK, data);
+                    return response;
+                }
+                string messages = string.Join("; ", ModelState.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage));
+                response = Request.CreateResponse(HttpStatusCode.BadRequest, messages);
+                return response;
+            }
+            catch (Exception ex)
+            {
+                log.Error("Exception occurred in SignIn API as: " + ex);
+                response = Request.CreateErrorResponse(HttpStatusCode.ServiceUnavailable, ex);
+                return response;
+            }
+
         }
 
         [Route("api/changepassword")]
