@@ -274,5 +274,24 @@ namespace RestService.Controllers
                 return response;
             }
         }
+
+        [Route("api/getallalerts/{Id}")]
+        public HttpResponseMessage GetAllAlerts(int Id)
+        {
+            log.Debug("GetAllAlerts API Called");
+            HttpResponseMessage response;
+            try
+            {
+                var data = dataService.GetAllAlerts(Id);
+                response = data == null ? Request.CreateResponse(HttpStatusCode.Forbidden, "Invalid User") : Request.CreateResponse(HttpStatusCode.OK, data);
+                return response;
+            }
+            catch (Exception ex)
+            {
+                log.Error("Exception occurred in GetAllAlerts as: " + ex);
+                response = Request.CreateErrorResponse(HttpStatusCode.ServiceUnavailable, ex);
+                return response;
+            }
+        }
     }
 }

@@ -17,7 +17,6 @@ namespace RestService.Entities
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public User()
         {
-            this.Alert = new HashSet<Alert>();
             this.UserRole = new HashSet<UserRole>();
             this.UserSession = new HashSet<UserSession>();
         }
@@ -31,8 +30,6 @@ namespace RestService.Entities
         public Nullable<short> Status { get; set; }
         public Nullable<System.DateTime> Creation_Date { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Alert> Alert { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserRole> UserRole { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

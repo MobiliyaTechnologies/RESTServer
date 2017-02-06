@@ -12,15 +12,16 @@ namespace RestService.Entities
     using System;
     using System.Collections.Generic;
     
-    public partial class Alert
+    public partial class Alerts
     {
         public int Id { get; set; }
-        public string Type { get; set; }
-        public string Text { get; set; }
-        public Nullable<int> User_Id { get; set; }
-        public Nullable<short> Status { get; set; }
+        public int Sensor_Log_Id { get; set; }
+        public int Sensor_Id { get; set; }
+        public string Alert_Type { get; set; }
+        public string Description { get; set; }
         public Nullable<System.DateTime> Timestamp { get; set; }
-    
-        public virtual User User { get; set; }
+        public Nullable<byte> Is_Acknowledged { get; set; }
+        public string Acknowledged_By { get; set; }
+        public Nullable<System.DateTime> Acknowledged_Timestamp { get; set; }
     }
 }

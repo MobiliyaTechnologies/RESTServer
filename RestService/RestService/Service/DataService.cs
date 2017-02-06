@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Web;
+using RestService.Models;
 
 namespace RestService.Service
 {
@@ -295,7 +296,7 @@ namespace RestService.Service
                             if (dailyConsumptionListForMonth == null || dailyConsumptionListForMonth.Count < 1)
                             {
                                 log.Debug("GetWeekWiseMonthlyConsumption -> No data found for meter: " + meter.PowerScout);
-                                weekWiseConsumption.Add(new MeterWeekWiseMonthlyConsumption {PowerScout = meter.PowerScout, Name = meter.Breaker_details });
+                                weekWiseConsumption.Add(new MeterWeekWiseMonthlyConsumption { PowerScout = meter.PowerScout, Name = meter.Breaker_details });
                                 continue;
                             }
                             var meterWeekWiseConsumption = GetWeekWiseConsumptionFromMonthly(dailyConsumptionListForMonth);
@@ -342,7 +343,7 @@ namespace RestService.Service
                             int year = Year;
                             while (meterWeekWiseConsumption.WeekWiseConsumption.Count < Offset)
                             {
-                                
+
                                 List<DailyConsumptionDetails> dailyConsumptionListForMonth = dataFacade.GetDailyConsumptionForMonth(meter, month, year);
                                 if (dailyConsumptionListForMonth == null || dailyConsumptionListForMonth.Count < 1)
                                 {
@@ -351,7 +352,7 @@ namespace RestService.Service
                                     break;
                                 }
                                 var weekWiseList = GetWeekWiseConsumptionFromMonthly(dailyConsumptionListForMonth).WeekWiseConsumption;
-                                if(weekWiseList.Count + meterWeekWiseConsumption.WeekWiseConsumption.Count > Offset)
+                                if (weekWiseList.Count + meterWeekWiseConsumption.WeekWiseConsumption.Count > Offset)
                                 {
                                     weekWiseList.Reverse();
                                     meterWeekWiseConsumption.WeekWiseConsumption.AddRange(weekWiseList.Take(Offset - meterWeekWiseConsumption.WeekWiseConsumption.Count));
@@ -575,6 +576,42 @@ namespace RestService.Service
             {
                 log.Error("Exception occurred in GetDayWiseNextMonthPrediction as: " + ex);
                 return new List<MeterDayWiseMonthlyConsumptionPrediction>();
+            }
+        }
+
+        public List<AlertModel> GetAllAlerts(int UserId)
+        {
+            try
+            {
+                log.Debug("GetAllAlerts called");
+                if (accountService.ValidateUser(UserId))
+                {
+                    log.Debug("GetAllAlerts -> User validation successful");
+                    List<AlertModel> alertModelList = new List<AlertModel>();
+                    var data = dataFacade.GetAllAlerts();
+                    if (data == null || data.Count < 1)
+                    {
+                        log.Debug("GetAllAlerts -> No alerts found");
+                        return alertModelList;
+                    }
+                    
+                    data.All(alert =>
+                    {
+                        alertModelList.Add(Converter.AlertsEntityToModel(alert));
+                        return true;
+                    });
+                    return alertModelList;
+                }
+                else
+                {
+                    log.Debug("GetAllAlerts -> User Validation failed");
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                log.Error("Exception occurred in GetAllAlerts as: " + ex);
+                throw new Exception(ex.Message, ex);
             }
         }
     }

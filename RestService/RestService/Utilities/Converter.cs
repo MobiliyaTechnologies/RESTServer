@@ -175,5 +175,22 @@ namespace RestService.Utilities
             });
             return dayWiseConsumptionPrediction;
         }
+
+        public static AlertModel AlertsEntityToModel(Alerts alertEntity)
+        {
+            AlertModel alertModel = new AlertModel();
+            alertModel.Sensor_Id = alertEntity.Sensor_Id;
+            alertModel.Sensor_Log_Id = alertEntity.Sensor_Log_Id;
+            alertModel.Is_Acknowledged = alertEntity.Is_Acknowledged == 0 ? false : true;
+            if (alertModel.Is_Acknowledged)
+            {
+                alertModel.Acknowledged_By = alertEntity.Acknowledged_By;
+                alertModel.Acknowledged_Timestamp = (DateTime)alertEntity.Acknowledged_Timestamp; 
+            }
+            alertModel.Alert_Type = alertEntity.Alert_Type;
+            alertModel.Description = alertEntity.Description;
+            alertModel.Timestamp = (DateTime)alertEntity.Timestamp;
+            return alertModel;
+        }
     }
 }

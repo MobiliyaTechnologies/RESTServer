@@ -5,16 +5,19 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
       <Schema Namespace="PowerGridModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <EntityType Name="Alert">
+        <EntityType Name="Alerts">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Type" Type="nvarchar" MaxLength="50" />
-          <Property Name="Text" Type="nvarchar(max)" />
-          <Property Name="User_Id" Type="int" />
-          <Property Name="Status" Type="smallint" />
+          <Property Name="Sensor_Log_Id" Type="int" Nullable="false" />
+          <Property Name="Sensor_Id" Type="int" Nullable="false" />
+          <Property Name="Alert_Type" Type="varchar(max)" />
+          <Property Name="Description" Type="varchar(max)" />
           <Property Name="Timestamp" Type="datetime" />
+          <Property Name="Is_Acknowledged" Type="tinyint" />
+          <Property Name="Acknowledged_By" Type="varchar(max)" />
+          <Property Name="Acknowledged_Timestamp" Type="datetime" />
         </EntityType>
         <EntityType Name="DailyConsumptionDetails">
           <Key>
@@ -256,6 +259,21 @@ warning 6002: The table/view 'PowerGrid.dbo.PowergridAzureMLData' does not have 
           <Property Name="Role" Type="nvarchar" MaxLength="50" />
           <Property Name="Description" Type="nvarchar(max)" />
         </EntityType>
+        <EntityType Name="SensorData">
+          <Key>
+            <PropertyRef Name="Sensor_Log_Id" />
+          </Key>
+          <Property Name="Sensor_Log_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Sensor_Id" Type="int" Nullable="false" />
+          <Property Name="Class_Id" Type="int" />
+          <Property Name="Is_Light_ON" Type="tinyint" />
+          <Property Name="Temperature" Type="float" />
+          <Property Name="Light_Intensity" Type="float" />
+          <Property Name="Humidity" Type="float" />
+          <Property Name="Battery_Remaining" Type="float" />
+          <Property Name="Timestamp" Type="datetime" />
+          <Property Name="Last_Updated" Type="datetime" />
+        </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'PowerGrid.dbo.TempMLData' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="TempMLData">
@@ -374,18 +392,6 @@ warning 6002: The table/view 'PowerGrid.dbo.TempMLData' does not have a primary 
           <Property Name="Breaker_details" Type="varchar(max)" />
           <Property Name="Weekly_Predicted_KWH_System" Type="float" />
         </EntityType>
-        <Association Name="FK_Alert_User">
-          <End Role="User" Type="Self.User" Multiplicity="0..1" />
-          <End Role="Alert" Type="Self.Alert" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Alert">
-              <PropertyRef Name="User_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_UserRole_Role">
           <End Role="Role" Type="Self.Role" Multiplicity="0..1" />
           <End Role="UserRole" Type="Self.UserRole" Multiplicity="*" />
@@ -423,7 +429,7 @@ warning 6002: The table/view 'PowerGrid.dbo.TempMLData' does not have a primary 
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="PowerGridModelStoreContainer">
-          <EntitySet Name="Alert" EntityType="Self.Alert" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Alerts" EntityType="Self.Alerts" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DailyConsumptionDetails" EntityType="Self.DailyConsumptionDetails" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DailyConsumptionPrediction" EntityType="Self.DailyConsumptionPrediction" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="HalfHourlyData" EntityType="Self.HalfHourlyData" Schema="dbo" store:Type="Tables" />
@@ -432,6 +438,7 @@ warning 6002: The table/view 'PowerGrid.dbo.TempMLData' does not have a primary 
           <EntitySet Name="MonthlyConsumptionDetails" EntityType="Self.MonthlyConsumptionDetails" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MSLiveData" EntityType="Self.MSLiveData" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Role" EntityType="Self.Role" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SensorData" EntityType="Self.SensorData" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TempMSLiveData" EntityType="Self.TempMSLiveData" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserRole" EntityType="Self.UserRole" Schema="dbo" store:Type="Tables" />
@@ -510,10 +517,6 @@ warning 6002: The table/view 'PowerGrid.dbo.TempMLData' does not have a primary 
     [TempMLData].[PredictedKwH] AS [PredictedKwH]
     FROM [dbo].[TempMLData] AS [TempMLData]</DefiningQuery>
           </EntitySet>
-          <AssociationSet Name="FK_Alert_User" Association="Self.FK_Alert_User">
-            <End Role="User" EntitySet="User" />
-            <End Role="Alert" EntitySet="Alert" />
-          </AssociationSet>
           <AssociationSet Name="FK_UserRole_Role" Association="Self.FK_UserRole_Role">
             <End Role="Role" EntitySet="Role" />
             <End Role="UserRole" EntitySet="UserRole" />
@@ -532,17 +535,19 @@ warning 6002: The table/view 'PowerGrid.dbo.TempMLData' does not have a primary 
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="PowerGridModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="Alert">
+        <EntityType Name="Alerts">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Text" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="User_Id" Type="Int32" />
-          <Property Name="Status" Type="Int16" />
+          <Property Name="Sensor_Log_Id" Type="Int32" Nullable="false" />
+          <Property Name="Sensor_Id" Type="Int32" Nullable="false" />
+          <Property Name="Alert_Type" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="Timestamp" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="User" Relationship="Self.FK_Alert_User" FromRole="Alert" ToRole="User" />
+          <Property Name="Is_Acknowledged" Type="Byte" />
+          <Property Name="Acknowledged_By" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Acknowledged_Timestamp" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="DailyConsumptionDetails">
           <Key>
@@ -746,6 +751,21 @@ warning 6002: The table/view 'PowerGrid.dbo.TempMLData' does not have a primary 
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="UserRole" Relationship="Self.FK_UserRole_Role" FromRole="Role" ToRole="UserRole" />
         </EntityType>
+        <EntityType Name="SensorData">
+          <Key>
+            <PropertyRef Name="Sensor_Log_Id" />
+          </Key>
+          <Property Name="Sensor_Log_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Sensor_Id" Type="Int32" Nullable="false" />
+          <Property Name="Class_Id" Type="Int32" />
+          <Property Name="Is_Light_ON" Type="Byte" />
+          <Property Name="Temperature" Type="Double" />
+          <Property Name="Light_Intensity" Type="Double" />
+          <Property Name="Humidity" Type="Double" />
+          <Property Name="Battery_Remaining" Type="Double" />
+          <Property Name="Timestamp" Type="DateTime" Precision="3" />
+          <Property Name="Last_Updated" Type="DateTime" Precision="3" />
+        </EntityType>
         <EntityType Name="TempMSLiveData">
           <Key>
             <PropertyRef Name="Id" />
@@ -796,7 +816,6 @@ warning 6002: The table/view 'PowerGrid.dbo.TempMLData' does not have a primary 
           <Property Name="Avatar" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Status" Type="Int16" />
           <Property Name="Creation_Date" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="Alert" Relationship="Self.FK_Alert_User" FromRole="User" ToRole="Alert" />
           <NavigationProperty Name="UserRole" Relationship="Self.FK_UserRole_User" FromRole="User" ToRole="UserRole" />
           <NavigationProperty Name="UserSession" Relationship="Self.FK_UserSession_User" FromRole="User" ToRole="UserSession" />
         </EntityType>
@@ -905,18 +924,6 @@ warning 6002: The table/view 'PowerGrid.dbo.TempMLData' does not have a primary 
           <Property Name="kW_System" Type="Double" />
           <Property Name="PredictedKwH" Type="Double" />
         </EntityType>
-        <Association Name="FK_Alert_User">
-          <End Role="User" Type="Self.User" Multiplicity="0..1" />
-          <End Role="Alert" Type="Self.Alert" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Alert">
-              <PropertyRef Name="User_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_UserRole_Role">
           <End Role="Role" Type="Self.Role" Multiplicity="0..1" />
           <End Role="UserRole" Type="Self.UserRole" Multiplicity="*" />
@@ -954,7 +961,7 @@ warning 6002: The table/view 'PowerGrid.dbo.TempMLData' does not have a primary 
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="PowerGridEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Alert" EntityType="Self.Alert" />
+          <EntitySet Name="Alerts" EntityType="Self.Alerts" />
           <EntitySet Name="DailyConsumptionDetails" EntityType="Self.DailyConsumptionDetails" />
           <EntitySet Name="DailyConsumptionPrediction" EntityType="Self.DailyConsumptionPrediction" />
           <EntitySet Name="HalfHourlyData" EntityType="Self.HalfHourlyData" />
@@ -963,6 +970,7 @@ warning 6002: The table/view 'PowerGrid.dbo.TempMLData' does not have a primary 
           <EntitySet Name="MonthlyConsumptionDetails" EntityType="Self.MonthlyConsumptionDetails" />
           <EntitySet Name="MSLiveData" EntityType="Self.MSLiveData" />
           <EntitySet Name="Role" EntityType="Self.Role" />
+          <EntitySet Name="SensorData" EntityType="Self.SensorData" />
           <EntitySet Name="TempMSLiveData" EntityType="Self.TempMSLiveData" />
           <EntitySet Name="User" EntityType="Self.User" />
           <EntitySet Name="UserRole" EntityType="Self.UserRole" />
@@ -970,10 +978,6 @@ warning 6002: The table/view 'PowerGrid.dbo.TempMLData' does not have a primary 
           <EntitySet Name="WeeklyConsumptionPrediction" EntityType="Self.WeeklyConsumptionPrediction" />
           <EntitySet Name="PowergridAzureMLData" EntityType="Self.PowergridAzureMLData" />
           <EntitySet Name="TempMLData" EntityType="Self.TempMLData" />
-          <AssociationSet Name="FK_Alert_User" Association="Self.FK_Alert_User">
-            <End Role="User" EntitySet="User" />
-            <End Role="Alert" EntitySet="Alert" />
-          </AssociationSet>
           <AssociationSet Name="FK_UserRole_Role" Association="Self.FK_UserRole_Role">
             <End Role="Role" EntitySet="Role" />
             <End Role="UserRole" EntitySet="UserRole" />
@@ -993,15 +997,18 @@ warning 6002: The table/view 'PowerGrid.dbo.TempMLData' does not have a primary 
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="PowerGridModelStoreContainer" CdmEntityContainer="PowerGridEntities">
-          <EntitySetMapping Name="Alert">
-            <EntityTypeMapping TypeName="PowerGridModel.Alert">
-              <MappingFragment StoreEntitySet="Alert">
+          <EntitySetMapping Name="Alerts">
+            <EntityTypeMapping TypeName="PowerGridModel.Alerts">
+              <MappingFragment StoreEntitySet="Alerts">
                 <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Type" ColumnName="Type" />
-                <ScalarProperty Name="Text" ColumnName="Text" />
-                <ScalarProperty Name="User_Id" ColumnName="User_Id" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Sensor_Log_Id" ColumnName="Sensor_Log_Id" />
+                <ScalarProperty Name="Sensor_Id" ColumnName="Sensor_Id" />
+                <ScalarProperty Name="Alert_Type" ColumnName="Alert_Type" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
+                <ScalarProperty Name="Is_Acknowledged" ColumnName="Is_Acknowledged" />
+                <ScalarProperty Name="Acknowledged_By" ColumnName="Acknowledged_By" />
+                <ScalarProperty Name="Acknowledged_Timestamp" ColumnName="Acknowledged_Timestamp" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1211,6 +1218,22 @@ warning 6002: The table/view 'PowerGrid.dbo.TempMLData' does not have a primary 
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Role1" ColumnName="Role" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SensorData">
+            <EntityTypeMapping TypeName="PowerGridModel.SensorData">
+              <MappingFragment StoreEntitySet="SensorData">
+                <ScalarProperty Name="Sensor_Log_Id" ColumnName="Sensor_Log_Id" />
+                <ScalarProperty Name="Sensor_Id" ColumnName="Sensor_Id" />
+                <ScalarProperty Name="Class_Id" ColumnName="Class_Id" />
+                <ScalarProperty Name="Is_Light_ON" ColumnName="Is_Light_ON" />
+                <ScalarProperty Name="Temperature" ColumnName="Temperature" />
+                <ScalarProperty Name="Light_Intensity" ColumnName="Light_Intensity" />
+                <ScalarProperty Name="Humidity" ColumnName="Humidity" />
+                <ScalarProperty Name="Battery_Remaining" ColumnName="Battery_Remaining" />
+                <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
+                <ScalarProperty Name="Last_Updated" ColumnName="Last_Updated" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

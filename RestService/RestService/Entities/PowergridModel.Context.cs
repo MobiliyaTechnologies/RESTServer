@@ -25,7 +25,7 @@ namespace RestService.Entities
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<Alert> Alert { get; set; }
+        public virtual DbSet<Alerts> Alerts { get; set; }
         public virtual DbSet<DailyConsumptionDetails> DailyConsumptionDetails { get; set; }
         public virtual DbSet<DailyConsumptionPrediction> DailyConsumptionPrediction { get; set; }
         public virtual DbSet<HalfHourlyData> HalfHourlyData { get; set; }
@@ -34,6 +34,7 @@ namespace RestService.Entities
         public virtual DbSet<MonthlyConsumptionDetails> MonthlyConsumptionDetails { get; set; }
         public virtual DbSet<MSLiveData> MSLiveData { get; set; }
         public virtual DbSet<Role> Role { get; set; }
+        public virtual DbSet<SensorData> SensorData { get; set; }
         public virtual DbSet<TempMSLiveData> TempMSLiveData { get; set; }
         public virtual DbSet<User> User { get; set; }
         public virtual DbSet<UserRole> UserRole { get; set; }

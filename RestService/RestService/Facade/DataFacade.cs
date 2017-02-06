@@ -127,5 +127,11 @@ namespace RestService.Facade
             var dailyConsumptionPrediction = (from data in dbEntity.DailyConsumptionPrediction where meter.Serial.Equals(data.PowerScout) && monthDate.Month == ((DateTime)data.Timestamp).Month && monthDate.Year == ((DateTime)data.Timestamp).Year select data).ToList();
             return dailyConsumptionPrediction;
         }
+
+        public List<Alerts> GetAllAlerts()
+        {
+            var data = (from alerts in dbEntity.Alerts orderby alerts.Timestamp descending select alerts).ToList();
+            return data;
+        }
     }
 }
