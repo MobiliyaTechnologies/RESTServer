@@ -192,5 +192,20 @@ namespace RestService.Utilities
             alertModel.Timestamp = (DateTime)alertEntity.Timestamp;
             return alertModel;
         }
+
+        public static AlertDetailsModel AlertDetailsEntityToModel(SensorData alertDetailsEntity)
+        {
+            AlertDetailsModel alertDetailsModel = new AlertDetailsModel();
+            alertDetailsModel.Battery_Remaining = (double)alertDetailsEntity.Battery_Remaining;
+            alertDetailsModel.Class_Id = (int)alertDetailsEntity.Class_Id;
+            alertDetailsModel.Humidity = (double)alertDetailsEntity.Humidity;
+            alertDetailsModel.Is_Light_ON = alertDetailsEntity.Is_Light_ON == null || alertDetailsEntity.Is_Light_ON == 0 ? false : true;
+            alertDetailsModel.Last_Updated = (DateTime)alertDetailsEntity.Last_Updated;
+            alertDetailsModel.Light_Intensity = (double)alertDetailsEntity.Light_Intensity;
+            alertDetailsModel.Sensor_Id = alertDetailsEntity.Sensor_Id;
+            alertDetailsModel.Temperature = (double)alertDetailsEntity.Temperature;
+            alertDetailsModel.Timestamp = (DateTime)alertDetailsEntity.Timestamp;
+            return alertDetailsModel;
+        }
     }
 }

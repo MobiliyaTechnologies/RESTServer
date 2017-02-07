@@ -614,5 +614,33 @@ namespace RestService.Service
                 throw new Exception(ex.Message, ex);
             }
         }
+
+        public AlertDetailsModel GetAlertDetails(int UserId, int LogId)
+        {
+            try
+            {
+                log.Debug("GetAlertDetails called");
+                if (accountService.ValidateUser(UserId))
+                {
+                    var alertDetails = dataFacade.GetAlertDetails(LogId);
+                    if(alertDetails == null)
+                    {
+                        log.Debug("GetAlertDetails -> No Data Found");
+                        return new AlertDetailsModel();
+                    }
+                    return Converter.AlertDetailsEntityToModel(alertDetails);
+                }
+                else
+                {
+                    log.Debug("GetAlertDetails -> User Validation failed");
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                log.Error("Exception occured in GetAlertDetails as: " + ex);
+                throw new Exception(ex.Message, ex);
+            }
+        }
     }
 }
