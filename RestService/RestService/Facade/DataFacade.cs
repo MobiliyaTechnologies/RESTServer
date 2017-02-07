@@ -139,5 +139,11 @@ namespace RestService.Facade
             var alertDetails = (from data in dbEntity.SensorData where data.Sensor_Log_Id == sensorLogId select data).FirstOrDefault();
             return alertDetails;
         }
+
+        public List<ClassroomDetails> GetAllClassrooms()
+        {
+            var classroomList = (from data in dbEntity.ClassroomDetails select data).ToList();
+            return classroomList;
+        }
     }
 }

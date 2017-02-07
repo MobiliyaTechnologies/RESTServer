@@ -19,6 +19,17 @@
           <Property Name="Acknowledged_By" Type="varchar(max)" />
           <Property Name="Acknowledged_Timestamp" Type="datetime" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'PowerGrid.dbo.ClassroomDetails' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="ClassroomDetails">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Class_Id" Type="nvarchar(max)" />
+          <Property Name="Class_Description" Type="varchar(max)" />
+          <Property Name="Sensor_Id" Type="int" />
+        </EntityType>
         <EntityType Name="DailyConsumptionDetails">
           <Key>
             <PropertyRef Name="Id" />
@@ -444,6 +455,14 @@ warning 6002: The table/view 'PowerGrid.dbo.TempMLData' does not have a primary 
           <EntitySet Name="UserRole" EntityType="Self.UserRole" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserSession" EntityType="Self.UserSession" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="WeeklyConsumptionPrediction" EntityType="Self.WeeklyConsumptionPrediction" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ClassroomDetails" EntityType="Self.ClassroomDetails" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [ClassroomDetails].[Id] AS [Id], 
+    [ClassroomDetails].[Class_Id] AS [Class_Id], 
+    [ClassroomDetails].[Class_Description] AS [Class_Description], 
+    [ClassroomDetails].[Sensor_Id] AS [Sensor_Id]
+    FROM [dbo].[ClassroomDetails] AS [ClassroomDetails]</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="PowergridAzureMLData" EntityType="Self.PowergridAzureMLData" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [PowergridAzureMLData].[Id] AS [Id], 
@@ -849,6 +868,15 @@ warning 6002: The table/view 'PowerGrid.dbo.TempMLData' does not have a primary 
           <Property Name="Breaker_details" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="Weekly_Predicted_KWH_System" Type="Double" />
         </EntityType>
+        <EntityType Name="ClassroomDetails">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Class_Id" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Class_Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Sensor_Id" Type="Int32" />
+        </EntityType>
         <EntityType Name="PowergridAzureMLData">
           <Key>
             <PropertyRef Name="Id" />
@@ -976,6 +1004,7 @@ warning 6002: The table/view 'PowerGrid.dbo.TempMLData' does not have a primary 
           <EntitySet Name="UserRole" EntityType="Self.UserRole" />
           <EntitySet Name="UserSession" EntityType="Self.UserSession" />
           <EntitySet Name="WeeklyConsumptionPrediction" EntityType="Self.WeeklyConsumptionPrediction" />
+          <EntitySet Name="ClassroomDetails" EntityType="Self.ClassroomDetails" />
           <EntitySet Name="PowergridAzureMLData" EntityType="Self.PowergridAzureMLData" />
           <EntitySet Name="TempMLData" EntityType="Self.TempMLData" />
           <AssociationSet Name="FK_UserRole_Role" Association="Self.FK_UserRole_Role">
@@ -1317,6 +1346,16 @@ warning 6002: The table/view 'PowerGrid.dbo.TempMLData' does not have a primary 
                 <ScalarProperty Name="PowerScout" ColumnName="PowerScout" />
                 <ScalarProperty Name="Breaker_details" ColumnName="Breaker_details" />
                 <ScalarProperty Name="Weekly_Predicted_KWH_System" ColumnName="Weekly_Predicted_KWH_System" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ClassroomDetails">
+            <EntityTypeMapping TypeName="PowerGridModel.ClassroomDetails">
+              <MappingFragment StoreEntitySet="ClassroomDetails">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Class_Id" ColumnName="Class_Id" />
+                <ScalarProperty Name="Class_Description" ColumnName="Class_Description" />
+                <ScalarProperty Name="Sensor_Id" ColumnName="Sensor_Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

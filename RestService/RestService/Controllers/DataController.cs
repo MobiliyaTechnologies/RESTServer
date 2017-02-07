@@ -312,5 +312,24 @@ namespace RestService.Controllers
                 return response;
             }
         }
+
+        [Route("api/getclassrooms/{Id}")]
+        public HttpResponseMessage GetAllClassrooms(int Id)
+        {
+            log.Debug("GetAllClassrooms API Called");
+            HttpResponseMessage response;
+            try
+            {
+                var data = dataService.GetAllClassrooms(Id);
+                response = data == null ? Request.CreateResponse(HttpStatusCode.Forbidden, "Invalid User") : Request.CreateResponse(HttpStatusCode.OK, data);
+                return response;
+            }
+            catch (Exception ex)
+            {
+                log.Error("Exception occurred in GetAllClassrooms as: " + ex);
+                response = Request.CreateErrorResponse(HttpStatusCode.ServiceUnavailable, ex);
+                return response;
+            }
+        }
     }
 }

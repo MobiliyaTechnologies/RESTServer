@@ -207,5 +207,14 @@ namespace RestService.Utilities
             alertDetailsModel.Timestamp = (DateTime)alertDetailsEntity.Timestamp;
             return alertDetailsModel;
         }
+
+        public static ClassroomModel ClassroomEntityToModel(ClassroomDetails classroomDetails)
+        {
+            ClassroomModel classroomModel = new ClassroomModel();
+            classroomModel.ClassDescription = classroomDetails.Class_Description;
+            classroomModel.ClassId = classroomDetails.Class_Id;
+            classroomModel.SensorId = (int)classroomDetails.Sensor_Id;
+            return classroomModel;
+        }
     }
 }

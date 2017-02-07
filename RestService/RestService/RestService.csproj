@@ -236,6 +236,9 @@
     <Compile Include="Entities\Alerts.cs">
       <DependentUpon>PowergridModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\ClassroomDetails.cs">
+      <DependentUpon>PowergridModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\DailyConsumptionDetails.cs">
       <DependentUpon>PowergridModel.tt</DependentUpon>
     </Compile>
@@ -306,6 +309,7 @@
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AlertsModel.cs" />
+    <Compile Include="Models\ClassroomModel.cs" />
     <Compile Include="Models\GeneralDataModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />

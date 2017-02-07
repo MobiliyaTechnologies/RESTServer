@@ -642,5 +642,41 @@ namespace RestService.Service
                 throw new Exception(ex.Message, ex);
             }
         }
+
+        public List<ClassroomModel> GetAllClassrooms(int UserId)
+        {
+            try
+            {
+                log.Debug("GetAllClassrooms called");
+                if (accountService.ValidateUser(UserId))
+                {
+                    log.Debug("GetAllClassrooms -> User validation successful");
+                    List<ClassroomModel> classroomModel = new List<ClassroomModel>();
+                    var data = dataFacade.GetAllClassrooms();
+                    if (data == null || data.Count < 1)
+                    {
+                        log.Debug("GetAllClassrooms -> No classrooms found");
+                        return classroomModel;
+                    }
+
+                    data.All(classroom =>
+                    {
+                        classroomModel.Add(Converter.ClassroomEntityToModel(classroom));
+                        return true;
+                    });
+                    return classroomModel;
+                }
+                else
+                {
+                    log.Debug("GetAllClassrooms -> User Validation failed");
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                log.Error("Exception occurred in GetAllClassrooms as: " + ex);
+                throw new Exception(ex.Message, ex);
+            }
+        }
     }
 }
