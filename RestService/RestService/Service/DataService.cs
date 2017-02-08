@@ -628,7 +628,8 @@ namespace RestService.Service
                         log.Debug("GetAlertDetails -> No Data Found");
                         return new AlertDetailsModel();
                     }
-                    return Converter.AlertDetailsEntityToModel(alertDetails);
+                    //return Converter.AlertDetailsEntityToModel(alertDetails);
+                    return alertDetails;
                 }
                 else
                 {

@@ -134,9 +134,12 @@ namespace RestService.Facade
             return data;
         }
 
-        public SensorData GetAlertDetails(int sensorLogId)
+        public AlertDetailsModel GetAlertDetails(int sensorLogId)
         {
-            var alertDetails = (from data in dbEntity.SensorData where data.Sensor_Log_Id == sensorLogId select data).FirstOrDefault();
+            //var alertDetails = (from data in dbEntity.SensorData where data.Sensor_Log_Id == sensorLogId select data).FirstOrDefault();
+            //return alertDetails;
+            var alertDetails = (from data in dbEntity.SensorData join classData in dbEntity.ClassroomDetails on data.Sensor_Id equals classData.Sensor_Id where data.Sensor_Log_Id == sensorLogId select new AlertDetailsModel
+            { Sensor_Id = data.Sensor_Id, Battery_Remaining = (double)data.Battery_Remaining, Class_Id = classData.Class_Id, Class_Desc =  classData.Class_Description, Humidity = (double)data.Humidity, Is_Light_ON = data.Is_Light_ON == 0 ? false : true, Last_Updated = (DateTime)data.Last_Updated, Light_Intensity = (double)data.Light_Intensity, Temperature = (double)data.Temperature, Timestamp = (DateTime)data.Timestamp} ).FirstOrDefault();
             return alertDetails;
         }
 

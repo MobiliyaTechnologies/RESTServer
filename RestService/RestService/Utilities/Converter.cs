@@ -197,7 +197,7 @@ namespace RestService.Utilities
         {
             AlertDetailsModel alertDetailsModel = new AlertDetailsModel();
             alertDetailsModel.Battery_Remaining = (double)alertDetailsEntity.Battery_Remaining;
-            alertDetailsModel.Class_Id = (int)alertDetailsEntity.Class_Id;
+            alertDetailsModel.Class_Id = alertDetailsEntity.Class_Id.ToString();
             alertDetailsModel.Humidity = (double)alertDetailsEntity.Humidity;
             alertDetailsModel.Is_Light_ON = alertDetailsEntity.Is_Light_ON == null || alertDetailsEntity.Is_Light_ON == 0 ? false : true;
             alertDetailsModel.Last_Updated = (DateTime)alertDetailsEntity.Last_Updated;
