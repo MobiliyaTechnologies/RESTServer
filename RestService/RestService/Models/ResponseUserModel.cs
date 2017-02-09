@@ -22,6 +22,8 @@ namespace RestService.Models
 
         public int User_Id { get; set; }
 
+        public int Role_Id { get; set; }
+
         //public ICollection<UserRole> Role_Id { get; set; }
     }
 }

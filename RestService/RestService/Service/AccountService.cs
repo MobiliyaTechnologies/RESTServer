@@ -49,28 +49,26 @@ namespace RestService.Service
         {
             try
             {
-                log.Debug("Sign In User called");
-                userCredentials.Email = userCredentials.Email.Replace(" ", string.Empty);
-                userCredentials.Password = userCredentials.Password.Replace(" ", string.Empty);
-
+                log.Debug("SignInUser called");
+                
                 ResponseUserModel userResponse;
-                ResponseModel response = validator.SignInValidator(userCredentials); //Check for correct credential format
-                if (response.Status_Code == (int)Constants.StatusCode.Ok)
-                {
+                //ResponseModel response = validator.SignInValidator(userCredentials); //Check for correct credential format
+                //if (response.Status_Code == (int)Constants.StatusCode.Ok)
+                //{
                     //validation successful
 
                     userResponse = userFacade.SignIn(userCredentials);
                     return userResponse;
-                }
-                else
-                {
-                    //validation unsuccessful
-                    log.Debug("SignInUser-> Validation failed");
-                    userResponse = new ResponseUserModel();
-                    userResponse.Status_Code = Convert.ToInt16(Constants.StatusCode.Error);
-                    userResponse.Message = response.Message;
-                    return userResponse;
-                }
+                //}
+                //else
+                //{
+                //    //validation unsuccessful
+                //    log.Debug("SignInUser-> Validation failed");
+                //    userResponse = new ResponseUserModel();
+                //    userResponse.Status_Code = Convert.ToInt16(Constants.StatusCode.Error);
+                //    userResponse.Message = response.Message;
+                //    return userResponse;
+                //}
             }
             catch (Exception ex)
             {
