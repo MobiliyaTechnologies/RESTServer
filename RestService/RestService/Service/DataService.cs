@@ -681,5 +681,29 @@ namespace RestService.Service
                 throw new Exception(ex.Message, ex);
             }
         }
+
+        public ResponseModel AcknowledgeAlert(int UserId, AlertModel alertDetail)
+        {
+            try
+            {
+                log.Debug("Acknowledge alert called");
+                if (accountService.ValidateUser(UserId))
+                {
+                    log.Debug("AcknowledgeAlert -> User validation successful");
+                    var data = dataFacade.AcknowledgeAlert(alertDetail);
+                    return data;
+                }
+                else
+                {
+                    log.Debug("AcknowledgeAlert -> User validation failed");
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                log.Error("Exception occurred in AcknowledgeAlert as :" + ex);
+                throw new Exception(ex.Message,ex);
+            }
+        }
     }
 }

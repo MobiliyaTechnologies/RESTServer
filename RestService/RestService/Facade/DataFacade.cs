@@ -1,5 +1,6 @@
 ﻿using RestService.Entities;
 using RestService.Models;
+using RestService.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -132,8 +133,11 @@ namespace RestService.Facade
         {
             //var data = (from alerts in dbEntity.Alerts orderby alerts.Timestamp descending select alerts).ToList();
             //return data;
-            var data = (from alerts in dbEntity.Alerts join classData in dbEntity.ClassroomDetails on alerts.Sensor_Id equals classData.Sensor_Id orderby alerts.Timestamp descending select new AlertModel
-            { Acknowledged_By = alerts.Acknowledged_By == null ? "" : alerts.Acknowledged_By, Acknowledged_Timestamp = alerts.Acknowledged_Timestamp == null ? new DateTime() : (DateTime)alerts.Acknowledged_Timestamp, Alert_Desc = alerts.Description, Alert_Type = alerts.Alert_Type, Class_Desc = classData.Class_Description, Class_Id = classData.Class_Id, Is_Acknowledged = alerts.Is_Acknowledged == 0 ? false : true, Sensor_Id = alerts.Sensor_Id, Sensor_Log_Id = alerts.Sensor_Log_Id, Timestamp = (DateTime)alerts.Timestamp }).ToList();
+            var data = (from alerts in dbEntity.Alerts
+                        join classData in dbEntity.ClassroomDetails on alerts.Sensor_Id equals classData.Sensor_Id
+                        orderby alerts.Timestamp descending
+                        select new AlertModel
+                        { Alert_Id = alerts.Id, Acknowledged_By = alerts.Acknowledged_By == null ? "" : alerts.Acknowledged_By, Acknowledged_Timestamp = alerts.Acknowledged_Timestamp == null ? new DateTime() : (DateTime)alerts.Acknowledged_Timestamp, Alert_Desc = alerts.Description, Alert_Type = alerts.Alert_Type, Class_Desc = classData.Class_Description, Class_Id = classData.Class_Id, Is_Acknowledged = alerts.Is_Acknowledged == 0 ? false : true, Sensor_Id = alerts.Sensor_Id, Sensor_Log_Id = alerts.Sensor_Log_Id, Timestamp = (DateTime)alerts.Timestamp }).ToList();
             return data;
         }
 
@@ -141,8 +145,11 @@ namespace RestService.Facade
         {
             //var alertDetails = (from data in dbEntity.SensorData where data.Sensor_Log_Id == sensorLogId select data).FirstOrDefault();
             //return alertDetails;
-            var alertDetails = (from data in dbEntity.SensorData join classData in dbEntity.ClassroomDetails on data.Sensor_Id equals classData.Sensor_Id where data.Sensor_Log_Id == sensorLogId select new AlertDetailsModel
-            { Sensor_Id = data.Sensor_Id, Battery_Remaining = (double)data.Battery_Remaining, Class_Id = classData.Class_Id, Class_Desc =  classData.Class_Description, Humidity = (double)data.Humidity, Is_Light_ON = data.Is_Light_ON == 0 ? false : true, Last_Updated = (DateTime)data.Last_Updated, Light_Intensity = (double)data.Light_Intensity, Temperature = (double)data.Temperature, Timestamp = (DateTime)data.Timestamp} ).FirstOrDefault();
+            var alertDetails = (from data in dbEntity.SensorData
+                                join classData in dbEntity.ClassroomDetails on data.Sensor_Id equals classData.Sensor_Id
+                                where data.Sensor_Log_Id == sensorLogId
+                                select new AlertDetailsModel
+                                { Sensor_Id = data.Sensor_Id, Battery_Remaining = (double)data.Battery_Remaining, Class_Id = classData.Class_Id, Class_Desc = classData.Class_Description, Humidity = (double)data.Humidity, Is_Light_ON = data.Is_Light_ON == 0 ? false : true, Last_Updated = (DateTime)data.Last_Updated, Light_Intensity = (double)data.Light_Intensity, Temperature = (double)data.Temperature, Timestamp = (DateTime)data.Timestamp }).FirstOrDefault();
             return alertDetails;
         }
 
@@ -150,6 +157,23 @@ namespace RestService.Facade
         {
             var classroomList = (from data in dbEntity.ClassroomDetails select data).ToList();
             return classroomList;
+        }
+
+        public ResponseModel AcknowledgeAlert(AlertModel alertDetail)
+        {
+            var data = (from alert in dbEntity.Alerts where alert.Id == alertDetail.Alert_Id select alert).FirstOrDefault();
+            if (data == null)
+            {
+                return new ResponseModel { Message = "Invalid Alert", Status_Code = (int)Constants.StatusCode.Error };
+            }
+            else
+            {
+                data.Acknowledged_By = alertDetail.Acknowledged_By;
+                data.Is_Acknowledged = 1;
+                data.Acknowledged_Timestamp = DateTime.UtcNow;
+                dbEntity.SaveChanges();
+                return new ResponseModel { Message = "Acknowledgement successful", Status_Code = (int)Constants.StatusCode.Ok };
+            }
         }
     }
 }
