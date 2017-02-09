@@ -188,7 +188,7 @@ namespace RestService.Utilities
                 alertModel.Acknowledged_Timestamp = (DateTime)alertEntity.Acknowledged_Timestamp; 
             }
             alertModel.Alert_Type = alertEntity.Alert_Type;
-            alertModel.Description = alertEntity.Description;
+            alertModel.Alert_Desc = alertEntity.Description;
             alertModel.Timestamp = (DateTime)alertEntity.Timestamp;
             return alertModel;
         }

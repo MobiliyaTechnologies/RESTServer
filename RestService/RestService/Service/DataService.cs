@@ -594,13 +594,15 @@ namespace RestService.Service
                         log.Debug("GetAllAlerts -> No alerts found");
                         return alertModelList;
                     }
-                    
-                    data.All(alert =>
-                    {
-                        alertModelList.Add(Converter.AlertsEntityToModel(alert));
-                        return true;
-                    });
-                    return alertModelList;
+
+                    //data.All(alert =>
+                    //{
+                    //    alertModelList.Add(Converter.AlertsEntityToModel(alert));
+                    //    return true;
+                    //});
+                    //return alertModelList;
+
+                    return data;
                 }
                 else
                 {

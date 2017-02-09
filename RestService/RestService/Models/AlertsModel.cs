@@ -10,7 +10,9 @@ namespace RestService.Models
         public int Sensor_Log_Id { get; set; }
         public int Sensor_Id { get; set; }
         public string Alert_Type { get; set; }
-        public string Description { get; set; }
+        public string Alert_Desc { get; set; }
+        public string Class_Id { get; set; }
+        public string Class_Desc { get; set; }
         public DateTime Timestamp { get; set; }
         public bool Is_Acknowledged { get; set; }
         public string Acknowledged_By { get; set; }
