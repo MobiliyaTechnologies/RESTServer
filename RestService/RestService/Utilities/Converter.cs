@@ -214,6 +214,8 @@ namespace RestService.Utilities
             classroomModel.ClassDescription = classroomDetails.Class_Description;
             classroomModel.ClassId = classroomDetails.Class_Id;
             classroomModel.SensorId = (int)classroomDetails.Sensor_Id;
+            classroomModel.Building = classroomDetails.Building;
+            classroomModel.Breaker_details = classroomDetails.Breaker_details;
             return classroomModel;
         }
     }
