@@ -355,6 +355,7 @@
       <DependentUpon>PowergridModel.edmx</DependentUpon>
     </Content>
     <None Include="Properties\PublishProfiles\PowergridRESTService - Web Deploy %282%29.pubxml" />
+    <None Include="Properties\PublishProfiles\PowergridRESTService - Web Deploy %283%29.pubxml" />
     <None Include="Properties\PublishProfiles\PowergridRESTService - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />

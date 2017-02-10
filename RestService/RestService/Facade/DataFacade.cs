@@ -128,9 +128,12 @@ namespace RestService.Facade
             return dailyConsumptionPrediction;
         }
 
-        public List<Alerts> GetAllAlerts()
+        public List<AlertModel> GetAllAlerts()
         {
-            var data = (from alerts in dbEntity.Alerts orderby alerts.Timestamp descending select alerts).ToList();
+            //var data = (from alerts in dbEntity.Alerts orderby alerts.Timestamp descending select alerts).ToList();
+            //return data;
+            var data = (from alerts in dbEntity.Alerts join classData in dbEntity.ClassroomDetails on alerts.Sensor_Id equals classData.Sensor_Id orderby alerts.Timestamp descending select new AlertModel
+            { Acknowledged_By = alerts.Acknowledged_By == null ? "" : alerts.Acknowledged_By, Acknowledged_Timestamp = alerts.Acknowledged_Timestamp == null ? new DateTime() : (DateTime)alerts.Acknowledged_Timestamp, Alert_Desc = alerts.Description, Alert_Type = alerts.Alert_Type, Class_Desc = classData.Class_Description, Class_Id = classData.Class_Id, Is_Acknowledged = alerts.Is_Acknowledged == 0 ? false : true, Sensor_Id = alerts.Sensor_Id, Sensor_Log_Id = alerts.Sensor_Log_Id, Timestamp = (DateTime)alerts.Timestamp }).ToList();
             return data;
         }
 
