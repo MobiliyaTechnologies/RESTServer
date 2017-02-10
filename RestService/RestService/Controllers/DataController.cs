@@ -331,5 +331,31 @@ namespace RestService.Controllers
                 return response;
             }
         }
+
+        [Route("api/acknowledgealert/{Id}")]
+        [HttpPost]
+        public HttpResponseMessage AcknowledgeAlert(int Id, [FromBody] AlertModel alertDetail)
+        {
+            HttpResponseMessage response;
+            try
+            {
+                log.Debug("AcknowledgeAlert API called");
+                if (!string.IsNullOrEmpty(alertDetail.Acknowledged_By.Replace(" ", string.Empty)))
+                {
+                    var data = dataService.AcknowledgeAlert(Id, alertDetail);
+                    response = Request.CreateResponse(HttpStatusCode.OK, data);
+                    return response;
+                }
+                //Create an error message for returning
+                response = Request.CreateResponse(HttpStatusCode.BadRequest, "Please enter User name for Acknowledgement");
+                return response;
+            }
+            catch (Exception ex)
+            {
+                log.Error("Exception occurred in AcknowledgeAlert API as: " + ex);
+                response = Request.CreateErrorResponse(HttpStatusCode.ServiceUnavailable, ex);
+                return response;
+            }
+        }
     }
 }
