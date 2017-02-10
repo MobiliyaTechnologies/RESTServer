@@ -28,6 +28,8 @@ warning 6002: The table/view 'PowerGrid.dbo.ClassroomDetails' does not have a pr
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Class_Id" Type="nvarchar(max)" />
           <Property Name="Class_Description" Type="varchar(max)" />
+          <Property Name="Building" Type="varchar(max)" />
+          <Property Name="Breaker_details" Type="varchar(max)" />
           <Property Name="Sensor_Id" Type="int" />
         </EntityType>
         <EntityType Name="DailyConsumptionDetails">
@@ -460,6 +462,8 @@ warning 6002: The table/view 'PowerGrid.dbo.TempMLData' does not have a primary 
     [ClassroomDetails].[Id] AS [Id], 
     [ClassroomDetails].[Class_Id] AS [Class_Id], 
     [ClassroomDetails].[Class_Description] AS [Class_Description], 
+    [ClassroomDetails].[Building] AS [Building], 
+    [ClassroomDetails].[Breaker_details] AS [Breaker_details], 
     [ClassroomDetails].[Sensor_Id] AS [Sensor_Id]
     FROM [dbo].[ClassroomDetails] AS [ClassroomDetails]</DefiningQuery>
           </EntitySet>
@@ -875,6 +879,8 @@ warning 6002: The table/view 'PowerGrid.dbo.TempMLData' does not have a primary 
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Class_Id" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Class_Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Building" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Breaker_details" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="Sensor_Id" Type="Int32" />
         </EntityType>
         <EntityType Name="PowergridAzureMLData">
@@ -1355,6 +1361,8 @@ warning 6002: The table/view 'PowerGrid.dbo.TempMLData' does not have a primary 
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Class_Id" ColumnName="Class_Id" />
                 <ScalarProperty Name="Class_Description" ColumnName="Class_Description" />
+                <ScalarProperty Name="Building" ColumnName="Building" />
+                <ScalarProperty Name="Breaker_details" ColumnName="Breaker_details" />
                 <ScalarProperty Name="Sensor_Id" ColumnName="Sensor_Id" />
               </MappingFragment>
             </EntityTypeMapping>

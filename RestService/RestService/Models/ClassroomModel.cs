@@ -12,5 +12,9 @@ namespace RestService.Models
         public string ClassDescription { get; set; }
 
         public int SensorId { get; set; }
+
+        public string Building { get; set; }
+
+        public string Breaker_details { get; set; }
     }
 }

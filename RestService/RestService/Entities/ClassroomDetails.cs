@@ -17,6 +17,8 @@ namespace RestService.Entities
         public int Id { get; set; }
         public string Class_Id { get; set; }
         public string Class_Description { get; set; }
+        public string Building { get; set; }
+        public string Breaker_details { get; set; }
         public Nullable<int> Sensor_Id { get; set; }
     }
 }
