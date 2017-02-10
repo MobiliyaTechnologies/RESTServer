@@ -274,5 +274,62 @@ namespace RestService.Controllers
                 return response;
             }
         }
+
+        [Route("api/getallalerts/{Id}")]
+        public HttpResponseMessage GetAllAlerts(int Id)
+        {
+            log.Debug("GetAllAlerts API Called");
+            HttpResponseMessage response;
+            try
+            {
+                var data = dataService.GetAllAlerts(Id);
+                response = data == null ? Request.CreateResponse(HttpStatusCode.Forbidden, "Invalid User") : Request.CreateResponse(HttpStatusCode.OK, data);
+                return response;
+            }
+            catch (Exception ex)
+            {
+                log.Error("Exception occurred in GetAllAlerts as: " + ex);
+                response = Request.CreateErrorResponse(HttpStatusCode.ServiceUnavailable, ex);
+                return response;
+            }
+        }
+
+        [Route("api/getalertdetails/{Id}/{LogId}")]
+        public HttpResponseMessage GetAlertDetails(int Id, int LogId)
+        {
+            HttpResponseMessage response;
+            try
+            {
+                log.Debug("GetAlertDetails API called");
+                var data = dataService.GetAlertDetails(Id, LogId);
+                response = data == null ? Request.CreateResponse(HttpStatusCode.Forbidden, "Invalid User") : Request.CreateResponse(HttpStatusCode.OK, data);
+                return response;
+            }
+            catch (Exception ex)
+            {
+                log.Error("Exception occurred in GetAlertDetails API as: " + ex);
+                response = Request.CreateErrorResponse(HttpStatusCode.ServiceUnavailable, ex);
+                return response;
+            }
+        }
+
+        [Route("api/getclassrooms/{Id}")]
+        public HttpResponseMessage GetAllClassrooms(int Id)
+        {
+            log.Debug("GetAllClassrooms API Called");
+            HttpResponseMessage response;
+            try
+            {
+                var data = dataService.GetAllClassrooms(Id);
+                response = data == null ? Request.CreateResponse(HttpStatusCode.Forbidden, "Invalid User") : Request.CreateResponse(HttpStatusCode.OK, data);
+                return response;
+            }
+            catch (Exception ex)
+            {
+                log.Error("Exception occurred in GetAllClassrooms as: " + ex);
+                response = Request.CreateErrorResponse(HttpStatusCode.ServiceUnavailable, ex);
+                return response;
+            }
+        }
     }
 }

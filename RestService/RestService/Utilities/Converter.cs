@@ -175,5 +175,46 @@ namespace RestService.Utilities
             });
             return dayWiseConsumptionPrediction;
         }
+
+        public static AlertModel AlertsEntityToModel(Alerts alertEntity)
+        {
+            AlertModel alertModel = new AlertModel();
+            alertModel.Sensor_Id = alertEntity.Sensor_Id;
+            alertModel.Sensor_Log_Id = alertEntity.Sensor_Log_Id;
+            alertModel.Is_Acknowledged = alertEntity.Is_Acknowledged == 0 ? false : true;
+            if (alertModel.Is_Acknowledged)
+            {
+                alertModel.Acknowledged_By = alertEntity.Acknowledged_By;
+                alertModel.Acknowledged_Timestamp = (DateTime)alertEntity.Acknowledged_Timestamp; 
+            }
+            alertModel.Alert_Type = alertEntity.Alert_Type;
+            alertModel.Description = alertEntity.Description;
+            alertModel.Timestamp = (DateTime)alertEntity.Timestamp;
+            return alertModel;
+        }
+
+        public static AlertDetailsModel AlertDetailsEntityToModel(SensorData alertDetailsEntity)
+        {
+            AlertDetailsModel alertDetailsModel = new AlertDetailsModel();
+            alertDetailsModel.Battery_Remaining = (double)alertDetailsEntity.Battery_Remaining;
+            alertDetailsModel.Class_Id = alertDetailsEntity.Class_Id.ToString();
+            alertDetailsModel.Humidity = (double)alertDetailsEntity.Humidity;
+            alertDetailsModel.Is_Light_ON = alertDetailsEntity.Is_Light_ON == null || alertDetailsEntity.Is_Light_ON == 0 ? false : true;
+            alertDetailsModel.Last_Updated = (DateTime)alertDetailsEntity.Last_Updated;
+            alertDetailsModel.Light_Intensity = (double)alertDetailsEntity.Light_Intensity;
+            alertDetailsModel.Sensor_Id = alertDetailsEntity.Sensor_Id;
+            alertDetailsModel.Temperature = (double)alertDetailsEntity.Temperature;
+            alertDetailsModel.Timestamp = (DateTime)alertDetailsEntity.Timestamp;
+            return alertDetailsModel;
+        }
+
+        public static ClassroomModel ClassroomEntityToModel(ClassroomDetails classroomDetails)
+        {
+            ClassroomModel classroomModel = new ClassroomModel();
+            classroomModel.ClassDescription = classroomDetails.Class_Description;
+            classroomModel.ClassId = classroomDetails.Class_Id;
+            classroomModel.SensorId = (int)classroomDetails.Sensor_Id;
+            return classroomModel;
+        }
     }
 }
