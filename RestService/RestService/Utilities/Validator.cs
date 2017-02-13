@@ -86,7 +86,7 @@ namespace RestService.Utilities
 
                     //check password
                     bool isValidPassword = false;
-                    if (userCredentials.Password.Length > 2 && userCredentials.New_Password.Length > 2)
+                    if (userCredentials.Password.Length > 8 && userCredentials.New_Password.Length > 8)
                     {
                         isValidPassword = true;
                     }
