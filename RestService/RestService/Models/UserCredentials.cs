@@ -13,7 +13,6 @@ namespace RestService.Models
         public string Email { get; set; }
 
         [Required]
-        [MinLength(8)]
         public string Password { get; set; }
 
         public string New_Password { get; set; }

@@ -132,7 +132,7 @@ namespace RestService.Facade
                 //update user session
                 //var sess = dbEntity.UserSession.FirstOrDefault(c => c.User_Id == user.Id);
                 //sess.Last_Login_Time = DateTime.Now;
-                int role_Id = (int)(from data in dbEntity.UserRole where data.Id == user.Id select data.Role_Id).FirstOrDefault();
+                int role_Id = (int)(from data in dbEntity.UserRole where data.User_Id == user.Id select data.Role_Id).FirstOrDefault();
                 //send response
                 response = Converter.UserToResponseUserModel(user);
                 response.Role_Id = role_Id;
