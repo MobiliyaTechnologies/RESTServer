@@ -7,7 +7,9 @@ namespace RestService.Models
 {
     public class ClassroomModel
     {
-        public string ClassId { get; set; }
+        public int ClassId { get; set; }
+
+        public string ClassName { get; set; }
 
         public string ClassDescription { get; set; }
 

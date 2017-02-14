@@ -193,16 +193,12 @@ namespace RestService.Utilities
             return alertModel;
         }
 
-        public static AlertDetailsModel AlertDetailsEntityToModel(SensorData alertDetailsEntity)
+        public static AlertDetailsModel AlertDetailsEntityToModel(SensorLiveData alertDetailsEntity)
         {
             AlertDetailsModel alertDetailsModel = new AlertDetailsModel();
-            alertDetailsModel.Battery_Remaining = (double)alertDetailsEntity.Battery_Remaining;
-            alertDetailsModel.Class_Id = alertDetailsEntity.Class_Id.ToString();
             alertDetailsModel.Humidity = (double)alertDetailsEntity.Humidity;
-            alertDetailsModel.Is_Light_ON = alertDetailsEntity.Is_Light_ON == null || alertDetailsEntity.Is_Light_ON == 0 ? false : true;
-            alertDetailsModel.Last_Updated = (DateTime)alertDetailsEntity.Last_Updated;
-            alertDetailsModel.Light_Intensity = (double)alertDetailsEntity.Light_Intensity;
-            alertDetailsModel.Sensor_Id = alertDetailsEntity.Sensor_Id;
+            alertDetailsModel.Light_Intensity = (double)alertDetailsEntity.Brightness;
+            alertDetailsModel.Sensor_Id = (int)alertDetailsEntity.Sensor_Id;
             alertDetailsModel.Temperature = (double)alertDetailsEntity.Temperature;
             alertDetailsModel.Timestamp = (DateTime)alertDetailsEntity.Timestamp;
             return alertDetailsModel;
@@ -211,9 +207,9 @@ namespace RestService.Utilities
         public static ClassroomModel ClassroomEntityToModel(ClassroomDetails classroomDetails)
         {
             ClassroomModel classroomModel = new ClassroomModel();
-            classroomModel.ClassDescription = classroomDetails.Class_Description;
+            classroomModel.ClassDescription = classroomDetails.Class_Desc;
             classroomModel.ClassId = classroomDetails.Class_Id;
-            classroomModel.SensorId = (int)classroomDetails.Sensor_Id;
+            classroomModel.ClassName = classroomDetails.Class_Name;
             classroomModel.Building = classroomDetails.Building;
             classroomModel.Breaker_details = classroomDetails.Breaker_details;
             return classroomModel;

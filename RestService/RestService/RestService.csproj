@@ -236,6 +236,9 @@
     <Compile Include="Entities\Alerts.cs">
       <DependentUpon>PowergridModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\Answers.cs">
+      <DependentUpon>PowergridModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\ClassroomDetails.cs">
       <DependentUpon>PowergridModel.tt</DependentUpon>
     </Compile>
@@ -243,6 +246,9 @@
       <DependentUpon>PowergridModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\DailyConsumptionPrediction.cs">
+      <DependentUpon>PowergridModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\Feedback.cs">
       <DependentUpon>PowergridModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\HalfHourlyData.cs">
@@ -278,10 +284,19 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>PowergridModel.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Entities\Questions.cs">
+      <DependentUpon>PowergridModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\Role.cs">
       <DependentUpon>PowergridModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\SensorData.cs">
+      <DependentUpon>PowergridModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\SensorLiveData.cs">
+      <DependentUpon>PowergridModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\SensorMaster.cs">
       <DependentUpon>PowergridModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\TempMLData.cs">

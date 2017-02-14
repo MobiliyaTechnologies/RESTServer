@@ -1,4 +1,4 @@
-﻿// T4 code generation is enabled for model 'D:\MS Powergrid\GIT Lab Repo\Rest Service\2017\Feb\07-02-17(Classroom List)\REST-API-Server\RestService\RestService\Entities\PowergridModel.edmx'. 
+﻿// T4 code generation is enabled for model 'D:\MS Powergrid\GIT Lab Repo\Rest Service\2017\Feb\14-02-17\REST-API-Server\RestService\RestService\Entities\PowergridModel.edmx'. 
 // To enable legacy code generation, change the value of the 'Code Generation Strategy' designer
 // property to 'Legacy ObjectContext'. This property is available in the Properties Window when the model
 // is open in the designer.

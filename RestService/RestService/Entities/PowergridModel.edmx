@@ -19,18 +19,23 @@
           <Property Name="Acknowledged_By" Type="varchar(max)" />
           <Property Name="Acknowledged_Timestamp" Type="datetime" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'PowerGrid.dbo.ClassroomDetails' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="Answers">
+          <Key>
+            <PropertyRef Name="AnswerID" />
+          </Key>
+          <Property Name="AnswerID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AnswerDesc" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="QuestionID" Type="int" />
+        </EntityType>
         <EntityType Name="ClassroomDetails">
           <Key>
-            <PropertyRef Name="Id" />
+            <PropertyRef Name="Class_Id" />
           </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Class_Id" Type="nvarchar(max)" />
-          <Property Name="Class_Description" Type="varchar(max)" />
-          <Property Name="Building" Type="varchar(max)" />
-          <Property Name="Breaker_details" Type="varchar(max)" />
-          <Property Name="Sensor_Id" Type="int" />
+          <Property Name="Class_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Class_Name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Class_Desc" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Building" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Breaker_details" Type="varchar" MaxLength="100" Nullable="false" />
         </EntityType>
         <EntityType Name="DailyConsumptionDetails">
           <Key>
@@ -61,6 +66,20 @@ warning 6002: The table/view 'PowerGrid.dbo.ClassroomDetails' does not have a pr
           <Property Name="Daily_KWH_System" Type="float" />
           <Property Name="Daily_Predicted_KWH_System" Type="float" />
           <Property Name="TomorrowPredictedKWH" Type="float" />
+        </EntityType>
+        <EntityType Name="Feedback">
+          <Key>
+            <PropertyRef Name="FeedbackID" />
+          </Key>
+          <Property Name="FeedbackID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ClassID" Type="int" />
+          <Property Name="QuestionID" Type="int" />
+          <Property Name="AnswerID" Type="int" />
+          <Property Name="FeedbackDesc" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="CreatedBy" Type="int" Nullable="false" />
+          <Property Name="CreatedOn" Type="datetime" />
+          <Property Name="ModifiedBy" Type="int" />
+          <Property Name="ModiifiedOn" Type="datetime" />
         </EntityType>
         <EntityType Name="HalfHourlyData">
           <Key>
@@ -264,6 +283,13 @@ warning 6002: The table/view 'PowerGrid.dbo.PowergridAzureMLData' does not have 
           <Property Name="kW_System" Type="float" />
           <Property Name="PredictedKwH" Type="float" />
         </EntityType>
+        <EntityType Name="Questions">
+          <Key>
+            <PropertyRef Name="QuestionID" />
+          </Key>
+          <Property Name="QuestionID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="QuestionDec" Type="varchar" MaxLength="500" Nullable="false" />
+        </EntityType>
         <EntityType Name="Role">
           <Key>
             <PropertyRef Name="Id" />
@@ -286,6 +312,25 @@ warning 6002: The table/view 'PowerGrid.dbo.PowergridAzureMLData' does not have 
           <Property Name="Battery_Remaining" Type="float" />
           <Property Name="Timestamp" Type="datetime" />
           <Property Name="Last_Updated" Type="datetime" />
+        </EntityType>
+        <EntityType Name="SensorLiveData">
+          <Key>
+            <PropertyRef Name="Sensor_Log_Id" />
+          </Key>
+          <Property Name="Sensor_Log_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Sensor_Id" Type="int" />
+          <Property Name="Temperature" Type="float" />
+          <Property Name="Brightness" Type="float" />
+          <Property Name="Humidity" Type="float" />
+          <Property Name="Timestamp" Type="datetime" />
+        </EntityType>
+        <EntityType Name="SensorMaster">
+          <Key>
+            <PropertyRef Name="Sensor_Id" />
+          </Key>
+          <Property Name="Sensor_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Sensor_Name" Type="varchar(max)" />
+          <Property Name="Class_Id" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'PowerGrid.dbo.TempMLData' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -405,6 +450,54 @@ warning 6002: The table/view 'PowerGrid.dbo.TempMLData' does not have a primary 
           <Property Name="Breaker_details" Type="varchar(max)" />
           <Property Name="Weekly_Predicted_KWH_System" Type="float" />
         </EntityType>
+        <Association Name="FK_Answers_QuestionID">
+          <End Role="Questions" Type="Self.Questions" Multiplicity="0..1" />
+          <End Role="Answers" Type="Self.Answers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Questions">
+              <PropertyRef Name="QuestionID" />
+            </Principal>
+            <Dependent Role="Answers">
+              <PropertyRef Name="QuestionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Feedback_AnswerID">
+          <End Role="Answers" Type="Self.Answers" Multiplicity="0..1" />
+          <End Role="Feedback" Type="Self.Feedback" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Answers">
+              <PropertyRef Name="AnswerID" />
+            </Principal>
+            <Dependent Role="Feedback">
+              <PropertyRef Name="AnswerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Feedback_ClassId">
+          <End Role="ClassroomDetails" Type="Self.ClassroomDetails" Multiplicity="0..1" />
+          <End Role="Feedback" Type="Self.Feedback" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ClassroomDetails">
+              <PropertyRef Name="Class_Id" />
+            </Principal>
+            <Dependent Role="Feedback">
+              <PropertyRef Name="ClassID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Feedback_QuestionID">
+          <End Role="Questions" Type="Self.Questions" Multiplicity="0..1" />
+          <End Role="Feedback" Type="Self.Feedback" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Questions">
+              <PropertyRef Name="QuestionID" />
+            </Principal>
+            <Dependent Role="Feedback">
+              <PropertyRef Name="QuestionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_UserRole_Role">
           <End Role="Role" Type="Self.Role" Multiplicity="0..1" />
           <End Role="UserRole" Type="Self.UserRole" Multiplicity="*" />
@@ -443,30 +536,26 @@ warning 6002: The table/view 'PowerGrid.dbo.TempMLData' does not have a primary 
         </Association>
         <EntityContainer Name="PowerGridModelStoreContainer">
           <EntitySet Name="Alerts" EntityType="Self.Alerts" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Answers" EntityType="Self.Answers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ClassroomDetails" EntityType="Self.ClassroomDetails" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DailyConsumptionDetails" EntityType="Self.DailyConsumptionDetails" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DailyConsumptionPrediction" EntityType="Self.DailyConsumptionPrediction" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Feedback" EntityType="Self.Feedback" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="HalfHourlyData" EntityType="Self.HalfHourlyData" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="HalfYearlyData" EntityType="Self.HalfYearlyData" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MeterDetails" EntityType="Self.MeterDetails" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MonthlyConsumptionDetails" EntityType="Self.MonthlyConsumptionDetails" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MSLiveData" EntityType="Self.MSLiveData" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Questions" EntityType="Self.Questions" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Role" EntityType="Self.Role" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SensorData" EntityType="Self.SensorData" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SensorLiveData" EntityType="Self.SensorLiveData" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SensorMaster" EntityType="Self.SensorMaster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TempMSLiveData" EntityType="Self.TempMSLiveData" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserRole" EntityType="Self.UserRole" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserSession" EntityType="Self.UserSession" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="WeeklyConsumptionPrediction" EntityType="Self.WeeklyConsumptionPrediction" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="ClassroomDetails" EntityType="Self.ClassroomDetails" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [ClassroomDetails].[Id] AS [Id], 
-    [ClassroomDetails].[Class_Id] AS [Class_Id], 
-    [ClassroomDetails].[Class_Description] AS [Class_Description], 
-    [ClassroomDetails].[Building] AS [Building], 
-    [ClassroomDetails].[Breaker_details] AS [Breaker_details], 
-    [ClassroomDetails].[Sensor_Id] AS [Sensor_Id]
-    FROM [dbo].[ClassroomDetails] AS [ClassroomDetails]</DefiningQuery>
-          </EntitySet>
           <EntitySet Name="PowergridAzureMLData" EntityType="Self.PowergridAzureMLData" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [PowergridAzureMLData].[Id] AS [Id], 
@@ -540,6 +629,22 @@ warning 6002: The table/view 'PowerGrid.dbo.TempMLData' does not have a primary 
     [TempMLData].[PredictedKwH] AS [PredictedKwH]
     FROM [dbo].[TempMLData] AS [TempMLData]</DefiningQuery>
           </EntitySet>
+          <AssociationSet Name="FK_Answers_QuestionID" Association="Self.FK_Answers_QuestionID">
+            <End Role="Questions" EntitySet="Questions" />
+            <End Role="Answers" EntitySet="Answers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Feedback_AnswerID" Association="Self.FK_Feedback_AnswerID">
+            <End Role="Answers" EntitySet="Answers" />
+            <End Role="Feedback" EntitySet="Feedback" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Feedback_ClassId" Association="Self.FK_Feedback_ClassId">
+            <End Role="ClassroomDetails" EntitySet="ClassroomDetails" />
+            <End Role="Feedback" EntitySet="Feedback" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Feedback_QuestionID" Association="Self.FK_Feedback_QuestionID">
+            <End Role="Questions" EntitySet="Questions" />
+            <End Role="Feedback" EntitySet="Feedback" />
+          </AssociationSet>
           <AssociationSet Name="FK_UserRole_Role" Association="Self.FK_UserRole_Role">
             <End Role="Role" EntitySet="Role" />
             <End Role="UserRole" EntitySet="UserRole" />
@@ -572,6 +677,27 @@ warning 6002: The table/view 'PowerGrid.dbo.TempMLData' does not have a primary 
           <Property Name="Acknowledged_By" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="Acknowledged_Timestamp" Type="DateTime" Precision="3" />
         </EntityType>
+        <EntityType Name="Answers">
+          <Key>
+            <PropertyRef Name="AnswerID" />
+          </Key>
+          <Property Name="AnswerID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AnswerDesc" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="QuestionID" Type="Int32" />
+          <NavigationProperty Name="Questions" Relationship="Self.FK_Answers_QuestionID" FromRole="Answers" ToRole="Questions" />
+          <NavigationProperty Name="Feedback" Relationship="Self.FK_Feedback_AnswerID" FromRole="Answers" ToRole="Feedback" />
+        </EntityType>
+        <EntityType Name="ClassroomDetails">
+          <Key>
+            <PropertyRef Name="Class_Id" />
+          </Key>
+          <Property Name="Class_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Class_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Class_Desc" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Building" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Breaker_details" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Feedback" Relationship="Self.FK_Feedback_ClassId" FromRole="ClassroomDetails" ToRole="Feedback" />
+        </EntityType>
         <EntityType Name="DailyConsumptionDetails">
           <Key>
             <PropertyRef Name="Id" />
@@ -601,6 +727,23 @@ warning 6002: The table/view 'PowerGrid.dbo.TempMLData' does not have a primary 
           <Property Name="Daily_KWH_System" Type="Double" />
           <Property Name="Daily_Predicted_KWH_System" Type="Double" />
           <Property Name="TomorrowPredictedKWH" Type="Double" />
+        </EntityType>
+        <EntityType Name="Feedback">
+          <Key>
+            <PropertyRef Name="FeedbackID" />
+          </Key>
+          <Property Name="FeedbackID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ClassID" Type="Int32" />
+          <Property Name="QuestionID" Type="Int32" />
+          <Property Name="AnswerID" Type="Int32" />
+          <Property Name="FeedbackDesc" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CreatedBy" Type="Int32" Nullable="false" />
+          <Property Name="CreatedOn" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedBy" Type="Int32" />
+          <Property Name="ModiifiedOn" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Answers" Relationship="Self.FK_Feedback_AnswerID" FromRole="Feedback" ToRole="Answers" />
+          <NavigationProperty Name="ClassroomDetails" Relationship="Self.FK_Feedback_ClassId" FromRole="Feedback" ToRole="ClassroomDetails" />
+          <NavigationProperty Name="Questions" Relationship="Self.FK_Feedback_QuestionID" FromRole="Feedback" ToRole="Questions" />
         </EntityType>
         <EntityType Name="HalfHourlyData">
           <Key>
@@ -765,6 +908,15 @@ warning 6002: The table/view 'PowerGrid.dbo.TempMLData' does not have a primary 
           <Property Name="Volts_L3_to_neutral" Type="Double" />
           <Property Name="kW_System" Type="Double" />
         </EntityType>
+        <EntityType Name="Questions">
+          <Key>
+            <PropertyRef Name="QuestionID" />
+          </Key>
+          <Property Name="QuestionID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="QuestionDec" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Answers" Relationship="Self.FK_Answers_QuestionID" FromRole="Questions" ToRole="Answers" />
+          <NavigationProperty Name="Feedback" Relationship="Self.FK_Feedback_QuestionID" FromRole="Questions" ToRole="Feedback" />
+        </EntityType>
         <EntityType Name="Role">
           <Key>
             <PropertyRef Name="Id" />
@@ -788,6 +940,25 @@ warning 6002: The table/view 'PowerGrid.dbo.TempMLData' does not have a primary 
           <Property Name="Battery_Remaining" Type="Double" />
           <Property Name="Timestamp" Type="DateTime" Precision="3" />
           <Property Name="Last_Updated" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="SensorLiveData">
+          <Key>
+            <PropertyRef Name="Sensor_Log_Id" />
+          </Key>
+          <Property Name="Sensor_Log_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Sensor_Id" Type="Int32" />
+          <Property Name="Temperature" Type="Double" />
+          <Property Name="Brightness" Type="Double" />
+          <Property Name="Humidity" Type="Double" />
+          <Property Name="Timestamp" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="SensorMaster">
+          <Key>
+            <PropertyRef Name="Sensor_Id" />
+          </Key>
+          <Property Name="Sensor_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Sensor_Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Class_Id" Type="Int32" />
         </EntityType>
         <EntityType Name="TempMSLiveData">
           <Key>
@@ -872,17 +1043,6 @@ warning 6002: The table/view 'PowerGrid.dbo.TempMLData' does not have a primary 
           <Property Name="Breaker_details" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="Weekly_Predicted_KWH_System" Type="Double" />
         </EntityType>
-        <EntityType Name="ClassroomDetails">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Class_Id" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Class_Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="Building" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="Breaker_details" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="Sensor_Id" Type="Int32" />
-        </EntityType>
         <EntityType Name="PowergridAzureMLData">
           <Key>
             <PropertyRef Name="Id" />
@@ -958,6 +1118,54 @@ warning 6002: The table/view 'PowerGrid.dbo.TempMLData' does not have a primary 
           <Property Name="kW_System" Type="Double" />
           <Property Name="PredictedKwH" Type="Double" />
         </EntityType>
+        <Association Name="FK_Answers_QuestionID">
+          <End Role="Questions" Type="Self.Questions" Multiplicity="0..1" />
+          <End Role="Answers" Type="Self.Answers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Questions">
+              <PropertyRef Name="QuestionID" />
+            </Principal>
+            <Dependent Role="Answers">
+              <PropertyRef Name="QuestionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Feedback_AnswerID">
+          <End Role="Answers" Type="Self.Answers" Multiplicity="0..1" />
+          <End Role="Feedback" Type="Self.Feedback" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Answers">
+              <PropertyRef Name="AnswerID" />
+            </Principal>
+            <Dependent Role="Feedback">
+              <PropertyRef Name="AnswerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Feedback_ClassId">
+          <End Role="ClassroomDetails" Type="Self.ClassroomDetails" Multiplicity="0..1" />
+          <End Role="Feedback" Type="Self.Feedback" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ClassroomDetails">
+              <PropertyRef Name="Class_Id" />
+            </Principal>
+            <Dependent Role="Feedback">
+              <PropertyRef Name="ClassID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Feedback_QuestionID">
+          <End Role="Questions" Type="Self.Questions" Multiplicity="0..1" />
+          <End Role="Feedback" Type="Self.Feedback" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Questions">
+              <PropertyRef Name="QuestionID" />
+            </Principal>
+            <Dependent Role="Feedback">
+              <PropertyRef Name="QuestionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_UserRole_Role">
           <End Role="Role" Type="Self.Role" Multiplicity="0..1" />
           <End Role="UserRole" Type="Self.UserRole" Multiplicity="*" />
@@ -996,23 +1204,44 @@ warning 6002: The table/view 'PowerGrid.dbo.TempMLData' does not have a primary 
         </Association>
         <EntityContainer Name="PowerGridEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Alerts" EntityType="Self.Alerts" />
+          <EntitySet Name="Answers" EntityType="Self.Answers" />
+          <EntitySet Name="ClassroomDetails" EntityType="Self.ClassroomDetails" />
           <EntitySet Name="DailyConsumptionDetails" EntityType="Self.DailyConsumptionDetails" />
           <EntitySet Name="DailyConsumptionPrediction" EntityType="Self.DailyConsumptionPrediction" />
+          <EntitySet Name="Feedback" EntityType="Self.Feedback" />
           <EntitySet Name="HalfHourlyData" EntityType="Self.HalfHourlyData" />
           <EntitySet Name="HalfYearlyData" EntityType="Self.HalfYearlyData" />
           <EntitySet Name="MeterDetails" EntityType="Self.MeterDetails" />
           <EntitySet Name="MonthlyConsumptionDetails" EntityType="Self.MonthlyConsumptionDetails" />
           <EntitySet Name="MSLiveData" EntityType="Self.MSLiveData" />
+          <EntitySet Name="Questions" EntityType="Self.Questions" />
           <EntitySet Name="Role" EntityType="Self.Role" />
           <EntitySet Name="SensorData" EntityType="Self.SensorData" />
+          <EntitySet Name="SensorLiveData" EntityType="Self.SensorLiveData" />
+          <EntitySet Name="SensorMaster" EntityType="Self.SensorMaster" />
           <EntitySet Name="TempMSLiveData" EntityType="Self.TempMSLiveData" />
           <EntitySet Name="User" EntityType="Self.User" />
           <EntitySet Name="UserRole" EntityType="Self.UserRole" />
           <EntitySet Name="UserSession" EntityType="Self.UserSession" />
           <EntitySet Name="WeeklyConsumptionPrediction" EntityType="Self.WeeklyConsumptionPrediction" />
-          <EntitySet Name="ClassroomDetails" EntityType="Self.ClassroomDetails" />
           <EntitySet Name="PowergridAzureMLData" EntityType="Self.PowergridAzureMLData" />
           <EntitySet Name="TempMLData" EntityType="Self.TempMLData" />
+          <AssociationSet Name="FK_Answers_QuestionID" Association="Self.FK_Answers_QuestionID">
+            <End Role="Questions" EntitySet="Questions" />
+            <End Role="Answers" EntitySet="Answers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Feedback_AnswerID" Association="Self.FK_Feedback_AnswerID">
+            <End Role="Answers" EntitySet="Answers" />
+            <End Role="Feedback" EntitySet="Feedback" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Feedback_ClassId" Association="Self.FK_Feedback_ClassId">
+            <End Role="ClassroomDetails" EntitySet="ClassroomDetails" />
+            <End Role="Feedback" EntitySet="Feedback" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Feedback_QuestionID" Association="Self.FK_Feedback_QuestionID">
+            <End Role="Questions" EntitySet="Questions" />
+            <End Role="Feedback" EntitySet="Feedback" />
+          </AssociationSet>
           <AssociationSet Name="FK_UserRole_Role" Association="Self.FK_UserRole_Role">
             <End Role="Role" EntitySet="Role" />
             <End Role="UserRole" EntitySet="UserRole" />
@@ -1047,6 +1276,26 @@ warning 6002: The table/view 'PowerGrid.dbo.TempMLData' does not have a primary 
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Answers">
+            <EntityTypeMapping TypeName="PowerGridModel.Answers">
+              <MappingFragment StoreEntitySet="Answers">
+                <ScalarProperty Name="AnswerID" ColumnName="AnswerID" />
+                <ScalarProperty Name="AnswerDesc" ColumnName="AnswerDesc" />
+                <ScalarProperty Name="QuestionID" ColumnName="QuestionID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ClassroomDetails">
+            <EntityTypeMapping TypeName="PowerGridModel.ClassroomDetails">
+              <MappingFragment StoreEntitySet="ClassroomDetails">
+                <ScalarProperty Name="Class_Id" ColumnName="Class_Id" />
+                <ScalarProperty Name="Class_Name" ColumnName="Class_Name" />
+                <ScalarProperty Name="Class_Desc" ColumnName="Class_Desc" />
+                <ScalarProperty Name="Building" ColumnName="Building" />
+                <ScalarProperty Name="Breaker_details" ColumnName="Breaker_details" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="DailyConsumptionDetails">
             <EntityTypeMapping TypeName="PowerGridModel.DailyConsumptionDetails">
               <MappingFragment StoreEntitySet="DailyConsumptionDetails">
@@ -1076,6 +1325,21 @@ warning 6002: The table/view 'PowerGrid.dbo.TempMLData' does not have a primary 
                 <ScalarProperty Name="Daily_KWH_System" ColumnName="Daily_KWH_System" />
                 <ScalarProperty Name="Daily_Predicted_KWH_System" ColumnName="Daily_Predicted_KWH_System" />
                 <ScalarProperty Name="TomorrowPredictedKWH" ColumnName="TomorrowPredictedKWH" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Feedback">
+            <EntityTypeMapping TypeName="PowerGridModel.Feedback">
+              <MappingFragment StoreEntitySet="Feedback">
+                <ScalarProperty Name="FeedbackID" ColumnName="FeedbackID" />
+                <ScalarProperty Name="ClassID" ColumnName="ClassID" />
+                <ScalarProperty Name="QuestionID" ColumnName="QuestionID" />
+                <ScalarProperty Name="AnswerID" ColumnName="AnswerID" />
+                <ScalarProperty Name="FeedbackDesc" ColumnName="FeedbackDesc" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModiifiedOn" ColumnName="ModiifiedOn" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1247,6 +1511,14 @@ warning 6002: The table/view 'PowerGrid.dbo.TempMLData' does not have a primary 
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Questions">
+            <EntityTypeMapping TypeName="PowerGridModel.Questions">
+              <MappingFragment StoreEntitySet="Questions">
+                <ScalarProperty Name="QuestionID" ColumnName="QuestionID" />
+                <ScalarProperty Name="QuestionDec" ColumnName="QuestionDec" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Role">
             <EntityTypeMapping TypeName="PowerGridModel.Role">
               <MappingFragment StoreEntitySet="Role">
@@ -1269,6 +1541,27 @@ warning 6002: The table/view 'PowerGrid.dbo.TempMLData' does not have a primary 
                 <ScalarProperty Name="Battery_Remaining" ColumnName="Battery_Remaining" />
                 <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
                 <ScalarProperty Name="Last_Updated" ColumnName="Last_Updated" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SensorLiveData">
+            <EntityTypeMapping TypeName="PowerGridModel.SensorLiveData">
+              <MappingFragment StoreEntitySet="SensorLiveData">
+                <ScalarProperty Name="Sensor_Log_Id" ColumnName="Sensor_Log_Id" />
+                <ScalarProperty Name="Sensor_Id" ColumnName="Sensor_Id" />
+                <ScalarProperty Name="Temperature" ColumnName="Temperature" />
+                <ScalarProperty Name="Brightness" ColumnName="Brightness" />
+                <ScalarProperty Name="Humidity" ColumnName="Humidity" />
+                <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SensorMaster">
+            <EntityTypeMapping TypeName="PowerGridModel.SensorMaster">
+              <MappingFragment StoreEntitySet="SensorMaster">
+                <ScalarProperty Name="Sensor_Id" ColumnName="Sensor_Id" />
+                <ScalarProperty Name="Sensor_Name" ColumnName="Sensor_Name" />
+                <ScalarProperty Name="Class_Id" ColumnName="Class_Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1352,18 +1645,6 @@ warning 6002: The table/view 'PowerGrid.dbo.TempMLData' does not have a primary 
                 <ScalarProperty Name="PowerScout" ColumnName="PowerScout" />
                 <ScalarProperty Name="Breaker_details" ColumnName="Breaker_details" />
                 <ScalarProperty Name="Weekly_Predicted_KWH_System" ColumnName="Weekly_Predicted_KWH_System" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ClassroomDetails">
-            <EntityTypeMapping TypeName="PowerGridModel.ClassroomDetails">
-              <MappingFragment StoreEntitySet="ClassroomDetails">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Class_Id" ColumnName="Class_Id" />
-                <ScalarProperty Name="Class_Description" ColumnName="Class_Description" />
-                <ScalarProperty Name="Building" ColumnName="Building" />
-                <ScalarProperty Name="Breaker_details" ColumnName="Breaker_details" />
-                <ScalarProperty Name="Sensor_Id" ColumnName="Sensor_Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

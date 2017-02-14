@@ -12,20 +12,20 @@ namespace RestService.Entities
     using System;
     using System.Collections.Generic;
     
-    public partial class ClassroomDetails
+    public partial class Questions
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public ClassroomDetails()
+        public Questions()
         {
+            this.Answers = new HashSet<Answers>();
             this.Feedback = new HashSet<Feedback>();
         }
     
-        public int Class_Id { get; set; }
-        public string Class_Name { get; set; }
-        public string Class_Desc { get; set; }
-        public string Building { get; set; }
-        public string Breaker_details { get; set; }
+        public int QuestionID { get; set; }
+        public string QuestionDec { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Answers> Answers { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Feedback> Feedback { get; set; }
     }
