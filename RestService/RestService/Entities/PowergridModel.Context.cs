@@ -26,21 +26,26 @@ namespace RestService.Entities
         }
     
         public virtual DbSet<Alerts> Alerts { get; set; }
+        public virtual DbSet<Answers> Answers { get; set; }
+        public virtual DbSet<ClassroomDetails> ClassroomDetails { get; set; }
         public virtual DbSet<DailyConsumptionDetails> DailyConsumptionDetails { get; set; }
         public virtual DbSet<DailyConsumptionPrediction> DailyConsumptionPrediction { get; set; }
+        public virtual DbSet<Feedback> Feedback { get; set; }
         public virtual DbSet<HalfHourlyData> HalfHourlyData { get; set; }
         public virtual DbSet<HalfYearlyData> HalfYearlyData { get; set; }
         public virtual DbSet<MeterDetails> MeterDetails { get; set; }
         public virtual DbSet<MonthlyConsumptionDetails> MonthlyConsumptionDetails { get; set; }
         public virtual DbSet<MSLiveData> MSLiveData { get; set; }
+        public virtual DbSet<Questions> Questions { get; set; }
         public virtual DbSet<Role> Role { get; set; }
         public virtual DbSet<SensorData> SensorData { get; set; }
+        public virtual DbSet<SensorLiveData> SensorLiveData { get; set; }
+        public virtual DbSet<SensorMaster> SensorMaster { get; set; }
         public virtual DbSet<TempMSLiveData> TempMSLiveData { get; set; }
         public virtual DbSet<User> User { get; set; }
         public virtual DbSet<UserRole> UserRole { get; set; }
         public virtual DbSet<UserSession> UserSession { get; set; }
         public virtual DbSet<WeeklyConsumptionPrediction> WeeklyConsumptionPrediction { get; set; }
-        public virtual DbSet<ClassroomDetails> ClassroomDetails { get; set; }
         public virtual DbSet<PowergridAzureMLData> PowergridAzureMLData { get; set; }
         public virtual DbSet<TempMLData> TempMLData { get; set; }
     }
