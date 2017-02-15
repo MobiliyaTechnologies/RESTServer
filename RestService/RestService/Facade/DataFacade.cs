@@ -146,12 +146,13 @@ namespace RestService.Facade
         {
             //var alertDetails = (from data in dbEntity.SensorData where data.Sensor_Log_Id == sensorLogId select data).FirstOrDefault();
             //return alertDetails;
+            
             var alertDetails = (from data in dbEntity.SensorLiveData
                                 join sensorData in dbEntity.SensorMaster on data.Sensor_Id equals sensorData.Sensor_Id
                                 join classData in dbEntity.ClassroomDetails on sensorData.Class_Id equals classData.Class_Id
                                 where data.Sensor_Log_Id == sensorLogId
                                 select new AlertDetailsModel
-                                { Sensor_Id = (int)data.Sensor_Id, Class_Id = classData.Class_Id, Class_Name = classData.Class_Name,Class_Desc = classData.Class_Desc, Humidity = (double)data.Humidity, Light_Intensity = (double)data.Brightness, Temperature = (double)data.Temperature, Timestamp = (DateTime)data.Timestamp }).FirstOrDefault();
+                                { Sensor_Id = (int)data.Sensor_Id, Class_Id = classData.Class_Id, Class_Name = classData.Class_Name, Class_Desc = classData.Class_Desc, Humidity = Math.Round((double)data.Humidity,2), Light_Intensity = Math.Round((double)data.Brightness,2), Temperature = Math.Round((double)data.Temperature,2), Timestamp = (DateTime)data.Timestamp }).FirstOrDefault();
             return alertDetails;
         }
 
