@@ -812,5 +812,41 @@ namespace RestService.Service
                 throw new Exception(ex.Message, ex);
             }
         }
+
+        public List<SensorModel> GetAllSensors(int UserId)
+        {
+            try
+            {
+                log.Debug("GetAllSensors called");
+                if (accountService.ValidateUser(UserId))
+                {
+                    log.Debug("GetAllSensors -> User validation successful");
+                    List<SensorModel> sensorModel = new List<SensorModel>();
+                    var data = dataFacade.GetAllSensors();
+                    if (data == null || data.Count < 1)
+                    {
+                        log.Debug("GetAllSensors -> No classrooms found");
+                        return sensorModel;
+                    }
+
+                    data.All(sensor =>
+                    {
+                        sensorModel.Add(Converter.SensorMasterEntityToModel(sensor));
+                        return true;
+                    });
+                    return sensorModel;
+                }
+                else
+                {
+                    log.Debug("GetAllSensors -> User Validation failed");
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                log.Error("Exception occurred in GetAllSensors as: " + ex);
+                throw new Exception(ex.Message, ex);
+            }
+        }
     }
 }

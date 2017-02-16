@@ -18,5 +18,9 @@ namespace RestService.Models
         public string Building { get; set; }
 
         public string Breaker_details { get; set; }
+
+        public double X { get; set; }
+
+        public double Y { get; set; }
     }
 }
