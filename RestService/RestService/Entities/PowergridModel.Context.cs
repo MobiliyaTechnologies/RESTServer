@@ -25,6 +25,7 @@ namespace RestService.Entities
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<AlertRules> AlertRules { get; set; }
         public virtual DbSet<Alerts> Alerts { get; set; }
         public virtual DbSet<Answers> Answers { get; set; }
         public virtual DbSet<ClassroomDetails> ClassroomDetails { get; set; }

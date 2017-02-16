@@ -29,6 +29,7 @@ namespace RestService.Entities
         public string Avatar { get; set; }
         public Nullable<short> Status { get; set; }
         public Nullable<System.DateTime> Creation_Date { get; set; }
+        public int RewardPoints { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserRole> UserRole { get; set; }

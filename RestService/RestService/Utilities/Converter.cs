@@ -214,5 +214,19 @@ namespace RestService.Utilities
             classroomModel.Breaker_details = classroomDetails.Breaker_details;
             return classroomModel;
         }
+
+        public static FeedbackModel FeedbackEntityToModel(Feedback feedback)
+        {
+            FeedbackModel feedbackModel = new FeedbackModel();
+            feedbackModel.AnswerID = (int)feedback.AnswerID;
+            feedbackModel.ClassId = (int)feedback.ClassID;
+            feedbackModel.FeedbackId = feedback.FeedbackID;
+            feedbackModel.FeedbackDesc = feedback.FeedbackDesc;
+            feedbackModel.CreatedBy = feedback.CreatedBy;
+            feedbackModel.ModifiedBy = (int)feedback.ModifiedBy;
+            feedbackModel.CreatedOn = (DateTime)feedback.CreatedOn;
+            feedbackModel.ModifiedOn = (DateTime)feedback.ModiifiedOn;
+            return feedbackModel;
+        }
     }
 }

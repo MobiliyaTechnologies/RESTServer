@@ -705,5 +705,112 @@ namespace RestService.Service
                 throw new Exception(ex.Message,ex);
             }
         }
+
+        public ResponseModel StoreFeedback(int UserId, Feedback feedbackdetail)
+        {
+            try
+            {
+                log.Debug("StoreFeedback called");
+                if (accountService.ValidateUser(UserId))
+                {
+                    log.Debug("StoreFeedback -> User validation successful");
+                    var data = dataFacade.StoreFeedback(UserId, feedbackdetail);
+                    return data;
+                }
+                else
+                {
+                    log.Debug("StoreFeedback -> User validation failed");
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                log.Error("Exception occurred in StoreFeedback as :" + ex);
+                throw new Exception(ex.Message, ex);
+            }
+        }
+
+        public List<FeedbackModel> GetAllFeedback(int UserId)
+        {
+            try
+            {
+                log.Debug("GetAllFeedback called");
+                if (accountService.ValidateUser(UserId))
+                {
+                    log.Debug("GetAllFeedback -> User validation successful");
+                    List<FeedbackModel> feedbackModel = new List<FeedbackModel>();
+                    var data = dataFacade.GetAllFeedback();
+                    if (data == null || data.Count < 1)
+                    {
+                        log.Debug("GetAllFeedback -> No feedback found");
+                        return new List<FeedbackModel>();
+                    }
+
+                    data.All(feedback =>
+                    {
+                        feedbackModel.Add(Converter.FeedbackEntityToModel(feedback));
+                        return true;
+                    });
+                    return feedbackModel;
+                }
+                else
+                {
+                    log.Debug("GetAllFeedback -> User Validation failed");
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                log.Error("Exception occurred in GetAllFeedback as: " + ex);
+                throw new Exception(ex.Message, ex);
+            }
+        }
+
+        public ResponseModel FeedbackDelete(int UserId, FeedbackModel feedbackdetail)
+        {
+            try
+            {
+                log.Debug("FeedbackDelete called");
+                if (accountService.ValidateUser(UserId))
+                {
+                    log.Debug("FeedbackDelete -> User validation successful");
+                    var data = dataFacade.FeedbackDelete(feedbackdetail);
+                    return data;
+                }
+                else
+                {
+                    log.Debug("FeedbackDelete -> User validation failed");
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                log.Error("Exception occurred in FeedbackDelete as :" + ex);
+                throw new Exception(ex.Message, ex);
+            }
+        }
+        public ResponseModel FeedbackUpdate(int UserId, FeedbackModel feedbackdetail)
+        {
+            try
+            {
+                log.Debug("FeedbackUpdate called");
+                if (accountService.ValidateUser(UserId))
+                {
+                    log.Debug("FeedbackUpdate -> User validation successful");
+                    var data = dataFacade.FeedbackUpdate(UserId, feedbackdetail);
+                    return data;
+                }
+                else
+                {
+                    log.Debug("FeedbackUpdate -> User validation failed");
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                log.Error("Exception occurred in FeedbackUpdate as :" + ex);
+                throw new Exception(ex.Message, ex);
+            }
+        }
     }
 }
