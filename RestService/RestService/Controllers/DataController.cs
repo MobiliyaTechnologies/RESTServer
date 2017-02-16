@@ -357,5 +357,110 @@ namespace RestService.Controllers
                 return response;
             }
         }
+        [Route("api/deletefeedback/{Id}")]
+        [HttpPost]
+        public HttpResponseMessage FeedbackDelete(int Id, [FromBody] FeedbackModel feedbackdetail)
+        {
+            log.Debug("DeleteFeedback API called");
+            HttpResponseMessage response;
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var data = dataService.FeedbackDelete(Id, feedbackdetail);
+                    response = data == null ? Request.CreateResponse(HttpStatusCode.Forbidden, "Invalid User") : Request.CreateResponse(HttpStatusCode.OK, data);
+                    return response;
+                }
+                //Create an error message for returning
+                string messages = string.Join("; ", ModelState.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage));
+                response = Request.CreateResponse(HttpStatusCode.BadRequest, messages);
+                return response;
+            }
+            catch (Exception ex)
+            {
+                log.Error("Exception occurred in DeleteFeedback API as: " + ex);
+                response = Request.CreateErrorResponse(HttpStatusCode.ServiceUnavailable, ex);
+                return response;
+            }
+        }
+        [Route("api/updatefeedback/{Id}")]
+        [HttpPost]
+        public HttpResponseMessage FeedbackUpdate(int Id, [FromBody] FeedbackModel feedbackdetail)
+        {
+            log.Debug("UpdateFeedback API called");
+            HttpResponseMessage response;
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var data = dataService.FeedbackUpdate(Id, feedbackdetail);
+                    response = data == null ? Request.CreateResponse(HttpStatusCode.Forbidden, "Invalid User") : Request.CreateResponse(HttpStatusCode.OK, data);
+                    return response;
+                }
+                //Create an error message for returning
+                string messages = string.Join("; ", ModelState.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage));
+                response = Request.CreateResponse(HttpStatusCode.BadRequest, messages);
+                return response;
+            }
+            catch (Exception ex)
+            {
+                log.Error("Exception occurred in UpdateFeedback API as: " + ex);
+                response = Request.CreateErrorResponse(HttpStatusCode.ServiceUnavailable, ex);
+                return response;
+            }
+        }
+        [Route("api/storefeedback/{Id}")]
+        [HttpPost]
+        public HttpResponseMessage StoreFeedback(int Id, [FromBody] Feedback feedbackdetail)
+        {
+            log.Debug("StoreFeedback API called");
+            HttpResponseMessage response;
+            try
+            {
+                if (ModelState.IsValid) 
+                {
+                    if (feedbackdetail.AnswerID == null && feedbackdetail.FeedbackDesc == null)
+                    //Create an error message for returning
+                    {
+                        response = Request.CreateResponse(HttpStatusCode.BadRequest, "Please choose any answer or provide description");
+                        return response;
+                    }
+                    else
+                    {
+                        var data = dataService.StoreFeedback(Id, feedbackdetail);
+                        response = data == null ? Request.CreateResponse(HttpStatusCode.Forbidden, "Invalid User") : Request.CreateResponse(HttpStatusCode.OK, data);
+                        return response;
+                    }
+                }
+                //Create an error message for returning
+                string messages = string.Join("; ", ModelState.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage));
+                response = Request.CreateResponse(HttpStatusCode.BadRequest, messages);
+                return response;
+            }
+            catch (Exception ex)
+            {
+                log.Error("Exception occurred in StoreFeedback API as: " + ex);
+                response = Request.CreateErrorResponse(HttpStatusCode.ServiceUnavailable, ex);
+                return response;
+            }
+        }
+        [Route("api/getallfeedback/{Id}")]
+        public HttpResponseMessage GetAllFeedback(int Id)
+        {
+            log.Debug("GetAllFeedback API Called");
+            HttpResponseMessage response;
+            try
+            {
+                var data = dataService.GetAllFeedback(Id);
+                response = data == null ? Request.CreateResponse(HttpStatusCode.Forbidden, "Invalid User") : Request.CreateResponse(HttpStatusCode.OK, data);
+                return response;
+            }
+            catch (Exception ex)
+            {
+                log.Error("Exception occurred in GetAllFeedback as: " + ex);
+                response = Request.CreateErrorResponse(HttpStatusCode.ServiceUnavailable, ex);
+                return response;
+            }
+        }
     }
 }

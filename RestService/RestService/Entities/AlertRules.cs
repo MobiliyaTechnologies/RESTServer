@@ -12,12 +12,18 @@ namespace RestService.Entities
     using System;
     using System.Collections.Generic;
     
-    public partial class SensorMaster
+    public partial class AlertRules
     {
-        public int Sensor_Id { get; set; }
-        public string Sensor_Name { get; set; }
+        public int Rule_Id { get; set; }
         public Nullable<int> Class_Id { get; set; }
-        public Nullable<double> X { get; set; }
-        public Nullable<double> Y { get; set; }
+        public string Parameter { get; set; }
+        public string Condition { get; set; }
+        public decimal Threshold { get; set; }
+        public string RuleText { get; set; }
+        public bool IsActive { get; set; }
+        public Nullable<int> CreatedBy { get; set; }
+        public Nullable<System.DateTime> CreatedOn { get; set; }
+        public Nullable<int> ModifiedBy { get; set; }
+        public Nullable<System.DateTime> ModifiedOn { get; set; }
     }
 }

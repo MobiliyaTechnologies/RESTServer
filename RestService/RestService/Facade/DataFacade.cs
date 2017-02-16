@@ -178,5 +178,67 @@ namespace RestService.Facade
                 return new ResponseModel { Message = "Acknowledgement successful", Status_Code = (int)Constants.StatusCode.Ok };
             }
         }
+
+        public ResponseModel StoreFeedback(int UserId, Feedback feedbackDetail)
+        {
+            var feedbackdesc = feedbackDetail.FeedbackDesc == null ? "" : feedbackDetail.FeedbackDesc;
+            feedbackDetail.CreatedBy = UserId;
+            feedbackDetail.ModifiedBy = UserId;
+            feedbackDetail.CreatedOn = feedbackDetail.ModiifiedOn = DateTime.UtcNow;
+            feedbackDetail.FeedbackDesc = feedbackdesc;           
+            dbEntity.Feedback.Add(feedbackDetail);
+            dbEntity.SaveChanges();
+
+            //Add reward points
+            var data = (from user in dbEntity.User where user.Id == UserId select user).FirstOrDefault();
+            data.RewardPoints += 10;
+            dbEntity.SaveChanges();
+            return new ResponseModel { Message = "Feedback successfully recorded", Status_Code = (int)Constants.StatusCode.Ok };
+        }
+
+        public List<Feedback> GetAllFeedback()
+        {
+            var feedbackList = (from data in dbEntity.Feedback select data).ToList();
+            return feedbackList;
+        }
+
+        public ResponseModel FeedbackDelete(FeedbackModel feedbackDetail)
+        {
+            var data = (from feedback in dbEntity.Feedback where feedback.FeedbackID == feedbackDetail.FeedbackId select feedback).FirstOrDefault();
+            if (data == null)
+            {
+                return new ResponseModel { Message = "Invalid Feedback", Status_Code = (int)Constants.StatusCode.Error };
+            }
+            else
+            {
+                dbEntity.Feedback.Remove(data);
+                dbEntity.SaveChanges();
+                return new ResponseModel { Message = "Feedback deleted", Status_Code = (int)Constants.StatusCode.Ok };
+            }
+        }
+
+        public ResponseModel FeedbackUpdate(int UserId, FeedbackModel feedbackDetail)
+        {
+            var data = (from feedback in dbEntity.Feedback where feedback.FeedbackID == feedbackDetail.FeedbackId select feedback).FirstOrDefault();
+            if (data == null)
+            {
+                return new ResponseModel { Message = "Invalid Feedback", Status_Code = (int)Constants.StatusCode.Error };
+            }
+            else
+            {
+                if (data.AnswerID != feedbackDetail.AnswerID && feedbackDetail.AnswerID > 0)
+                {
+                    data.AnswerID = feedbackDetail.AnswerID;
+                }
+                if (data.FeedbackDesc != feedbackDetail.FeedbackDesc && !string.IsNullOrEmpty(feedbackDetail.FeedbackDesc))
+                {
+                    data.FeedbackDesc = feedbackDetail.FeedbackDesc;
+                }
+                data.ModifiedBy = UserId;
+                data.ModiifiedOn = DateTime.UtcNow;
+                dbEntity.SaveChanges();
+                return new ResponseModel { Message = "Feedback Updated", Status_Code = (int)Constants.StatusCode.Ok };
+            }
+        }
     }
 }

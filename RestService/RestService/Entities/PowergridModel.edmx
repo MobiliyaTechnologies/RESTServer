@@ -5,6 +5,22 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
       <Schema Namespace="PowerGridModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="AlertRules">
+          <Key>
+            <PropertyRef Name="Rule_Id" />
+          </Key>
+          <Property Name="Rule_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Class_Id" Type="int" />
+          <Property Name="Parameter" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Condition" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Threshold" Type="decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="RuleText" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="CreatedBy" Type="int" />
+          <Property Name="CreatedOn" Type="datetime" />
+          <Property Name="ModifiedBy" Type="int" />
+          <Property Name="ModifiedOn" Type="datetime" />
+        </EntityType>
         <EntityType Name="Alerts">
           <Key>
             <PropertyRef Name="Id" />
@@ -36,6 +52,8 @@
           <Property Name="Class_Desc" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="Building" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="Breaker_details" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="X" Type="float" />
+          <Property Name="Y" Type="float" />
         </EntityType>
         <EntityType Name="DailyConsumptionDetails">
           <Key>
@@ -331,6 +349,8 @@ warning 6002: The table/view 'PowerGrid.dbo.PowergridAzureMLData' does not have 
           <Property Name="Sensor_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Sensor_Name" Type="varchar(max)" />
           <Property Name="Class_Id" Type="int" />
+          <Property Name="X" Type="float" />
+          <Property Name="Y" Type="float" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'PowerGrid.dbo.TempMLData' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -422,6 +442,7 @@ warning 6002: The table/view 'PowerGrid.dbo.TempMLData' does not have a primary 
           <Property Name="Avatar" Type="nvarchar" MaxLength="50" />
           <Property Name="Status" Type="smallint" />
           <Property Name="Creation_Date" Type="datetime" />
+          <Property Name="RewardPoints" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="UserRole">
           <Key>
@@ -535,6 +556,7 @@ warning 6002: The table/view 'PowerGrid.dbo.TempMLData' does not have a primary 
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="PowerGridModelStoreContainer">
+          <EntitySet Name="AlertRules" EntityType="Self.AlertRules" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Alerts" EntityType="Self.Alerts" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Answers" EntityType="Self.Answers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ClassroomDetails" EntityType="Self.ClassroomDetails" Schema="dbo" store:Type="Tables" />
@@ -663,6 +685,22 @@ warning 6002: The table/view 'PowerGrid.dbo.TempMLData' does not have a primary 
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="PowerGridModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="AlertRules">
+          <Key>
+            <PropertyRef Name="Rule_Id" />
+          </Key>
+          <Property Name="Rule_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Class_Id" Type="Int32" />
+          <Property Name="Parameter" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Condition" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Threshold" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="RuleText" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="CreatedOn" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedBy" Type="Int32" />
+          <Property Name="ModifiedOn" Type="DateTime" Precision="3" />
+        </EntityType>
         <EntityType Name="Alerts">
           <Key>
             <PropertyRef Name="Id" />
@@ -696,6 +734,8 @@ warning 6002: The table/view 'PowerGrid.dbo.TempMLData' does not have a primary 
           <Property Name="Class_Desc" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Building" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Breaker_details" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="X" Type="Double" />
+          <Property Name="Y" Type="Double" />
           <NavigationProperty Name="Feedback" Relationship="Self.FK_Feedback_ClassId" FromRole="ClassroomDetails" ToRole="Feedback" />
         </EntityType>
         <EntityType Name="DailyConsumptionDetails">
@@ -959,6 +999,8 @@ warning 6002: The table/view 'PowerGrid.dbo.TempMLData' does not have a primary 
           <Property Name="Sensor_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Sensor_Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="Class_Id" Type="Int32" />
+          <Property Name="X" Type="Double" />
+          <Property Name="Y" Type="Double" />
         </EntityType>
         <EntityType Name="TempMSLiveData">
           <Key>
@@ -1010,6 +1052,7 @@ warning 6002: The table/view 'PowerGrid.dbo.TempMLData' does not have a primary 
           <Property Name="Avatar" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Status" Type="Int16" />
           <Property Name="Creation_Date" Type="DateTime" Precision="3" />
+          <Property Name="RewardPoints" Type="Int32" Nullable="false" />
           <NavigationProperty Name="UserRole" Relationship="Self.FK_UserRole_User" FromRole="User" ToRole="UserRole" />
           <NavigationProperty Name="UserSession" Relationship="Self.FK_UserSession_User" FromRole="User" ToRole="UserSession" />
         </EntityType>
@@ -1203,6 +1246,7 @@ warning 6002: The table/view 'PowerGrid.dbo.TempMLData' does not have a primary 
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="PowerGridEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="AlertRules" EntityType="Self.AlertRules" />
           <EntitySet Name="Alerts" EntityType="Self.Alerts" />
           <EntitySet Name="Answers" EntityType="Self.Answers" />
           <EntitySet Name="ClassroomDetails" EntityType="Self.ClassroomDetails" />
@@ -1261,6 +1305,23 @@ warning 6002: The table/view 'PowerGrid.dbo.TempMLData' does not have a primary 
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="PowerGridModelStoreContainer" CdmEntityContainer="PowerGridEntities">
+          <EntitySetMapping Name="AlertRules">
+            <EntityTypeMapping TypeName="PowerGridModel.AlertRules">
+              <MappingFragment StoreEntitySet="AlertRules">
+                <ScalarProperty Name="Rule_Id" ColumnName="Rule_Id" />
+                <ScalarProperty Name="Class_Id" ColumnName="Class_Id" />
+                <ScalarProperty Name="Parameter" ColumnName="Parameter" />
+                <ScalarProperty Name="Condition" ColumnName="Condition" />
+                <ScalarProperty Name="Threshold" ColumnName="Threshold" />
+                <ScalarProperty Name="RuleText" ColumnName="RuleText" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Alerts">
             <EntityTypeMapping TypeName="PowerGridModel.Alerts">
               <MappingFragment StoreEntitySet="Alerts">
@@ -1293,6 +1354,8 @@ warning 6002: The table/view 'PowerGrid.dbo.TempMLData' does not have a primary 
                 <ScalarProperty Name="Class_Desc" ColumnName="Class_Desc" />
                 <ScalarProperty Name="Building" ColumnName="Building" />
                 <ScalarProperty Name="Breaker_details" ColumnName="Breaker_details" />
+                <ScalarProperty Name="X" ColumnName="X" />
+                <ScalarProperty Name="Y" ColumnName="Y" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1562,6 +1625,8 @@ warning 6002: The table/view 'PowerGrid.dbo.TempMLData' does not have a primary 
                 <ScalarProperty Name="Sensor_Id" ColumnName="Sensor_Id" />
                 <ScalarProperty Name="Sensor_Name" ColumnName="Sensor_Name" />
                 <ScalarProperty Name="Class_Id" ColumnName="Class_Id" />
+                <ScalarProperty Name="X" ColumnName="X" />
+                <ScalarProperty Name="Y" ColumnName="Y" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1615,6 +1680,7 @@ warning 6002: The table/view 'PowerGrid.dbo.TempMLData' does not have a primary 
                 <ScalarProperty Name="Avatar" ColumnName="Avatar" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="Creation_Date" ColumnName="Creation_Date" />
+                <ScalarProperty Name="RewardPoints" ColumnName="RewardPoints" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

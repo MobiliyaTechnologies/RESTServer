@@ -233,6 +233,9 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Entities\AlertRules.cs">
+      <DependentUpon>PowergridModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\Alerts.cs">
       <DependentUpon>PowergridModel.tt</DependentUpon>
     </Compile>
@@ -325,6 +328,7 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AlertsModel.cs" />
     <Compile Include="Models\ClassroomModel.cs" />
+    <Compile Include="Models\FeedbackModel.cs" />
     <Compile Include="Models\GeneralDataModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
