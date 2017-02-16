@@ -848,5 +848,29 @@ namespace RestService.Service
                 throw new Exception(ex.Message, ex);
             }
         }
+
+        public ResponseModel MapSensor(int UserId, SensorModel sensorDetail)
+        {
+            try
+            {
+                log.Debug("MapSensor called");
+                if (accountService.ValidateUser(UserId))
+                {
+                    log.Debug("MapSensor -> User validation successful");
+                    var data = dataFacade.MapSensor(sensorDetail);
+                    return data;
+                }
+                else
+                {
+                    log.Debug("MapSensor -> User validation failed");
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                log.Error("Exception occurred in MapSensor as :" + ex);
+                throw new Exception(ex.Message, ex);
+            }
+        }
     }
 }

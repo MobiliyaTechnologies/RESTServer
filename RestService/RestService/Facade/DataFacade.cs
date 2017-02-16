@@ -246,5 +246,23 @@ namespace RestService.Facade
             var sensorList = (from data in dbEntity.SensorMaster select data).ToList();
             return sensorList;
         }
+
+        public ResponseModel MapSensor(SensorModel sensorDetail)
+        {
+            ResponseModel response = new ResponseModel();
+            var sensorData = (from data in dbEntity.SensorMaster where data.Sensor_Id == sensorDetail.Sensor_Id select data).FirstOrDefault();
+            if(sensorData == null)
+            {
+                log.Debug("MapSensor facade -> Sensor not found");
+                response.Message = "Sensor not found";
+                response.Status_Code = (int)Constants.StatusCode.Error;
+                return response;
+            }
+            sensorData.Class_Id = sensorDetail.Class_Id;
+            dbEntity.SaveChanges();
+            response.Message = "Sensor mapped successfully";
+            response.Status_Code = (int)Constants.StatusCode.Ok;
+            return response;
+        }
     }
 }
