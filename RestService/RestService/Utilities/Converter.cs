@@ -212,6 +212,8 @@ namespace RestService.Utilities
             classroomModel.ClassName = classroomDetails.Class_Name;
             classroomModel.Building = classroomDetails.Building;
             classroomModel.Breaker_details = classroomDetails.Breaker_details;
+            classroomModel.X = (double)classroomDetails.X;
+            classroomModel.Y = (double)classroomDetails.Y;
             return classroomModel;
         }
 
@@ -227,6 +229,17 @@ namespace RestService.Utilities
             feedbackModel.CreatedOn = (DateTime)feedback.CreatedOn;
             feedbackModel.ModifiedOn = (DateTime)feedback.ModiifiedOn;
             return feedbackModel;
+        }
+
+        public static SensorModel SensorMasterEntityToModel(SensorMaster sensorEntity)
+        {
+            SensorModel sensorModel = new SensorModel();
+            sensorModel.Class_Id = sensorEntity.Class_Id;
+            sensorModel.Sensor_Id = sensorEntity.Sensor_Id;
+            sensorModel.Sensor_Name = sensorEntity.Sensor_Name;
+            sensorModel.X = sensorEntity.X;
+            sensorModel.Y = sensorEntity.Y;
+            return sensorModel;
         }
     }
 }

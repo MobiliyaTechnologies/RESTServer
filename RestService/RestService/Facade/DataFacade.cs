@@ -240,5 +240,11 @@ namespace RestService.Facade
                 return new ResponseModel { Message = "Feedback Updated", Status_Code = (int)Constants.StatusCode.Ok };
             }
         }
+
+        public List<SensorMaster> GetAllSensors()
+        {
+            var sensorList = (from data in dbEntity.SensorMaster select data).ToList();
+            return sensorList;
+        }
     }
 }
