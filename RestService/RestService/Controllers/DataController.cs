@@ -481,5 +481,31 @@ namespace RestService.Controllers
                 return response;
             }
         }
+
+        [Route("api/mapsensortoclass/{Id}")]
+        [HttpPost]
+        public HttpResponseMessage MapSensor(int Id, [FromBody] SensorModel sensorDetail)
+        {
+            HttpResponseMessage response;
+            try
+            {
+                log.Debug("MapSensor API called");
+                if (sensorDetail.Class_Id != null && sensorDetail.Class_Id > 0)
+                {
+                    var data = dataService.MapSensor(Id, sensorDetail);
+                    response = Request.CreateResponse(HttpStatusCode.OK, data);
+                    return response;
+                }
+                //Create an error message for returning
+                response = Request.CreateResponse(HttpStatusCode.BadRequest, "Please enter Class Id to map sensor");
+                return response;
+            }
+            catch (Exception ex)
+            {
+                log.Error("Exception occurred in MapSensor API as: " + ex);
+                response = Request.CreateErrorResponse(HttpStatusCode.ServiceUnavailable, ex);
+                return response;
+            }
+        }
     }
 }
