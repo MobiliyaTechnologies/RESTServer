@@ -908,5 +908,36 @@ namespace RestService.Service
                 throw new Exception(ex.Message, ex);
             }
         }
+
+        //public List<SensorDataModel> GetSensorDetails(int UserId, SensorDataModel sensorData)
+        //{
+        //    try
+        //    {
+        //        log.Debug("GetSensorDetails called");
+        //        if (accountService.ValidateUser(UserId))
+        //        {
+        //            log.Debug("GetSensorDetails -> User validation successful");
+        //            List<SensorDataModel> sensorModel = new List<SensorDataModel>();
+        //            var data = dataFacade.GetSensorDetails(sensorData);
+        //            if (data == null)
+        //            {
+        //                log.Debug("GetSensorDetails -> No classrooms found");
+        //                return sensorModel;
+        //            }
+                    
+        //            return data;
+        //        }
+        //        else
+        //        {
+        //            log.Debug("GetSensorDetails -> User Validation failed");
+        //            return null;
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        log.Error("Exception occurred in GetSensorDetails as: " + ex);
+        //        throw new Exception(ex.Message, ex);
+        //    }
+        //}
     }
 }
