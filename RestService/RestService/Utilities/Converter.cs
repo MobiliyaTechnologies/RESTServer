@@ -185,7 +185,7 @@ namespace RestService.Utilities
             if (alertModel.Is_Acknowledged)
             {
                 alertModel.Acknowledged_By = alertEntity.Acknowledged_By;
-                alertModel.Acknowledged_Timestamp = (DateTime)alertEntity.Acknowledged_Timestamp; 
+                alertModel.Acknowledged_Timestamp = (DateTime)alertEntity.Acknowledged_Timestamp;
             }
             alertModel.Alert_Type = alertEntity.Alert_Type;
             alertModel.Alert_Desc = alertEntity.Description;
@@ -240,6 +240,23 @@ namespace RestService.Utilities
             sensorModel.X = sensorEntity.X;
             sensorModel.Y = sensorEntity.Y;
             return sensorModel;
+        }
+
+        public static QuestionModel QuestionEntityToModel(Questions questionEntity)
+        {
+            QuestionModel questionModel = new QuestionModel();
+            questionModel.QuestionId = questionEntity.QuestionID;
+            questionModel.QuestionDesc = questionEntity.QuestionDec;
+
+            if (questionEntity.Answers != null)
+            {
+                questionEntity.Answers.All(answer =>
+                    {
+                        questionModel.Answers.Add(new AnswerModel { AnswerDesc = answer.AnswerDesc, AnswerId = answer.AnswerID });
+                        return true;
+                    }); 
+            }
+            return questionModel;
         }
     }
 }

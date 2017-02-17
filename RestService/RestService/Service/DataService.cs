@@ -625,7 +625,7 @@ namespace RestService.Service
                 if (accountService.ValidateUser(UserId))
                 {
                     var alertDetails = dataFacade.GetAlertDetails(LogId);
-                    if(alertDetails == null)
+                    if (alertDetails == null)
                     {
                         log.Debug("GetAlertDetails -> No Data Found");
                         return new AlertDetailsModel();
@@ -702,7 +702,7 @@ namespace RestService.Service
             catch (Exception ex)
             {
                 log.Error("Exception occurred in AcknowledgeAlert as :" + ex);
-                throw new Exception(ex.Message,ex);
+                throw new Exception(ex.Message, ex);
             }
         }
 
@@ -869,6 +869,41 @@ namespace RestService.Service
             catch (Exception ex)
             {
                 log.Error("Exception occurred in MapSensor as :" + ex);
+                throw new Exception(ex.Message, ex);
+            }
+        }
+
+        public List<QuestionModel> GetQuestionAnswers(int UserId)
+        {
+            try
+            {
+                log.Debug("GetQuestionAnswers called");
+                if (accountService.ValidateUser(UserId))
+                {
+                    log.Debug("GetQuestionAnswers -> User validation successful");
+                    List<QuestionModel> questionAnswers = new List<QuestionModel>();
+                    var questionList = dataFacade.GetQuestions();
+
+                    if (questionList != null && questionList.Count > 0)
+                    {
+                        questionList.All(question =>
+                                    {
+                                        questionAnswers.Add(Converter.QuestionEntityToModel(question));
+                                        return true;
+                                    });
+                    }
+
+                    return questionAnswers;
+                }
+                else
+                {
+                    log.Debug("GetQuestionAnswers -> User Validation failed");
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                log.Error("Exception occurred in GetQuestionAnswers as: " + ex);
                 throw new Exception(ex.Message, ex);
             }
         }

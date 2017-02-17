@@ -20,4 +20,25 @@ namespace RestService.Models
         public int ModifiedBy { get; set; }
         public DateTime ModifiedOn { get; set; }
     }
+
+    public class QuestionModel
+    {
+        public int QuestionId { get; set; }
+
+        public string QuestionDesc { get; set; }
+
+        public List<AnswerModel> Answers { get; set; }
+
+        public QuestionModel()
+        {
+            Answers = new List<AnswerModel>();
+        }
+    }
+
+    public class AnswerModel
+    {
+        public int AnswerId { get; set; }
+
+        public string AnswerDesc { get; set; }
+    }
 }

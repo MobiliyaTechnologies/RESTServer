@@ -507,5 +507,24 @@ namespace RestService.Controllers
                 return response;
             }
         }
+
+        [Route("api/getquestionanswers/{Id}")]
+        public HttpResponseMessage GetQuestionAnswers(int Id)
+        {
+            log.Debug("GetQuestionAnswers API Called");
+            HttpResponseMessage response;
+            try
+            {
+                var data = dataService.GetQuestionAnswers(Id);
+                response = data == null ? Request.CreateResponse(HttpStatusCode.Forbidden, "Invalid User") : Request.CreateResponse(HttpStatusCode.OK, data);
+                return response;
+            }
+            catch (Exception ex)
+            {
+                log.Error("Exception occurred in GetQuestionAnswers as: " + ex);
+                response = Request.CreateErrorResponse(HttpStatusCode.ServiceUnavailable, ex);
+                return response;
+            }
+        }
     }
 }
