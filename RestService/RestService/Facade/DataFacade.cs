@@ -250,9 +250,16 @@ namespace RestService.Facade
             }
         }
 
-        public List<SensorMaster> GetAllSensors()
+        public List<SensorModel> GetAllSensors()
         {
-            var sensorList = (from data in dbEntity.SensorMaster select data).ToList();
+            //var sensorList = (from data in dbEntity.SensorMaster select data).ToList();
+            //return sensorList;
+            var sensorList = (from sensor in dbEntity.SensorMaster
+                              join classData in dbEntity.ClassroomDetails on sensor.Class_Id equals classData.Class_Id into temp
+                              from subclass in temp.DefaultIfEmpty()
+                              select new SensorModel
+                              { Class_Id = subclass.Class_Id, Class_X = subclass.X, Class_Y = subclass.Y, Sensor_Id = sensor.Sensor_Id, Sensor_Name = sensor.Sensor_Name }
+                              ).ToList();
             return sensorList;
         }
 

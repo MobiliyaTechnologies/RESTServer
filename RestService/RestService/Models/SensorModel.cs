@@ -12,5 +12,7 @@ namespace RestService.Models
         public Nullable<int> Class_Id { get; set; }
         public Nullable<double> X { get; set; }
         public Nullable<double> Y { get; set; }
+        public Nullable<double> Class_X { get; set; }
+        public Nullable<double> Class_Y { get; set; }
     }
 }
