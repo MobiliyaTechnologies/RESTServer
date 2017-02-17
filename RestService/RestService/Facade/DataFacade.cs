@@ -133,26 +133,35 @@ namespace RestService.Facade
         {
             //var data = (from alerts in dbEntity.Alerts orderby alerts.Timestamp descending select alerts).ToList();
             //return data;
-            var data = (from alerts in dbEntity.Alerts
-                        join sensorData in dbEntity.SensorMaster on alerts.Sensor_Id equals sensorData.Sensor_Id
-                        join classData in dbEntity.ClassroomDetails on sensorData.Class_Id equals classData.Class_Id
-                        orderby alerts.Timestamp descending
-                        select new AlertModel
-                        { Alert_Id = alerts.Id, Acknowledged_By = alerts.Acknowledged_By == null ? "" : alerts.Acknowledged_By, Acknowledged_Timestamp = alerts.Acknowledged_Timestamp == null ? new DateTime() : (DateTime)alerts.Acknowledged_Timestamp, Alert_Desc = alerts.Description, Alert_Type = alerts.Alert_Type, Class_Desc = classData.Class_Desc, Class_Id = classData.Class_Id, Class_Name = classData.Class_Name, Is_Acknowledged = alerts.Is_Acknowledged == 0 ? false : true, Sensor_Id = alerts.Sensor_Id, Sensor_Log_Id = alerts.Sensor_Log_Id, Timestamp = (DateTime)alerts.Timestamp }).ToList();
-            return data;
+            //var data = (from alerts in dbEntity.Alerts
+            //            join sensorData in dbEntity.SensorMaster on alerts.Sensor_Id equals sensorData.Sensor_Id
+            //            join classData in dbEntity.ClassroomDetails on sensorData.Class_Id equals classData.Class_Id
+            //            orderby alerts.Timestamp descending
+            //            select new AlertModel
+            //            { Alert_Id = alerts.Id, Acknowledged_By = alerts.Acknowledged_By == null ? "" : alerts.Acknowledged_By, Acknowledged_Timestamp = alerts.Acknowledged_Timestamp == null ? new DateTime() : (DateTime)alerts.Acknowledged_Timestamp, Alert_Desc = alerts.Description, Alert_Type = alerts.Alert_Type, Class_Desc = classData.Class_Desc, Class_Id = classData.Class_Id, Class_Name = classData.Class_Name, Is_Acknowledged = alerts.Is_Acknowledged == 0 ? false : true, Sensor_Id = alerts.Sensor_Id, Sensor_Log_Id = alerts.Sensor_Log_Id, Timestamp = (DateTime)alerts.Timestamp }).ToList();
+
+            var alertList = (from alerts in dbEntity.Alerts
+                             join sensorData in dbEntity.SensorMaster on alerts.Sensor_Id equals sensorData.Sensor_Id
+                             join classData in dbEntity.ClassroomDetails on sensorData.Class_Id equals classData.Class_Id into temp
+                             from subclass in temp.DefaultIfEmpty() //left outer join
+                             select new AlertModel
+                             { Alert_Id = alerts.Id, Acknowledged_By = alerts.Acknowledged_By == null ? "" : alerts.Acknowledged_By, Acknowledged_Timestamp = alerts.Acknowledged_Timestamp == null ? new DateTime() : (DateTime)alerts.Acknowledged_Timestamp, Alert_Desc = alerts.Description, Alert_Type = alerts.Alert_Type, Is_Acknowledged = alerts.Is_Acknowledged == 0 ? false : true, Sensor_Id = alerts.Sensor_Id, Sensor_Log_Id = alerts.Sensor_Log_Id, Timestamp = (DateTime)alerts.Timestamp, Class_Id = subclass.Class_Id, Class_Name = subclass.Class_Name == null ? string.Empty : subclass.Class_Name}).ToList();
+            
+
+            return alertList;
         }
 
         public AlertDetailsModel GetAlertDetails(int sensorLogId)
         {
             //var alertDetails = (from data in dbEntity.SensorData where data.Sensor_Log_Id == sensorLogId select data).FirstOrDefault();
             //return alertDetails;
-            
+
             var alertDetails = (from data in dbEntity.SensorLiveData
                                 join sensorData in dbEntity.SensorMaster on data.Sensor_Id equals sensorData.Sensor_Id
                                 join classData in dbEntity.ClassroomDetails on sensorData.Class_Id equals classData.Class_Id
                                 where data.Sensor_Log_Id == sensorLogId
                                 select new AlertDetailsModel
-                                { Sensor_Id = (int)data.Sensor_Id, Class_Id = classData.Class_Id, Class_Name = classData.Class_Name, Class_Desc = classData.Class_Desc, Humidity = Math.Round((double)data.Humidity,2), Light_Intensity = Math.Round((double)data.Brightness,2), Temperature = Math.Round((double)data.Temperature,2), Timestamp = (DateTime)data.Timestamp }).FirstOrDefault();
+                                { Sensor_Id = (int)data.Sensor_Id, Class_Id = classData.Class_Id, Class_Name = classData.Class_Name, Class_Desc = classData.Class_Desc, Humidity = Math.Round((double)data.Humidity, 2), Light_Intensity = Math.Round((double)data.Brightness, 2), Temperature = Math.Round((double)data.Temperature, 2), Timestamp = (DateTime)data.Timestamp }).FirstOrDefault();
             return alertDetails;
         }
 
@@ -185,7 +194,7 @@ namespace RestService.Facade
             feedbackDetail.CreatedBy = UserId;
             feedbackDetail.ModifiedBy = UserId;
             feedbackDetail.CreatedOn = feedbackDetail.ModiifiedOn = DateTime.UtcNow;
-            feedbackDetail.FeedbackDesc = feedbackdesc;           
+            feedbackDetail.FeedbackDesc = feedbackdesc;
             dbEntity.Feedback.Add(feedbackDetail);
             dbEntity.SaveChanges();
 
@@ -251,7 +260,7 @@ namespace RestService.Facade
         {
             ResponseModel response = new ResponseModel();
             var sensorData = (from data in dbEntity.SensorMaster where data.Sensor_Id == sensorDetail.Sensor_Id select data).FirstOrDefault();
-            if(sensorData == null)
+            if (sensorData == null)
             {
                 log.Debug("MapSensor facade -> Sensor not found");
                 response.Message = "Sensor not found";
