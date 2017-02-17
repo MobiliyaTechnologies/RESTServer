@@ -273,5 +273,17 @@ namespace RestService.Facade
             response.Status_Code = (int)Constants.StatusCode.Ok;
             return response;
         }
+
+        public List<Questions> GetQuestions()
+        {
+            var questions = (from question in dbEntity.Questions select question).ToList();
+            return questions;
+        }
+
+        public List<Answers> GetAnswers()
+        {
+            var answers = (from answer in dbEntity.Answers select answer).ToList();
+            return answers;
+        }
     }
 }
