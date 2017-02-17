@@ -924,7 +924,7 @@ namespace RestService.Service
         //                log.Debug("GetSensorDetails -> No classrooms found");
         //                return sensorModel;
         //            }
-                    
+
         //            return data;
         //        }
         //        else
@@ -939,5 +939,42 @@ namespace RestService.Service
         //        throw new Exception(ex.Message, ex);
         //    }
         //}
+
+        public List<FeedbackCountModel> GetFeedbackCount(int UserId)
+        {
+            try
+            {
+                log.Debug("GetFeedbackCount called");
+                if (accountService.ValidateUser(UserId))
+                {
+                    log.Debug("GetFeedbackCount -> User validation successful");
+                    List<FeedbackCountModel> sensorModel = new List<FeedbackCountModel>();
+                    var data = dataFacade.GetFeedbackCount();
+                    if (data == null || data.Count < 1)
+                    {
+                        log.Debug("GetFeedbackCount -> No Feedback found");
+                        return sensorModel;
+                    }
+
+                    //data.All(sensor =>
+                    //{
+                    //    sensorModel.Add(Converter.SensorMasterEntityToModel(sensor));
+                    //    return true;
+                    //});
+
+                    return data;
+                }
+                else
+                {
+                    log.Debug("GetFeedbackCount -> User Validation failed");
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                log.Error("Exception occurred in GetFeedbackCount as: " + ex);
+                throw new Exception(ex.Message, ex);
+            }
+        }
     }
 }

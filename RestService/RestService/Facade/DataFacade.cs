@@ -141,8 +141,9 @@ namespace RestService.Facade
             //            { Alert_Id = alerts.Id, Acknowledged_By = alerts.Acknowledged_By == null ? "" : alerts.Acknowledged_By, Acknowledged_Timestamp = alerts.Acknowledged_Timestamp == null ? new DateTime() : (DateTime)alerts.Acknowledged_Timestamp, Alert_Desc = alerts.Description, Alert_Type = alerts.Alert_Type, Class_Desc = classData.Class_Desc, Class_Id = classData.Class_Id, Class_Name = classData.Class_Name, Is_Acknowledged = alerts.Is_Acknowledged == 0 ? false : true, Sensor_Id = alerts.Sensor_Id, Sensor_Log_Id = alerts.Sensor_Log_Id, Timestamp = (DateTime)alerts.Timestamp }).ToList();
 
             var alertList = (from alerts in dbEntity.Alerts
-                             join sensorData in dbEntity.SensorMaster on alerts.Sensor_Id equals sensorData.Sensor_Id
-                             join classData in dbEntity.ClassroomDetails on sensorData.Class_Id equals classData.Class_Id into temp
+                             join sensorData in dbEntity.SensorMaster on alerts.Sensor_Id equals sensorData.Sensor_Id into temp1
+                             from subsensor in temp1.DefaultIfEmpty()
+                             join classData in dbEntity.ClassroomDetails on subsensor.Class_Id equals classData.Class_Id into temp
                              from subclass in temp.DefaultIfEmpty() //left outer join
                              select new AlertModel
                              { Alert_Id = alerts.Id, Acknowledged_By = alerts.Acknowledged_By == null ? "" : alerts.Acknowledged_By, Acknowledged_Timestamp = alerts.Acknowledged_Timestamp == null ? new DateTime() : (DateTime)alerts.Acknowledged_Timestamp, Alert_Desc = alerts.Description, Alert_Type = alerts.Alert_Type, Is_Acknowledged = alerts.Is_Acknowledged == 0 ? false : true, Sensor_Id = alerts.Sensor_Id, Sensor_Log_Id = alerts.Sensor_Log_Id, Timestamp = (DateTime)alerts.Timestamp, Class_Id = subclass.Class_Id, Class_Name = subclass.Class_Name == null ? string.Empty : subclass.Class_Name }).ToList();
@@ -308,6 +309,19 @@ namespace RestService.Facade
         {
             var data = (from sensor in dbEntity.SensorLiveData where sensor.Sensor_Id == sensorData.Sensor_Id orderby sensor.Sensor_Log_Id descending select sensor).FirstOrDefault();
             return data;
+        }
+
+        public List<FeedbackCountModel> GetFeedbackCount()
+        {
+            var FeedbackDetail = (from feedback in dbEntity.Feedback
+                                  group feedback by new { feedback.AnswerID, feedback.ClassID } into g
+                                  select new FeedbackCountModel
+                                  { AnswerCount = (int)g.Count(), AnswerId = (int)g.Key.AnswerID, ClassId = (int)g.Key.ClassID }
+                                  ).ToList();
+
+            var threshold = FeedbackDetail.Sum(feedback => feedback.AnswerCount) * 0.6;
+            FeedbackDetail.All(feedback => { feedback.Threshold = Math.Round(threshold,2); return true; });
+            return FeedbackDetail;
         }
     }
 }
