@@ -829,12 +829,13 @@ namespace RestService.Service
                         return sensorModel;
                     }
 
-                    data.All(sensor =>
-                    {
-                        sensorModel.Add(Converter.SensorMasterEntityToModel(sensor));
-                        return true;
-                    });
-                    return sensorModel;
+                    //data.All(sensor =>
+                    //{
+                    //    sensorModel.Add(Converter.SensorMasterEntityToModel(sensor));
+                    //    return true;
+                    //});
+
+                    return data;
                 }
                 else
                 {
