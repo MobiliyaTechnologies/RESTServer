@@ -145,8 +145,8 @@ namespace RestService.Facade
                              join classData in dbEntity.ClassroomDetails on sensorData.Class_Id equals classData.Class_Id into temp
                              from subclass in temp.DefaultIfEmpty() //left outer join
                              select new AlertModel
-                             { Alert_Id = alerts.Id, Acknowledged_By = alerts.Acknowledged_By == null ? "" : alerts.Acknowledged_By, Acknowledged_Timestamp = alerts.Acknowledged_Timestamp == null ? new DateTime() : (DateTime)alerts.Acknowledged_Timestamp, Alert_Desc = alerts.Description, Alert_Type = alerts.Alert_Type, Is_Acknowledged = alerts.Is_Acknowledged == 0 ? false : true, Sensor_Id = alerts.Sensor_Id, Sensor_Log_Id = alerts.Sensor_Log_Id, Timestamp = (DateTime)alerts.Timestamp, Class_Id = subclass.Class_Id, Class_Name = subclass.Class_Name == null ? string.Empty : subclass.Class_Name}).ToList();
-            
+                             { Alert_Id = alerts.Id, Acknowledged_By = alerts.Acknowledged_By == null ? "" : alerts.Acknowledged_By, Acknowledged_Timestamp = alerts.Acknowledged_Timestamp == null ? new DateTime() : (DateTime)alerts.Acknowledged_Timestamp, Alert_Desc = alerts.Description, Alert_Type = alerts.Alert_Type, Is_Acknowledged = alerts.Is_Acknowledged == 0 ? false : true, Sensor_Id = alerts.Sensor_Id, Sensor_Log_Id = alerts.Sensor_Log_Id, Timestamp = (DateTime)alerts.Timestamp, Class_Id = subclass.Class_Id, Class_Name = subclass.Class_Name == null ? string.Empty : subclass.Class_Name }).ToList();
+
 
             return alertList;
         }
@@ -254,12 +254,23 @@ namespace RestService.Facade
         {
             //var sensorList = (from data in dbEntity.SensorMaster select data).ToList();
             //return sensorList;
+
             var sensorList = (from sensor in dbEntity.SensorMaster
                               join classData in dbEntity.ClassroomDetails on sensor.Class_Id equals classData.Class_Id into temp
                               from subclass in temp.DefaultIfEmpty()
                               select new SensorModel
                               { Class_Id = subclass.Class_Id, Class_X = subclass.X, Class_Y = subclass.Y, Sensor_Id = sensor.Sensor_Id, Sensor_Name = sensor.Sensor_Name }
                               ).ToList();
+
+            sensorList.All(sensor =>
+            {
+                var sensorData = GetSensorDetails(new SensorLiveData { Sensor_Id = sensor.Sensor_Id });
+                sensor.Temperature = (double)sensorData.Temperature;
+                sensor.Humidity = (double)sensorData.Humidity;
+                sensor.Brightness = (double)sensorData.Brightness;
+                return true;
+            });
+
             return sensorList;
         }
 
@@ -291,6 +302,12 @@ namespace RestService.Facade
         {
             var answers = (from answer in dbEntity.Answers select answer).ToList();
             return answers;
+        }
+
+        public SensorLiveData GetSensorDetails(SensorLiveData sensorData)
+        {
+            var data = (from sensor in dbEntity.SensorLiveData where sensor.Sensor_Id == sensorData.Sensor_Id orderby sensor.Sensor_Log_Id descending select sensor).FirstOrDefault();
+            return data;
         }
     }
 }

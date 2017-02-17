@@ -14,5 +14,8 @@ namespace RestService.Models
         public Nullable<double> Y { get; set; }
         public Nullable<double> Class_X { get; set; }
         public Nullable<double> Class_Y { get; set; }
+        public double Temperature { get; set; }
+        public double Humidity { get; set; }
+        public double Brightness { get; set; }
     }
 }

@@ -526,5 +526,25 @@ namespace RestService.Controllers
                 return response;
             }
         }
+
+        //[Route("api/getsensorDetails/{Id}")]
+        //[HttpPost]
+        //public HttpResponseMessage GetSensorDetails(int Id, [FromBody] SensorDataModel sensorData)
+        //{
+        //    log.Debug("GetSensorDetails API Called");
+        //    HttpResponseMessage response;
+        //    try
+        //    {
+        //        var data = dataService.GetSensorDetails(Id, sensorData);
+        //        response = data == null ? Request.CreateResponse(HttpStatusCode.Forbidden, "Invalid User") : Request.CreateResponse(HttpStatusCode.OK, data);
+        //        return response;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        log.Error("Exception occurred in GetSensorDetails as: " + ex);
+        //        response = Request.CreateErrorResponse(HttpStatusCode.ServiceUnavailable, ex);
+        //        return response;
+        //    }
+        //}
     }
 }
