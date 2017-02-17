@@ -13,7 +13,7 @@ namespace RestService.Models
         public int Sensor_Id { get; set; }
         public string Alert_Type { get; set; }
         public string Alert_Desc { get; set; }
-        public int Class_Id { get; set; }
+        public Nullable<int> Class_Id { get; set; }
         public string Class_Name { get; set; }
         public string Class_Desc { get; set; }
         public DateTime Timestamp { get; set; }
