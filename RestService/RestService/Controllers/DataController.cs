@@ -566,5 +566,25 @@ namespace RestService.Controllers
                 return response;
             }
         }
+
+        [Route("api/getallsensorsforclass/{Id}")]
+        [HttpPost]
+        public HttpResponseMessage GetAllSensorsForClass(int Id, [FromBody] SensorModel sensorData)
+        {
+            log.Debug("GetAllSensorsForClass API Called");
+            HttpResponseMessage response;
+            try
+            {
+                var data = dataService.GetAllSensorsForClass(Id, sensorData);
+                response = data == null ? Request.CreateResponse(HttpStatusCode.Forbidden, "Invalid User") : Request.CreateResponse(HttpStatusCode.OK, data);
+                return response;
+            }
+            catch (Exception ex)
+            {
+                log.Error("Exception occurred in GetAllSensorsForClass as: " + ex);
+                response = Request.CreateErrorResponse(HttpStatusCode.ServiceUnavailable, ex);
+                return response;
+            }
+        }
     }
 }
