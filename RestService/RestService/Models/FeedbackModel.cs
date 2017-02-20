@@ -42,11 +42,11 @@ namespace RestService.Models
         public string AnswerDesc { get; set; }
     }
 
-    public class FeedbackCountModel
+    public class FeedbackCountModel : AnswerModel
     {
         public int ClassId { get; set; }
 
-        public int AnswerId { get; set; }
+        //public int AnswerId { get; set; }
 
         public int AnswerCount { get; set; }
 

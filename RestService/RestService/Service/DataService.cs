@@ -940,7 +940,7 @@ namespace RestService.Service
         //    }
         //}
 
-        public List<FeedbackCountModel> GetFeedbackCount(int UserId)
+        public List<FeedbackCountModel> GetFeedbackCount(int UserId, FeedbackCountModel answerDetails)
         {
             try
             {
@@ -949,7 +949,7 @@ namespace RestService.Service
                 {
                     log.Debug("GetFeedbackCount -> User validation successful");
                     List<FeedbackCountModel> sensorModel = new List<FeedbackCountModel>();
-                    var data = dataFacade.GetFeedbackCount();
+                    var data = dataFacade.GetFeedbackCount(answerDetails);
                     if (data == null || data.Count < 1)
                     {
                         log.Debug("GetFeedbackCount -> No Feedback found");

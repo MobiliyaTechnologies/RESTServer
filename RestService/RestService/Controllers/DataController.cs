@@ -548,13 +548,14 @@ namespace RestService.Controllers
         //}
 
         [Route("api/getfeedbackcount/{Id}")]
-        public HttpResponseMessage GetFeedbackCount(int Id)
+        [HttpPost]
+        public HttpResponseMessage GetFeedbackCount(int Id, [FromBody] FeedbackCountModel answerDetails)
         {
             log.Debug("GetFeedbackCount API Called");
             HttpResponseMessage response;
             try
             {
-                var data = dataService.GetFeedbackCount(Id);
+                var data = dataService.GetFeedbackCount(Id, answerDetails);
                 response = data == null ? Request.CreateResponse(HttpStatusCode.Forbidden, "Invalid User") : Request.CreateResponse(HttpStatusCode.OK, data);
                 return response;
             }

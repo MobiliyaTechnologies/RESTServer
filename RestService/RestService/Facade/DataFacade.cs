@@ -311,17 +311,32 @@ namespace RestService.Facade
             return data;
         }
 
-        public List<FeedbackCountModel> GetFeedbackCount()
+        public List<FeedbackCountModel> GetFeedbackCount(FeedbackCountModel answerDetails)
         {
-            var FeedbackDetail = (from feedback in dbEntity.Feedback
-                                  group feedback by new { feedback.AnswerID, feedback.ClassID } into g
-                                  select new FeedbackCountModel
-                                  { AnswerCount = (int)g.Count(), AnswerId = (int)g.Key.AnswerID, ClassId = (int)g.Key.ClassID }
-                                  ).ToList();
+            List<FeedbackCountModel> feedbackCount = new List<FeedbackCountModel>();
+            var answerList = (from answer in dbEntity.Answers select answer).ToList();
 
-            var threshold = FeedbackDetail.Sum(feedback => feedback.AnswerCount) * 0.6;
-            FeedbackDetail.All(feedback => { feedback.Threshold = Math.Round(threshold,2); return true; });
-            return FeedbackDetail;
+            var feedbackDetail = (from feedback in dbEntity.Feedback where feedback.ClassID == answerDetails.ClassId select feedback).ToList();
+
+            answerList.All(answer => 
+            {
+                var answerCount = feedbackDetail.Where(feedback => feedback.AnswerID == answer.AnswerID).ToList().Count();
+                feedbackCount.Add(new FeedbackCountModel { AnswerCount = answerCount, AnswerDesc = answer.AnswerDesc, AnswerId = answer.AnswerID, ClassId = answerDetails.ClassId });
+                return true;
+            });
+
+            //var FeedbackDetail = (from feedback in dbEntity.Feedback
+            //                      where feedback.ClassID == answerDetails.ClassId
+            //                      group feedback by new { feedback.AnswerID, feedback.ClassID, feedback.Answers.AnswerDesc } into g
+            //                      select new FeedbackCountModel
+            //                      { AnswerCount = (int)g.Count(), AnswerId = (int)g.Key.AnswerID, ClassId = (int)g.Key.ClassID, AnswerDesc = g.Key.AnswerDesc }
+            //                      ).ToList();
+
+            var threshold = feedbackCount.Sum(feedback => feedback.AnswerCount) * 0.6;
+            feedbackCount.All(feedback => { feedback.Threshold = Math.Round(threshold, 2); return true; });
+
+            return feedbackCount;
+            
         }
     }
 }
