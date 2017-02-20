@@ -338,5 +338,29 @@ namespace RestService.Facade
             return feedbackCount;
             
         }
+
+        public List<SensorModel> GetAllSensorsForClass(SensorModel sensorData)
+        {
+            //var sensorList = (from data in dbEntity.SensorMaster select data).ToList();
+            //return sensorList;
+
+            var sensorList = (from sensor in dbEntity.SensorMaster
+                              join classData in dbEntity.ClassroomDetails on sensor.Class_Id equals classData.Class_Id
+                              where classData.Class_Id == sensorData.Class_Id
+                              select new SensorModel
+                              { Class_Id = classData.Class_Id, Class_Name = classData.Class_Name,Class_X = classData.X, Class_Y = classData.Y, Sensor_Id = sensor.Sensor_Id, Sensor_Name = sensor.Sensor_Name }
+                              ).ToList();
+
+            sensorList.All(sensor =>
+            {
+                var sensorDetail = GetSensorDetails(new SensorLiveData { Sensor_Id = sensor.Sensor_Id });
+                sensor.Temperature = (double)sensorDetail.Temperature;
+                sensor.Humidity = (double)sensorDetail.Humidity;
+                sensor.Brightness = (double)sensorDetail.Brightness;
+                return true;
+            });
+
+            return sensorList;
+        }
     }
 }

@@ -976,5 +976,42 @@ namespace RestService.Service
                 throw new Exception(ex.Message, ex);
             }
         }
+
+        public List<SensorModel> GetAllSensorsForClass(int UserId, SensorModel sensorData)
+        {
+            try
+            {
+                log.Debug("GetAllSensorsForClass called");
+                if (accountService.ValidateUser(UserId))
+                {
+                    log.Debug("GetAllSensorsForClass -> User validation successful");
+                    List<SensorModel> sensorModel = new List<SensorModel>();
+                    var data = dataFacade.GetAllSensorsForClass(sensorData);
+                    if (data == null || data.Count < 1)
+                    {
+                        log.Debug("GetAllSensorsForClass -> No sensors found");
+                        return sensorModel;
+                    }
+
+                    //data.All(sensor =>
+                    //{
+                    //    sensorModel.Add(Converter.SensorMasterEntityToModel(sensor));
+                    //    return true;
+                    //});
+
+                    return data;
+                }
+                else
+                {
+                    log.Debug("GetAllSensorsForClass -> User Validation failed");
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                log.Error("Exception occurred in GetAllSensorsForClass as: " + ex);
+                throw new Exception(ex.Message, ex);
+            }
+        }
     }
 }
