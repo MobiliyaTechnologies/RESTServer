@@ -1013,5 +1013,43 @@ namespace RestService.Service
                 throw new Exception(ex.Message, ex);
             }
         }
+
+        public List<AlertModel> GetRecommendations(int UserId)
+        {
+            try
+            {
+                log.Debug("GetRecommendations called");
+                if (accountService.ValidateUser(UserId))
+                {
+                    log.Debug("GetRecommendations -> User validation successful");
+                    List<AlertModel> alertModelList = new List<AlertModel>();
+                    var data = dataFacade.GetRecommendations();
+                    if (data == null || data.Count < 1)
+                    {
+                        log.Debug("GetRecommendations -> No recommendations found");
+                        return alertModelList;
+                    }
+
+                    //data.All(alert =>
+                    //{
+                    //    alertModelList.Add(Converter.AlertsEntityToModel(alert));
+                    //    return true;
+                    //});
+                    //return alertModelList;
+
+                    return data;
+                }
+                else
+                {
+                    log.Debug("GetRecommendations -> User Validation failed");
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                log.Error("Exception occurred in GetRecommendations as: " + ex);
+                throw new Exception(ex.Message, ex);
+            }
+        }
     }
 }

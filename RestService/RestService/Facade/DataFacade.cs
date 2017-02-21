@@ -141,6 +141,7 @@ namespace RestService.Facade
             //            { Alert_Id = alerts.Id, Acknowledged_By = alerts.Acknowledged_By == null ? "" : alerts.Acknowledged_By, Acknowledged_Timestamp = alerts.Acknowledged_Timestamp == null ? new DateTime() : (DateTime)alerts.Acknowledged_Timestamp, Alert_Desc = alerts.Description, Alert_Type = alerts.Alert_Type, Class_Desc = classData.Class_Desc, Class_Id = classData.Class_Id, Class_Name = classData.Class_Name, Is_Acknowledged = alerts.Is_Acknowledged == 0 ? false : true, Sensor_Id = alerts.Sensor_Id, Sensor_Log_Id = alerts.Sensor_Log_Id, Timestamp = (DateTime)alerts.Timestamp }).ToList();
 
             var alertList = (from alerts in dbEntity.Alerts
+                             where alerts.Alert_Type != "Recommendation"
                              join sensorData in dbEntity.SensorMaster on alerts.Sensor_Id equals sensorData.Sensor_Id into temp1
                              from subsensor in temp1.DefaultIfEmpty()
                              join classData in dbEntity.ClassroomDetails on subsensor.Class_Id equals classData.Class_Id into temp
@@ -361,6 +362,30 @@ namespace RestService.Facade
             });
 
             return sensorList;
+        }
+
+        public List<AlertModel> GetRecommendations()
+        {
+            //var data = (from alerts in dbEntity.Alerts orderby alerts.Timestamp descending select alerts).ToList();
+            //return data;
+            //var data = (from alerts in dbEntity.Alerts
+            //            join sensorData in dbEntity.SensorMaster on alerts.Sensor_Id equals sensorData.Sensor_Id
+            //            join classData in dbEntity.ClassroomDetails on sensorData.Class_Id equals classData.Class_Id
+            //            orderby alerts.Timestamp descending
+            //            select new AlertModel
+            //            { Alert_Id = alerts.Id, Acknowledged_By = alerts.Acknowledged_By == null ? "" : alerts.Acknowledged_By, Acknowledged_Timestamp = alerts.Acknowledged_Timestamp == null ? new DateTime() : (DateTime)alerts.Acknowledged_Timestamp, Alert_Desc = alerts.Description, Alert_Type = alerts.Alert_Type, Class_Desc = classData.Class_Desc, Class_Id = classData.Class_Id, Class_Name = classData.Class_Name, Is_Acknowledged = alerts.Is_Acknowledged == 0 ? false : true, Sensor_Id = alerts.Sensor_Id, Sensor_Log_Id = alerts.Sensor_Log_Id, Timestamp = (DateTime)alerts.Timestamp }).ToList();
+
+            var alertList = (from alerts in dbEntity.Alerts
+                             where alerts.Alert_Type == "Recommendation"
+                             join sensorData in dbEntity.SensorMaster on alerts.Sensor_Id equals sensorData.Sensor_Id into temp1
+                             from subsensor in temp1.DefaultIfEmpty()
+                             join classData in dbEntity.ClassroomDetails on subsensor.Class_Id equals classData.Class_Id into temp
+                             from subclass in temp.DefaultIfEmpty() //left outer join
+                             select new AlertModel
+                             { Alert_Id = alerts.Id, Acknowledged_By = alerts.Acknowledged_By == null ? "" : alerts.Acknowledged_By, Acknowledged_Timestamp = alerts.Acknowledged_Timestamp == null ? new DateTime() : (DateTime)alerts.Acknowledged_Timestamp, Alert_Desc = alerts.Description, Alert_Type = alerts.Alert_Type, Is_Acknowledged = alerts.Is_Acknowledged == 0 ? false : true, Sensor_Id = alerts.Sensor_Id, Sensor_Log_Id = alerts.Sensor_Log_Id, Timestamp = (DateTime)alerts.Timestamp, Class_Id = subclass.Class_Id, Class_Name = subclass.Class_Name == null ? string.Empty : subclass.Class_Name }).ToList();
+
+
+            return alertList;
         }
     }
 }
