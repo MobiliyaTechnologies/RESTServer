@@ -1051,5 +1051,36 @@ namespace RestService.Service
                 throw new Exception(ex.Message, ex);
             }
         }
+
+        public InsightData GetInsightData(int UserId)
+        {
+            try
+            {
+                log.Debug("GetInsightData called");
+                if (accountService.ValidateUser(UserId))
+                {
+                    log.Debug("GetInsightData -> User validation successful");
+                    InsightData insightData = new InsightData();
+                    var data = dataFacade.GetInsightData();
+                    if (data == null)
+                    {
+                        log.Debug("GetInsightData -> No data found");
+                        return insightData;
+                    }
+                    
+                    return data;
+                }
+                else
+                {
+                    log.Debug("GetInsightData -> User Validation failed");
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                log.Error("Exception occurred in GetInsightData as: " + ex);
+                throw new Exception(ex.Message, ex);
+            }
+        }
     }
 }
