@@ -715,6 +715,15 @@ namespace RestService.Service
                 {
                     log.Debug("StoreFeedback -> User validation successful");
                     var data = dataFacade.StoreFeedback(UserId, feedbackdetail);
+                    var feedbackCount = dataFacade.GetFeedbackCount(new FeedbackCountModel { ClassId = (int)feedbackdetail.ClassID });
+                    var exceptionData = feedbackCount.Where(feedback => feedback.AnswerCount > feedback.Threshold).ToList();
+                    if (exceptionData != null && exceptionData.Count > 0)
+                    {
+                        foreach (var exception in exceptionData)
+                        {
+                            ServiceUtil.SendNotification("Temperature Alert", "Students are feeling " + exception.AnswerDesc + " in the class. Take appropriate measures.");
+                        } 
+                    }
                     return data;
                 }
                 else
