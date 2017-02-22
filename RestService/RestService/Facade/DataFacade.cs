@@ -380,7 +380,7 @@ namespace RestService.Facade
                              join sensorData in dbEntity.SensorMaster on alerts.Sensor_Id equals sensorData.Sensor_Id into temp1
                              from subsensor in temp1.DefaultIfEmpty()
                              join classData in dbEntity.ClassroomDetails on subsensor.Class_Id equals classData.Class_Id into temp
-                             from subclass in temp.DefaultIfEmpty() //left outer join
+                             from subclass in temp.DefaultIfEmpty() orderby alerts.Timestamp descending //left outer join
                              select new AlertModel
                              { Alert_Id = alerts.Id, Acknowledged_By = alerts.Acknowledged_By == null ? "" : alerts.Acknowledged_By, Acknowledged_Timestamp = alerts.Acknowledged_Timestamp == null ? new DateTime() : (DateTime)alerts.Acknowledged_Timestamp, Alert_Desc = alerts.Description, Alert_Type = alerts.Alert_Type, Is_Acknowledged = alerts.Is_Acknowledged == 0 ? false : true, Sensor_Id = alerts.Sensor_Id, Sensor_Log_Id = alerts.Sensor_Log_Id, Timestamp = (DateTime)alerts.Timestamp, Class_Id = subclass.Class_Id, Class_Name = subclass.Class_Name == null ? string.Empty : subclass.Class_Name }).ToList();
 
