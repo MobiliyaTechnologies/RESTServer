@@ -1,8 +1,12 @@
-﻿using RestService.Models;
+﻿using Newtonsoft.Json;
+using RestService.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Mail;
+using System.Text;
 using System.Web;
 
 namespace RestService.Utilities
@@ -73,6 +77,70 @@ namespace RestService.Utilities
                     return (int)Constants.DayofWeek.Sun;
             }
             return 1;
+        }
+
+        public static void SendNotification(string title, string body)
+        {
+            try
+            {
+                var applicationID = "AAAAGQBSH1c:APA91bEcYFZQMez7DyNTgphhxk1Sw4uKgss0xW7qBqiMX9QBHPNeIItIrw8VhvCJVWi8WUGUMPdRrx64P82lUtzmPUdvKFKYdr_UJHQl6lnWrXeK0J6-QHZaqkhsAKw1J3TwUievGRA2";
+                //var applicationID = appSettings["ApplicationId"];
+
+                var senderId = "107379564375";
+                //var senderId = appSettings["SenderId"];
+
+                string receiver = "/topics/Alerts";
+                //string receiver = appSettings["Receiver"];
+
+                WebRequest tRequest = WebRequest.Create("https://fcm.googleapis.com/fcm/send");
+                //WebRequest tRequest = WebRequest.Create(appSettings["FCMURL"]);
+                tRequest.Method = "post";
+                tRequest.ContentType = "application/json";
+                var data = new
+                {
+                    //data = new
+                    //{
+                    notification = new
+                    {
+                        body = body,
+                        title = title,
+                        click_action = "http://localhost:65159/#/login",
+                        //click_action = appSettings["ClickAction"],
+                        icon = "./Assets/logo.png"
+                        //   }
+                    },
+                    to = receiver
+                };
+
+                var json = JsonConvert.SerializeObject(data);
+
+                //var json = "{ \"notification\": {\"title\": \"Notification from csu\",\"text\": \"Notification from csu\",\"click_action\": \"http://localhost:65159/#/login \"},\"to\" : \"/topics/Alerts\"}";
+
+                Byte[] byteArray = Encoding.UTF8.GetBytes(json);
+                tRequest.Headers.Add(string.Format("Authorization: key={0}", applicationID));
+                tRequest.Headers.Add(string.Format("Sender: id={0}", senderId));
+                tRequest.ContentLength = byteArray.Length;
+
+                using (Stream dataStream = tRequest.GetRequestStream())
+                {
+                    dataStream.Write(byteArray, 0, byteArray.Length);
+                    using (WebResponse tResponse = tRequest.GetResponse())
+                    {
+                        using (Stream dataStreamResponse = tResponse.GetResponseStream())
+                        {
+                            using (StreamReader tReader = new StreamReader(dataStreamResponse))
+                            {
+                                String sResponseFromServer = tReader.ReadToEnd();
+                                string str = sResponseFromServer;
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                string str = ex.Message;
+            }
         }
     }
 }

@@ -715,6 +715,15 @@ namespace RestService.Service
                 {
                     log.Debug("StoreFeedback -> User validation successful");
                     var data = dataFacade.StoreFeedback(UserId, feedbackdetail);
+                    var feedbackCount = dataFacade.GetFeedbackCount(new FeedbackCountModel { ClassId = (int)feedbackdetail.ClassID });
+                    var exceptionData = feedbackCount.Where(feedback => feedback.AnswerCount > feedback.Threshold).ToList();
+                    if (exceptionData != null && exceptionData.Count > 0)
+                    {
+                        foreach (var exception in exceptionData)
+                        {
+                            ServiceUtil.SendNotification("Temperature Alert", "Students are feeling " + exception.AnswerDesc + " in the class. Take appropriate measures.");
+                        } 
+                    }
                     return data;
                 }
                 else
@@ -1048,6 +1057,37 @@ namespace RestService.Service
             catch (Exception ex)
             {
                 log.Error("Exception occurred in GetRecommendations as: " + ex);
+                throw new Exception(ex.Message, ex);
+            }
+        }
+
+        public InsightData GetInsightData(int UserId)
+        {
+            try
+            {
+                log.Debug("GetInsightData called");
+                if (accountService.ValidateUser(UserId))
+                {
+                    log.Debug("GetInsightData -> User validation successful");
+                    InsightData insightData = new InsightData();
+                    var data = dataFacade.GetInsightData();
+                    if (data == null)
+                    {
+                        log.Debug("GetInsightData -> No data found");
+                        return insightData;
+                    }
+                    
+                    return data;
+                }
+                else
+                {
+                    log.Debug("GetInsightData -> User Validation failed");
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                log.Error("Exception occurred in GetInsightData as: " + ex);
                 throw new Exception(ex.Message, ex);
             }
         }

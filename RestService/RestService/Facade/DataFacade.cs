@@ -387,5 +387,14 @@ namespace RestService.Facade
 
             return alertList;
         }
+
+        public InsightData GetInsightData()
+        {
+            InsightData insightData = new InsightData();
+            var meterCount = GetMeters().Count();
+            insightData.ConsumptionValue = Math.Round((double)(from data in dbEntity.DailyConsumptionDetails orderby data.Timestamp descending select data).Take(meterCount * ((int)DateTime.UtcNow.AddHours(-6).DayOfWeek - 1)).Sum(data => data.Daily_KWH_System),2);
+            insightData.PredictedValue = Math.Round((double)(from data in dbEntity.WeeklyConsumptionPrediction orderby data.End_Time descending select data).Take(meterCount).Sum(data => data.Weekly_Predicted_KWH_System),2);
+            return insightData;
+        }
     }
 }
