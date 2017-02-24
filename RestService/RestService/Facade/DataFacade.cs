@@ -318,11 +318,12 @@ namespace RestService.Facade
             var answerList = (from answer in dbEntity.Answers select answer).ToList();
 
             var feedbackDetail = (from feedback in dbEntity.Feedback where feedback.ClassID == answerDetails.ClassId select feedback).ToList();
+            var classDetails = (from classData in dbEntity.ClassroomDetails where classData.Class_Id == answerDetails.ClassId select classData).FirstOrDefault();
 
             answerList.All(answer => 
             {
                 var answerCount = feedbackDetail.Where(feedback => feedback.AnswerID == answer.AnswerID).ToList().Count();
-                feedbackCount.Add(new FeedbackCountModel { AnswerCount = answerCount, AnswerDesc = answer.AnswerDesc, AnswerId = answer.AnswerID, ClassId = answerDetails.ClassId });
+                feedbackCount.Add(new FeedbackCountModel { AnswerCount = answerCount, AnswerDesc = answer.AnswerDesc, AnswerId = answer.AnswerID, ClassId = answerDetails.ClassId, ClassName = classDetails.Class_Name });
                 return true;
             });
 

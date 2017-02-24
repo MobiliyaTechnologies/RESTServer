@@ -721,7 +721,7 @@ namespace RestService.Service
                     {
                         foreach (var exception in exceptionData)
                         {
-                            ServiceUtil.SendNotification("Temperature Alert", "Students are feeling " + exception.AnswerDesc + " in the class. Take appropriate measures.");
+                            ServiceUtil.SendNotification("Temperature Alert", "Students are feeling " + exception.AnswerDesc + " in the class " + exception.ClassName +". Take appropriate measures.");
                         } 
                     }
                     return data;
