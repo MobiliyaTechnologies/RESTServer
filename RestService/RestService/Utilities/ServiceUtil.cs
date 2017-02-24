@@ -104,10 +104,9 @@ namespace RestService.Utilities
                     {
                         body = body,
                         title = title,
-                        click_action = "http://localhost:65159/#/login",
-                        //click_action = appSettings["ClickAction"],
-                        icon = "./Assets/logo.png"
-                        //   }
+                        click_action = "https://cloud.csupoc.com/csu/",
+                        icon = "./csu/Assets/logo.png",
+                        sound = "default"
                     },
                     to = receiver
                 };

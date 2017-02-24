@@ -46,6 +46,8 @@ namespace RestService.Models
     {
         public int ClassId { get; set; }
 
+        public string ClassName { get; set; }
+
         //public int AnswerId { get; set; }
 
         public int AnswerCount { get; set; }
