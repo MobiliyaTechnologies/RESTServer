@@ -1,6 +1,7 @@
 ﻿using RestService.Entities;
 using RestService.Models;
 using RestService.Service;
+using RestService.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -417,7 +418,7 @@ namespace RestService.Controllers
             HttpResponseMessage response;
             try
             {
-                if (ModelState.IsValid) 
+                if (ModelState.IsValid)
                 {
                     if (feedbackdetail.AnswerID == null && feedbackdetail.FeedbackDesc == null)
                     //Create an error message for returning
@@ -624,5 +625,56 @@ namespace RestService.Controllers
                 return response;
             }
         }
+
+        [Route("api/resetfeedback")]
+        [HttpGet]
+        public HttpResponseMessage ResetFeedback()
+        {
+            log.Debug("ResetFeedback API Called");
+            HttpResponseMessage response;
+            try
+            {
+                var data = dataService.ResetFeedback();
+                if (data.Status_Code == (int)Constants.StatusCode.Ok)
+                {
+                    response = Request.CreateResponse(HttpStatusCode.OK, data.Message);
+                }
+                else
+                    response = Request.CreateResponse(HttpStatusCode.BadRequest, data.Message);
+                return response;
+            }
+            catch (Exception ex)
+            {
+                log.Error("Exception occurred in ResetFeedback as: " + ex);
+                response = Request.CreateErrorResponse(HttpStatusCode.ServiceUnavailable, ex);
+                return response;
+            }
+        }
+
+        [Route("api/resetsensors")]
+        [HttpGet]
+        public HttpResponseMessage ResetSensors()
+        {
+            log.Debug("ResetSensors API Called");
+            HttpResponseMessage response;
+            try
+            {
+                var data = dataService.ResetSensors();
+                if (data.Status_Code == (int)Constants.StatusCode.Ok)
+                {
+                    response = Request.CreateResponse(HttpStatusCode.OK, data.Message);
+                }
+                else
+                    response = Request.CreateResponse(HttpStatusCode.BadRequest, data.Message);
+                return response;
+            }
+            catch (Exception ex)
+            {
+                log.Error("Exception occurred in ResetSensors as: " + ex);
+                response = Request.CreateErrorResponse(HttpStatusCode.ServiceUnavailable, ex);
+                return response;
+            }
+        }
+
     }
 }
