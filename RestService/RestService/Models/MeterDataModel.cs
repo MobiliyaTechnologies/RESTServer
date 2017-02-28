@@ -157,6 +157,8 @@ namespace RestService.Models
     {
         public string PowerScout { get; set; }
 
+        public string Name { get; set; }
+
         public List<double> DayWiseConsumption { get; set; }
 
         public MeterDayWiseMonthlyConsumption()
@@ -168,6 +170,8 @@ namespace RestService.Models
     public class MeterDayWiseMonthlyConsumptionPrediction
     {
         public string PowerScout { get; set; }
+
+        public string Name { get; set; }
 
         public List<double> DayWiseConsumptionPrediction { get; set; }
 
