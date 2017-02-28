@@ -156,6 +156,7 @@ namespace RestService.Utilities
         {
             MeterDayWiseMonthlyConsumption dayWiseConsumption = new MeterDayWiseMonthlyConsumption();
             dayWiseConsumption.PowerScout = dailyConsumptionList.FirstOrDefault().PowerScout;
+            dayWiseConsumption.Name = dailyConsumptionList.FirstOrDefault().Breaker_details;
             dailyConsumptionList.All(data =>
             {
                 dayWiseConsumption.DayWiseConsumption.Add((double)data.Daily_KWH_System);
@@ -168,6 +169,7 @@ namespace RestService.Utilities
         {
             MeterDayWiseMonthlyConsumptionPrediction dayWiseConsumptionPrediction = new MeterDayWiseMonthlyConsumptionPrediction();
             dayWiseConsumptionPrediction.PowerScout = dailyConsumptionPredictionList.FirstOrDefault().PowerScout;
+            dayWiseConsumptionPrediction.Name = dailyConsumptionPredictionList.FirstOrDefault().Breaker_details;
             dailyConsumptionPredictionList.All(data =>
             {
                 dayWiseConsumptionPrediction.DayWiseConsumptionPrediction.Add((double)data.Daily_Predicted_KWH_System);

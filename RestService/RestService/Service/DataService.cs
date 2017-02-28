@@ -721,8 +721,8 @@ namespace RestService.Service
                     {
                         foreach (var exception in exceptionData)
                         {
-                            ServiceUtil.SendNotification("Temperature Alert", "Students are feeling " + exception.AnswerDesc + " in the class " + exception.ClassName +". Take appropriate measures.");
-                        } 
+                            ServiceUtil.SendNotification("Temperature Alert", "Students are feeling " + exception.AnswerDesc + " in the class " + exception.ClassName + ". Take appropriate measures.");
+                        }
                     }
                     return data;
                 }
@@ -1076,7 +1076,7 @@ namespace RestService.Service
                         log.Debug("GetInsightData -> No data found");
                         return insightData;
                     }
-                    
+
                     return data;
                 }
                 else
@@ -1088,6 +1088,36 @@ namespace RestService.Service
             catch (Exception ex)
             {
                 log.Error("Exception occurred in GetInsightData as: " + ex);
+                throw new Exception(ex.Message, ex);
+            }
+        }
+
+        public ResponseModel ResetFeedback()
+        {
+            try
+            {
+                log.Debug("ResetFeedback called");
+                var data = dataFacade.ResetFeedback();
+                return data;
+            }
+            catch (Exception ex)
+            {
+                log.Error("Exception occurred in ResetFeedback as: " + ex);
+                throw new Exception(ex.Message, ex);
+            }
+        }
+
+        public ResponseModel ResetSensors()
+        {
+            try
+            {
+                log.Debug("ResetSensors called");
+                var data = dataFacade.ResetSensors();
+                return data;
+            }
+            catch (Exception ex)
+            {
+                log.Error("Exception occurred in ResetSensors as: " + ex);
                 throw new Exception(ex.Message, ex);
             }
         }

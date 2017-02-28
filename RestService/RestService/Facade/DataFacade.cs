@@ -145,7 +145,8 @@ namespace RestService.Facade
                              join sensorData in dbEntity.SensorMaster on alerts.Sensor_Id equals sensorData.Sensor_Id into temp1
                              from subsensor in temp1.DefaultIfEmpty()
                              join classData in dbEntity.ClassroomDetails on subsensor.Class_Id equals classData.Class_Id into temp
-                             from subclass in temp.DefaultIfEmpty() //left outer join
+                             from subclass in temp.DefaultIfEmpty()
+                             orderby alerts.Timestamp descending  //left outer join
                              select new AlertModel
                              { Alert_Id = alerts.Id, Acknowledged_By = alerts.Acknowledged_By == null ? "" : alerts.Acknowledged_By, Acknowledged_Timestamp = alerts.Acknowledged_Timestamp == null ? new DateTime() : (DateTime)alerts.Acknowledged_Timestamp, Alert_Desc = alerts.Description, Alert_Type = alerts.Alert_Type, Is_Acknowledged = alerts.Is_Acknowledged == 0 ? false : true, Sensor_Id = alerts.Sensor_Id, Sensor_Log_Id = alerts.Sensor_Log_Id, Timestamp = (DateTime)alerts.Timestamp, Class_Id = subclass.Class_Id, Class_Name = subclass.Class_Name == null ? string.Empty : subclass.Class_Name }).ToList();
 
@@ -320,7 +321,7 @@ namespace RestService.Facade
             var feedbackDetail = (from feedback in dbEntity.Feedback where feedback.ClassID == answerDetails.ClassId select feedback).ToList();
             var classDetails = (from classData in dbEntity.ClassroomDetails where classData.Class_Id == answerDetails.ClassId select classData).FirstOrDefault();
 
-            answerList.All(answer => 
+            answerList.All(answer =>
             {
                 var answerCount = feedbackDetail.Where(feedback => feedback.AnswerID == answer.AnswerID).ToList().Count();
                 feedbackCount.Add(new FeedbackCountModel { AnswerCount = answerCount, AnswerDesc = answer.AnswerDesc, AnswerId = answer.AnswerID, ClassId = answerDetails.ClassId, ClassName = classDetails.Class_Name });
@@ -338,7 +339,7 @@ namespace RestService.Facade
             feedbackCount.All(feedback => { feedback.Threshold = Math.Round(threshold, 2); return true; });
 
             return feedbackCount;
-            
+
         }
 
         public List<SensorModel> GetAllSensorsForClass(SensorModel sensorData)
@@ -350,7 +351,7 @@ namespace RestService.Facade
                               join classData in dbEntity.ClassroomDetails on sensor.Class_Id equals classData.Class_Id
                               where classData.Class_Id == sensorData.Class_Id
                               select new SensorModel
-                              { Class_Id = classData.Class_Id, Class_Name = classData.Class_Name,Class_X = classData.X, Class_Y = classData.Y, Sensor_Id = sensor.Sensor_Id, Sensor_Name = sensor.Sensor_Name }
+                              { Class_Id = classData.Class_Id, Class_Name = classData.Class_Name, Class_X = classData.X, Class_Y = classData.Y, Sensor_Id = sensor.Sensor_Id, Sensor_Name = sensor.Sensor_Name }
                               ).ToList();
 
             sensorList.All(sensor =>
@@ -381,7 +382,8 @@ namespace RestService.Facade
                              join sensorData in dbEntity.SensorMaster on alerts.Sensor_Id equals sensorData.Sensor_Id into temp1
                              from subsensor in temp1.DefaultIfEmpty()
                              join classData in dbEntity.ClassroomDetails on subsensor.Class_Id equals classData.Class_Id into temp
-                             from subclass in temp.DefaultIfEmpty() orderby alerts.Timestamp descending //left outer join
+                             from subclass in temp.DefaultIfEmpty()
+                             orderby alerts.Timestamp descending //left outer join
                              select new AlertModel
                              { Alert_Id = alerts.Id, Acknowledged_By = alerts.Acknowledged_By == null ? "" : alerts.Acknowledged_By, Acknowledged_Timestamp = alerts.Acknowledged_Timestamp == null ? new DateTime() : (DateTime)alerts.Acknowledged_Timestamp, Alert_Desc = alerts.Description, Alert_Type = alerts.Alert_Type, Is_Acknowledged = alerts.Is_Acknowledged == 0 ? false : true, Sensor_Id = alerts.Sensor_Id, Sensor_Log_Id = alerts.Sensor_Log_Id, Timestamp = (DateTime)alerts.Timestamp, Class_Id = subclass.Class_Id, Class_Name = subclass.Class_Name == null ? string.Empty : subclass.Class_Name }).ToList();
 
@@ -394,9 +396,39 @@ namespace RestService.Facade
             InsightData insightData = new InsightData();
             var meterCount = GetMeters().Count();
             //int rowCount = (int)DateTime.UtcNow.AddHours(-6).DayOfWeek == 0 ? 7 : (int)DateTime.UtcNow.AddHours(-6).DayOfWeek;
-            insightData.ConsumptionValue = Math.Round((double)(from data in dbEntity.DailyConsumptionDetails orderby data.Timestamp descending select data).Take(meterCount * (((int)DateTime.UtcNow.AddHours(-6).DayOfWeek) == 0 ? 7 : (int)DateTime.UtcNow.AddHours(-6).DayOfWeek)).Sum(data => data.Daily_KWH_System),2);
-            insightData.PredictedValue = Math.Round((double)(from data in dbEntity.WeeklyConsumptionPrediction orderby data.End_Time descending select data).Take(meterCount).Sum(data => data.Weekly_Predicted_KWH_System),2);
+            insightData.ConsumptionValue = Math.Round((double)(from data in dbEntity.DailyConsumptionDetails orderby data.Timestamp descending select data).Take(meterCount * (((int)DateTime.UtcNow.AddHours(-6).DayOfWeek) == 0 ? 7 : (int)DateTime.UtcNow.AddHours(-6).DayOfWeek)).Sum(data => data.Daily_KWH_System), 2);
+            insightData.PredictedValue = Math.Round((double)(from data in dbEntity.WeeklyConsumptionPrediction orderby data.End_Time descending select data).Take(meterCount).Sum(data => data.Weekly_Predicted_KWH_System), 2);
             return insightData;
+        }
+
+        public ResponseModel ResetFeedback()
+        {
+            var feedbacks = (from data in dbEntity.Feedback where data.FeedbackID > 200 && data.ClassID == 2 select data).ToList();
+            if (feedbacks != null && feedbacks.Count > 0)
+            {
+                dbEntity.Feedback.RemoveRange(feedbacks);
+                dbEntity.SaveChanges();
+                return new ResponseModel { Status_Code = (int)Constants.StatusCode.Ok, Message = "Feedback reset successful" };
+            }
+            else
+            {
+                return new ResponseModel { Status_Code = (int)Constants.StatusCode.Error, Message = "No rows found to reset" };
+            }
+        }
+
+        public ResponseModel ResetSensors()
+        {
+            var sensors = (from data in dbEntity.SensorMaster select data).ToList();
+            if (sensors != null && sensors.Count > 0)
+            {
+                dbEntity.SensorMaster.RemoveRange(sensors);
+                dbEntity.SaveChanges();
+                return new ResponseModel { Status_Code = (int)Constants.StatusCode.Ok, Message = "Sensors reset successful" };
+            }
+            else
+            {
+                return new ResponseModel { Status_Code = (int)Constants.StatusCode.Error, Message = "No rows found to reset" };
+            }
         }
     }
 }
