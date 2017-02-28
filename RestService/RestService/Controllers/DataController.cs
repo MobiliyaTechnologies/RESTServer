@@ -635,12 +635,7 @@ namespace RestService.Controllers
             try
             {
                 var data = dataService.ResetFeedback();
-                if (data.Status_Code == (int)Constants.StatusCode.Ok)
-                {
-                    response = Request.CreateResponse(HttpStatusCode.OK, data.Message);
-                }
-                else
-                    response = Request.CreateResponse(HttpStatusCode.BadRequest, data.Message);
+                response = Request.CreateResponse(HttpStatusCode.OK, data.Message);
                 return response;
             }
             catch (Exception ex)
@@ -660,12 +655,7 @@ namespace RestService.Controllers
             try
             {
                 var data = dataService.ResetSensors();
-                if (data.Status_Code == (int)Constants.StatusCode.Ok)
-                {
-                    response = Request.CreateResponse(HttpStatusCode.OK, data.Message);
-                }
-                else
-                    response = Request.CreateResponse(HttpStatusCode.BadRequest, data.Message);
+                response = Request.CreateResponse(HttpStatusCode.OK, data.Message);
                 return response;
             }
             catch (Exception ex)
