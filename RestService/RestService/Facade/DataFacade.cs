@@ -168,6 +168,13 @@ namespace RestService.Facade
             return alertDetails;
         }
 
+        public ResponseModel AddAlert(Alerts alertDetails)
+        {
+            dbEntity.Alerts.Add(alertDetails);
+            dbEntity.SaveChanges();
+            return new ResponseModel { Status_Code = (int)Constants.StatusCode.Ok, Message = "Alert added successfully" };
+        }
+
         public List<ClassroomDetails> GetAllClassrooms()
         {
             var classroomList = (from data in dbEntity.ClassroomDetails select data).ToList();
