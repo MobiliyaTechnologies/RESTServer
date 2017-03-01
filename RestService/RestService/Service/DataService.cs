@@ -75,7 +75,8 @@ namespace RestService.Service
                         List<MeterMonthlyConsumptionModel> meterModelList = new List<MeterMonthlyConsumptionModel>();
                         foreach (var meterDataItem in meterData)
                         {
-                            MeterMonthlyConsumptionModel meterMonthlyConsumption = Converter.MeterMonthlyEntityToModel(dataFacade.GetMeterConsumption(meterDataItem));
+                            var data = dataFacade.GetMeterConsumption(meterDataItem);
+                            MeterMonthlyConsumptionModel meterMonthlyConsumption = data == null ? new MeterMonthlyConsumptionModel {Powerscout = meterDataItem.PowerScout, Name = meterDataItem.Breaker_details } :  Converter.MeterMonthlyEntityToModel(dataFacade.GetMeterConsumption(meterDataItem));
                             if (meterMonthlyConsumption != null)
                             {
                                 meterMonthlyConsumption.Name = meterDataItem.Breaker_details;
