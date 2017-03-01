@@ -717,12 +717,15 @@ namespace RestService.Service
                     log.Debug("StoreFeedback -> User validation successful");
                     var data = dataFacade.StoreFeedback(UserId, feedbackdetail);
                     var feedbackCount = dataFacade.GetFeedbackCount(new FeedbackCountModel { ClassId = (int)feedbackdetail.ClassID });
-                    var exceptionData = feedbackCount.Where(feedback => feedback.AnswerCount > feedback.Threshold).ToList();
+                    var exceptionData = feedbackCount.Where(feedback => feedback.AnswerCount > feedback.Threshold && feedback.AnswerId == feedbackdetail.AnswerID).ToList();
                     if (exceptionData != null && exceptionData.Count > 0)
                     {
                         foreach (var exception in exceptionData)
                         {
-                            ServiceUtil.SendNotification("Temperature Alert", "Students are feeling " + exception.AnswerDesc + " in the class " + exception.ClassName + ". Take appropriate measures.");
+                            var title = "Temperature Alert";
+                            var message = "Students are feeling " + exception.AnswerDesc + " in the class " + exception.ClassName + ". Take appropriate measures.";
+                            ServiceUtil.SendNotification(title, message);
+                            dataFacade.AddAlert(new Alerts { Sensor_Id = 0, Sensor_Log_Id = 0, Alert_Type = title, Description = message, Is_Acknowledged = 0, Timestamp = DateTime.UtcNow });
                         }
                     }
                     return data;
