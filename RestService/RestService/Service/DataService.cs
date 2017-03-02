@@ -922,6 +922,40 @@ namespace RestService.Service
             }
         }
 
+        public List<AnomalyInfoModel> GetAnomalyDetails(int UserId, string timeStamp)
+        {
+            try
+            {
+                log.Debug("GetAnomalyDetails called");
+                if (accountService.ValidateUser(UserId))
+                {
+                    var anomalyDetails = dataFacade.GetAnomalyDetails(timeStamp);
+                    List<AnomalyInfoModel> anomalyInfoModel = new List<AnomalyInfoModel>();
+                    if (anomalyDetails == null)
+                    {
+                        log.Debug("GetAnomalyDetails -> No Data Found");
+                        return anomalyInfoModel;
+                    }
+                    anomalyDetails.All(anomaly =>
+                    {
+                        anomalyInfoModel.Add(Converter.AnomalyDetailsEntityToModel(anomaly));
+                        return true;
+                    });
+                    return anomalyInfoModel;
+                }
+                else
+                {
+                    log.Debug("GetAnomalyDetails -> User Validation failed");
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                log.Error("Exception occured in GetAlertDetails as: " + ex);
+                throw new Exception(ex.Message, ex);
+            }
+        }
+
         //public List<SensorDataModel> GetSensorDetails(int UserId, SensorDataModel sensorData)
         //{
         //    try

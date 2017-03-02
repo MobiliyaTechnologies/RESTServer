@@ -437,5 +437,17 @@ namespace RestService.Facade
                 return new ResponseModel { Status_Code = (int)Constants.StatusCode.Error, Message = "No rows found to reset" };
             }
         }
+
+        public List<AnomalyOutput> GetAnomalyDetails(string timeStamp)
+        {
+
+            DateTime date = ServiceUtil.UnixTimeStampToDateTime(Convert.ToDouble(timeStamp)).Date;
+            DateTime startTime = date.Date;
+            DateTime endTime = startTime.AddHours(24).AddSeconds(-1);
+            var alertDetails = (from data in dbEntity.AnomalyOutput
+                                where data.Timestamp > startTime && data.Timestamp <= endTime select data).ToList();
+            return alertDetails;
+        }
+
     }
 }

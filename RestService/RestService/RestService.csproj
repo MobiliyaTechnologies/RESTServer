@@ -239,6 +239,9 @@
     <Compile Include="Entities\Alerts.cs">
       <DependentUpon>PowergridModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\AnomalyOutput.cs">
+      <DependentUpon>PowergridModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\Answers.cs">
       <DependentUpon>PowergridModel.tt</DependentUpon>
     </Compile>
@@ -327,6 +330,7 @@
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AlertsModel.cs" />
+    <Compile Include="Models\AnomalyInfoModel.cs" />
     <Compile Include="Models\ClassroomModel.cs" />
     <Compile Include="Models\FeedbackModel.cs" />
     <Compile Include="Models\GeneralDataModel.cs" />
@@ -375,6 +379,8 @@
       <DependentUpon>PowergridModel.edmx</DependentUpon>
     </Content>
     <None Include="Properties\PublishProfiles\CSUWebApp - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\PowergridRESTService - FTP %282%29.pubxml" />
+    <None Include="Properties\PublishProfiles\PowergridRESTService - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\PowergridRESTService - Web Deploy %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\PowergridRESTService - Web Deploy %283%29.pubxml" />
     <None Include="Properties\PublishProfiles\PowergridRESTService - Web Deploy.pubxml" />

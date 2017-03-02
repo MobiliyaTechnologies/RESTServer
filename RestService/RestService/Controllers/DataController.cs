@@ -666,5 +666,24 @@ namespace RestService.Controllers
             }
         }
 
+        [Route("api/getAnomalyDetailsByDay/{Id}/{Timestamp}")]
+        public HttpResponseMessage GetAnomalyDetailsByDay(int Id, string Timestamp)
+        {
+            HttpResponseMessage response;
+            try
+            {
+                log.Debug("GetAlertDetails API called");
+                var data = dataService.GetAnomalyDetails(Id, Timestamp);
+                response = data == null ? Request.CreateResponse(HttpStatusCode.Forbidden, "Invalid User") : Request.CreateResponse(HttpStatusCode.OK, data);
+                return response;
+            }
+            catch (Exception ex)
+            {
+                log.Error("Exception occurred in GetAlertDetails API as: " + ex);
+                response = Request.CreateErrorResponse(HttpStatusCode.ServiceUnavailable, ex);
+                return response;
+            }
+        }
+
     }
 }
