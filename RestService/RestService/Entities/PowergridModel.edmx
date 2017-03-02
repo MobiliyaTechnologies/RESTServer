@@ -48,6 +48,7 @@
           <Property Name="ScoredLabels" Type="float" />
           <Property Name="ScoredProbabilities" Type="float" />
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Breaker_details" Type="text" />
         </EntityType>
         <EntityType Name="Answers">
           <Key>
@@ -743,6 +744,7 @@ warning 6002: The table/view 'PowerGrid.dbo.TempMLData' does not have a primary 
           <Property Name="ScoredLabels" Type="Double" />
           <Property Name="ScoredProbabilities" Type="Double" />
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Breaker_details" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="Answers">
           <Key>
@@ -1379,6 +1381,7 @@ warning 6002: The table/view 'PowerGrid.dbo.TempMLData' does not have a primary 
                 <ScalarProperty Name="ScoredLabels" ColumnName="ScoredLabels" />
                 <ScalarProperty Name="ScoredProbabilities" ColumnName="ScoredProbabilities" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Breaker_details" ColumnName="Breaker_details" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

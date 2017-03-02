@@ -17,5 +17,6 @@ namespace RestService.Models
         public Nullable<double> ScoredLabels { get; set; }
         public Nullable<double> ScoredProbabilities { get; set; }
         public int Id { get; set; }
+        public string Breaker_details { get; set; }
     }
 }

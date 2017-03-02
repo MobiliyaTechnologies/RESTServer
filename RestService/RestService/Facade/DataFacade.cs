@@ -442,7 +442,7 @@ namespace RestService.Facade
         {
 
             DateTime date = ServiceUtil.UnixTimeStampToDateTime(Convert.ToDouble(timeStamp)).Date;
-            DateTime startTime = date.AddHours(5);
+            DateTime startTime = date.Date;
             DateTime endTime = startTime.AddHours(24).AddSeconds(-1);
             var alertDetails = (from data in dbEntity.AnomalyOutput
                                 where data.Timestamp > startTime && data.Timestamp <= endTime select data).ToList();

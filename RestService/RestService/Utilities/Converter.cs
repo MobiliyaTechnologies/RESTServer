@@ -274,6 +274,7 @@ namespace RestService.Utilities
             anomalyInfoModel.kW_System = (double)anomalyDetailsEntity.kW_System;
             anomalyInfoModel.ScoredLabels = (double)anomalyDetailsEntity.ScoredLabels;
             anomalyInfoModel.ScoredProbabilities = (double)anomalyDetailsEntity.ScoredProbabilities;
+            anomalyInfoModel.Breaker_details = anomalyDetailsEntity.Breaker_details;
 
             return anomalyInfoModel;
         }
