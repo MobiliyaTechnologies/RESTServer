@@ -27,6 +27,7 @@ namespace RestService.Entities
     
         public virtual DbSet<AlertRules> AlertRules { get; set; }
         public virtual DbSet<Alerts> Alerts { get; set; }
+        public virtual DbSet<AnomalyOutput> AnomalyOutput { get; set; }
         public virtual DbSet<Answers> Answers { get; set; }
         public virtual DbSet<ClassroomDetails> ClassroomDetails { get; set; }
         public virtual DbSet<DailyConsumptionDetails> DailyConsumptionDetails { get; set; }

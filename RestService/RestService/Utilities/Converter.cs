@@ -260,5 +260,22 @@ namespace RestService.Utilities
             }
             return questionModel;
         }
+
+        public static AnomalyInfoModel AnomalyDetailsEntityToModel(AnomalyOutput anomalyDetailsEntity)
+        {
+            AnomalyInfoModel anomalyInfoModel = new AnomalyInfoModel();
+            anomalyInfoModel.Id = anomalyDetailsEntity.Id;
+            anomalyInfoModel.PowerScout= anomalyDetailsEntity.PowerScout;
+            anomalyInfoModel.Timestamp = (DateTime)anomalyDetailsEntity.Timestamp;
+            anomalyInfoModel.Temperature = (double)anomalyDetailsEntity.Temperature;
+            anomalyInfoModel.Visibility = (double)anomalyDetailsEntity.Visibility;
+
+            anomalyInfoModel.days = anomalyDetailsEntity.days;
+            anomalyInfoModel.kW_System = (double)anomalyDetailsEntity.kW_System;
+            anomalyInfoModel.ScoredLabels = (double)anomalyDetailsEntity.ScoredLabels;
+            anomalyInfoModel.ScoredProbabilities = (double)anomalyDetailsEntity.ScoredProbabilities;
+
+            return anomalyInfoModel;
+        }
     }
 }
