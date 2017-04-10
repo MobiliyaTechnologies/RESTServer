@@ -16,7 +16,7 @@ namespace RestService.Utilities
 
         static string _sender = "itadmin@admindomain.onmicrosoft.com";
         static string _password = "Microsoft!@#$";
-        
+
         public static ResponseModel SendMail(string recipient, string subject, string message)
         {
             ResponseModel response = new ResponseModel();
@@ -112,10 +112,7 @@ namespace RestService.Utilities
                 };
 
                 var json = JsonConvert.SerializeObject(data);
-
-                //var json = "{ \"notification\": {\"title\": \"Notification from csu\",\"text\": \"Notification from csu\",\"click_action\": \"http://localhost:65159/#/login \"},\"to\" : \"/topics/Alerts\"}";
-
-                Byte[] byteArray = Encoding.UTF8.GetBytes(json);
+                byte[] byteArray = Encoding.UTF8.GetBytes(json);
                 tRequest.Headers.Add(string.Format("Authorization: key={0}", applicationID));
                 tRequest.Headers.Add(string.Format("Sender: id={0}", senderId));
                 tRequest.ContentLength = byteArray.Length;

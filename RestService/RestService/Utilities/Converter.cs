@@ -35,6 +35,7 @@ namespace RestService.Utilities
             userRole.Role_Id = userDataModel.Role_Id;
             return userRole;
         }
+
         public static ResponseUserModel UserToResponseUserModel(User user)
         {
             ResponseUserModel response = new ResponseUserModel();
@@ -43,7 +44,6 @@ namespace RestService.Utilities
             response.Email = user.Email_Id;
             response.User_Id = user.Id;
             response.Avatar = user.Avatar;
-            //response.Role_Id = user.UserRole;
             return response;
         }
 

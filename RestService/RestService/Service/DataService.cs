@@ -268,7 +268,7 @@ namespace RestService.Service
                                     monthlyDataList.RemoveRange(offset, monthlyDataList.Count - offset);
                                 }
 
-                                monthWiseDataList.Add(Converter.MeterMonthWiseEntityToModel(monthlyDataList)); 
+                                monthWiseDataList.Add(Converter.MeterMonthWiseEntityToModel(monthlyDataList));
                             }
                             else
                             {
@@ -315,7 +315,7 @@ namespace RestService.Service
                             if (dailyConsumptionListForMonth != null && dailyConsumptionListForMonth.Count > 0)
                             {
                                 var meterWeekWiseConsumption = GetWeekWiseConsumptionFromMonthly(dailyConsumptionListForMonth);
-                                weekWiseConsumption.Add(meterWeekWiseConsumption); 
+                                weekWiseConsumption.Add(meterWeekWiseConsumption);
                             }
                             else
                             {
@@ -441,7 +441,7 @@ namespace RestService.Service
             catch (Exception ex)
             {
                 log.Error("Exception occurred in GetWeekWiseConsumptionFromMonthly as: " + ex);
-                return new MeterWeekWiseMonthlyConsumption { PowerScout = dailyConsumptionList.FirstOrDefault().PowerScout };
+                throw new Exception(ex.Message, ex);
             }
         }
 
@@ -496,12 +496,12 @@ namespace RestService.Service
             }
         }
 
-        public List<MeterDayWiseMonthlyConsumptionPrediction> GetDayWiseCurrentMonthPrediction(int UserId, string Month, int Year)
+        public List<MeterDayWiseMonthlyConsumptionPrediction> GetDayWiseCurrentMonthPrediction(int userId, string month, int year)
         {
             try
             {
                 log.Debug("GetDayWiseCurrentMonthPrediction called");
-                if (accountService.ValidateUser(UserId))
+                if (accountService.ValidateUser(userId))
                 {
                     var meterData = dataFacade.GetMeters();
                     if (meterData != null && meterData.Count > 0)
@@ -509,14 +509,18 @@ namespace RestService.Service
                         List<MeterDayWiseMonthlyConsumptionPrediction> dayWisePredictionList = new List<MeterDayWiseMonthlyConsumptionPrediction>();
                         foreach (var meter in meterData)
                         {
-                            var dailyPredictionList = dataFacade.GetDayWiseNextMonthPrediction(meter, Month, Year);
-                            if (dailyPredictionList == null || dailyPredictionList.Count < 1)
+                            var dailyPredictionList = dataFacade.GetDayWiseNextMonthPrediction(meter, month, year);
+                            if (dailyPredictionList != null && dailyPredictionList.Count > 0)
+                            {
+                                dayWisePredictionList.Add(Converter.MeterDayWiseMonthlyPredictionEntityToModel(dailyPredictionList));
+                            }
+                            else
                             {
                                 log.Debug("GetDayWiseCurrentMonthPrediction -> No Data found");
-                                return new List<MeterDayWiseMonthlyConsumptionPrediction>();
+                                dayWisePredictionList.Add(new MeterDayWiseMonthlyConsumptionPrediction { PowerScout = meter.PowerScout, Name = meter.Breaker_details });
                             }
-                            dayWisePredictionList.Add(Converter.MeterDayWiseMonthlyPredictionEntityToModel(dailyPredictionList));
                         }
+
                         return dayWisePredictionList;
                     }
                     else
@@ -535,36 +539,39 @@ namespace RestService.Service
             catch (Exception ex)
             {
                 log.Error("Exception occurred in GetDayWiseCurrentMonthPrediction as: " + ex);
-                return new List<MeterDayWiseMonthlyConsumptionPrediction>();
+                throw new Exception(ex.Message, ex);
             }
         }
 
-        public List<MeterDayWiseMonthlyConsumptionPrediction> GetDayWiseNextMonthPrediction(int UserId, string Month, int Year)
+        public List<MeterDayWiseMonthlyConsumptionPrediction> GetDayWiseNextMonthPrediction(int userId, string month, int year)
         {
             try
             {
                 log.Debug("GetDayWiseNextMonthPrediction called");
-                if (accountService.ValidateUser(UserId))
+                if (accountService.ValidateUser(userId))
                 {
                     var meterData = dataFacade.GetMeters();
                     if (meterData != null && meterData.Count > 0)
                     {
                         List<MeterDayWiseMonthlyConsumptionPrediction> dayWisePredictionList = new List<MeterDayWiseMonthlyConsumptionPrediction>();
                         DateTime monthDate;
-                        DateTime.TryParse("01-" + Month + "-" + Year, out monthDate);
+                        DateTime.TryParse("01-" + month + "-" + year, out monthDate);
                         monthDate = monthDate.AddMonths(1);
-                        Month = monthDate.ToString("MMM");
-                        Year = monthDate.Year;
+                        month = monthDate.ToString("MMM");
+                        year = monthDate.Year;
                         foreach (var meter in meterData)
                         {
-                            var dailyPredictionList = dataFacade.GetDayWiseNextMonthPrediction(meter, Month, Year);
-                            if (dailyPredictionList == null || dailyPredictionList.Count < 1)
+                            var dailyPredictionList = dataFacade.GetDayWiseNextMonthPrediction(meter, month, year);
+                            if (dailyPredictionList != null && dailyPredictionList.Count > 0)
                             {
-                                log.Debug("GetDayWiseNextMonthPrediction -> No Data found");
-                                return new List<MeterDayWiseMonthlyConsumptionPrediction>();
+                                dayWisePredictionList.Add(Converter.MeterDayWiseMonthlyPredictionEntityToModel(dailyPredictionList));
                             }
-                            dayWisePredictionList.Add(Converter.MeterDayWiseMonthlyPredictionEntityToModel(dailyPredictionList));
+                            else
+                            {
+                                dayWisePredictionList.Add(new MeterDayWiseMonthlyConsumptionPrediction { PowerScout = meter.PowerScout, Name = meter.Breaker_details });
+                            }
                         }
+
                         return dayWisePredictionList;
                     }
                     else
@@ -583,34 +590,27 @@ namespace RestService.Service
             catch (Exception ex)
             {
                 log.Error("Exception occurred in GetDayWiseNextMonthPrediction as: " + ex);
-                return new List<MeterDayWiseMonthlyConsumptionPrediction>();
+                throw new Exception(ex.Message, ex);
             }
         }
 
-        public List<AlertModel> GetAllAlerts(int UserId)
+        public List<AlertModel> GetAllAlerts(int userId)
         {
             try
             {
                 log.Debug("GetAllAlerts called");
-                if (accountService.ValidateUser(UserId))
+                if (accountService.ValidateUser(userId))
                 {
                     log.Debug("GetAllAlerts -> User validation successful");
-                    List<AlertModel> alertModelList = new List<AlertModel>();
                     var data = dataFacade.GetAllAlerts();
-                    if (data == null || data.Count < 1)
+                    if (data != null)
                     {
-                        log.Debug("GetAllAlerts -> No alerts found");
-                        return alertModelList;
+                        return data;
                     }
-
-                    //data.All(alert =>
-                    //{
-                    //    alertModelList.Add(Converter.AlertsEntityToModel(alert));
-                    //    return true;
-                    //});
-                    //return alertModelList;
-
-                    return data;
+                    else
+                    {
+                        return new List<AlertModel>();
+                    }
                 }
                 else
                 {
@@ -625,21 +625,22 @@ namespace RestService.Service
             }
         }
 
-        public AlertDetailsModel GetAlertDetails(int UserId, int LogId)
+        public AlertDetailsModel GetAlertDetails(int userId, int logId)
         {
             try
             {
                 log.Debug("GetAlertDetails called");
-                if (accountService.ValidateUser(UserId))
+                if (accountService.ValidateUser(userId))
                 {
-                    var alertDetails = dataFacade.GetAlertDetails(LogId);
-                    if (alertDetails == null)
+                    var alertDetails = dataFacade.GetAlertDetails(logId);
+                    if (alertDetails != null)
                     {
-                        log.Debug("GetAlertDetails -> No Data Found");
+                        return alertDetails;
+                    }
+                    else
+                    {
                         return new AlertDetailsModel();
                     }
-                    //return Converter.AlertDetailsEntityToModel(alertDetails);
-                    return alertDetails;
                 }
                 else
                 {
@@ -654,27 +655,25 @@ namespace RestService.Service
             }
         }
 
-        public List<ClassroomModel> GetAllClassrooms(int UserId)
+        public List<ClassroomModel> GetAllClassrooms(int userId)
         {
             try
             {
                 log.Debug("GetAllClassrooms called");
-                if (accountService.ValidateUser(UserId))
+                if (accountService.ValidateUser(userId))
                 {
                     log.Debug("GetAllClassrooms -> User validation successful");
                     List<ClassroomModel> classroomModel = new List<ClassroomModel>();
                     var data = dataFacade.GetAllClassrooms();
-                    if (data == null || data.Count < 1)
+                    if (data != null && data.Count > 0)
                     {
-                        log.Debug("GetAllClassrooms -> No classrooms found");
-                        return classroomModel;
+                        data.All(classroom =>
+                        {
+                            classroomModel.Add(Converter.ClassroomEntityToModel(classroom));
+                            return true;
+                        });
                     }
 
-                    data.All(classroom =>
-                    {
-                        classroomModel.Add(Converter.ClassroomEntityToModel(classroom));
-                        return true;
-                    });
                     return classroomModel;
                 }
                 else
@@ -690,12 +689,12 @@ namespace RestService.Service
             }
         }
 
-        public ResponseModel AcknowledgeAlert(int UserId, AlertModel alertDetail)
+        public ResponseModel AcknowledgeAlert(int userId, AlertModel alertDetail)
         {
             try
             {
                 log.Debug("Acknowledge alert called");
-                if (accountService.ValidateUser(UserId))
+                if (accountService.ValidateUser(userId))
                 {
                     log.Debug("AcknowledgeAlert -> User validation successful");
                     var data = dataFacade.AcknowledgeAlert(alertDetail);
@@ -714,15 +713,15 @@ namespace RestService.Service
             }
         }
 
-        public ResponseModel StoreFeedback(int UserId, Feedback feedbackdetail)
+        public ResponseModel StoreFeedback(int userId, Feedback feedbackdetail)
         {
             try
             {
                 log.Debug("StoreFeedback called");
-                if (accountService.ValidateUser(UserId))
+                if (accountService.ValidateUser(userId))
                 {
                     log.Debug("StoreFeedback -> User validation successful");
-                    var data = dataFacade.StoreFeedback(UserId, feedbackdetail);
+                    var data = dataFacade.StoreFeedback(userId, feedbackdetail);
                     var feedbackCount = dataFacade.GetFeedbackCount(new FeedbackCountModel { ClassId = (int)feedbackdetail.ClassID });
                     var exceptionData = feedbackCount.Where(feedback => feedback.AnswerCount > feedback.Threshold && feedback.AnswerId == feedbackdetail.AnswerID).ToList();
                     if (exceptionData != null && exceptionData.Count > 0)
@@ -735,6 +734,7 @@ namespace RestService.Service
                             dataFacade.AddAlert(new Alerts { Sensor_Id = 0, Sensor_Log_Id = 0, Alert_Type = title, Description = message, Is_Acknowledged = 0, Timestamp = DateTime.UtcNow });
                         }
                     }
+
                     return data;
                 }
                 else
@@ -750,27 +750,25 @@ namespace RestService.Service
             }
         }
 
-        public List<FeedbackModel> GetAllFeedback(int UserId)
+        public List<FeedbackModel> GetAllFeedback(int userId)
         {
             try
             {
                 log.Debug("GetAllFeedback called");
-                if (accountService.ValidateUser(UserId))
+                if (accountService.ValidateUser(userId))
                 {
                     log.Debug("GetAllFeedback -> User validation successful");
                     List<FeedbackModel> feedbackModel = new List<FeedbackModel>();
                     var data = dataFacade.GetAllFeedback();
-                    if (data == null || data.Count < 1)
+                    if (data != null && data.Count > 0)
                     {
-                        log.Debug("GetAllFeedback -> No feedback found");
-                        return new List<FeedbackModel>();
+                        data.All(feedback =>
+                        {
+                            feedbackModel.Add(Converter.FeedbackEntityToModel(feedback));
+                            return true;
+                        });
                     }
 
-                    data.All(feedback =>
-                    {
-                        feedbackModel.Add(Converter.FeedbackEntityToModel(feedback));
-                        return true;
-                    });
                     return feedbackModel;
                 }
                 else
@@ -786,75 +784,67 @@ namespace RestService.Service
             }
         }
 
-        public ResponseModel FeedbackDelete(int UserId, FeedbackModel feedbackdetail)
+        public ResponseModel DeleteFeedback(int userId, FeedbackModel feedbackdetail)
         {
             try
             {
-                log.Debug("FeedbackDelete called");
-                if (accountService.ValidateUser(UserId))
+                log.Debug("DeleteFeedback called");
+                if (accountService.ValidateUser(userId))
                 {
-                    log.Debug("FeedbackDelete -> User validation successful");
-                    var data = dataFacade.FeedbackDelete(feedbackdetail);
+                    log.Debug("DeleteFeedback -> User validation successful");
+                    var data = dataFacade.DeleteFeedback(feedbackdetail);
                     return data;
                 }
                 else
                 {
-                    log.Debug("FeedbackDelete -> User validation failed");
+                    log.Debug("DeleteFeedback -> User validation failed");
                     return null;
                 }
             }
             catch (Exception ex)
             {
-                log.Error("Exception occurred in FeedbackDelete as :" + ex);
+                log.Error("Exception occurred in DeleteFeedback as :" + ex);
                 throw new Exception(ex.Message, ex);
             }
         }
 
-        public ResponseModel FeedbackUpdate(int UserId, FeedbackModel feedbackdetail)
+        public ResponseModel UpdateFeedback(int userId, FeedbackModel feedbackdetail)
         {
             try
             {
-                log.Debug("FeedbackUpdate called");
-                if (accountService.ValidateUser(UserId))
+                log.Debug("UpdateFeedback called");
+                if (accountService.ValidateUser(userId))
                 {
-                    log.Debug("FeedbackUpdate -> User validation successful");
-                    var data = dataFacade.FeedbackUpdate(UserId, feedbackdetail);
+                    log.Debug("UpdateFeedback -> User validation successful");
+                    var data = dataFacade.UpdateFeedback(userId, feedbackdetail);
                     return data;
                 }
                 else
                 {
-                    log.Debug("FeedbackUpdate -> User validation failed");
+                    log.Debug("UpdateFeedback -> User validation failed");
                     return null;
                 }
             }
             catch (Exception ex)
             {
-                log.Error("Exception occurred in FeedbackUpdate as :" + ex);
+                log.Error("Exception occurred in UpdateFeedback as :" + ex);
                 throw new Exception(ex.Message, ex);
             }
         }
 
-        public List<SensorModel> GetAllSensors(int UserId)
+        public List<SensorModel> GetAllSensors(int userId)
         {
             try
             {
                 log.Debug("GetAllSensors called");
-                if (accountService.ValidateUser(UserId))
+                if (accountService.ValidateUser(userId))
                 {
                     log.Debug("GetAllSensors -> User validation successful");
-                    List<SensorModel> sensorModel = new List<SensorModel>();
                     var data = dataFacade.GetAllSensors();
                     if (data == null || data.Count < 1)
                     {
-                        log.Debug("GetAllSensors -> No classrooms found");
-                        return sensorModel;
+                        return new List<SensorModel>();
                     }
-
-                    //data.All(sensor =>
-                    //{
-                    //    sensorModel.Add(Converter.SensorMasterEntityToModel(sensor));
-                    //    return true;
-                    //});
 
                     return data;
                 }
@@ -871,12 +861,12 @@ namespace RestService.Service
             }
         }
 
-        public ResponseModel MapSensor(int UserId, SensorModel sensorDetail)
+        public ResponseModel MapSensor(int userId, SensorModel sensorDetail)
         {
             try
             {
                 log.Debug("MapSensor called");
-                if (accountService.ValidateUser(UserId))
+                if (accountService.ValidateUser(userId))
                 {
                     log.Debug("MapSensor -> User validation successful");
                     var data = dataFacade.MapSensor(sensorDetail);
@@ -895,12 +885,12 @@ namespace RestService.Service
             }
         }
 
-        public List<QuestionModel> GetQuestionAnswers(int UserId)
+        public List<QuestionModel> GetQuestionAnswers(int userId)
         {
             try
             {
                 log.Debug("GetQuestionAnswers called");
-                if (accountService.ValidateUser(UserId))
+                if (accountService.ValidateUser(userId))
                 {
                     log.Debug("GetQuestionAnswers -> User validation successful");
                     List<QuestionModel> questionAnswers = new List<QuestionModel>();
@@ -930,25 +920,24 @@ namespace RestService.Service
             }
         }
 
-        public List<AnomalyInfoModel> GetAnomalyDetails(int UserId, string timeStamp)
+        public List<AnomalyInfoModel> GetAnomalyDetails(int userId, string timeStamp)
         {
             try
             {
                 log.Debug("GetAnomalyDetails called");
-                if (accountService.ValidateUser(UserId))
+                if (accountService.ValidateUser(userId))
                 {
                     var anomalyDetails = dataFacade.GetAnomalyDetails(timeStamp);
                     List<AnomalyInfoModel> anomalyInfoModel = new List<AnomalyInfoModel>();
-                    if (anomalyDetails == null)
+                    if (anomalyDetails != null && anomalyDetails.Count > 0)
                     {
-                        log.Debug("GetAnomalyDetails -> No Data Found");
-                        return anomalyInfoModel;
+                        anomalyDetails.All(anomaly =>
+                        {
+                            anomalyInfoModel.Add(Converter.AnomalyDetailsEntityToModel(anomaly));
+                            return true;
+                        });
                     }
-                    anomalyDetails.All(anomaly =>
-                    {
-                        anomalyInfoModel.Add(Converter.AnomalyDetailsEntityToModel(anomaly));
-                        return true;
-                    });
+
                     return anomalyInfoModel;
                 }
                 else
@@ -995,27 +984,19 @@ namespace RestService.Service
         //    }
         //}
 
-        public List<FeedbackCountModel> GetFeedbackCount(int UserId, FeedbackCountModel answerDetails)
+        public List<FeedbackCountModel> GetFeedbackCount(int userId, FeedbackCountModel answerDetails)
         {
             try
             {
                 log.Debug("GetFeedbackCount called");
-                if (accountService.ValidateUser(UserId))
+                if (accountService.ValidateUser(userId))
                 {
                     log.Debug("GetFeedbackCount -> User validation successful");
-                    List<FeedbackCountModel> sensorModel = new List<FeedbackCountModel>();
                     var data = dataFacade.GetFeedbackCount(answerDetails);
                     if (data == null || data.Count < 1)
                     {
-                        log.Debug("GetFeedbackCount -> No Feedback found");
-                        return sensorModel;
+                        return new List<FeedbackCountModel>();
                     }
-
-                    //data.All(sensor =>
-                    //{
-                    //    sensorModel.Add(Converter.SensorMasterEntityToModel(sensor));
-                    //    return true;
-                    //});
 
                     return data;
                 }
@@ -1032,27 +1013,19 @@ namespace RestService.Service
             }
         }
 
-        public List<SensorModel> GetAllSensorsForClass(int UserId, SensorModel sensorData)
+        public List<SensorModel> GetAllSensorsForClass(int userId, SensorModel sensorData)
         {
             try
             {
                 log.Debug("GetAllSensorsForClass called");
-                if (accountService.ValidateUser(UserId))
+                if (accountService.ValidateUser(userId))
                 {
                     log.Debug("GetAllSensorsForClass -> User validation successful");
-                    List<SensorModel> sensorModel = new List<SensorModel>();
                     var data = dataFacade.GetAllSensorsForClass(sensorData);
                     if (data == null || data.Count < 1)
                     {
-                        log.Debug("GetAllSensorsForClass -> No sensors found");
-                        return sensorModel;
+                        return new List<SensorModel>();
                     }
-
-                    //data.All(sensor =>
-                    //{
-                    //    sensorModel.Add(Converter.SensorMasterEntityToModel(sensor));
-                    //    return true;
-                    //});
 
                     return data;
                 }
@@ -1069,28 +1042,19 @@ namespace RestService.Service
             }
         }
 
-        public List<AlertModel> GetRecommendations(int UserId)
+        public List<AlertModel> GetRecommendations(int userId)
         {
             try
             {
                 log.Debug("GetRecommendations called");
-                if (accountService.ValidateUser(UserId))
+                if (accountService.ValidateUser(userId))
                 {
                     log.Debug("GetRecommendations -> User validation successful");
-                    List<AlertModel> alertModelList = new List<AlertModel>();
                     var data = dataFacade.GetRecommendations();
                     if (data == null || data.Count < 1)
                     {
-                        log.Debug("GetRecommendations -> No recommendations found");
-                        return alertModelList;
+                        return new List<AlertModel>();
                     }
-
-                    //data.All(alert =>
-                    //{
-                    //    alertModelList.Add(Converter.AlertsEntityToModel(alert));
-                    //    return true;
-                    //});
-                    //return alertModelList;
 
                     return data;
                 }
@@ -1107,20 +1071,19 @@ namespace RestService.Service
             }
         }
 
-        public InsightData GetInsightData(int UserId)
+        public InsightData GetInsightData(int userId)
         {
             try
             {
                 log.Debug("GetInsightData called");
-                if (accountService.ValidateUser(UserId))
+                if (accountService.ValidateUser(userId))
                 {
                     log.Debug("GetInsightData -> User validation successful");
                     InsightData insightData = new InsightData();
                     var data = dataFacade.GetInsightData();
                     if (data == null)
                     {
-                        log.Debug("GetInsightData -> No data found");
-                        return insightData;
+                        return new InsightData();
                     }
 
                     return data;

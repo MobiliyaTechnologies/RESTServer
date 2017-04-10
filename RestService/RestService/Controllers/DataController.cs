@@ -95,7 +95,6 @@ namespace RestService.Controllers
                 response = Request.CreateErrorResponse(HttpStatusCode.ServiceUnavailable, ex);
                 return response;
             }
-
         }
 
         [Route("api/getmonthwiseconsumption/{Id}/{Year}")]
@@ -321,7 +320,8 @@ namespace RestService.Controllers
                     response = Request.CreateResponse(HttpStatusCode.OK, data);
                     return response;
                 }
-                //Create an error message for returning
+
+                // Create an error message for returning
                 response = Request.CreateResponse(HttpStatusCode.BadRequest, "Please enter User name for Acknowledgement");
                 return response;
             }
@@ -332,6 +332,7 @@ namespace RestService.Controllers
                 return response;
             }
         }
+
         [Route("api/deletefeedback/{Id}")]
         [HttpPost]
         public HttpResponseMessage FeedbackDelete(int Id, [FromBody] FeedbackModel feedbackdetail)
@@ -342,11 +343,12 @@ namespace RestService.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var data = dataService.FeedbackDelete(Id, feedbackdetail);
+                    var data = dataService.DeleteFeedback(Id, feedbackdetail);
                     response = data == null ? Request.CreateResponse(HttpStatusCode.Forbidden, "Invalid User") : Request.CreateResponse(HttpStatusCode.OK, data);
                     return response;
                 }
-                //Create an error message for returning
+
+                // Create an error message for returning
                 string messages = string.Join("; ", ModelState.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage));
                 response = Request.CreateResponse(HttpStatusCode.BadRequest, messages);
                 return response;
@@ -358,6 +360,7 @@ namespace RestService.Controllers
                 return response;
             }
         }
+
         [Route("api/updatefeedback/{Id}")]
         [HttpPost]
         public HttpResponseMessage FeedbackUpdate(int Id, [FromBody] FeedbackModel feedbackdetail)
@@ -368,11 +371,12 @@ namespace RestService.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var data = dataService.FeedbackUpdate(Id, feedbackdetail);
+                    var data = dataService.UpdateFeedback(Id, feedbackdetail);
                     response = data == null ? Request.CreateResponse(HttpStatusCode.Forbidden, "Invalid User") : Request.CreateResponse(HttpStatusCode.OK, data);
                     return response;
                 }
-                //Create an error message for returning
+
+                // Create an error message for returning
                 string messages = string.Join("; ", ModelState.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage));
                 response = Request.CreateResponse(HttpStatusCode.BadRequest, messages);
                 return response;
@@ -384,6 +388,7 @@ namespace RestService.Controllers
                 return response;
             }
         }
+
         [Route("api/storefeedback/{Id}")]
         [HttpPost]
         public HttpResponseMessage StoreFeedback(int Id, [FromBody] Feedback feedbackdetail)
@@ -395,8 +400,8 @@ namespace RestService.Controllers
                 if (ModelState.IsValid)
                 {
                     if (feedbackdetail.AnswerID == null && feedbackdetail.FeedbackDesc == null)
-                    //Create an error message for returning
                     {
+                        // Create an error message for returning
                         response = Request.CreateResponse(HttpStatusCode.BadRequest, "Please choose any answer or provide description");
                         return response;
                     }
@@ -407,7 +412,8 @@ namespace RestService.Controllers
                         return response;
                     }
                 }
-                //Create an error message for returning
+
+                // Create an error message for returning
                 string messages = string.Join("; ", ModelState.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage));
                 response = Request.CreateResponse(HttpStatusCode.BadRequest, messages);
                 return response;
@@ -419,6 +425,7 @@ namespace RestService.Controllers
                 return response;
             }
         }
+
         [Route("api/getallfeedback/{Id}")]
         public HttpResponseMessage GetAllFeedback(int Id)
         {
@@ -471,7 +478,8 @@ namespace RestService.Controllers
                     response = Request.CreateResponse(HttpStatusCode.OK, data);
                     return response;
                 }
-                //Create an error message for returning
+
+                // Create an error message for returning
                 response = Request.CreateResponse(HttpStatusCode.BadRequest, "Please enter Class Id to map sensor");
                 return response;
             }
@@ -501,26 +509,6 @@ namespace RestService.Controllers
                 return response;
             }
         }
-
-        //[Route("api/getsensorDetails/{Id}")]
-        //[HttpPost]
-        //public HttpResponseMessage GetSensorDetails(int Id, [FromBody] SensorDataModel sensorData)
-        //{
-        //    log.Debug("GetSensorDetails API Called");
-        //    HttpResponseMessage response;
-        //    try
-        //    {
-        //        var data = dataService.GetSensorDetails(Id, sensorData);
-        //        response = data == null ? Request.CreateResponse(HttpStatusCode.Forbidden, "Invalid User") : Request.CreateResponse(HttpStatusCode.OK, data);
-        //        return response;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        log.Error("Exception occurred in GetSensorDetails as: " + ex);
-        //        response = Request.CreateErrorResponse(HttpStatusCode.ServiceUnavailable, ex);
-        //        return response;
-        //    }
-        //}
 
         [Route("api/getfeedbackcount/{Id}")]
         [HttpPost]
@@ -658,6 +646,5 @@ namespace RestService.Controllers
                 return response;
             }
         }
-
     }
 }
