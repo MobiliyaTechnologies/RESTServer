@@ -9,12 +9,19 @@ namespace RestService.Models
     public class MeterDetailsModel
     {
         public int Id { get; set; }
+
         public string PowerScout { get; set; }
+
         public string Name { get; set; }
+
         public string Serial { get; set; }
+
         public double Latitude { get; set; }
+
         public double Longitude { get; set; }
+
         public double Altitude { get; set; }
+
         public string Description { get; set; }
     }
 
@@ -100,16 +107,16 @@ namespace RestService.Models
 
     public class MeterMonthWiseConsumption
     {
+        public MeterMonthWiseConsumption()
+        {
+            MonthWiseConsumption = new MonthList();
+        }
+
         public string PowerScout { get; set; }
 
         public string Name { get; set; }
 
         public MonthList MonthWiseConsumption { get; set; }
-
-        public MeterMonthWiseConsumption()
-        {
-            MonthWiseConsumption = new MonthList();
-        }
     }
 
     public class MonthList
@@ -141,44 +148,44 @@ namespace RestService.Models
 
     public class MeterWeekWiseMonthlyConsumption
     {
-        public string PowerScout { get; set; }
-
-        public string Name { get; set; }
-
-        public List<Double> WeekWiseConsumption { get; set; }
-
         public MeterWeekWiseMonthlyConsumption()
         {
             WeekWiseConsumption = new List<double>();
         }
+
+        public string PowerScout { get; set; }
+
+        public string Name { get; set; }
+
+        public List<double> WeekWiseConsumption { get; set; }
     }
 
     public class MeterDayWiseMonthlyConsumption
     {
+        public MeterDayWiseMonthlyConsumption()
+        {
+            DayWiseConsumption = new List<double>();
+        }
+
         public string PowerScout { get; set; }
 
         public string Name { get; set; }
 
         public List<double> DayWiseConsumption { get; set; }
-
-        public MeterDayWiseMonthlyConsumption()
-        {
-            DayWiseConsumption = new List<double>();
-        }
     }
 
     public class MeterDayWiseMonthlyConsumptionPrediction
     {
+        public MeterDayWiseMonthlyConsumptionPrediction()
+        {
+            DayWiseConsumptionPrediction = new List<double>();
+        }
+
         public string PowerScout { get; set; }
 
         public string Name { get; set; }
 
         public List<double> DayWiseConsumptionPrediction { get; set; }
-
-        public MeterDayWiseMonthlyConsumptionPrediction()
-        {
-            DayWiseConsumptionPrediction = new List<double>();
-        }
     }
 
     public class InsightData

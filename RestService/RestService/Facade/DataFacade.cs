@@ -3,6 +3,7 @@ using RestService.Models;
 using RestService.Utilities;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Web;
 
@@ -10,8 +11,10 @@ namespace RestService.Facade
 {
     public class DataFacade
     {
-        PowerGridEntities dbEntity;
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private static double UTCOffset = Convert.ToDouble(ConfigurationManager.AppSettings["UTCOffset"]);
+        PowerGridEntities dbEntity;
+
         public DataFacade()
         {
             dbEntity = new PowerGridEntities();
@@ -35,14 +38,14 @@ namespace RestService.Facade
         public DailyConsumptionDetails GetDailyConsumption(MeterDetails meter)
         {
             log.Debug("GetDailyConsumption called");
-            DateTime today = DateTime.UtcNow.AddHours(-6);
+            DateTime today = DateTime.UtcNow.AddHours(UTCOffset);
             var meterConsumption = (from data in dbEntity.DailyConsumptionDetails where meter.Serial.Equals(data.PowerScout) && today.Day == ((DateTime)data.Timestamp).Day && today.Month == ((DateTime)data.Timestamp).Month && today.Year == ((DateTime)data.Timestamp).Year select data).ToList();
             return meterConsumption.LastOrDefault();
         }
 
-        public MeterMonthWiseConsumption GetMeterMonthWiseConsumption(MeterDetails meterData, int Year)
+        public MeterMonthWiseConsumption GetMeterMonthWiseConsumption(MeterDetails meterData, int year)
         {
-            var meterDataList = (from data in dbEntity.MonthlyConsumptionDetails where data.PowerScout.Equals(meterData.Serial) && (data.Year).Equals(Year.ToString()) select data).ToList();
+            var meterDataList = (from data in dbEntity.MonthlyConsumptionDetails where data.PowerScout.Equals(meterData.Serial) && data.Year.Equals(year.ToString()) select data).ToList();
             MeterMonthWiseConsumption meterConsumption = new MeterMonthWiseConsumption();
             meterDataList.All(meterDataItem =>
             {
@@ -95,7 +98,6 @@ namespace RestService.Facade
                     case "dec":
                         meterConsumption.MonthWiseConsumption.Dec = meterConsumption.MonthWiseConsumption.Dec + (double)meterDataItem.Monthly_KWH_System;
                         break;
-
                 }
                 return true;
             });
@@ -103,22 +105,22 @@ namespace RestService.Facade
             return meterConsumption;
         }
 
-        public List<MonthlyConsumptionDetails> GetMeterMonthWiseConsumptionForOffset(MeterDetails meterData, string Month, int Year, int Offset)
+        public List<MonthlyConsumptionDetails> GetMeterMonthWiseConsumptionForOffset(MeterDetails meterData, string month, int year, int offset)
         {
             DateTime endDate;
-            DateTime.TryParse("01-" + Month + "-" + Year, out endDate);
+            DateTime.TryParse("01-" + month + "-" + year, out endDate);
             endDate = endDate.AddMonths(1).AddDays(-1);
-            DateTime startDate = endDate.AddMonths(-Offset);
+            DateTime startDate = endDate.AddMonths(-offset);
             var meterDataList = (from data in dbEntity.MonthlyConsumptionDetails where data.PowerScout.Equals(meterData.PowerScout) && (data.Year.Equals(startDate.Year.ToString()) || data.Year.Equals(endDate.Year.ToString())) orderby data.Id descending select data).ToList().Where(data => ((DateTime)data.Timestamp).Date > startDate.Date && ((DateTime)data.Timestamp).Date <= endDate.Date).ToList();
             return meterDataList;
         }
 
-        public List<DailyConsumptionDetails> GetDailyConsumptionForMonth(MeterDetails meter, string Month, int Year)
+        public List<DailyConsumptionDetails> GetDailyConsumptionForMonth(MeterDetails meter, string month, int year)
         {
             DateTime monthDate;
-            DateTime.TryParse("01-" + Month + "-" + Year, out monthDate);
-            var DailyConsumptionList = (from data in dbEntity.DailyConsumptionDetails where meter.Serial.Equals(data.PowerScout) && monthDate.Month == ((DateTime)data.Timestamp).Month && monthDate.Year == ((DateTime)data.Timestamp).Year select data).ToList();
-            return DailyConsumptionList;
+            DateTime.TryParse("01-" + month + "-" + year, out monthDate);
+            var dailyConsumptionList = (from data in dbEntity.DailyConsumptionDetails where meter.Serial.Equals(data.PowerScout) && monthDate.Month == ((DateTime)data.Timestamp).Month && monthDate.Year == ((DateTime)data.Timestamp).Year select data).ToList();
+            return dailyConsumptionList;
         }
 
         public List<DailyConsumptionPrediction> GetDayWiseNextMonthPrediction(MeterDetails meter, string Month, int Year)
@@ -402,8 +404,8 @@ namespace RestService.Facade
         {
             InsightData insightData = new InsightData();
             var meterCount = GetMeters().Count();
-            //int rowCount = (int)DateTime.UtcNow.AddHours(-6).DayOfWeek == 0 ? 7 : (int)DateTime.UtcNow.AddHours(-6).DayOfWeek;
-            insightData.ConsumptionValue = Math.Round((double)(from data in dbEntity.DailyConsumptionDetails orderby data.Timestamp descending select data).Take(meterCount * (((int)DateTime.UtcNow.AddHours(-6).DayOfWeek) == 0 ? 7 : (int)DateTime.UtcNow.AddHours(-6).DayOfWeek)).Sum(data => data.Daily_KWH_System), 2);
+            //int rowCount = (int)DateTime.UtcNow.AddHours(UTCOffset).DayOfWeek == 0 ? 7 : (int)DateTime.UtcNow.AddHours(UTCOffset).DayOfWeek;
+            insightData.ConsumptionValue = Math.Round((double)(from data in dbEntity.DailyConsumptionDetails orderby data.Timestamp descending select data).Take(meterCount * (((int)DateTime.UtcNow.AddHours(UTCOffset).DayOfWeek) == 0 ? 7 : (int)DateTime.UtcNow.AddHours(UTCOffset).DayOfWeek)).Sum(data => data.Daily_KWH_System), 2);
             insightData.PredictedValue = Math.Round((double)(from data in dbEntity.WeeklyConsumptionPrediction orderby data.End_Time descending select data).Take(meterCount).Sum(data => data.Weekly_Predicted_KWH_System), 2);
             return insightData;
         }
@@ -444,8 +446,7 @@ namespace RestService.Facade
             DateTime date = ServiceUtil.UnixTimeStampToDateTime(Convert.ToDouble(timeStamp)).Date;
             DateTime startTime = date.Date;
             DateTime endTime = startTime.AddHours(24).AddSeconds(-1);
-            var alertDetails = (from data in dbEntity.AnomalyOutput
-                                where data.Timestamp > startTime && data.Timestamp <= endTime select data).ToList();
+            var alertDetails = (from data in dbEntity.AnomalyOutput where data.Timestamp > startTime && data.Timestamp <= endTime select data).ToList();
             return alertDetails;
         }
 

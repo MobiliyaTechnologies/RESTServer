@@ -16,19 +16,19 @@ namespace RestService.Service
         DataFacade dataFacade;
         AccountService accountService;
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         public DataService()
         {
             dataFacade = new DataFacade();
             accountService = new AccountService();
         }
 
-        public List<MeterDetailsModel> GetMeterList(int UserId)
+        public List<MeterDetailsModel> GetMeterList(int userId)
         {
-
             try
             {
                 log.Debug("GetMeterList called");
-                if (accountService.ValidateUser(UserId))
+                if (accountService.ValidateUser(userId))
                 {
                     List<MeterDetails> meterData = dataFacade.GetMeters();
                     if (meterData != null && meterData.Count > 0)
@@ -52,22 +52,20 @@ namespace RestService.Service
                     log.Debug("GetMeterList user validation unsuccessful");
                     return null;
                 }
-
             }
             catch (Exception ex)
             {
                 log.Debug("Exception occurred in GetMeterList as: " + ex);
                 throw new Exception(ex.Message, ex);
             }
-
         }
 
-        public List<MeterMonthlyConsumptionModel> GetMeterMonthlyConsumption(int UserId)
+        public List<MeterMonthlyConsumptionModel> GetMeterMonthlyConsumption(int userId)
         {
             try
             {
                 log.Debug("GetMeterMonthlyConsumption called");
-                if (accountService.ValidateUser(UserId))
+                if (accountService.ValidateUser(userId))
                 {
                     List<MeterDetails> meterData = dataFacade.GetMeters();
                     if (meterData != null && meterData.Count > 0)
@@ -76,13 +74,18 @@ namespace RestService.Service
                         foreach (var meterDataItem in meterData)
                         {
                             var data = dataFacade.GetMeterConsumption(meterDataItem);
-                            MeterMonthlyConsumptionModel meterMonthlyConsumption = data == null ? new MeterMonthlyConsumptionModel {Powerscout = meterDataItem.PowerScout, Name = meterDataItem.Breaker_details } :  Converter.MeterMonthlyEntityToModel(dataFacade.GetMeterConsumption(meterDataItem));
+                            MeterMonthlyConsumptionModel meterMonthlyConsumption = data == null ? new MeterMonthlyConsumptionModel { Powerscout = meterDataItem.PowerScout, Name = meterDataItem.Breaker_details } : Converter.MeterMonthlyEntityToModel(dataFacade.GetMeterConsumption(meterDataItem));
                             if (meterMonthlyConsumption != null)
                             {
                                 meterMonthlyConsumption.Name = meterDataItem.Breaker_details;
                                 meterModelList.Add(meterMonthlyConsumption);
                             }
+                            else
+                            {
+                                meterModelList.Add(new MeterMonthlyConsumptionModel { Powerscout = meterDataItem.PowerScout, Name = meterDataItem.Breaker_details });
+                            }
                         }
+
                         return meterModelList;
                     }
                     else
@@ -104,12 +107,12 @@ namespace RestService.Service
             }
         }
 
-        public List<DailyConsumptionDetails> GetMeterDailyConsumption(int UserId)
+        public List<DailyConsumptionDetails> GetMeterDailyConsumption(int userId)
         {
             try
             {
                 log.Debug("GetMeterDailyConsumption called");
-                if (accountService.ValidateUser(UserId))
+                if (accountService.ValidateUser(userId))
                 {
                     List<MeterDetails> meterData = dataFacade.GetMeters();
                     if (meterData != null && meterData.Count > 0)
@@ -122,7 +125,12 @@ namespace RestService.Service
                             {
                                 meterModelList.Add(meterMonthlyConsumption);
                             }
+                            else
+                            {
+                                meterModelList.Add(new DailyConsumptionDetails { PowerScout = meterDataItem.PowerScout, Breaker_details = meterDataItem.Breaker_details });
+                            }
                         }
+
                         return meterModelList;
                     }
                     else
@@ -144,14 +152,14 @@ namespace RestService.Service
             }
         }
 
-        public MeterURLKey GetPowerBIUrl(int UserId, string MeterSerial)
+        public MeterURLKey GetPowerBIUrl(int userId, string meterSerial)
         {
             try
             {
-                if (accountService.ValidateUser(UserId))
+                if (accountService.ValidateUser(userId))
                 {
                     log.Debug("GetPowerBIUrl called");
-                    string methodName = "GetURL_" + MeterSerial;
+                    string methodName = "GetURL_" + meterSerial;
                     Type thisType = typeof(PowerBIUtil);
                     MethodInfo theMethod = thisType.GetMethod(methodName);
                     PowerBIUtil powerBIUtil = new PowerBIUtil();
@@ -170,12 +178,12 @@ namespace RestService.Service
             }
         }
 
-        public PowerBIGeneralURL GetPowerBIGeneralURL(int UserId)
+        public PowerBIGeneralURL GetPowerBIGeneralURL(int userId)
         {
             try
             {
                 log.Debug("GetPowerBIGeneralURL called");
-                if (accountService.ValidateUser(UserId))
+                if (accountService.ValidateUser(userId))
                 {
                     return new PowerBIGeneralURL();
                 }
@@ -192,12 +200,12 @@ namespace RestService.Service
             }
         }
 
-        public List<MeterMonthWiseConsumption> GetMonthWiseConsumption(int UserId, int Year)
+        public List<MeterMonthWiseConsumption> GetMonthWiseConsumption(int userId, int year)
         {
             try
             {
                 log.Debug("GetMonthWiseConsumption called");
-                if (accountService.ValidateUser(UserId))
+                if (accountService.ValidateUser(userId))
                 {
                     List<MeterDetails> meterData = dataFacade.GetMeters();
                     if (meterData != null && meterData.Count > 0)
@@ -205,14 +213,19 @@ namespace RestService.Service
                         List<MeterMonthWiseConsumption> meterDataList = new List<MeterMonthWiseConsumption>();
                         foreach (var meterDataItem in meterData)
                         {
-                            MeterMonthWiseConsumption meterMonthWiseConsumption = dataFacade.GetMeterMonthWiseConsumption(meterDataItem, Year);
+                            MeterMonthWiseConsumption meterMonthWiseConsumption = dataFacade.GetMeterMonthWiseConsumption(meterDataItem, year);
                             if (meterMonthWiseConsumption != null)
                             {
                                 meterMonthWiseConsumption.PowerScout = meterDataItem.Serial;
                                 meterMonthWiseConsumption.Name = meterDataItem.Breaker_details;
                                 meterDataList.Add(meterMonthWiseConsumption);
                             }
+                            else
+                            {
+                                meterDataList.Add(new MeterMonthWiseConsumption { PowerScout = meterDataItem.PowerScout, Name = meterDataItem.Breaker_details });
+                            }
                         }
+
                         return meterDataList;
                     }
                     else
@@ -234,12 +247,12 @@ namespace RestService.Service
             }
         }
 
-        public List<MeterMonthWiseConsumption> GetMonthWiseConsumptionForOffset(int UserId, string Month, int Year, int Offset)
+        public List<MeterMonthWiseConsumption> GetMonthWiseConsumptionForOffset(int userId, string month, int year, int offset)
         {
             try
             {
                 log.Debug("GetMonthWiseConsumptionForOffset called");
-                if (accountService.ValidateUser(UserId))
+                if (accountService.ValidateUser(userId))
                 {
                     List<MeterDetails> meterData = dataFacade.GetMeters();
                     if (meterData != null && meterData.Count > 0)
@@ -247,18 +260,23 @@ namespace RestService.Service
                         List<MeterMonthWiseConsumption> monthWiseDataList = new List<MeterMonthWiseConsumption>();
                         foreach (var meterDataItem in meterData)
                         {
-                            List<MonthlyConsumptionDetails> monthlyDataList = dataFacade.GetMeterMonthWiseConsumptionForOffset(meterDataItem, Month, Year, Offset);
-                            if (monthlyDataList == null || monthlyDataList.Count < 1)
+                            List<MonthlyConsumptionDetails> monthlyDataList = dataFacade.GetMeterMonthWiseConsumptionForOffset(meterDataItem, month, year, offset);
+                            if (monthlyDataList != null && monthlyDataList.Count > 0)
+                            {
+                                if (monthlyDataList.Count > offset)
+                                {
+                                    monthlyDataList.RemoveRange(offset, monthlyDataList.Count - offset);
+                                }
+
+                                monthWiseDataList.Add(Converter.MeterMonthWiseEntityToModel(monthlyDataList)); 
+                            }
+                            else
                             {
                                 log.Debug("GetMonthwiseConsumptionForOffset -> No Data found for meter: " + meterDataItem.PowerScout);
                                 monthWiseDataList.Add(new MeterMonthWiseConsumption { PowerScout = meterDataItem.PowerScout, Name = meterDataItem.Breaker_details });
-                                continue;
                             }
-                            if (monthlyDataList.Count > Offset)
-                                monthlyDataList.RemoveRange(Offset, monthlyDataList.Count - Offset);
-
-                            monthWiseDataList.Add(Converter.MeterMonthWiseEntityToModel(monthlyDataList));
                         }
+
                         return monthWiseDataList;
                     }
                     else
@@ -280,12 +298,12 @@ namespace RestService.Service
             }
         }
 
-        public List<MeterWeekWiseMonthlyConsumption> GetWeekWiseMonthlyConsumption(int UserId, string Month, int Year)
+        public List<MeterWeekWiseMonthlyConsumption> GetWeekWiseMonthlyConsumption(int userId, string month, int year)
         {
             try
             {
                 log.Debug("GetWeekWiseConsumption called");
-                if (accountService.ValidateUser(UserId))
+                if (accountService.ValidateUser(userId))
                 {
                     List<MeterDetails> meterData = dataFacade.GetMeters();
                     if (meterData != null && meterData.Count > 0)
@@ -293,16 +311,19 @@ namespace RestService.Service
                         List<MeterWeekWiseMonthlyConsumption> weekWiseConsumption = new List<MeterWeekWiseMonthlyConsumption>();
                         foreach (var meter in meterData)
                         {
-                            List<DailyConsumptionDetails> dailyConsumptionListForMonth = dataFacade.GetDailyConsumptionForMonth(meter, Month, Year);
-                            if (dailyConsumptionListForMonth == null || dailyConsumptionListForMonth.Count < 1)
+                            List<DailyConsumptionDetails> dailyConsumptionListForMonth = dataFacade.GetDailyConsumptionForMonth(meter, month, year);
+                            if (dailyConsumptionListForMonth != null && dailyConsumptionListForMonth.Count > 0)
+                            {
+                                var meterWeekWiseConsumption = GetWeekWiseConsumptionFromMonthly(dailyConsumptionListForMonth);
+                                weekWiseConsumption.Add(meterWeekWiseConsumption); 
+                            }
+                            else
                             {
                                 log.Debug("GetWeekWiseMonthlyConsumption -> No data found for meter: " + meter.PowerScout);
                                 weekWiseConsumption.Add(new MeterWeekWiseMonthlyConsumption { PowerScout = meter.PowerScout, Name = meter.Breaker_details });
-                                continue;
                             }
-                            var meterWeekWiseConsumption = GetWeekWiseConsumptionFromMonthly(dailyConsumptionListForMonth);
-                            weekWiseConsumption.Add(meterWeekWiseConsumption);
                         }
+
                         return weekWiseConsumption;
                     }
                     else
@@ -310,7 +331,6 @@ namespace RestService.Service
                         log.Debug("GetWeekWiseMonthlyConsumption -> No data found");
                         return new List<MeterWeekWiseMonthlyConsumption>();
                     }
-
                 }
                 else
                 {
@@ -325,12 +345,12 @@ namespace RestService.Service
             }
         }
 
-        public List<MeterWeekWiseMonthlyConsumption> GetWeekWiseMonthlyConsumptionForOffset(int UserId, string Month, int Year, int Offset)
+        public List<MeterWeekWiseMonthlyConsumption> GetWeekWiseMonthlyConsumptionForOffset(int userId, string month, int year, int offset)
         {
             try
             {
                 log.Debug("GetWeekWiseMonthlyConsumptionForOffset called");
-                if (accountService.ValidateUser(UserId))
+                if (accountService.ValidateUser(userId))
                 {
                     List<MeterDetails> meterData = dataFacade.GetMeters();
                     if (meterData != null && meterData.Count > 0)
@@ -339,37 +359,40 @@ namespace RestService.Service
                         foreach (var meter in meterData)
                         {
                             MeterWeekWiseMonthlyConsumption meterWeekWiseConsumption = new MeterWeekWiseMonthlyConsumption();
-                            DateTime monthDate = DateTime.Parse("01/" + Month + "/" + Year);
-                            string month = Month;
-                            int year = Year;
-                            while (meterWeekWiseConsumption.WeekWiseConsumption.Count < Offset)
+                            DateTime monthDate = DateTime.Parse("01/" + month + "/" + year);
+                            string activeMonth = month;
+                            int activeYear = year;
+                            while (meterWeekWiseConsumption.WeekWiseConsumption.Count < offset)
                             {
-
-                                List<DailyConsumptionDetails> dailyConsumptionListForMonth = dataFacade.GetDailyConsumptionForMonth(meter, month, year);
+                                List<DailyConsumptionDetails> dailyConsumptionListForMonth = dataFacade.GetDailyConsumptionForMonth(meter, activeMonth, activeYear);
                                 if (dailyConsumptionListForMonth == null || dailyConsumptionListForMonth.Count < 1)
                                 {
                                     log.Debug("GetWeekWiseMonthlyConsumptionForOffset -> No data found for meter: " + meter.PowerScout);
                                     weekWiseConsumption.Add(new MeterWeekWiseMonthlyConsumption { PowerScout = meter.PowerScout, Name = meter.Breaker_details });
                                     break;
                                 }
+
                                 var weekWiseList = GetWeekWiseConsumptionFromMonthly(dailyConsumptionListForMonth).WeekWiseConsumption;
-                                if (weekWiseList.Count + meterWeekWiseConsumption.WeekWiseConsumption.Count > Offset)
+                                if (weekWiseList.Count + meterWeekWiseConsumption.WeekWiseConsumption.Count > offset)
                                 {
                                     weekWiseList.Reverse();
-                                    meterWeekWiseConsumption.WeekWiseConsumption.AddRange(weekWiseList.Take(Offset - meterWeekWiseConsumption.WeekWiseConsumption.Count));
+                                    meterWeekWiseConsumption.WeekWiseConsumption.AddRange(weekWiseList.Take(offset - meterWeekWiseConsumption.WeekWiseConsumption.Count));
                                 }
                                 else
                                 {
                                     meterWeekWiseConsumption.WeekWiseConsumption.AddRange(weekWiseList);
                                 }
-                                month = monthDate.AddMonths(-1).ToString("MMM");
-                                year = monthDate.AddMonths(-1).Year;
+
+                                activeMonth = monthDate.AddMonths(-1).ToString("MMM");
+                                activeYear = monthDate.AddMonths(-1).Year;
                             }
+
                             meterWeekWiseConsumption.PowerScout = meter.PowerScout;
                             meterWeekWiseConsumption.Name = meter.Breaker_details;
 
                             weekWiseConsumption.Add(meterWeekWiseConsumption);
                         }
+
                         return weekWiseConsumption;
                     }
                     else
@@ -393,32 +416,6 @@ namespace RestService.Service
 
         public MeterWeekWiseMonthlyConsumption GetWeekWiseConsumptionFromMonthly(List<DailyConsumptionDetails> dailyConsumptionList)
         {
-            //try
-            //{
-            //    MeterWeekWiseMonthlyConsumption weekWiseConsumption = new MeterWeekWiseMonthlyConsumption();
-            //    DateTime startDate = ((DateTime)dailyConsumptionList.FirstOrDefault().Timestamp).Date;
-            //    int counter = 0;
-            //    while (counter < DateTime.DaysInMonth(startDate.Year, startDate.Month))
-            //    {
-            //        int range = 8 - ServiceUtil.GetDayOfWeek(startDate.ToString("ddd"));
-            //        if(counter + range > DateTime.DaysInMonth(startDate.Year, startDate.Month))
-            //        {
-            //            range = DateTime.DaysInMonth(startDate.Year, startDate.Month) - counter;
-            //        }
-            //        var weekList = dailyConsumptionList.GetRange(counter, range);
-            //        startDate = ((DateTime)weekList.LastOrDefault().Timestamp).AddDays(1);
-            //        weekWiseConsumption.WeekWiseConsumption.Add(weekList.Sum(data => (double)data.Daily_KWH_System));
-            //        counter = counter + weekList.Count;
-            //    }
-            //    weekWiseConsumption.PowerScout = dailyConsumptionList.FirstOrDefault().PowerScout;
-            //    return weekWiseConsumption;
-            //}
-            //catch (Exception ex)
-            //{
-            //    log.Error("Exception occurred in GetWeekWiseConsumptionFromMonthly as: " + ex);
-            //    return new MeterWeekWiseMonthlyConsumption { PowerScout = dailyConsumptionList.FirstOrDefault().PowerScout };
-            //}
-
             try
             {
                 MeterWeekWiseMonthlyConsumption weekWiseConsumption = new MeterWeekWiseMonthlyConsumption();
@@ -431,11 +428,13 @@ namespace RestService.Service
                     {
                         range = dailyConsumptionList.Count - counter;
                     }
+
                     var weekList = dailyConsumptionList.GetRange(counter, range);
                     startDate = ((DateTime)weekList.LastOrDefault().Timestamp).AddDays(1);
                     weekWiseConsumption.WeekWiseConsumption.Add(weekList.Sum(data => (double)data.Daily_KWH_System));
                     counter = counter + weekList.Count;
                 }
+
                 weekWiseConsumption.PowerScout = dailyConsumptionList.FirstOrDefault().PowerScout;
                 return weekWiseConsumption;
             }
@@ -445,12 +444,13 @@ namespace RestService.Service
                 return new MeterWeekWiseMonthlyConsumption { PowerScout = dailyConsumptionList.FirstOrDefault().PowerScout };
             }
         }
-        public List<MeterDayWiseMonthlyConsumption> GetDayWiseMonthlyConsumption(int UserId, string Month, int Year)
+
+        public List<MeterDayWiseMonthlyConsumption> GetDayWiseMonthlyConsumption(int userId, string month, int year)
         {
             try
             {
                 log.Debug("GetDayWiseMonthlyConsumption called");
-                if (accountService.ValidateUser(UserId))
+                if (accountService.ValidateUser(userId))
                 {
                     var meterData = dataFacade.GetMeters();
                     if (meterData != null && meterData.Count > 0)
@@ -458,17 +458,23 @@ namespace RestService.Service
                         List<MeterDayWiseMonthlyConsumption> dayWiseConsumptionList = new List<MeterDayWiseMonthlyConsumption>();
                         foreach (var meter in meterData)
                         {
-                            List<DailyConsumptionDetails> meterDailyConsumption = dataFacade.GetDailyConsumptionForMonth(meter, Month, Year);
-                            if (meterDailyConsumption == null || meterDailyConsumption.Count < 1)
+                            List<DailyConsumptionDetails> meterDailyConsumption = dataFacade.GetDailyConsumptionForMonth(meter, month, year);
+                            if (meterDailyConsumption != null && meterDailyConsumption.Count > 0)
+                            {
+                                // Conversion from Entity to Model
+                                var dayWiseConsumption = Converter.MeterDayWiseEntityToModel(meterDailyConsumption);
+                                if (dayWiseConsumption != null)
+                                {
+                                    dayWiseConsumptionList.Add(dayWiseConsumption);
+                                }
+                            }
+                            else
                             {
                                 log.Debug("GetDayWiseMonthlyConsumption -> No Data found");
-                                return new List<MeterDayWiseMonthlyConsumption>();
+                                dayWiseConsumptionList.Add(new MeterDayWiseMonthlyConsumption { PowerScout = meter.PowerScout, Name = meter.Breaker_details });
                             }
-                            //Conversion from Entity to Model
-                            var dayWiseConsumption = Converter.MeterDayWiseEntityToModel(meterDailyConsumption);
-                            if (dayWiseConsumption != null)
-                                dayWiseConsumptionList.Add(dayWiseConsumption);
                         }
+
                         return dayWiseConsumptionList;
                     }
                     else
@@ -532,6 +538,7 @@ namespace RestService.Service
                 return new List<MeterDayWiseMonthlyConsumptionPrediction>();
             }
         }
+
         public List<MeterDayWiseMonthlyConsumptionPrediction> GetDayWiseNextMonthPrediction(int UserId, string Month, int Year)
         {
             try
@@ -802,6 +809,7 @@ namespace RestService.Service
                 throw new Exception(ex.Message, ex);
             }
         }
+
         public ResponseModel FeedbackUpdate(int UserId, FeedbackModel feedbackdetail)
         {
             try
