@@ -20,33 +20,6 @@ namespace RestService.Controllers
             accountService = new AccountService();
         }
 
-        // GET: api/User
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
-
-        // GET: api/User/5
-        public string Get(int id)
-        {
-            return "value";
-        }
-
-        // POST: api/User
-        public void Post([FromBody]string value)
-        {
-        }
-
-        // PUT: api/User/5
-        public void Put(int id, [FromBody]string value)
-        {
-        }
-
-        // DELETE: api/User/5
-        public void Delete(int id)
-        {
-        }
-
         [Route("api/signup")]
         [HttpPost]
         public HttpResponseMessage SignUp([FromBody] UserDataModel userDetails)
@@ -59,9 +32,10 @@ namespace RestService.Controllers
                 {
                     var data = accountService.RegisterUser(userDetails);
                     response = Request.CreateResponse(HttpStatusCode.OK, data);
-                    return response; 
+                    return response;
                 }
-                //Create an error message for returning
+
+                // Create an error message for returning
                 string messages = string.Join("; ", ModelState.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage));
                 response = Request.CreateResponse(HttpStatusCode.BadRequest, messages);
                 return response;
@@ -108,6 +82,7 @@ namespace RestService.Controllers
                     response = data.Status_Code == (int)Constants.StatusCode.Error ? Request.CreateResponse(HttpStatusCode.Forbidden, data.Message) : Request.CreateResponse(HttpStatusCode.OK, data);
                     return response;
                 }
+
                 string messages = string.Join("; ", ModelState.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage));
                 response = Request.CreateResponse(HttpStatusCode.BadRequest, messages);
                 return response;
@@ -125,24 +100,48 @@ namespace RestService.Controllers
         [HttpPost]
         public ResponseUserModel ChangePassword([FromBody] UserCredentials userCredentials)
         {
-            log.Debug("Change Password API called");
-            return accountService.ChangePassword(userCredentials);
+            try
+            {
+                log.Debug("Change Password API called");
+                return accountService.ChangePassword(userCredentials);
+            }
+            catch (Exception ex)
+            {
+                log.Error("Exception occurred in ChangePassword API as: " + ex);
+                return new ResponseUserModel { Status_Code = (int)Constants.StatusCode.Error, Message = ex.Message };
+            }
         }
 
         [Route("api/signout")]
         [HttpPost]
         public ResponseModel SignOut([FromBody] UserDataModel userDetails)
         {
-            log.Debug("Sign Out API called");
-            return accountService.SignOutUser(userDetails);
+            try
+            {
+                log.Debug("Sign Out API called");
+                return accountService.SignOutUser(userDetails);
+            }
+            catch (Exception ex)
+            {
+                log.Error("Exception occurred in SignOut API as: " + ex);
+                return new ResponseModel { Status_Code = (int)Constants.StatusCode.Error, Message = ex.Message};
+            }
         }
 
         [Route("api/changeavatar")]
         [HttpPost]
         public ResponseUserModel ChangeAvatar([FromBody] UserDataModel userDetails )
         {
-            log.Debug("Change Avatar API called");
-            return accountService.ChangeAvatar(userDetails);
+            try
+            {
+                log.Debug("Change Avatar API called");
+                return accountService.ChangeAvatar(userDetails);
+            }
+            catch (Exception ex)
+            {
+                log.Error("Exception occurred in ChangeAvatar API as: " + ex);
+                return new ResponseUserModel { Status_Code = (int)Constants.StatusCode.Error, Message = ex.Message };
+            }
         }
     }
 }

@@ -4,6 +4,7 @@ using RestService.Models;
 using RestService.Utilities;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Web;
 
@@ -14,7 +15,7 @@ namespace RestService.Service
         private Validator validator;
         private UserFacade userFacade;
         private ResponseModel response;
-        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         public AccountService()
         {
             validator = new Validator();
@@ -26,7 +27,6 @@ namespace RestService.Service
         {
             try
             {
-                log.Debug("RegisterUser called");
                 User userInfo = Converter.UserModelToUserEntity(userDetails);
                 response = userFacade.RegisterUser(userInfo);
                 if (response.Status_Code == (int)Constants.StatusCode.Ok)
@@ -34,14 +34,12 @@ namespace RestService.Service
                     UserRole userRoleInfo = Converter.UserModelToUserRoleEntity(userDetails);
                     response = userFacade.AddUserRoleMapping(userInfo, userRoleInfo);
                 }
+
                 return response;
             }
             catch (Exception ex)
             {
-                log.Error("Exception occurred in RegisterUser as: " + ex);
-                response.Status_Code = (int)Constants.StatusCode.Error;
-                response.Message = ex.Message;
-                return response;
+                throw new Exception(ex.Message, ex);
             }
         }
 
@@ -49,31 +47,13 @@ namespace RestService.Service
         {
             try
             {
-                log.Debug("SignInUser called");
-                
                 ResponseUserModel userResponse;
-                //ResponseModel response = validator.SignInValidator(userCredentials); //Check for correct credential format
-                //if (response.Status_Code == (int)Constants.StatusCode.Ok)
-                //{
-                    //validation successful
-
-                    userResponse = userFacade.SignIn(userCredentials);
-                    return userResponse;
-                //}
-                //else
-                //{
-                //    //validation unsuccessful
-                //    log.Debug("SignInUser-> Validation failed");
-                //    userResponse = new ResponseUserModel();
-                //    userResponse.Status_Code = Convert.ToInt16(Constants.StatusCode.Error);
-                //    userResponse.Message = response.Message;
-                //    return userResponse;
-                //}
+                userResponse = userFacade.SignIn(userCredentials);
+                return userResponse;
             }
             catch (Exception ex)
             {
-                log.Error("Exception occurred in SignInUser as :" + ex);
-                return new ResponseUserModel { Status_Code = (int)Constants.StatusCode.Error, Message = ex.Message };
+                throw new Exception(ex.Message, ex);
             }
         }
 
@@ -84,7 +64,7 @@ namespace RestService.Service
                 ResponseUserModel response;
                 if (validator.ChangePasswordValidator(userCredentials))
                 {
-                    //validation successful
+                    // validation successful
                     if (userCredentials.New_Password.Equals(userCredentials.Password))
                     {
                         response = new ResponseUserModel();
@@ -92,13 +72,14 @@ namespace RestService.Service
                         response.Message = "New password and old password can not be same";
                         return response;
                     }
+
                     User userInfo = Converter.UserCredentialsToUserEntity(userCredentials);
                     response = userFacade.ChangePassword(userInfo, userCredentials.New_Password);
                     return response;
                 }
                 else
                 {
-                    //validation unsuccessful
+                    // validation unsuccessful
                     response = new ResponseUserModel();
                     response.Status_Code = Convert.ToInt16(Constants.StatusCode.Error);
                     response.Message = "Invalid user";
@@ -107,8 +88,7 @@ namespace RestService.Service
             }
             catch (Exception ex)
             {
-                log.Debug("Exception occurred in ChangePassword as: " + ex);
-                return new ResponseUserModel { Status_Code = (int)Constants.StatusCode.Error, Message = ex.Message };
+                throw new Exception(ex.Message, ex);
             }
         }
 
@@ -118,31 +98,33 @@ namespace RestService.Service
             {
                 if (validator.ResetPasswordValidator(userCredentials))
                 {
-                    //validation successful
+                    // validation successful
                     response = userFacade.CheckEmail(userCredentials);
                     if (response.Status_Code == Convert.ToInt16(Constants.StatusCode.Ok))
                     {
                         string newPw = RandomString(8);
-                        //changePassword
+
+                        // changePassword
                         User userInfo = Converter.UserCredentialsToUserEntity(userCredentials);
                         response = userFacade.ResetPassword(userInfo, newPw);
 
                         if (response.Status_Code == Convert.ToInt16(Constants.StatusCode.Ok))
                         {
-                            //Send Email
-                            string messageBody = "Your CSU password has been reset." +
+                            // Send Email
+                            string messageBody = "Your Account password has been reset." +
 
                                 "</br></br>username: <b>" + userCredentials.Email +
                                 "</b></br>password: <b>" + newPw +
 
                                 "</b></br></br><p>Please change your password when you " +
-                                "<a href=\"http://13.72.102.73/CSU/#/login\">login</a> to CSU.</p>" +
+                                "<a href=\"" + ConfigurationManager.AppSettings["LoginPage"] + "\">login</a> to CSU.</p>" +
 
-                                "</br></br></br><i>Mobiliya Team</i>";
+                                "</br></br></br><i>Microsoft Team</i>";
 
                             response = ServiceUtil.SendMail(userCredentials.Email, "CSU Password Reset", messageBody);
                             return response;
                         }
+
                         return response;
                     }
                     else
@@ -150,11 +132,12 @@ namespace RestService.Service
                         response.Status_Code = Convert.ToInt16(Constants.StatusCode.Error);
                         response.Message = "Email not registered";
                     }
+
                     return response;
                 }
                 else
                 {
-                    //validation unsuccessful
+                    // validation unsuccessful
                     response.Status_Code = Convert.ToInt16(Constants.StatusCode.Error);
                     response.Message = "Validation Faliure";
                     return response;
@@ -162,10 +145,7 @@ namespace RestService.Service
             }
             catch (Exception ex)
             {
-                log.Debug("Exception occurred in ForgotPassword as: " + ex);
-                response.Status_Code = (int)Constants.StatusCode.Error;
-                response.Message = ex.Message;
-                return response;
+                throw new Exception(ex.Message, ex);
             }
         }
 
@@ -173,17 +153,14 @@ namespace RestService.Service
         {
             try
             {
-                log.Debug("Change Avatar called");
                 ResponseUserModel response = userFacade.ChangeAvatar(userDetails);
                 return response;
             }
             catch (Exception ex)
             {
-                log.Error("Exception occurred in ChangeAvatar as: " + ex);
-                return new ResponseUserModel { Avatar = "", Status_Code = (int)Constants.StatusCode.Error, Message = ex.Message };
+                throw new Exception(ex.Message, ex);
             }
         }
-
 
         public string RandomString(int length)
         {
@@ -196,8 +173,7 @@ namespace RestService.Service
             }
             catch (Exception ex)
             {
-                log.Error("Exception occurred in RandomString as: " + ex);
-                return "ab12ab12";
+                throw new Exception(ex.Message, ex);
             }
         }
 
@@ -207,14 +183,14 @@ namespace RestService.Service
             {
                 if (validator.EmailIdValidator(userDetails.Email))
                 {
-                    //validation successful
+                    // validation successful
                     User userInfo = Converter.UserModelToUserEntity(userDetails);
                     response = userFacade.SignOut(userInfo);
                     return response;
                 }
                 else
                 {
-                    //validation unsuccessful
+                    // validation unsuccessful
                     response.Status_Code = Convert.ToInt16(Constants.StatusCode.Error);
                     response.Message = "Invalid user";
                     return response;
@@ -222,10 +198,7 @@ namespace RestService.Service
             }
             catch (Exception ex)
             {
-                log.Debug("Exception occurred in SignOutUser as: " + ex);
-                response.Status_Code = (int)Constants.StatusCode.Error;
-                response.Message = ex.Message;
-                return response;
+                throw new Exception(ex.Message, ex);
             }
         }
 
@@ -233,13 +206,11 @@ namespace RestService.Service
         {
             try
             {
-                log.Debug("ValidateUser called");
                 return userFacade.ValidateUser(UserId);
             }
             catch (Exception ex)
             {
-                log.Error("Exception occurred in ValidateUser as: " + ex);
-                return false;
+                throw new Exception(ex.Message, ex);
             }
         }
     }
