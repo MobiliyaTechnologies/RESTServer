@@ -6,63 +6,52 @@ using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.Google;
 using Owin;
 using RestService.Models;
+using System.Configuration;
+using Microsoft.Owin.Security.OAuth;
+using Microsoft.Owin.Security.Jwt;
+using System.IdentityModel.Tokens;
 
 namespace RestService
 {
     public partial class Startup
     {
-        // For more information on configuring authentication, please visit http://go.microsoft.com/fwlink/?LinkId=301864
+        public static string aadInstance;
+        public static string tenant;
+        public static string clientId;
+        public static string signUpPolicy;
+        public static string signInPolicy;
+        public static string editProfilePolicy;
+        public static string MFAPolicyName;
+
         public void ConfigureAuth(IAppBuilder app)
         {
-            // Configure the db context, user manager and signin manager to use a single instance per request
-            app.CreatePerOwinContext(ApplicationDbContext.Create);
-            app.CreatePerOwinContext<ApplicationUserManager>(ApplicationUserManager.Create);
-            app.CreatePerOwinContext<ApplicationSignInManager>(ApplicationSignInManager.Create);
+            aadInstance = ConfigurationManager.AppSettings["b2c:AadInstance"];
+            tenant = ConfigurationManager.AppSettings["b2c:Tenant"];
+            clientId = ConfigurationManager.AppSettings["b2c:ClientId"];
+            signUpPolicy = ConfigurationManager.AppSettings["b2c:SignUpPolicyId"];
+            signInPolicy = ConfigurationManager.AppSettings["b2c:SignInPolicyId"];
+            editProfilePolicy = ConfigurationManager.AppSettings["b2c:UserProfilePolicyId"];
+            MFAPolicyName = ConfigurationManager.AppSettings["b2c:MFAPolicyName"];
 
-            // Enable the application to use a cookie to store information for the signed in user
-            // and to use a cookie to temporarily store information about a user logging in with a third party login provider
-            // Configure the sign in cookie
-            app.UseCookieAuthentication(new CookieAuthenticationOptions
+            // app.UseOAuthBearerAuthentication(CreateBearerOptionsFromPolicy(signUpPolicy));
+            app.UseOAuthBearerAuthentication(CreateBearerOptionsFromPolicy(signInPolicy));
+        }
+
+        public OAuthBearerAuthenticationOptions CreateBearerOptionsFromPolicy(string policy)
+        {
+            TokenValidationParameters tvps = new TokenValidationParameters
             {
-                AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
-                LoginPath = new PathString("/Account/Login"),
-                Provider = new CookieAuthenticationProvider
-                {
-                    // Enables the application to validate the security stamp when the user logs in.
-                    // This is a security feature which is used when you change a password or add an external login to your account.  
-                    OnValidateIdentity = SecurityStampValidator.OnValidateIdentity<ApplicationUserManager, ApplicationUser>(
-                        validateInterval: TimeSpan.FromMinutes(30),
-                        regenerateIdentity: (manager, user) => user.GenerateUserIdentityAsync(manager))
-                }
-            });            
-            app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
+                // This is where you specify that your API only accepts tokens from its own clients
+                ValidAudience = clientId,
+                AuthenticationType = policy,
+            };
 
-            // Enables the application to temporarily store user information when they are verifying the second factor in the two-factor authentication process.
-            app.UseTwoFactorSignInCookie(DefaultAuthenticationTypes.TwoFactorCookie, TimeSpan.FromMinutes(5));
-
-            // Enables the application to remember the second login verification factor such as phone or email.
-            // Once you check this option, your second step of verification during the login process will be remembered on the device where you logged in from.
-            // This is similar to the RememberMe option when you log in.
-            app.UseTwoFactorRememberBrowserCookie(DefaultAuthenticationTypes.TwoFactorRememberBrowserCookie);
-
-            // Uncomment the following lines to enable logging in with third party login providers
-            //app.UseMicrosoftAccountAuthentication(
-            //    clientId: "",
-            //    clientSecret: "");
-
-            //app.UseTwitterAuthentication(
-            //   consumerKey: "",
-            //   consumerSecret: "");
-
-            //app.UseFacebookAuthentication(
-            //   appId: "",
-            //   appSecret: "");
-
-            //app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
-            //{
-            //    ClientId = "",
-            //    ClientSecret = ""
-            //});
+            return new OAuthBearerAuthenticationOptions
+            {
+                // This SecurityTokenProvider fetches the Azure AD B2C metadata & signing keys from the OpenIDConnect metadata endpoint
+                AccessTokenFormat = new JwtFormat(tvps,
+                new OpenIdConnectCachingSecurityTokenProvider(String.Format(aadInstance, tenant, policy))),
+            };
         }
     }
 }

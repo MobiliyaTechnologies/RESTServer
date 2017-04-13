@@ -11,6 +11,7 @@ using System.Web.Http;
 
 namespace RestService.Controllers
 {
+    [Authorize]
     public class DataController : ApiController
     {
         DataService dataService;
