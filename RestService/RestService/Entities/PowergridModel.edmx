@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="PowerGridModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="PowerGridModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="AlertRules">
           <Key>
             <PropertyRef Name="Rule_Id" />
@@ -99,6 +99,39 @@
           <Property Name="Daily_KWH_System" Type="float" />
           <Property Name="Daily_Predicted_KWH_System" Type="float" />
           <Property Name="TomorrowPredictedKWH" Type="float" />
+        </EntityType>
+        <EntityType Name="DimDate">
+          <Key>
+            <PropertyRef Name="DateKey" />
+          </Key>
+          <Property Name="DateKey" Type="int" Nullable="false" />
+          <Property Name="Date" Type="datetime" />
+          <Property Name="ReportingDate" Type="char" MaxLength="10" />
+          <Property Name="DayOfMonth" Type="varchar" MaxLength="2" />
+          <Property Name="DayName" Type="varchar" MaxLength="9" />
+          <Property Name="DayOfWeekInMonth" Type="varchar" MaxLength="2" />
+          <Property Name="DayOfWeekInYear" Type="varchar" MaxLength="2" />
+          <Property Name="DayOfQuarter" Type="varchar" MaxLength="3" />
+          <Property Name="DayOfYear" Type="varchar" MaxLength="3" />
+          <Property Name="WeekOfMonth" Type="varchar" MaxLength="20" />
+          <Property Name="WeekOfQuarter" Type="varchar" MaxLength="2" />
+          <Property Name="WeekOfYear" Type="varchar" MaxLength="2" />
+          <Property Name="Month" Type="varchar" MaxLength="2" />
+          <Property Name="MonthName" Type="varchar" MaxLength="9" />
+          <Property Name="MonthOfQuarter" Type="varchar" MaxLength="2" />
+          <Property Name="Quarter" Type="char" MaxLength="1" />
+          <Property Name="QuarterName" Type="varchar" MaxLength="9" />
+          <Property Name="Year" Type="char" MaxLength="4" />
+          <Property Name="YearName" Type="char" MaxLength="7" />
+          <Property Name="MonthYear" Type="char" MaxLength="10" />
+          <Property Name="MMYYYY" Type="char" MaxLength="6" />
+          <Property Name="FirstDayOfMonth" Type="date" />
+          <Property Name="LastDayOfMonth" Type="date" />
+          <Property Name="FirstDayOfQuarter" Type="date" />
+          <Property Name="LastDayOfQuarter" Type="date" />
+          <Property Name="FirstDayOfYear" Type="date" />
+          <Property Name="LastDayOfYear" Type="date" />
+          <Property Name="ReportingWeekOFMonth" Type="varchar" MaxLength="15" />
         </EntityType>
         <EntityType Name="Feedback">
           <Key>
@@ -578,6 +611,7 @@ warning 6002: The table/view 'PowerGrid.dbo.TempMLData' does not have a primary 
           <EntitySet Name="ClassroomDetails" EntityType="Self.ClassroomDetails" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DailyConsumptionDetails" EntityType="Self.DailyConsumptionDetails" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DailyConsumptionPrediction" EntityType="Self.DailyConsumptionPrediction" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DimDate" EntityType="Self.DimDate" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Feedback" EntityType="Self.Feedback" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="HalfHourlyData" EntityType="Self.HalfHourlyData" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="HalfYearlyData" EntityType="Self.HalfYearlyData" Schema="dbo" store:Type="Tables" />
@@ -696,8 +730,7 @@ warning 6002: The table/view 'PowerGrid.dbo.TempMLData' does not have a primary 
             <End Role="UserSession" EntitySet="UserSession" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="PowerGridModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -1330,7 +1363,41 @@ warning 6002: The table/view 'PowerGrid.dbo.TempMLData' does not have a primary 
             <End Role="User" EntitySet="User" />
             <End Role="UserSession" EntitySet="UserSession" />
           </AssociationSet>
+          <EntitySet Name="DimDate" EntityType="PowerGridModel.DimDate" />
         </EntityContainer>
+        <EntityType Name="DimDate">
+          <Key>
+            <PropertyRef Name="DateKey" />
+          </Key>
+          <Property Name="DateKey" Type="Int32" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Precision="3" />
+          <Property Name="ReportingDate" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
+          <Property Name="DayOfMonth" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="DayName" Type="String" MaxLength="9" FixedLength="false" Unicode="false" />
+          <Property Name="DayOfWeekInMonth" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="DayOfWeekInYear" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="DayOfQuarter" Type="String" MaxLength="3" FixedLength="false" Unicode="false" />
+          <Property Name="DayOfYear" Type="String" MaxLength="3" FixedLength="false" Unicode="false" />
+          <Property Name="WeekOfMonth" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="WeekOfQuarter" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="WeekOfYear" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="Month" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="MonthName" Type="String" MaxLength="9" FixedLength="false" Unicode="false" />
+          <Property Name="MonthOfQuarter" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="Quarter" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="QuarterName" Type="String" MaxLength="9" FixedLength="false" Unicode="false" />
+          <Property Name="Year" Type="String" MaxLength="4" FixedLength="true" Unicode="false" />
+          <Property Name="YearName" Type="String" MaxLength="7" FixedLength="true" Unicode="false" />
+          <Property Name="MonthYear" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
+          <Property Name="MMYYYY" Type="String" MaxLength="6" FixedLength="true" Unicode="false" />
+          <Property Name="FirstDayOfMonth" Type="DateTime" Precision="0" />
+          <Property Name="LastDayOfMonth" Type="DateTime" Precision="0" />
+          <Property Name="FirstDayOfQuarter" Type="DateTime" Precision="0" />
+          <Property Name="LastDayOfQuarter" Type="DateTime" Precision="0" />
+          <Property Name="FirstDayOfYear" Type="DateTime" Precision="0" />
+          <Property Name="LastDayOfYear" Type="DateTime" Precision="0" />
+          <Property Name="ReportingWeekOFMonth" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1836,6 +1903,40 @@ warning 6002: The table/view 'PowerGrid.dbo.TempMLData' does not have a primary 
                 <ScalarProperty Name="Volts_L3_to_neutral" ColumnName="Volts_L3_to_neutral" />
                 <ScalarProperty Name="kW_System" ColumnName="kW_System" />
                 <ScalarProperty Name="PredictedKwH" ColumnName="PredictedKwH" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DimDate">
+            <EntityTypeMapping TypeName="PowerGridModel.DimDate">
+              <MappingFragment StoreEntitySet="DimDate">
+                <ScalarProperty Name="ReportingWeekOFMonth" ColumnName="ReportingWeekOFMonth" />
+                <ScalarProperty Name="LastDayOfYear" ColumnName="LastDayOfYear" />
+                <ScalarProperty Name="FirstDayOfYear" ColumnName="FirstDayOfYear" />
+                <ScalarProperty Name="LastDayOfQuarter" ColumnName="LastDayOfQuarter" />
+                <ScalarProperty Name="FirstDayOfQuarter" ColumnName="FirstDayOfQuarter" />
+                <ScalarProperty Name="LastDayOfMonth" ColumnName="LastDayOfMonth" />
+                <ScalarProperty Name="FirstDayOfMonth" ColumnName="FirstDayOfMonth" />
+                <ScalarProperty Name="MMYYYY" ColumnName="MMYYYY" />
+                <ScalarProperty Name="MonthYear" ColumnName="MonthYear" />
+                <ScalarProperty Name="YearName" ColumnName="YearName" />
+                <ScalarProperty Name="Year" ColumnName="Year" />
+                <ScalarProperty Name="QuarterName" ColumnName="QuarterName" />
+                <ScalarProperty Name="Quarter" ColumnName="Quarter" />
+                <ScalarProperty Name="MonthOfQuarter" ColumnName="MonthOfQuarter" />
+                <ScalarProperty Name="MonthName" ColumnName="MonthName" />
+                <ScalarProperty Name="Month" ColumnName="Month" />
+                <ScalarProperty Name="WeekOfYear" ColumnName="WeekOfYear" />
+                <ScalarProperty Name="WeekOfQuarter" ColumnName="WeekOfQuarter" />
+                <ScalarProperty Name="WeekOfMonth" ColumnName="WeekOfMonth" />
+                <ScalarProperty Name="DayOfYear" ColumnName="DayOfYear" />
+                <ScalarProperty Name="DayOfQuarter" ColumnName="DayOfQuarter" />
+                <ScalarProperty Name="DayOfWeekInYear" ColumnName="DayOfWeekInYear" />
+                <ScalarProperty Name="DayOfWeekInMonth" ColumnName="DayOfWeekInMonth" />
+                <ScalarProperty Name="DayName" ColumnName="DayName" />
+                <ScalarProperty Name="DayOfMonth" ColumnName="DayOfMonth" />
+                <ScalarProperty Name="ReportingDate" ColumnName="ReportingDate" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="DateKey" ColumnName="DateKey" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

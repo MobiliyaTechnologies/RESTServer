@@ -1,120 +1,68 @@
-﻿using Newtonsoft.Json;
-using RestService.Models;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Net.Mail;
-using System.Text;
-using System.Web;
-
-namespace RestService.Utilities
+﻿namespace RestService.Utilities
 {
+    using System;
+    using System.IO;
+    using System.Net;
+    using System.Text;
+    using Newtonsoft.Json;
+    using RestService.Enums;
+
     public class ServiceUtil
     {
-
-        static string _sender = "itadmin@admindomain.onmicrosoft.com";
-        static string _password = "Microsoft!@#$";
-
-        public static ResponseModel SendMail(string recipient, string subject, string message)
-        {
-            ResponseModel response = new ResponseModel();
-            try
-            {
-                SmtpClient client = new SmtpClient("smtp.office365.com");
-
-                client.Port = 587;
-                client.DeliveryMethod = SmtpDeliveryMethod.Network;
-                client.UseDefaultCredentials = false;
-                System.Net.NetworkCredential credentials =
-                    new System.Net.NetworkCredential(_sender, _password);
-                client.EnableSsl = true;
-                client.Credentials = credentials;
-
-
-                var mail = new MailMessage(_sender.Trim(), recipient.Trim());
-                mail.Subject = subject;
-                mail.IsBodyHtml = true;
-                mail.Body = message;
-                client.Send(mail);
-                response.Status_Code = (int)Constants.StatusCode.Ok;
-                response.Message = "Email Sent successfully";
-                return response;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                response.Status_Code = (int)Constants.StatusCode.Error;
-                response.Message = ex.Message;
-                return response;
-            }
-        }
-
         public static int GetDayOfWeek(string Day)
         {
             switch (Day.ToLower())
             {
                 case "mon":
-                    return (int)Constants.DayofWeek.Mon;
+                    return (int)DayofWeek.Mon;
 
                 case "tue":
-                    return (int)Constants.DayofWeek.Tue;
+                    return (int)DayofWeek.Tue;
 
                 case "wed":
-                    return (int)Constants.DayofWeek.Wed;
+                    return (int)DayofWeek.Wed;
 
                 case "thu":
-                    return (int)Constants.DayofWeek.Thu;
+                    return (int)DayofWeek.Thu;
 
                 case "fri":
-                    return (int)Constants.DayofWeek.Fri;
+                    return (int)DayofWeek.Fri;
 
                 case "sat":
-                    return (int)Constants.DayofWeek.Sat;
+                    return (int)DayofWeek.Sat;
 
                 case "sun":
-                    return (int)Constants.DayofWeek.Sun;
+                    return (int)DayofWeek.Sun;
+
+                default:
+                    return 1;
             }
-            return 1;
         }
 
         public static void SendNotification(string title, string body)
         {
             try
             {
-                var applicationID = "AAAAGQBSH1c:APA91bEcYFZQMez7DyNTgphhxk1Sw4uKgss0xW7qBqiMX9QBHPNeIItIrw8VhvCJVWi8WUGUMPdRrx64P82lUtzmPUdvKFKYdr_UJHQl6lnWrXeK0J6-QHZaqkhsAKw1J3TwUievGRA2";
-                //var applicationID = appSettings["ApplicationId"];
-
-                var senderId = "107379564375";
-                //var senderId = appSettings["SenderId"];
-
-                string receiver = "/topics/Alerts";
-                //string receiver = appSettings["Receiver"];
-
-                WebRequest tRequest = WebRequest.Create("https://fcm.googleapis.com/fcm/send");
-                //WebRequest tRequest = WebRequest.Create(appSettings["FCMURL"]);
+                WebRequest tRequest = WebRequest.Create(ApiConfiguration.NotificationURL);
                 tRequest.Method = "post";
                 tRequest.ContentType = "application/json";
                 var data = new
                 {
-                    //data = new
-                    //{
                     notification = new
                     {
                         body = body,
                         title = title,
-                        click_action = "https://cloud.csupoc.com/csu/",
+                        click_action = ApiConfiguration.NotificationClickActionURL,
                         icon = "./csu/Assets/logo.png",
                         sound = "default"
                     },
-                    to = receiver
+                    to = ApiConfiguration.NotificationReceiver
                 };
 
                 var json = JsonConvert.SerializeObject(data);
                 byte[] byteArray = Encoding.UTF8.GetBytes(json);
-                tRequest.Headers.Add(string.Format("Authorization: key={0}", applicationID));
-                tRequest.Headers.Add(string.Format("Sender: id={0}", senderId));
+                tRequest.Headers.Add(string.Format("Authorization: key={0}", ApiConfiguration.ApplicationId));
+                tRequest.Headers.Add(string.Format("Sender: id={0}", ApiConfiguration.NotificationSender));
                 tRequest.ContentLength = byteArray.Length;
 
                 using (Stream dataStream = tRequest.GetRequestStream())
@@ -126,7 +74,7 @@ namespace RestService.Utilities
                         {
                             using (StreamReader tReader = new StreamReader(dataStreamResponse))
                             {
-                                String sResponseFromServer = tReader.ReadToEnd();
+                                string sResponseFromServer = tReader.ReadToEnd();
                                 string str = sResponseFromServer;
                             }
                         }
@@ -142,7 +90,7 @@ namespace RestService.Utilities
         public static DateTime UnixTimeStampToDateTime(double unixTimeStamp)
         {
             // Unix timestamp is seconds past epoch
-            System.DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
+            DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
             dtDateTime = dtDateTime.AddSeconds(unixTimeStamp);
             return dtDateTime;
         }
