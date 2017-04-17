@@ -1,10 +1,9 @@
-﻿using Microsoft.Owin.Security.OAuth;
-using System;
-using System.Web.Http;
-using System.Web.Http.Cors;
-
-namespace RestService
+﻿namespace RestService
 {
+    using System.Web.Http;
+    using System.Web.Http.Cors;
+    using Microsoft.Owin.Security.OAuth;
+
     public static class WebApiConfig
     {
         public static void Register(HttpConfiguration config)
@@ -15,12 +14,8 @@ namespace RestService
             var cors = new EnableCorsAttribute("*", "*", "*");
             config.EnableCors(cors);
 
-            log4net.Config.XmlConfigurator.Configure();
-
-            // Web API routes
             config.MapHttpAttributeRoutes();
-            // Web API routes
-           
+
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
                 routeTemplate: "api/{controller}/{id}",

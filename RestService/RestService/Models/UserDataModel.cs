@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
-
-namespace RestService.Models
+﻿namespace RestService.Models
 {
+    using System.ComponentModel.DataAnnotations;
+
     public class UserDataModel
     {
         public int Id { get; set; }

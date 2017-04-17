@@ -37,6 +37,7 @@
         <AssociationConnector Association="PowerGridModel.FK_UserRole_Role" ManuallyRouted="false" />
         <AssociationConnector Association="PowerGridModel.FK_UserRole_User" ManuallyRouted="false" />
         <AssociationConnector Association="PowerGridModel.FK_UserSession_User" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="PowerGridModel.DimDate" Width="1.5" PointX="0.75" PointY="17.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
