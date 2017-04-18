@@ -21,6 +21,12 @@
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
+
+            //#if !DEBUG // Uncomment #if If Authentication is not required while running the project in Debug mode
+
+            config.Filters.Add(new AuthorizeAttribute());
+
+            //#endif
         }
     }
 }
