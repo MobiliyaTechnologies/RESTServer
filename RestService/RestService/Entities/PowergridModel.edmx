@@ -58,6 +58,36 @@
           <Property Name="AnswerDesc" Type="nvarchar" MaxLength="500" Nullable="false" />
           <Property Name="QuestionID" Type="int" />
         </EntityType>
+        <EntityType Name="Building">
+          <Key>
+            <PropertyRef Name="BuildingID" />
+          </Key>
+          <Property Name="BuildingID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BuildingName" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="BuildingDesc" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="CampusID" Type="int" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="CreatedBy" Type="int" />
+          <Property Name="CreatedOn" Type="datetime" />
+          <Property Name="ModifiedBy" Type="int" />
+          <Property Name="ModifiedOn" Type="datetime" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Campus">
+          <Key>
+            <PropertyRef Name="CampusID" />
+          </Key>
+          <Property Name="CampusID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CampusName" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="CampusDesc" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="UniversityID" Type="int" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="CreatedBy" Type="int" />
+          <Property Name="CreatedOn" Type="datetime" />
+          <Property Name="ModifiedBy" Type="int" />
+          <Property Name="ModifiedOn" Type="datetime" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+        </EntityType>
         <EntityType Name="ClassroomDetails">
           <Key>
             <PropertyRef Name="Class_Id" />
@@ -277,8 +307,24 @@
           <Property Name="Volts_L3_to_neutral" Type="float" />
           <Property Name="kW_System" Type="float" />
         </EntityType>
+        <EntityType Name="PiServer">
+          <Key>
+            <PropertyRef Name="PiServerID" />
+          </Key>
+          <Property Name="PiServerID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PiServerName" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="PiServerDesc" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="CampusID" Type="int" Nullable="false" />
+          <Property Name="PiServerURL" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="CreatedBy" Type="int" />
+          <Property Name="CreatedOn" Type="datetime" />
+          <Property Name="ModifiedBy" Type="int" />
+          <Property Name="ModifiedOn" Type="datetime" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+        </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'PowerGrid.dbo.PowergridAzureMLData' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'PowerGrid_Copy.dbo.PowergridAzureMLData' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="PowergridAzureMLData">
           <Key>
             <PropertyRef Name="Id" />
@@ -368,7 +414,7 @@ warning 6002: The table/view 'PowerGrid.dbo.PowergridAzureMLData' does not have 
           <Property Name="Y" Type="float" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'PowerGrid.dbo.TempMLData' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'PowerGrid_Copy.dbo.TempMLData' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="TempMLData">
           <Key>
             <PropertyRef Name="Id" />
@@ -445,6 +491,21 @@ warning 6002: The table/view 'PowerGrid.dbo.TempMLData' does not have a primary 
           <Property Name="Volts_L3_to_neutral" Type="float" />
           <Property Name="kW_System" Type="float" />
         </EntityType>
+        <EntityType Name="University">
+          <Key>
+            <PropertyRef Name="UniversityID" />
+          </Key>
+          <Property Name="UniversityID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UniversityName" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="UniversityDesc" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="UniversityAddress" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="CreatedBy" Type="int" />
+          <Property Name="CreatedOn" Type="datetime" />
+          <Property Name="ModifiedBy" Type="int" />
+          <Property Name="ModifiedOn" Type="datetime" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+        </EntityType>
         <EntityType Name="User">
           <Key>
             <PropertyRef Name="Id" />
@@ -498,6 +559,30 @@ warning 6002: The table/view 'PowerGrid.dbo.TempMLData' does not have a primary 
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Building_CampusID">
+          <End Role="Campus" Type="Self.Campus" Multiplicity="1" />
+          <End Role="Building" Type="Self.Building" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Campus">
+              <PropertyRef Name="CampusID" />
+            </Principal>
+            <Dependent Role="Building">
+              <PropertyRef Name="CampusID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Campus_UniversityID">
+          <End Role="University" Type="Self.University" Multiplicity="1" />
+          <End Role="Campus" Type="Self.Campus" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="University">
+              <PropertyRef Name="UniversityID" />
+            </Principal>
+            <Dependent Role="Campus">
+              <PropertyRef Name="UniversityID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Feedback_AnswerID">
           <End Role="Answers" Type="Self.Answers" Multiplicity="0..1" />
           <End Role="Feedback" Type="Self.Feedback" Multiplicity="*" />
@@ -531,6 +616,18 @@ warning 6002: The table/view 'PowerGrid.dbo.TempMLData' does not have a primary 
             </Principal>
             <Dependent Role="Feedback">
               <PropertyRef Name="QuestionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PiServer_CampusID">
+          <End Role="Campus" Type="Self.Campus" Multiplicity="1" />
+          <End Role="PiServer" Type="Self.PiServer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Campus">
+              <PropertyRef Name="CampusID" />
+            </Principal>
+            <Dependent Role="PiServer">
+              <PropertyRef Name="CampusID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -575,6 +672,8 @@ warning 6002: The table/view 'PowerGrid.dbo.TempMLData' does not have a primary 
           <EntitySet Name="Alerts" EntityType="Self.Alerts" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AnomalyOutput" EntityType="Self.AnomalyOutput" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Answers" EntityType="Self.Answers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Building" EntityType="Self.Building" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Campus" EntityType="Self.Campus" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ClassroomDetails" EntityType="Self.ClassroomDetails" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DailyConsumptionDetails" EntityType="Self.DailyConsumptionDetails" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DailyConsumptionPrediction" EntityType="Self.DailyConsumptionPrediction" Schema="dbo" store:Type="Tables" />
@@ -584,12 +683,14 @@ warning 6002: The table/view 'PowerGrid.dbo.TempMLData' does not have a primary 
           <EntitySet Name="MeterDetails" EntityType="Self.MeterDetails" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MonthlyConsumptionDetails" EntityType="Self.MonthlyConsumptionDetails" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MSLiveData" EntityType="Self.MSLiveData" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PiServer" EntityType="Self.PiServer" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Questions" EntityType="Self.Questions" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Role" EntityType="Self.Role" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SensorData" EntityType="Self.SensorData" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SensorLiveData" EntityType="Self.SensorLiveData" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SensorMaster" EntityType="Self.SensorMaster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TempMSLiveData" EntityType="Self.TempMSLiveData" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="University" EntityType="Self.University" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserRole" EntityType="Self.UserRole" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserSession" EntityType="Self.UserSession" Schema="dbo" store:Type="Tables" />
@@ -671,6 +772,14 @@ warning 6002: The table/view 'PowerGrid.dbo.TempMLData' does not have a primary 
             <End Role="Questions" EntitySet="Questions" />
             <End Role="Answers" EntitySet="Answers" />
           </AssociationSet>
+          <AssociationSet Name="FK_Building_CampusID" Association="Self.FK_Building_CampusID">
+            <End Role="Campus" EntitySet="Campus" />
+            <End Role="Building" EntitySet="Building" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Campus_UniversityID" Association="Self.FK_Campus_UniversityID">
+            <End Role="University" EntitySet="University" />
+            <End Role="Campus" EntitySet="Campus" />
+          </AssociationSet>
           <AssociationSet Name="FK_Feedback_AnswerID" Association="Self.FK_Feedback_AnswerID">
             <End Role="Answers" EntitySet="Answers" />
             <End Role="Feedback" EntitySet="Feedback" />
@@ -682,6 +791,10 @@ warning 6002: The table/view 'PowerGrid.dbo.TempMLData' does not have a primary 
           <AssociationSet Name="FK_Feedback_QuestionID" Association="Self.FK_Feedback_QuestionID">
             <End Role="Questions" EntitySet="Questions" />
             <End Role="Feedback" EntitySet="Feedback" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PiServer_CampusID" Association="Self.FK_PiServer_CampusID">
+            <End Role="Campus" EntitySet="Campus" />
+            <End Role="PiServer" EntitySet="PiServer" />
           </AssociationSet>
           <AssociationSet Name="FK_UserRole_Role" Association="Self.FK_UserRole_Role">
             <End Role="Role" EntitySet="Role" />
@@ -755,6 +868,40 @@ warning 6002: The table/view 'PowerGrid.dbo.TempMLData' does not have a primary 
           <Property Name="QuestionID" Type="Int32" />
           <NavigationProperty Name="Questions" Relationship="Self.FK_Answers_QuestionID" FromRole="Answers" ToRole="Questions" />
           <NavigationProperty Name="Feedback" Relationship="Self.FK_Feedback_AnswerID" FromRole="Answers" ToRole="Feedback" />
+        </EntityType>
+        <EntityType Name="Building">
+          <Key>
+            <PropertyRef Name="BuildingID" />
+          </Key>
+          <Property Name="BuildingID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BuildingName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="BuildingDesc" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CampusID" Type="Int32" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="CreatedOn" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedBy" Type="Int32" />
+          <Property Name="ModifiedOn" Type="DateTime" Precision="3" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Campus" Relationship="Self.FK_Building_CampusID" FromRole="Building" ToRole="Campus" />
+        </EntityType>
+        <EntityType Name="Campus">
+          <Key>
+            <PropertyRef Name="CampusID" />
+          </Key>
+          <Property Name="CampusID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CampusName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CampusDesc" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="UniversityID" Type="Int32" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="CreatedOn" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedBy" Type="Int32" />
+          <Property Name="ModifiedOn" Type="DateTime" Precision="3" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Building" Relationship="Self.FK_Building_CampusID" FromRole="Campus" ToRole="Building" />
+          <NavigationProperty Name="University" Relationship="Self.FK_Campus_UniversityID" FromRole="Campus" ToRole="University" />
+          <NavigationProperty Name="PiServer" Relationship="Self.FK_PiServer_CampusID" FromRole="Campus" ToRole="PiServer" />
         </EntityType>
         <EntityType Name="ClassroomDetails">
           <Key>
@@ -979,6 +1126,23 @@ warning 6002: The table/view 'PowerGrid.dbo.TempMLData' does not have a primary 
           <Property Name="Volts_L3_to_neutral" Type="Double" />
           <Property Name="kW_System" Type="Double" />
         </EntityType>
+        <EntityType Name="PiServer">
+          <Key>
+            <PropertyRef Name="PiServerID" />
+          </Key>
+          <Property Name="PiServerID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PiServerName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PiServerDesc" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CampusID" Type="Int32" Nullable="false" />
+          <Property Name="PiServerURL" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="CreatedOn" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedBy" Type="Int32" />
+          <Property Name="ModifiedOn" Type="DateTime" Precision="3" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Campus" Relationship="Self.FK_PiServer_CampusID" FromRole="PiServer" ToRole="Campus" />
+        </EntityType>
         <EntityType Name="Questions">
           <Key>
             <PropertyRef Name="QuestionID" />
@@ -1070,6 +1234,22 @@ warning 6002: The table/view 'PowerGrid.dbo.TempMLData' does not have a primary 
           <Property Name="Volts_L2_to_neutral" Type="Double" />
           <Property Name="Volts_L3_to_neutral" Type="Double" />
           <Property Name="kW_System" Type="Double" />
+        </EntityType>
+        <EntityType Name="University">
+          <Key>
+            <PropertyRef Name="UniversityID" />
+          </Key>
+          <Property Name="UniversityID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UniversityName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="UniversityDesc" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="UniversityAddress" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="CreatedOn" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedBy" Type="Int32" />
+          <Property Name="ModifiedOn" Type="DateTime" Precision="3" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Campus" Relationship="Self.FK_Campus_UniversityID" FromRole="University" ToRole="Campus" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -1216,6 +1396,42 @@ warning 6002: The table/view 'PowerGrid.dbo.TempMLData' does not have a primary 
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Building_CampusID">
+          <End Role="Campus" Type="Self.Campus" Multiplicity="1" />
+          <End Role="Building" Type="Self.Building" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Campus">
+              <PropertyRef Name="CampusID" />
+            </Principal>
+            <Dependent Role="Building">
+              <PropertyRef Name="CampusID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Campus_UniversityID">
+          <End Role="University" Type="Self.University" Multiplicity="1" />
+          <End Role="Campus" Type="Self.Campus" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="University">
+              <PropertyRef Name="UniversityID" />
+            </Principal>
+            <Dependent Role="Campus">
+              <PropertyRef Name="UniversityID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PiServer_CampusID">
+          <End Role="Campus" Type="Self.Campus" Multiplicity="1" />
+          <End Role="PiServer" Type="Self.PiServer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Campus">
+              <PropertyRef Name="CampusID" />
+            </Principal>
+            <Dependent Role="PiServer">
+              <PropertyRef Name="CampusID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Feedback_ClassId">
           <End Role="ClassroomDetails" Type="Self.ClassroomDetails" Multiplicity="0..1" />
           <End Role="Feedback" Type="Self.Feedback" Multiplicity="*" />
@@ -1281,6 +1497,8 @@ warning 6002: The table/view 'PowerGrid.dbo.TempMLData' does not have a primary 
           <EntitySet Name="Alerts" EntityType="Self.Alerts" />
           <EntitySet Name="AnomalyOutput" EntityType="Self.AnomalyOutput" />
           <EntitySet Name="Answers" EntityType="Self.Answers" />
+          <EntitySet Name="Building" EntityType="Self.Building" />
+          <EntitySet Name="Campus" EntityType="Self.Campus" />
           <EntitySet Name="ClassroomDetails" EntityType="Self.ClassroomDetails" />
           <EntitySet Name="DailyConsumptionDetails" EntityType="Self.DailyConsumptionDetails" />
           <EntitySet Name="DailyConsumptionPrediction" EntityType="Self.DailyConsumptionPrediction" />
@@ -1290,12 +1508,14 @@ warning 6002: The table/view 'PowerGrid.dbo.TempMLData' does not have a primary 
           <EntitySet Name="MeterDetails" EntityType="Self.MeterDetails" />
           <EntitySet Name="MonthlyConsumptionDetails" EntityType="Self.MonthlyConsumptionDetails" />
           <EntitySet Name="MSLiveData" EntityType="Self.MSLiveData" />
+          <EntitySet Name="PiServer" EntityType="Self.PiServer" />
           <EntitySet Name="Questions" EntityType="Self.Questions" />
           <EntitySet Name="Role" EntityType="Self.Role" />
           <EntitySet Name="SensorData" EntityType="Self.SensorData" />
           <EntitySet Name="SensorLiveData" EntityType="Self.SensorLiveData" />
           <EntitySet Name="SensorMaster" EntityType="Self.SensorMaster" />
           <EntitySet Name="TempMSLiveData" EntityType="Self.TempMSLiveData" />
+          <EntitySet Name="University" EntityType="Self.University" />
           <EntitySet Name="User" EntityType="Self.User" />
           <EntitySet Name="UserRole" EntityType="Self.UserRole" />
           <EntitySet Name="UserSession" EntityType="Self.UserSession" />
@@ -1309,6 +1529,18 @@ warning 6002: The table/view 'PowerGrid.dbo.TempMLData' does not have a primary 
           <AssociationSet Name="FK_Feedback_AnswerID" Association="Self.FK_Feedback_AnswerID">
             <End Role="Answers" EntitySet="Answers" />
             <End Role="Feedback" EntitySet="Feedback" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Building_CampusID" Association="Self.FK_Building_CampusID">
+            <End Role="Campus" EntitySet="Campus" />
+            <End Role="Building" EntitySet="Building" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Campus_UniversityID" Association="Self.FK_Campus_UniversityID">
+            <End Role="University" EntitySet="University" />
+            <End Role="Campus" EntitySet="Campus" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PiServer_CampusID" Association="Self.FK_PiServer_CampusID">
+            <End Role="Campus" EntitySet="Campus" />
+            <End Role="PiServer" EntitySet="PiServer" />
           </AssociationSet>
           <AssociationSet Name="FK_Feedback_ClassId" Association="Self.FK_Feedback_ClassId">
             <End Role="ClassroomDetails" EntitySet="ClassroomDetails" />
@@ -1391,6 +1623,38 @@ warning 6002: The table/view 'PowerGrid.dbo.TempMLData' does not have a primary 
                 <ScalarProperty Name="AnswerID" ColumnName="AnswerID" />
                 <ScalarProperty Name="AnswerDesc" ColumnName="AnswerDesc" />
                 <ScalarProperty Name="QuestionID" ColumnName="QuestionID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Building">
+            <EntityTypeMapping TypeName="PowerGridModel.Building">
+              <MappingFragment StoreEntitySet="Building">
+                <ScalarProperty Name="BuildingID" ColumnName="BuildingID" />
+                <ScalarProperty Name="BuildingName" ColumnName="BuildingName" />
+                <ScalarProperty Name="BuildingDesc" ColumnName="BuildingDesc" />
+                <ScalarProperty Name="CampusID" ColumnName="CampusID" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Campus">
+            <EntityTypeMapping TypeName="PowerGridModel.Campus">
+              <MappingFragment StoreEntitySet="Campus">
+                <ScalarProperty Name="CampusID" ColumnName="CampusID" />
+                <ScalarProperty Name="CampusName" ColumnName="CampusName" />
+                <ScalarProperty Name="CampusDesc" ColumnName="CampusDesc" />
+                <ScalarProperty Name="UniversityID" ColumnName="UniversityID" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1622,6 +1886,23 @@ warning 6002: The table/view 'PowerGrid.dbo.TempMLData' does not have a primary 
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="PiServer">
+            <EntityTypeMapping TypeName="PowerGridModel.PiServer">
+              <MappingFragment StoreEntitySet="PiServer">
+                <ScalarProperty Name="PiServerID" ColumnName="PiServerID" />
+                <ScalarProperty Name="PiServerName" ColumnName="PiServerName" />
+                <ScalarProperty Name="PiServerDesc" ColumnName="PiServerDesc" />
+                <ScalarProperty Name="CampusID" ColumnName="CampusID" />
+                <ScalarProperty Name="PiServerURL" ColumnName="PiServerURL" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Questions">
             <EntityTypeMapping TypeName="PowerGridModel.Questions">
               <MappingFragment StoreEntitySet="Questions">
@@ -1714,6 +1995,22 @@ warning 6002: The table/view 'PowerGrid.dbo.TempMLData' does not have a primary 
                 <ScalarProperty Name="Volts_L2_to_neutral" ColumnName="Volts_L2_to_neutral" />
                 <ScalarProperty Name="Volts_L3_to_neutral" ColumnName="Volts_L3_to_neutral" />
                 <ScalarProperty Name="kW_System" ColumnName="kW_System" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="University">
+            <EntityTypeMapping TypeName="PowerGridModel.University">
+              <MappingFragment StoreEntitySet="University">
+                <ScalarProperty Name="UniversityID" ColumnName="UniversityID" />
+                <ScalarProperty Name="UniversityName" ColumnName="UniversityName" />
+                <ScalarProperty Name="UniversityDesc" ColumnName="UniversityDesc" />
+                <ScalarProperty Name="UniversityAddress" ColumnName="UniversityAddress" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -1,55 +1,50 @@
-﻿using RestService.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace RestService.Utilities
+﻿namespace RestService.Utilities
 {
-    public class PowerBIUtil : MeterURLKey
+    using System.Collections.Generic;
+    using RestService.Models;
+
+    public static class PowerBIUtil
     {
-        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-        const string WeatherURL = "";
+        public static readonly Dictionary<string, MeterURLKeyModel> MeterURLKeyDictionary = new Dictionary<string, MeterURLKeyModel>();
+        private const string WeatherURL = "";
 
-        public MeterURLKey GetURL_P371602068()
+        static PowerBIUtil()
         {
-            MeterURLKey keyValue;
-            try
-            {
-                log.Debug("GetURL_P371602068 called");
-                keyValue = new MeterURLKey();
-                keyValue.Weather = WeatherURL;
-                keyValue.QuarterlyConsumption = "";
-                keyValue.LastQuarterlyConsumption = "";
-                keyValue.MonthlyConsumption = "https://app.powerbi.com/embed?dashboardId=d2ac4bab-1867-48eb-a640-22655ea791c4&tileId=a7d25902-9ab1-48c7-b256-ea7f5e50a8e1";
-                keyValue.LastMonthlyConsumption = "https://app.powerbi.com/embed?dashboardId=d2ac4bab-1867-48eb-a640-22655ea791c4&tileId=12d69022-7b7f-4eb5-997f-727e87ec19e4";
-                keyValue.WeeklyConsumption = "https://app.powerbi.com/embed?dashboardId=d2ac4bab-1867-48eb-a640-22655ea791c4&tileId=30a49d22-eb3e-4a12-b050-080e804527aa";
-                keyValue.LastWeeklyConsumption = "https://app.powerbi.com/embed?dashboardId=d2ac4bab-1867-48eb-a640-22655ea791c4&tileId=9f66f329-15a2-4d5b-82af-e74009a4aef1";
-                keyValue.DailyConsumption = "https://app.powerbi.com/embed?dashboardId=d2ac4bab-1867-48eb-a640-22655ea791c4&tileId=9609cd02-715e-4d13-b7b3-14956350b67a";
-                keyValue.YesterdayConsumption = "https://app.powerbi.com/embed?dashboardId=d2ac4bab-1867-48eb-a640-22655ea791c4&tileId=0781911b-d988-4b37-893a-5b9be41fe07e";
-
-                keyValue.MonthlyKWh = "https://app.powerbi.com/embed?dashboardId=d2ac4bab-1867-48eb-a640-22655ea791c4&tileId=70bdef51-f6d6-4c91-a275-4bcc795f925a";
-                keyValue.MonthlyCost = "https://app.powerbi.com/embed?dashboardId=d2ac4bab-1867-48eb-a640-22655ea791c4&tileId=7d206df8-9c25-4d86-b834-4c9c04d3ce83";
-                keyValue.DayWiseConsumption = "https://app.powerbi.com/embed?dashboardId=d2ac4bab-1867-48eb-a640-22655ea791c4&tileId=89d88778-d35c-4ccd-965a-e23df46aa493";
-                keyValue.PeriodWiseConsumption = "https://app.powerbi.com/embed?dashboardId=d2ac4bab-1867-48eb-a640-22655ea791c4&tileId=03b7765c-bf65-4481-a82f-763988b37791";
-
-                keyValue.Report = "https://app.powerbi.com/reportEmbed?reportId=7aadbc0e-afb1-4c01-bf88-55d4971ddb40";
-                return keyValue;
-            }
-            catch (Exception ex)
-            {
-                log.Error("Exception occurred in GetURL_P371602068 as: " + ex);
-                return null;
-            }
+            PopulateURL_P371602068();
+            PopulateURL_P371602070();
+            PopulateURL_P371602072();
+            PopulateURL_P371602073();
+            PopulateURL_P371602075();
+            PopulateURL_P371602077();
+            PopulateURL_P371602079();
         }
 
-        public MeterURLKey GetURL_P371602070()
+        private static void PopulateURL_P371602068()
         {
-            MeterURLKey keyValue;
-            try
-            {
-                log.Debug("GetURL_P371602070 called");
-                keyValue = new MeterURLKey();
+            MeterURLKeyModel keyValue = new MeterURLKeyModel();
+            keyValue.Weather = WeatherURL;
+            keyValue.QuarterlyConsumption = "";
+            keyValue.LastQuarterlyConsumption = "";
+            keyValue.MonthlyConsumption = "https://app.powerbi.com/embed?dashboardId=d2ac4bab-1867-48eb-a640-22655ea791c4&tileId=a7d25902-9ab1-48c7-b256-ea7f5e50a8e1";
+            keyValue.LastMonthlyConsumption = "https://app.powerbi.com/embed?dashboardId=d2ac4bab-1867-48eb-a640-22655ea791c4&tileId=12d69022-7b7f-4eb5-997f-727e87ec19e4";
+            keyValue.WeeklyConsumption = "https://app.powerbi.com/embed?dashboardId=d2ac4bab-1867-48eb-a640-22655ea791c4&tileId=30a49d22-eb3e-4a12-b050-080e804527aa";
+            keyValue.LastWeeklyConsumption = "https://app.powerbi.com/embed?dashboardId=d2ac4bab-1867-48eb-a640-22655ea791c4&tileId=9f66f329-15a2-4d5b-82af-e74009a4aef1";
+            keyValue.DailyConsumption = "https://app.powerbi.com/embed?dashboardId=d2ac4bab-1867-48eb-a640-22655ea791c4&tileId=9609cd02-715e-4d13-b7b3-14956350b67a";
+            keyValue.YesterdayConsumption = "https://app.powerbi.com/embed?dashboardId=d2ac4bab-1867-48eb-a640-22655ea791c4&tileId=0781911b-d988-4b37-893a-5b9be41fe07e";
+
+            keyValue.MonthlyKWh = "https://app.powerbi.com/embed?dashboardId=d2ac4bab-1867-48eb-a640-22655ea791c4&tileId=70bdef51-f6d6-4c91-a275-4bcc795f925a";
+            keyValue.MonthlyCost = "https://app.powerbi.com/embed?dashboardId=d2ac4bab-1867-48eb-a640-22655ea791c4&tileId=7d206df8-9c25-4d86-b834-4c9c04d3ce83";
+            keyValue.DayWiseConsumption = "https://app.powerbi.com/embed?dashboardId=d2ac4bab-1867-48eb-a640-22655ea791c4&tileId=89d88778-d35c-4ccd-965a-e23df46aa493";
+            keyValue.PeriodWiseConsumption = "https://app.powerbi.com/embed?dashboardId=d2ac4bab-1867-48eb-a640-22655ea791c4&tileId=03b7765c-bf65-4481-a82f-763988b37791";
+
+            keyValue.Report = "https://app.powerbi.com/reportEmbed?reportId=7aadbc0e-afb1-4c01-bf88-55d4971ddb40";
+
+            MeterURLKeyDictionary.Add("P371602068", keyValue);
+        }
+
+        private static void PopulateURL_P371602070()
+        {
+            MeterURLKeyModel keyValue = new MeterURLKeyModel();
                 keyValue.Weather = WeatherURL;
                 keyValue.QuarterlyConsumption = "";
                 keyValue.LastQuarterlyConsumption = "";
@@ -66,22 +61,12 @@ namespace RestService.Utilities
                 keyValue.PeriodWiseConsumption = "https://app.powerbi.com/embed?dashboardId=472d1742-e075-45c6-97cc-2d64a8f7c367&tileId=715f3524-8c91-49a0-b76a-4fe3f1b59103";
 
                 keyValue.Report = "https://app.powerbi.com/reportEmbed?reportId=8c74c0fb-9fb7-453a-a79e-0508bba70db2";
-                return keyValue;
-            }
-            catch (Exception ex)
-            {
-                log.Error("Exception occurred in GetURL_P371602070 as: " + ex);
-                return null;
-            }
+            MeterURLKeyDictionary.Add("P371602070", keyValue);
         }
 
-        public MeterURLKey GetURL_P371602072()
+        private static void PopulateURL_P371602072()
         {
-            MeterURLKey keyValue;
-            try
-            {
-                log.Debug("GetURL_P371602072 called");
-                keyValue = new MeterURLKey();
+            MeterURLKeyModel keyValue = new MeterURLKeyModel();
                 keyValue.Weather = WeatherURL;
                 keyValue.QuarterlyConsumption = "";
                 keyValue.LastQuarterlyConsumption = "";
@@ -100,22 +85,13 @@ namespace RestService.Utilities
                 keyValue.PeriodWiseConsumption = "https://app.powerbi.com/embed?dashboardId=472d1742-e075-45c6-97cc-2d64a8f7c367&tileId=715f3524-8c91-49a0-b76a-4fe3f1b59103";
 
                 keyValue.Report = "https://app.powerbi.com/reportEmbed?reportId=b24ab241-1a11-431d-bf2e-53ea05638c7c";
-                return keyValue;
-            }
-            catch (Exception ex)
-            {
-                log.Error("Exception occurred in GetURL_P371602072 as: " + ex);
-                return null;
-            }
+
+            MeterURLKeyDictionary.Add("P371602072", keyValue);
         }
 
-        public MeterURLKey GetURL_P371602073()
+        private static void PopulateURL_P371602073()
         {
-            MeterURLKey keyValue;
-            try
-            {
-                log.Debug("GetURL_P371602073 called");
-                keyValue = new MeterURLKey();
+            MeterURLKeyModel  keyValue = new MeterURLKeyModel();
                 keyValue.Weather = WeatherURL;
                 keyValue.QuarterlyConsumption = "";
                 keyValue.LastQuarterlyConsumption = "";
@@ -135,22 +111,13 @@ namespace RestService.Utilities
                 keyValue.PeriodWiseConsumption = "https://app.powerbi.com/embed?dashboardId=6ed10559-97e2-48b8-ab17-d2b8a612c5dc&tileId=b7fe4c91-b76a-4d68-93e8-166930b31273";
 
                 keyValue.Report = "https://app.powerbi.com/reportEmbed?reportId=96f08b80-3aae-4f19-9860-1cbd8ffbaa2d";
-                return keyValue;
-            }
-            catch (Exception ex)
-            {
-                log.Error("Exception occurred in GetURL_P371602073 as: " + ex);
-                return null;
-            }
+
+            MeterURLKeyDictionary.Add("P371602073", keyValue);
         }
 
-        public MeterURLKey GetURL_P371602075()
+        private static void PopulateURL_P371602075()
         {
-            MeterURLKey keyValue;
-            try
-            {
-                log.Debug("GetURL_P371602075 called");
-                keyValue = new MeterURLKey();
+            MeterURLKeyModel keyValue = new MeterURLKeyModel();
                 keyValue.Weather = WeatherURL;
                 keyValue.QuarterlyConsumption = "";
                 keyValue.LastQuarterlyConsumption = "";
@@ -170,22 +137,13 @@ namespace RestService.Utilities
                 keyValue.PeriodWiseConsumption = "https://app.powerbi.com/embed?dashboardId=4ef68b94-654e-461a-9203-ebe080e12ef7&tileId=6b471ed4-9dbe-4069-b048-6476f355ffbd";
 
                 keyValue.Report = "https://app.powerbi.com/reportEmbed?reportId=0b6a83f7-c168-4053-a173-6544332dfb96";
-                return keyValue;
-            }
-            catch (Exception ex)
-            {
-                log.Error("Exception occurred in GetURL_P371602075 as: " + ex);
-                return null;
-            }
+
+            MeterURLKeyDictionary.Add("P371602075", keyValue);
         }
 
-        public MeterURLKey GetURL_P371602077()
+        private static void PopulateURL_P371602077()
         {
-            MeterURLKey keyValue;
-            try
-            {
-                log.Debug("GetURL_P371602077 called");
-                keyValue = new MeterURLKey();
+            MeterURLKeyModel keyValue = new MeterURLKeyModel();
                 keyValue.Weather = WeatherURL;
                 keyValue.QuarterlyConsumption = "";
                 keyValue.LastQuarterlyConsumption = "";
@@ -205,22 +163,13 @@ namespace RestService.Utilities
                 keyValue.PeriodWiseConsumption = "https://app.powerbi.com/embed?dashboardId=d43d8ae2-247d-4f01-8007-3562e36d1cfa&tileId=3b94f102-7b1b-4071-9d4c-7ebb4f0d234d";
 
                 keyValue.Report = "https://app.powerbi.com/reportEmbed?reportId=31db8bf7-0509-4413-aac5-1ef7bbd29a38";
-                return keyValue;
-            }
-            catch (Exception ex)
-            {
-                log.Error("Exception occurred in GetURL_P371602077 as: " + ex);
-                return null;
-            }
+
+            MeterURLKeyDictionary.Add("P371602077", keyValue);
         }
 
-        public MeterURLKey GetURL_P371602079()
+        private static void PopulateURL_P371602079()
         {
-            MeterURLKey keyValue;
-            try
-            {
-                log.Debug("GetURL_P371602079 called");
-                keyValue = new MeterURLKey();
+            MeterURLKeyModel keyValue = new MeterURLKeyModel();
                 keyValue.Weather = WeatherURL;
                 keyValue.QuarterlyConsumption = "";
                 keyValue.LastQuarterlyConsumption = "";
@@ -240,13 +189,8 @@ namespace RestService.Utilities
                 keyValue.PeriodWiseConsumption = "https://app.powerbi.com/embed?dashboardId=a55133bd-3fda-4248-9ace-4852e8b07b2b&tileId=08415552-9de2-4936-812a-e4e3371ab76b";
 
                 keyValue.Report = "https://app.powerbi.com/reportEmbed?reportId=d2d26e40-a0de-486d-b95b-118b1eed49b9";
-                return keyValue;
-            }
-            catch (Exception ex)
-            {
-                log.Error("Exception occurred in GetURL_P371602079 as: " + ex);
-                return null;
-            }
+
+            MeterURLKeyDictionary.Add("P371602079", keyValue);
         }
     }
 }
