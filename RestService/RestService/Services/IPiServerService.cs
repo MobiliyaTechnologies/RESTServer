@@ -19,6 +19,13 @@
         PiServerModel GetPiServerByID(PiServerModel model);
 
         /// <summary>
+        /// Get a PiServer by Name
+        /// </summary>
+        /// <param name="model">PiServer model</param>
+        /// <returns>Returns a specific PiServer by fetching based on PiServer name</returns>
+        PiServerModel GetPiServerByName(PiServerModel model);
+
+        /// <summary>
         /// Inserts a new PiServer in system
         /// </summary>
         /// <param name="model">PiServer model</param>

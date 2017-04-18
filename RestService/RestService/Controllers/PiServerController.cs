@@ -46,6 +46,26 @@
             return this.Request.CreateErrorResponse(HttpStatusCode.NotFound, string.Format("No Pi Server found"));
         }
 
+        [Route("api/getpiserverbyname")]
+        [HttpPost]
+        public HttpResponseMessage GetPiServerByName([FromBody] PiServerModel model)
+        {
+            if (model.PiServerName == "" || model.PiServerName == null)
+            {
+                return this.Request.CreateResponse((HttpStatusCode)614, string.Format("Pi Server name cannot be blank"));
+            }
+            else
+            {
+                var data = this.piServerService.GetPiServerByName(model);
+                if (data != null)
+                {
+                    return this.Request.CreateResponse(HttpStatusCode.OK, data);
+                }
+
+                return this.Request.CreateErrorResponse(HttpStatusCode.NotFound, string.Format("No Pi Server found"));
+            }
+        }
+
         [Route("api/addpiserver")]
         [HttpPost]
         public HttpResponseMessage AddPiServer([FromBody] PiServerModel model)
