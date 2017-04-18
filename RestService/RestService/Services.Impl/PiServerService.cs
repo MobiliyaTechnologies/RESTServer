@@ -45,6 +45,27 @@
             return piServer;
         }
 
+        PiServerModel IPiServerService.GetPiServerByName(PiServerModel model)
+        {
+            var piServer = (from data in this.dbContext.PiServer
+                            where data.PiServerName == model.PiServerName
+                            select new PiServerModel
+                            {
+                                PiServerID = data.PiServerID,
+                                PiServerName = data.PiServerName,
+                                PiServerDesc = data.PiServerDesc,
+                                CampusID = data.CampusID,
+                                PiServerURL = data.PiServerURL,
+                                CreatedBy = data.CreatedBy ?? default(int),
+                                CreatedOn = data.CreatedOn ?? default(DateTime),
+                                ModifiedBy = data.ModifiedBy ?? default(int),
+                                ModifiedOn = data.ModifiedOn ?? default(DateTime),
+                                IsActive = data.IsActive,
+                                IsDeleted = data.IsDeleted
+                            }).FirstOrDefault();
+            return piServer;
+        }
+
         ResponseModel IPiServerService.AddPiServer(PiServerModel model, int userId)
         {
             var piServer = new PiServer();
