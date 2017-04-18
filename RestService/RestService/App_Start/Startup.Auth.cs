@@ -1,4 +1,5 @@
-﻿namespace RestService
+﻿
+namespace RestService
 {
     using System;
     using Microsoft.AspNet.Identity;
@@ -31,7 +32,6 @@
             signInPolicy = ConfigurationManager.AppSettings["b2c:SignInPolicyId"];
             editProfilePolicy = ConfigurationManager.AppSettings["b2c:UserProfilePolicyId"];
             MFAPolicyName = ConfigurationManager.AppSettings["b2c:MFAPolicyName"];
-
             // app.UseOAuthBearerAuthentication(CreateBearerOptionsFromPolicy(signUpPolicy));
             app.UseOAuthBearerAuthentication(CreateBearerOptionsFromPolicy(signInPolicy));
         }

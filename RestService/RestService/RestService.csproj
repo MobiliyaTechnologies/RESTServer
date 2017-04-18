@@ -457,7 +457,6 @@
       <LastGenOutput>PowergridModel.cs</LastGenOutput>
     </Content>
     <Content Include="favicon.ico" />
-    <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <EntityDeploy Include="Entities\PowergridModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
