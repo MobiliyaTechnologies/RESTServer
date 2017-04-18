@@ -18,6 +18,8 @@
 
         public static readonly string MonthlyConsumptionCost = GetConfigData("MonthlyConsumptionCost");
 
+        public static readonly string B2CServiceURL = GetConfigData("B2CClaimURL");
+
         private static string GetConfigData(string key)
         {
             return ConfigurationManager.AppSettings[key];

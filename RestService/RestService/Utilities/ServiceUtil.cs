@@ -3,6 +3,7 @@
     using System;
     using System.IO;
     using System.Net;
+    using System.Security.Claims;
     using System.Text;
     using Newtonsoft.Json;
     using RestService.Enums;
@@ -93,6 +94,15 @@
             DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
             dtDateTime = dtDateTime.AddSeconds(unixTimeStamp);
             return dtDateTime;
+        }
+
+        public static int GetUser()
+        {
+            return 1;
+            string serviceUrl = ApiConfiguration.B2CServiceURL;
+            string userIdString = ClaimsPrincipal.Current.FindFirst(serviceUrl).Value;
+            int userId = int.Parse(userIdString.ToString());
+            //return userId;
         }
     }
 }
