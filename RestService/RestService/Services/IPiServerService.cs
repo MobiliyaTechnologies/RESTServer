@@ -14,9 +14,9 @@
         /// <summary>
         /// Get a PiServer by ID
         /// </summary>
-        /// <param name="model">PiServer model</param>
+        /// <param name="piServerID">PiServer ID</param>
         /// <returns>Returns a specific PiServer by fetching based on PiServerID</returns>
-        PiServerModel GetPiServerByID(PiServerModel model);
+        PiServerModel GetPiServerByID(int piServerID);
 
         /// <summary>
         /// Get a PiServer by Name

@@ -14,9 +14,9 @@
         /// <summary>
         /// Get a Building by ID
         /// </summary>
-        /// <param name="model">Building model</param>
+        /// <param name="BuildingID">Building ID</param>
         /// <returns>Returns a specific Building by fetching based on BuildingID</returns>
-        BuildingModel GetBuildingByID(BuildingModel model);
+        BuildingModel GetBuildingByID(int BuildingID);
 
         /// <summary>
         /// Inserts a new Building in system

@@ -18,13 +18,22 @@ namespace RestService.Entities
         public Role()
         {
             this.UserRole = new HashSet<UserRole>();
+            this.Campus = new HashSet<Campus>();
         }
     
         public int Id { get; set; }
-        public string Role1 { get; set; }
+        public string RoleName { get; set; }
         public string Description { get; set; }
+        public bool IsActive { get; set; }
+        public Nullable<int> CreatedBy { get; set; }
+        public Nullable<System.DateTime> CreatedOn { get; set; }
+        public Nullable<int> ModifiedBy { get; set; }
+        public Nullable<System.DateTime> ModifiedOn { get; set; }
+        public bool IsDeleted { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserRole> UserRole { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Campus> Campus { get; set; }
     }
 }

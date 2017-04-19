@@ -14,9 +14,9 @@
         /// <summary>
         /// Get a university by ID
         /// </summary>
-        /// <param name="model">University model</param>
+        /// <param name="universityID">University ID</param>
         /// <returns>Returns a specific University by fetching based on UniversityID</returns>
-        UniversityModel GetUniversityByID(UniversityModel model);
+        UniversityModel GetUniversityByID(int universityID);
 
         /// <summary>
         /// Inserts a new University in system

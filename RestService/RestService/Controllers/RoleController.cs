@@ -12,77 +12,77 @@
     using RestService.Services.Impl;
     using RestService.Utilities;
 
-    public class CampusController : ApiController
+    public class RoleController : ApiController
     {
-        private readonly ICampusService campusService;
+        private readonly IRoleService roleService;
 
-        public CampusController()
+        public RoleController()
         {
-            this.campusService = new CampusService();
+            this.roleService = new RoleService();
         }
 
-        [Route("api/getallcampus")]
-        public HttpResponseMessage GetAllCampus()
+        [Route("api/getallroles")]
+        public HttpResponseMessage GetAllRoles()
         {
-            var data = this.campusService.GetAllCampus();
+            var data = this.roleService.GetAllRoles();
             if (data.Count != 0)
             {
                 return this.Request.CreateResponse(HttpStatusCode.OK, data);
             }
 
-            return this.Request.CreateErrorResponse(HttpStatusCode.NotFound, string.Format("No Campus found"));
+            return this.Request.CreateErrorResponse(HttpStatusCode.NotFound, string.Format("No Role found"));
         }
 
-        [Route("api/getcampusbyid/{campusID}")]
-        public HttpResponseMessage GetCampusByID(int campusID)
+        [Route("api/getRolebyid/{roleId}")]
+        public HttpResponseMessage GetRoleByID(int roleId)
         {
-            var data = this.campusService.GetCampusByID(campusID);
+            var data = this.roleService.GetRoleByID(roleId);
             if (data != null)
             {
                 return this.Request.CreateResponse(HttpStatusCode.OK, data);
             }
 
-            return this.Request.CreateErrorResponse(HttpStatusCode.NotFound, string.Format("No Campus found"));
+            return this.Request.CreateErrorResponse(HttpStatusCode.NotFound, string.Format("No Role found"));
         }
 
-        [Route("api/addcampus")]
+        [Route("api/addRole")]
         [HttpPost]
-        public HttpResponseMessage AddCampus([FromBody] CampusModel model)
+        public HttpResponseMessage AddRole([FromBody] RoleModel model)
         {
             if (this.ModelState.IsValid)
             {
                 var userId = ServiceUtil.GetUser();
-                var data = this.campusService.AddCampus(model, userId);
+                var data = this.roleService.AddRole(model, userId);
                 return this.Request.CreateResponse(HttpStatusCode.OK, data);
             }
 
             // Create an error message for returning
             string messages = string.Join("; ", this.ModelState.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage));
-            return this.Request.CreateErrorResponse((HttpStatusCode)612, messages);
+            return this.Request.CreateErrorResponse((HttpStatusCode)615, messages);
         }
 
-        [Route("api/updatecampus")]
+        [Route("api/updateRole")]
         [HttpPost]
-        public HttpResponseMessage UpdateCampus([FromBody] CampusModel model)
+        public HttpResponseMessage UpdateRole([FromBody] RoleModel model)
         {
             if (this.ModelState.IsValid)
             {
                 var userId = ServiceUtil.GetUser();
-                var data = this.campusService.UpdateCampus(model, userId);
+                var data = this.roleService.UpdateRole(model, userId);
                 return this.Request.CreateResponse(HttpStatusCode.OK, data);
             }
 
             // Create an error message for returning
             string messages = string.Join("; ", this.ModelState.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage));
-            return this.Request.CreateErrorResponse((HttpStatusCode)612, messages);
+            return this.Request.CreateErrorResponse((HttpStatusCode)615, messages);
         }
 
-        [Route("api/deletecampus")]
+        [Route("api/deleteRole")]
         [HttpPost]
-        public HttpResponseMessage DeleteCampus([FromBody] CampusModel model)
+        public HttpResponseMessage DeleteRole([FromBody] RoleModel model)
         {
             var userId = ServiceUtil.GetUser();
-            var data = this.campusService.DeleteCampus(model, userId);
+            var data = this.roleService.DeleteRole(model, userId);
             return this.Request.CreateResponse(HttpStatusCode.OK, data);
         }
 
@@ -94,7 +94,7 @@
         {
             if (disposing)
             {
-                (this.campusService as IDisposable).Dispose();
+                (this.roleService as IDisposable).Dispose();
             }
 
             base.Dispose(disposing);

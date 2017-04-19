@@ -53,6 +53,7 @@ namespace RestService.Entities
         public virtual DbSet<UserSession> UserSession { get; set; }
         public virtual DbSet<WeeklyConsumptionPrediction> WeeklyConsumptionPrediction { get; set; }
         public virtual DbSet<PowergridAzureMLData> PowergridAzureMLData { get; set; }
+        public virtual DbSet<RoleBK> RoleBK { get; set; }
         public virtual DbSet<TempMLData> TempMLData { get; set; }
     }
 }

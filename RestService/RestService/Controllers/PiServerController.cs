@@ -33,11 +33,10 @@
             return this.Request.CreateErrorResponse(HttpStatusCode.NotFound, string.Format("No Pi Server found"));
         }
 
-        [Route("api/getpiserverbyid")]
-        [HttpPost]
-        public HttpResponseMessage GetPiServerByID([FromBody] PiServerModel model)
+        [Route("api/getpiserverbyid/{piServerID}")]
+        public HttpResponseMessage GetPiServerByID(int piServerID)
         {
-            var data = this.piServerService.GetPiServerByID(model);
+            var data = this.piServerService.GetPiServerByID(piServerID);
             if (data != null)
             {
                 return this.Request.CreateResponse(HttpStatusCode.OK, data);
@@ -79,7 +78,7 @@
 
             // Create an error message for returning
             string messages = string.Join("; ", this.ModelState.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage));
-            return this.Request.CreateResponse((HttpStatusCode)614, messages);
+            return this.Request.CreateErrorResponse((HttpStatusCode)614, messages);
         }
 
         [Route("api/updatepiserver")]
@@ -95,7 +94,7 @@
 
             // Create an error message for returning
             string messages = string.Join("; ", this.ModelState.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage));
-            return this.Request.CreateResponse((HttpStatusCode)614, messages);
+            return this.Request.CreateErrorResponse((HttpStatusCode)614, messages);
         }
 
         [Route("api/deletepiserver")]

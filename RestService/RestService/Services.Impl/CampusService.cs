@@ -24,24 +24,10 @@
             return new CampusModelMapping().Map(campus).ToList();
         }
 
-        CampusModel ICampusService.GetCampusByID(CampusModel model)
+        CampusModel ICampusService.GetCampusByID(int campusID)
         {
-            var Campus = (from data in this.dbContext.Campus
-                              where data.CampusID == model.CampusID
-                              select new CampusModel
-                              {
-                                  CampusID = data.CampusID,
-                                  CampusName = data.CampusName,
-                                  CampusDesc = data.CampusDesc,
-                                  UniversityID = data.UniversityID,
-                                  CreatedBy = data.CreatedBy ?? default(int),
-                                  CreatedOn = data.CreatedOn ?? default(DateTime),
-                                  ModifiedBy = data.ModifiedBy ?? default(int),
-                                  ModifiedOn = data.ModifiedOn ?? default(DateTime),
-                                  IsActive = data.IsActive,
-                                  IsDeleted = data.IsDeleted
-                              }).FirstOrDefault();
-            return Campus;
+            var campus = this.dbContext.Campus.FirstOrDefault(data => data.CampusID == campusID);
+            return new CampusModelMapping().Map(campus);
         }
 
         ResponseModel ICampusService.AddCampus(CampusModel model, int userId)
