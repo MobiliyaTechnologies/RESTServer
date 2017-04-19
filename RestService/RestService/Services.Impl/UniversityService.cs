@@ -24,24 +24,10 @@
             return new UniversityModelMapping().Map(universities).ToList();
         }
 
-        UniversityModel IUniversityService.GetUniversityByID(UniversityModel model)
+        UniversityModel IUniversityService.GetUniversityByID(int universityID)
         {
-            var university = (from data in this.dbContext.University
-                              where data.UniversityID == model.UniversityID
-                              select new UniversityModel
-                              {
-                                  UniversityID = data.UniversityID,
-                                  UniversityName = data.UniversityName,
-                                  UniversityDesc = data.UniversityDesc,
-                                  UniversityAddress = data.UniversityAddress,
-                                  CreatedBy = data.CreatedBy ?? default(int),
-                                  CreatedOn = data.CreatedOn ?? default(DateTime),
-                                  ModifiedBy = data.ModifiedBy ?? default(int),
-                                  ModifiedOn = data.ModifiedOn ?? default(DateTime),
-                                  IsActive = data.IsActive,
-                                  IsDeleted = data.IsDeleted
-                              }).FirstOrDefault();
-            return university;
+            var university = this.dbContext.University.FirstOrDefault(data => data.UniversityID == universityID);
+            return new UniversityModelMapping().Map(university);
         }
 
         ResponseModel IUniversityService.AddUniversity(UniversityModel model, int userId)

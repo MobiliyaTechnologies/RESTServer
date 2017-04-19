@@ -4,36 +4,37 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="8ed0d9114e32491b8414a276135d713a" Name="Diagram1">
-        <EntityTypeShape EntityType="PowerGridModel.AlertRules" Width="1.5" PointX="7.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="PowerGridModel.Alerts" Width="1.5" PointX="0.75" PointY="8.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="PowerGridModel.AnomalyOutput" Width="1.5" PointX="2.75" PointY="8.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="PowerGridModel.Answers" Width="1.5" PointX="3" PointY="1.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="PowerGridModel.Building" Width="1.5" PointX="10.25" PointY="6.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="PowerGridModel.Campus" Width="1.5" PointX="8" PointY="8" IsExpanded="true" />
-        <EntityTypeShape EntityType="PowerGridModel.ClassroomDetails" Width="1.5" PointX="3" PointY="5.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="PowerGridModel.DailyConsumptionDetails" Width="1.5" PointX="9.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="PowerGridModel.DailyConsumptionPrediction" Width="1.5" PointX="0.75" PointY="12.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="PowerGridModel.Feedback" Width="1.5" PointX="5.25" PointY="1" IsExpanded="true" />
-        <EntityTypeShape EntityType="PowerGridModel.HalfHourlyData" Width="1.5" PointX="2.75" PointY="12.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="PowerGridModel.HalfYearlyData" Width="1.5" PointX="4.75" PointY="12.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="PowerGridModel.MeterDetails" Width="1.5" PointX="6.75" PointY="12.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="PowerGridModel.MonthlyConsumptionDetails" Width="1.5" PointX="12.75" PointY="10.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="PowerGridModel.MSLiveData" Width="1.5" PointX="14.75" PointY="7.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="PowerGridModel.PiServer" Width="1.5" PointX="10.25" PointY="10.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="PowerGridModel.Questions" Width="1.5" PointX="0.75" PointY="1.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="PowerGridModel.Role" Width="1.5" PointX="12.75" PointY="7.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="PowerGridModel.SensorData" Width="1.5" PointX="8.75" PointY="14.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="PowerGridModel.SensorLiveData" Width="1.5" PointX="10.75" PointY="15.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="PowerGridModel.SensorMaster" Width="1.5" PointX="16.75" PointY="7.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="PowerGridModel.TempMSLiveData" Width="1.5" PointX="16.75" PointY="10.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="PowerGridModel.University" Width="1.5" PointX="5.75" PointY="8.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="PowerGridModel.User" Width="1.5" PointX="12.75" PointY="1.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="PowerGridModel.UserRole" Width="1.5" PointX="15" PointY="2.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="PowerGridModel.UserSession" Width="1.5" PointX="15" PointY="5.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="PowerGridModel.WeeklyConsumptionPrediction" Width="1.5" PointX="12.75" PointY="16.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="PowerGridModel.PowergridAzureMLData" Width="1.5" PointX="18.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="PowerGridModel.TempMLData" Width="1.5" PointX="6.75" PointY="18.75" IsExpanded="true" />
+      <Diagram DiagramId="344231d1b793461ea94be0bf24fdcd63" Name="Diagram1" ZoomLevel="93">
+        <EntityTypeShape EntityType="PowerGridModel.AlertRules" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PowerGridModel.Alerts" Width="1.5" PointX="0.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PowerGridModel.AnomalyOutput" Width="1.5" PointX="9.75" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PowerGridModel.Answers" Width="1.5" PointX="10" PointY="1.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="PowerGridModel.Building" Width="1.5" PointX="5.25" PointY="1.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="PowerGridModel.Campus" Width="1.5" PointX="3" PointY="5.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="PowerGridModel.ClassroomDetails" Width="1.5" PointX="10" PointY="5.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="PowerGridModel.DailyConsumptionDetails" Width="1.5" PointX="11.75" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PowerGridModel.DailyConsumptionPrediction" Width="1.5" PointX="0.75" PointY="13.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PowerGridModel.Feedback" Width="1.5" PointX="12.25" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="PowerGridModel.HalfHourlyData" Width="1.5" PointX="13.75" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PowerGridModel.HalfYearlyData" Width="1.5" PointX="9.75" PointY="13.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PowerGridModel.MeterDetails" Width="1.5" PointX="14.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PowerGridModel.MonthlyConsumptionDetails" Width="1.5" PointX="15.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PowerGridModel.MSLiveData" Width="1.5" PointX="15.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PowerGridModel.PiServer" Width="1.5" PointX="5.25" PointY="5.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="PowerGridModel.Questions" Width="1.5" PointX="7.75" PointY="1.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PowerGridModel.Role" Width="1.5" PointX="5.25" PointY="9.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="PowerGridModel.SensorData" Width="1.5" PointX="11.75" PointY="15.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PowerGridModel.SensorLiveData" Width="1.5" PointX="16.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PowerGridModel.SensorMaster" Width="1.5" PointX="0.75" PointY="17.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PowerGridModel.TempMSLiveData" Width="1.5" PointX="2.75" PointY="17.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PowerGridModel.University" Width="1.5" PointX="0.75" PointY="5.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="PowerGridModel.User" Width="1.5" PointX="5.25" PointY="13.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="PowerGridModel.UserRole" Width="1.5" PointX="7.5" PointY="9.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="PowerGridModel.UserSession" Width="1.5" PointX="7.5" PointY="14" IsExpanded="true" />
+        <EntityTypeShape EntityType="PowerGridModel.WeeklyConsumptionPrediction" Width="1.5" PointX="17.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PowerGridModel.PowergridAzureMLData" Width="1.5" PointX="4.75" PointY="17.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PowerGridModel.RoleBK" Width="1.5" PointX="17.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PowerGridModel.TempMLData" Width="1.5" PointX="6.75" PointY="17.75" IsExpanded="true" />
         <AssociationConnector Association="PowerGridModel.FK_Answers_QuestionID" ManuallyRouted="false" />
         <AssociationConnector Association="PowerGridModel.FK_Feedback_AnswerID" ManuallyRouted="false" />
         <AssociationConnector Association="PowerGridModel.FK_Building_CampusID" ManuallyRouted="false" />
@@ -44,6 +45,7 @@
         <AssociationConnector Association="PowerGridModel.FK_UserRole_Role" ManuallyRouted="false" />
         <AssociationConnector Association="PowerGridModel.FK_UserRole_User" ManuallyRouted="false" />
         <AssociationConnector Association="PowerGridModel.FK_UserSession_User" ManuallyRouted="false" />
+        <AssociationConnector Association="PowerGridModel.RoleCampusLinkUp" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

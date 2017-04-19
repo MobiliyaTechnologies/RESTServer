@@ -1,6 +1,7 @@
 ﻿namespace RestService.Mappings
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using RestService.Entities;
     using RestService.Models;
@@ -23,6 +24,11 @@
                        ModifiedOn = s.ModifiedOn ?? default(DateTime),
                        IsDeleted = s.IsDeleted
                    };
+        }
+
+        public BuildingModel Map(Building source)
+        {
+            return source == null ? null : this.Map(new List<Building> { source }.AsQueryable()).First();
         }
     }
 }

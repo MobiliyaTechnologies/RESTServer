@@ -33,11 +33,10 @@
             return this.Request.CreateErrorResponse(HttpStatusCode.NotFound, string.Format("No Building found"));
         }
 
-        [Route("api/getbuildingbyid")]
-        [HttpPost]
-        public HttpResponseMessage GetBuildingByID([FromBody] BuildingModel model)
+        [Route("api/getbuildingbyid/{buildingID}")]
+        public HttpResponseMessage GetBuildingByID(int buildingID)
         {
-            var data = this.buildingService.GetBuildingByID(model);
+            var data = this.buildingService.GetBuildingByID(buildingID);
             if (data != null)
             {
                 return this.Request.CreateResponse(HttpStatusCode.OK, data);
@@ -59,7 +58,7 @@
 
             // Create an error message for returning
             string messages = string.Join("; ", this.ModelState.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage));
-            return this.Request.CreateResponse((HttpStatusCode)613, messages);
+            return this.Request.CreateErrorResponse((HttpStatusCode)613, messages);
         }
 
         [Route("api/updatebuilding")]
@@ -75,7 +74,7 @@
 
             // Create an error message for returning
             string messages = string.Join("; ", this.ModelState.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage));
-            return this.Request.CreateResponse((HttpStatusCode)613, messages);
+            return this.Request.CreateErrorResponse((HttpStatusCode)613, messages);
         }
 
         [Route("api/deletebuilding")]

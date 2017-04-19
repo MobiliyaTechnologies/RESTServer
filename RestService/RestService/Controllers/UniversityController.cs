@@ -33,11 +33,10 @@
             return this.Request.CreateErrorResponse(HttpStatusCode.NotFound, string.Format("No university found"));
         }
 
-        [Route("api/getuniversitybyid")]
-        [HttpPost]
-        public HttpResponseMessage GetUniversityByID([FromBody] UniversityModel model)
+        [Route("api/getuniversitybyid/{universityID}")]
+        public HttpResponseMessage GetUniversityByID(int universityID)
         {
-            var data = this.universityService.GetUniversityByID(model);
+            var data = this.universityService.GetUniversityByID(universityID);
             if (data != null)
             {
                 return this.Request.CreateResponse(HttpStatusCode.OK, data);
@@ -59,7 +58,7 @@
 
             // Create an error message for returning
             string messages = string.Join("; ", this.ModelState.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage));
-            return this.Request.CreateResponse((HttpStatusCode)611, messages);
+            return this.Request.CreateErrorResponse((HttpStatusCode)611, messages);
         }
 
         [Route("api/updateuniversity")]
@@ -75,7 +74,7 @@
 
             // Create an error message for returning
             string messages = string.Join("; ", this.ModelState.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage));
-            return this.Request.CreateResponse((HttpStatusCode)611, messages);
+            return this.Request.CreateErrorResponse((HttpStatusCode)611, messages);
         }
 
         [Route("api/deleteuniversity")]

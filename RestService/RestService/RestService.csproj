@@ -85,38 +85,29 @@
     <Reference Include="Microsoft.IdentityModel.Tokens, Version=5.1.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.IdentityModel.Tokens.5.1.3\lib\net451\Microsoft.IdentityModel.Tokens.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Owin, Version=3.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Owin.3.1.0\lib\net45\Microsoft.Owin.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Microsoft.Owin, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Owin.Host.SystemWeb, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Host.SystemWeb.3.0.1\lib\net45\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Owin.Host.SystemWeb, Version=3.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Owin.Host.SystemWeb.3.1.0\lib\net45\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
+    <Reference Include="Microsoft.Owin.Security, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Owin.Security.Cookies, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.Cookies.3.0.1\lib\net45\Microsoft.Owin.Security.Cookies.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Owin.Security, Version=3.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Owin.Security.3.1.0\lib\net45\Microsoft.Owin.Security.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Microsoft.Owin.Security.Facebook, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.Facebook.3.0.1\lib\net45\Microsoft.Owin.Security.Facebook.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Owin.Security.Cookies, Version=3.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Owin.Security.Cookies.3.1.0\lib\net45\Microsoft.Owin.Security.Cookies.dll</HintPath>
+    <Reference Include="Microsoft.Owin.Security.Google, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.Google.3.0.1\lib\net45\Microsoft.Owin.Security.Google.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Owin.Security.Facebook, Version=3.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Owin.Security.Facebook.3.1.0\lib\net45\Microsoft.Owin.Security.Facebook.dll</HintPath>
+    <Reference Include="Microsoft.Owin.Security.Jwt, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.Jwt.3.0.1\lib\net45\Microsoft.Owin.Security.Jwt.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Owin.Security.Google, Version=3.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Owin.Security.Google.3.1.0\lib\net45\Microsoft.Owin.Security.Google.dll</HintPath>
+    <Reference Include="Microsoft.Owin.Security.MicrosoftAccount, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.MicrosoftAccount.3.0.1\lib\net45\Microsoft.Owin.Security.MicrosoftAccount.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Owin.Security.Jwt, Version=3.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Owin.Security.Jwt.3.1.0\lib\net45\Microsoft.Owin.Security.Jwt.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Owin.Security.MicrosoftAccount, Version=3.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Owin.Security.MicrosoftAccount.3.1.0\lib\net45\Microsoft.Owin.Security.MicrosoftAccount.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Owin.Security.OAuth, Version=3.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Owin.Security.OAuth.3.1.0\lib\net45\Microsoft.Owin.Security.OAuth.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Owin.Security.Twitter, Version=3.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Owin.Security.Twitter.3.1.0\lib\net45\Microsoft.Owin.Security.Twitter.dll</HintPath>
+    <Reference Include="Microsoft.Owin.Security.OAuth, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Owin.Security.Twitter, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.Twitter.3.0.1\lib\net45\Microsoft.Owin.Security.Twitter.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.10.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -261,6 +252,7 @@
     <Compile Include="Controllers\PiServerController.cs" />
     <Compile Include="Controllers\PowerBIController.cs" />
     <Compile Include="Controllers\QuestionController.cs" />
+    <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\SensorController.cs" />
     <Compile Include="Controllers\UniversityController.cs" />
     <Compile Include="Entities\AlertRules.cs">
@@ -335,6 +327,9 @@
     <Compile Include="Entities\Role.cs">
       <DependentUpon>PowergridModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\RoleBK.cs">
+      <DependentUpon>PowergridModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\SensorData.cs">
       <DependentUpon>PowergridModel.tt</DependentUpon>
     </Compile>
@@ -381,6 +376,7 @@
     <Compile Include="Mappings\MeterMonthlyConsumptionModelMapping.cs" />
     <Compile Include="Mappings\PiServerModelMapping.cs" />
     <Compile Include="Mappings\QuestionModelMapping.cs" />
+    <Compile Include="Mappings\RoleModelMapping.cs" />
     <Compile Include="Mappings\UniversityModelMapping.cs" />
     <Compile Include="Models\AlertDetailsModel.cs" />
     <Compile Include="Models\AlertModel.cs" />
@@ -406,6 +402,7 @@
     <Compile Include="Models\PowerBIGeneralURLModel.cs" />
     <Compile Include="Models\QuestionModel.cs" />
     <Compile Include="Models\ResponseModel.cs" />
+    <Compile Include="Models\RoleModel.cs" />
     <Compile Include="Models\SensorModel.cs" />
     <Compile Include="Models\UniversityModel.cs" />
     <Compile Include="Models\UserDataModel.cs" />
@@ -421,6 +418,7 @@
     <Compile Include="Services.Impl\PiServerService.cs" />
     <Compile Include="Services.Impl\PowerBIService.cs" />
     <Compile Include="Services.Impl\QuestionService.cs" />
+    <Compile Include="Services.Impl\RoleService.cs" />
     <Compile Include="Services.Impl\SensorService.cs" />
     <Compile Include="Services.Impl\UniversityService.cs" />
     <Compile Include="Services\IAlertService.cs" />
@@ -434,6 +432,7 @@
     <Compile Include="Services\IPiServerService.cs" />
     <Compile Include="Services\IPowerBIService.cs" />
     <Compile Include="Services\IQuestionService.cs" />
+    <Compile Include="Services\IRoleService.cs" />
     <Compile Include="Services\ISensorService.cs" />
     <Compile Include="Services\IUniversityService.cs" />
     <Compile Include="Startup.cs" />
@@ -458,13 +457,6 @@
     </Content>
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
-    <EntityDeploy Include="Entities\PowergridModel.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>PowergridModel.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="Entities\PowergridModel.edmx.diagram">
-      <DependentUpon>PowergridModel.edmx</DependentUpon>
-    </Content>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
@@ -473,6 +465,13 @@
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
+    <EntityDeploy Include="Entities\PowergridModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>PowergridModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Entities\PowergridModel.edmx.diagram">
+      <DependentUpon>PowergridModel.edmx</DependentUpon>
+    </Content>
     <None Include="Properties\PublishProfiles\CSUWebApp - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\PowergridRESTService - FTP %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\PowergridRESTService - FTP.pubxml" />
@@ -495,7 +494,9 @@
     <Content Include="Scripts\respond.matchmedia.addListener.js" />
     <Content Include="Scripts\respond.matchmedia.addListener.min.js" />
     <Content Include="Scripts\respond.min.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>

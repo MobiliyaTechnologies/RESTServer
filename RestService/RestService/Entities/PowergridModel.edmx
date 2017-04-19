@@ -307,6 +307,12 @@
           <Property Name="Volts_L3_to_neutral" Type="float" />
           <Property Name="kW_System" Type="float" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'PowerGrid_Copy.dbo.Persons' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="Persons">
+          <Property Name="Name" Type="varchar" MaxLength="255" />
+          <Property Name="Email" Type="varchar" MaxLength="255" />
+        </EntityType>-->
         <EntityType Name="PiServer">
           <Key>
             <PropertyRef Name="PiServerID" />
@@ -373,9 +379,35 @@ warning 6002: The table/view 'PowerGrid_Copy.dbo.PowergridAzureMLData' does not 
           <Key>
             <PropertyRef Name="Id" />
           </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RoleName" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="CreatedBy" Type="int" />
+          <Property Name="CreatedOn" Type="datetime" />
+          <Property Name="ModifiedBy" Type="int" />
+          <Property Name="ModifiedOn" Type="datetime" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'PowerGrid_Copy.dbo.RoleBK' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="RoleBK">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
           <Property Name="Id" Type="int" Nullable="false" />
           <Property Name="Role" Type="nvarchar" MaxLength="50" />
           <Property Name="Description" Type="nvarchar(max)" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'PowerGrid_Copy.dbo.RoleCampusLinkUp' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="RoleCampusLinkUp">
+          <Key>
+            <PropertyRef Name="RoleID" />
+            <PropertyRef Name="CampusID" />
+          </Key>
+          <Property Name="RoleID" Type="int" Nullable="false" />
+          <Property Name="CampusID" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="SensorData">
           <Key>
@@ -631,6 +663,30 @@ warning 6002: The table/view 'PowerGrid_Copy.dbo.TempMLData' does not have a pri
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_RoleCampusLinkUp_CampusID">
+          <End Role="Campus" Type="Self.Campus" Multiplicity="1" />
+          <End Role="RoleCampusLinkUp" Type="Self.RoleCampusLinkUp" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Campus">
+              <PropertyRef Name="CampusID" />
+            </Principal>
+            <Dependent Role="RoleCampusLinkUp">
+              <PropertyRef Name="CampusID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RoleCampusLinkUp_RoleID">
+          <End Role="Role" Type="Self.Role" Multiplicity="1" />
+          <End Role="RoleCampusLinkUp" Type="Self.RoleCampusLinkUp" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Role">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="RoleCampusLinkUp">
+              <PropertyRef Name="RoleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_UserRole_Role">
           <End Role="Role" Type="Self.Role" Multiplicity="0..1" />
           <End Role="UserRole" Type="Self.UserRole" Multiplicity="*" />
@@ -731,6 +787,19 @@ warning 6002: The table/view 'PowerGrid_Copy.dbo.TempMLData' does not have a pri
     [PowergridAzureMLData].[PredictedKwH] AS [PredictedKwH]
     FROM [dbo].[PowergridAzureMLData] AS [PowergridAzureMLData]</DefiningQuery>
           </EntitySet>
+          <EntitySet Name="RoleBK" EntityType="Self.RoleBK" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [RoleBK].[Id] AS [Id], 
+    [RoleBK].[Role] AS [Role], 
+    [RoleBK].[Description] AS [Description]
+    FROM [dbo].[RoleBK] AS [RoleBK]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="RoleCampusLinkUp" EntityType="Self.RoleCampusLinkUp" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [RoleCampusLinkUp].[RoleID] AS [RoleID], 
+    [RoleCampusLinkUp].[CampusID] AS [CampusID]
+    FROM [dbo].[RoleCampusLinkUp] AS [RoleCampusLinkUp]</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="TempMLData" EntityType="Self.TempMLData" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [TempMLData].[Id] AS [Id], 
@@ -795,6 +864,14 @@ warning 6002: The table/view 'PowerGrid_Copy.dbo.TempMLData' does not have a pri
           <AssociationSet Name="FK_PiServer_CampusID" Association="Self.FK_PiServer_CampusID">
             <End Role="Campus" EntitySet="Campus" />
             <End Role="PiServer" EntitySet="PiServer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RoleCampusLinkUp_CampusID" Association="Self.FK_RoleCampusLinkUp_CampusID">
+            <End Role="Campus" EntitySet="Campus" />
+            <End Role="RoleCampusLinkUp" EntitySet="RoleCampusLinkUp" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RoleCampusLinkUp_RoleID" Association="Self.FK_RoleCampusLinkUp_RoleID">
+            <End Role="Role" EntitySet="Role" />
+            <End Role="RoleCampusLinkUp" EntitySet="RoleCampusLinkUp" />
           </AssociationSet>
           <AssociationSet Name="FK_UserRole_Role" Association="Self.FK_UserRole_Role">
             <End Role="Role" EntitySet="Role" />
@@ -902,6 +979,7 @@ warning 6002: The table/view 'PowerGrid_Copy.dbo.TempMLData' does not have a pri
           <NavigationProperty Name="Building" Relationship="Self.FK_Building_CampusID" FromRole="Campus" ToRole="Building" />
           <NavigationProperty Name="University" Relationship="Self.FK_Campus_UniversityID" FromRole="Campus" ToRole="University" />
           <NavigationProperty Name="PiServer" Relationship="Self.FK_PiServer_CampusID" FromRole="Campus" ToRole="PiServer" />
+          <NavigationProperty Name="Role" Relationship="Self.RoleCampusLinkUp" FromRole="Campus" ToRole="Role" />
         </EntityType>
         <EntityType Name="ClassroomDetails">
           <Key>
@@ -1156,10 +1234,17 @@ warning 6002: The table/view 'PowerGrid_Copy.dbo.TempMLData' does not have a pri
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
-          <Property Name="Role1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RoleName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="CreatedOn" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedBy" Type="Int32" />
+          <Property Name="ModifiedOn" Type="DateTime" Precision="3" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="UserRole" Relationship="Self.FK_UserRole_Role" FromRole="Role" ToRole="UserRole" />
+          <NavigationProperty Name="Campus" Relationship="Self.RoleCampusLinkUp" FromRole="Role" ToRole="Campus" />
         </EntityType>
         <EntityType Name="SensorData">
           <Key>
@@ -1334,6 +1419,14 @@ warning 6002: The table/view 'PowerGrid_Copy.dbo.TempMLData' does not have a pri
           <Property Name="kW_System" Type="Double" />
           <Property Name="PredictedKwH" Type="Double" />
         </EntityType>
+        <EntityType Name="RoleBK">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Role" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
         <EntityType Name="TempMLData">
           <Key>
             <PropertyRef Name="Id" />
@@ -1492,6 +1585,10 @@ warning 6002: The table/view 'PowerGrid_Copy.dbo.TempMLData' does not have a pri
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="RoleCampusLinkUp">
+          <End Role="Campus" Type="Self.Campus" Multiplicity="*" />
+          <End Role="Role" Type="Self.Role" Multiplicity="*" />
+        </Association>
         <EntityContainer Name="PowerGridEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="AlertRules" EntityType="Self.AlertRules" />
           <EntitySet Name="Alerts" EntityType="Self.Alerts" />
@@ -1521,6 +1618,7 @@ warning 6002: The table/view 'PowerGrid_Copy.dbo.TempMLData' does not have a pri
           <EntitySet Name="UserSession" EntityType="Self.UserSession" />
           <EntitySet Name="WeeklyConsumptionPrediction" EntityType="Self.WeeklyConsumptionPrediction" />
           <EntitySet Name="PowergridAzureMLData" EntityType="Self.PowergridAzureMLData" />
+          <EntitySet Name="RoleBK" EntityType="Self.RoleBK" />
           <EntitySet Name="TempMLData" EntityType="Self.TempMLData" />
           <AssociationSet Name="FK_Answers_QuestionID" Association="Self.FK_Answers_QuestionID">
             <End Role="Questions" EntitySet="Questions" />
@@ -1561,6 +1659,10 @@ warning 6002: The table/view 'PowerGrid_Copy.dbo.TempMLData' does not have a pri
           <AssociationSet Name="FK_UserSession_User" Association="Self.FK_UserSession_User">
             <End Role="User" EntitySet="User" />
             <End Role="UserSession" EntitySet="UserSession" />
+          </AssociationSet>
+          <AssociationSet Name="RoleCampusLinkUp" Association="Self.RoleCampusLinkUp">
+            <End Role="Campus" EntitySet="Campus" />
+            <End Role="Role" EntitySet="Role" />
           </AssociationSet>
         </EntityContainer>
       </Schema>
@@ -1915,8 +2017,14 @@ warning 6002: The table/view 'PowerGrid_Copy.dbo.TempMLData' does not have a pri
             <EntityTypeMapping TypeName="PowerGridModel.Role">
               <MappingFragment StoreEntitySet="Role">
                 <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Role1" ColumnName="Role" />
+                <ScalarProperty Name="RoleName" ColumnName="RoleName" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -2097,6 +2205,15 @@ warning 6002: The table/view 'PowerGrid_Copy.dbo.TempMLData' does not have a pri
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="RoleBK">
+            <EntityTypeMapping TypeName="PowerGridModel.RoleBK">
+              <MappingFragment StoreEntitySet="RoleBK">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Role" ColumnName="Role" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="TempMLData">
             <EntityTypeMapping TypeName="PowerGridModel.TempMLData">
               <MappingFragment StoreEntitySet="TempMLData">
@@ -2136,6 +2253,14 @@ warning 6002: The table/view 'PowerGrid_Copy.dbo.TempMLData' does not have a pri
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <AssociationSetMapping Name="RoleCampusLinkUp" TypeName="PowerGridModel.RoleCampusLinkUp" StoreEntitySet="RoleCampusLinkUp">
+            <EndProperty Name="Campus">
+              <ScalarProperty Name="CampusID" ColumnName="CampusID" />
+            </EndProperty>
+            <EndProperty Name="Role">
+              <ScalarProperty Name="Id" ColumnName="RoleID" />
+            </EndProperty>
+          </AssociationSetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

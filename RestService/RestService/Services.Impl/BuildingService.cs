@@ -24,24 +24,10 @@
             return new BuildingModelMapping().Map(building).ToList();
         }
 
-        BuildingModel IBuildingService.GetBuildingByID(BuildingModel model)
+        BuildingModel IBuildingService.GetBuildingByID(int buildingID)
         {
-            var building = (from data in this.dbContext.Building
-                          where data.BuildingID == model.BuildingID
-                          select new BuildingModel
-                          {
-                              BuildingID = data.BuildingID,
-                              BuildingName = data.BuildingName,
-                              BuildingDesc = data.BuildingDesc,
-                              CampusID = data.CampusID,
-                              CreatedBy = data.CreatedBy ?? default(int),
-                              CreatedOn = data.CreatedOn ?? default(DateTime),
-                              ModifiedBy = data.ModifiedBy ?? default(int),
-                              ModifiedOn = data.ModifiedOn ?? default(DateTime),
-                              IsActive = data.IsActive,
-                              IsDeleted = data.IsDeleted
-                          }).FirstOrDefault();
-            return building;
+            var building = this.dbContext.Building.FirstOrDefault(data => data.BuildingID == buildingID);
+            return new BuildingModelMapping().Map(building);
         }
 
         ResponseModel IBuildingService.AddBuilding(BuildingModel model, int userId)

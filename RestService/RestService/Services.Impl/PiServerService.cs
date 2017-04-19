@@ -24,25 +24,10 @@
             return new PiServerModelMapping().Map(piServer).ToList();
         }
 
-        PiServerModel IPiServerService.GetPiServerByID(PiServerModel model)
+        PiServerModel IPiServerService.GetPiServerByID(int piServerID)
         {
-            var piServer = (from data in this.dbContext.PiServer
-                          where data.PiServerID == model.PiServerID
-                          select new PiServerModel
-                          {
-                              PiServerID = data.PiServerID,
-                              PiServerName = data.PiServerName,
-                              PiServerDesc = data.PiServerDesc,
-                              CampusID = data.CampusID,
-                              PiServerURL = data.PiServerURL,
-                              CreatedBy = data.CreatedBy ?? default(int),
-                              CreatedOn = data.CreatedOn ?? default(DateTime),
-                              ModifiedBy = data.ModifiedBy ?? default(int),
-                              ModifiedOn = data.ModifiedOn ?? default(DateTime),
-                              IsActive = data.IsActive,
-                              IsDeleted = data.IsDeleted
-                          }).FirstOrDefault();
-            return piServer;
+            var piServer = this.dbContext.PiServer.FirstOrDefault(data => data.PiServerID == piServerID);
+            return new PiServerModelMapping().Map(piServer);
         }
 
         PiServerModel IPiServerService.GetPiServerByName(PiServerModel model)

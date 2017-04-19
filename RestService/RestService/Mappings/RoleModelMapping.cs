@@ -6,17 +6,16 @@
     using RestService.Entities;
     using RestService.Models;
 
-    public class CampusModelMapping
+    public class RoleModelMapping
     {
-        public IQueryable<CampusModel> Map(IQueryable<Campus> source)
+        public IQueryable<RoleModel> Map(IQueryable<Role> source)
         {
             return from s in source
-                   select new CampusModel
+                   select new RoleModel
                    {
-                       CampusID = s.CampusID,
-                       CampusName = s.CampusName,
-                       CampusDesc = s.CampusDesc,
-                       UniversityID = s.UniversityID,
+                       Id = s.Id,
+                       RoleName = s.RoleName,
+                       Description = s.Description,
                        IsActive = s.IsActive,
                        CreatedBy = s.CreatedBy ?? default(int),
                        CreatedOn = s.CreatedOn ?? default(DateTime),
@@ -26,9 +25,9 @@
                    };
         }
 
-        public CampusModel Map(Campus source)
+        public RoleModel Map(Role source)
         {
-            return source == null ? null : this.Map(new List<Campus> { source }.AsQueryable()).First();
+            return source == null ? null : this.Map(new List<Role> { source }.AsQueryable()).First();
         }
     }
 }

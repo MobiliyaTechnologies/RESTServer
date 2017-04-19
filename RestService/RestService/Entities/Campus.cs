@@ -19,6 +19,7 @@ namespace RestService.Entities
         {
             this.Building = new HashSet<Building>();
             this.PiServer = new HashSet<PiServer>();
+            this.Role = new HashSet<Role>();
         }
     
         public int CampusID { get; set; }
@@ -37,5 +38,7 @@ namespace RestService.Entities
         public virtual University University { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PiServer> PiServer { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Role> Role { get; set; }
     }
 }

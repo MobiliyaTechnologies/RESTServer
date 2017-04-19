@@ -14,9 +14,9 @@
         /// <summary>
         /// Get a Campus by ID
         /// </summary>
-        /// <param name="model">Campus model</param>
+        /// <param name="campusID">Campus ID</param>
         /// <returns>Returns a specific Campus by fetching based on CampusID</returns>
-        CampusModel GetCampusByID(CampusModel model);
+        CampusModel GetCampusByID(int campusID);
 
         /// <summary>
         /// Inserts a new Campus in system
