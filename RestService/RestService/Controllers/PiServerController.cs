@@ -1,27 +1,28 @@
 ﻿namespace RestService.Controllers
 {
     using System;
-    using System.Collections.Generic;
     using System.Linq;
     using System.Net;
     using System.Net.Http;
-    using System.Web;
     using System.Web.Http;
     using RestService.Models;
     using RestService.Services;
     using RestService.Services.Impl;
-    using RestService.Utilities;
 
+    [RoutePrefix("api")]
     public class PiServerController : ApiController
     {
         private readonly IPiServerService piServerService;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PiServerController"/> class.
+        /// </summary>
         public PiServerController()
         {
             this.piServerService = new PiServerService();
         }
 
-        [Route("api/getallpiServers")]
+        [Route("GetAllPiServers")]
         public HttpResponseMessage GetAllPiServers()
         {
             var data = this.piServerService.GetAllPiServers();
@@ -33,10 +34,11 @@
             return this.Request.CreateErrorResponse(HttpStatusCode.NotFound, string.Format("No Pi Server found"));
         }
 
-        [Route("api/getpiserverbyid/{piServerID}")]
+        [Route("GetPiServerByID/{piServerID}")]
         public HttpResponseMessage GetPiServerByID(int piServerID)
         {
             var data = this.piServerService.GetPiServerByID(piServerID);
+
             if (data != null)
             {
                 return this.Request.CreateResponse(HttpStatusCode.OK, data);
@@ -45,17 +47,16 @@
             return this.Request.CreateErrorResponse(HttpStatusCode.NotFound, string.Format("No Pi Server found"));
         }
 
-        [Route("api/getpiserverbyname")]
-        [HttpPost]
-        public HttpResponseMessage GetPiServerByName([FromBody] PiServerModel model)
+        [Route("GetPiServerByName/{piServerName}")]
+        public HttpResponseMessage GetPiServerByName(string piServerName)
         {
-            if (model.PiServerName == "" || model.PiServerName == null)
+            if (string.IsNullOrWhiteSpace(piServerName))
             {
                 return this.Request.CreateResponse((HttpStatusCode)614, string.Format("Pi Server name cannot be blank"));
             }
             else
             {
-                var data = this.piServerService.GetPiServerByName(model);
+                var data = this.piServerService.GetPiServerByName(piServerName);
                 if (data != null)
                 {
                     return this.Request.CreateResponse(HttpStatusCode.OK, data);
@@ -65,14 +66,13 @@
             }
         }
 
-        [Route("api/addpiserver")]
+        [Route("AddPiServer")]
         [HttpPost]
         public HttpResponseMessage AddPiServer([FromBody] PiServerModel model)
         {
             if (this.ModelState.IsValid)
             {
-                var userId = ServiceUtil.GetUser();
-                var data = this.piServerService.AddPiServer(model, userId);
+                var data = this.piServerService.AddPiServer(model);
                 return this.Request.CreateResponse(HttpStatusCode.OK, data);
             }
 
@@ -81,14 +81,13 @@
             return this.Request.CreateErrorResponse((HttpStatusCode)614, messages);
         }
 
-        [Route("api/updatepiserver")]
-        [HttpPost]
+        [Route("UpdatePiServer")]
+        [HttpPut]
         public HttpResponseMessage UpdatePiServer([FromBody] PiServerModel model)
         {
             if (this.ModelState.IsValid)
             {
-                var userId = ServiceUtil.GetUser();
-                var data = this.piServerService.UpdatePiServer(model, userId);
+                var data = this.piServerService.UpdatePiServer(model);
                 return this.Request.CreateResponse(HttpStatusCode.OK, data);
             }
 
@@ -97,12 +96,11 @@
             return this.Request.CreateErrorResponse((HttpStatusCode)614, messages);
         }
 
-        [Route("api/deletepiserver")]
-        [HttpPost]
-        public HttpResponseMessage DeletePiServer([FromBody] PiServerModel model)
+        [Route("DeletePiServer/{piServerId}")]
+        [HttpDelete]
+        public HttpResponseMessage DeletePiServer(int piServerId)
         {
-            var userId = ServiceUtil.GetUser();
-            var data = this.piServerService.DeletePiServer(model, userId);
+            var data = this.piServerService.DeletePiServer(piServerId);
             return this.Request.CreateResponse(HttpStatusCode.OK, data);
         }
 

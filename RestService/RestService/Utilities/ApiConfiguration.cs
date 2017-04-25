@@ -14,10 +14,6 @@
 
         public static readonly string NotificationClickActionURL = GetConfigData("NotificationClickActionURL");
 
-        public static readonly string MonthlyConsumptionKWh = GetConfigData("MonthlyConsumptionKWh");
-
-        public static readonly string MonthlyConsumptionCost = GetConfigData("MonthlyConsumptionCost");
-
         public static readonly string B2CServiceURL = GetConfigData("B2CClaimURL");
 
         private static string GetConfigData(string key)

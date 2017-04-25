@@ -1,7 +1,7 @@
 ﻿namespace RestService.Models
 {
     using System;
-  
+
     public class AlertModel
     {
         public int Alert_Id { get; set; }

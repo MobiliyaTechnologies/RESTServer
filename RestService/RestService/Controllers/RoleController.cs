@@ -7,11 +7,16 @@
     using System.Net.Http;
     using System.Web;
     using System.Web.Http;
+    using RestService.Enums;
+    using RestService.Filters;
     using RestService.Models;
     using RestService.Services;
     using RestService.Services.Impl;
     using RestService.Utilities;
 
+    [RoutePrefix("api")]
+    [CustomAuthorize(UserRole = UserRole.SuperAdmin)]
+    [OverrideAuthorization]
     public class RoleController : ApiController
     {
         private readonly IRoleService roleService;
@@ -21,7 +26,7 @@
             this.roleService = new RoleService();
         }
 
-        [Route("api/getallroles")]
+        [Route("GetAllRoles")]
         public HttpResponseMessage GetAllRoles()
         {
             var data = this.roleService.GetAllRoles();
@@ -33,7 +38,7 @@
             return this.Request.CreateErrorResponse(HttpStatusCode.NotFound, string.Format("No Role found"));
         }
 
-        [Route("api/getRolebyid/{roleId}")]
+        [Route("GetRoleByID/{roleId}")]
         public HttpResponseMessage GetRoleByID(int roleId)
         {
             var data = this.roleService.GetRoleByID(roleId);
@@ -45,14 +50,13 @@
             return this.Request.CreateErrorResponse(HttpStatusCode.NotFound, string.Format("No Role found"));
         }
 
-        [Route("api/addRole")]
+        [Route("AddRole")]
         [HttpPost]
         public HttpResponseMessage AddRole([FromBody] RoleModel model)
         {
             if (this.ModelState.IsValid)
             {
-                var userId = ServiceUtil.GetUser();
-                var data = this.roleService.AddRole(model, userId);
+                var data = this.roleService.AddRole(model);
                 return this.Request.CreateResponse(HttpStatusCode.OK, data);
             }
 
@@ -61,14 +65,13 @@
             return this.Request.CreateErrorResponse((HttpStatusCode)615, messages);
         }
 
-        [Route("api/updateRole")]
-        [HttpPost]
+        [Route("UpdateRole")]
+        [HttpPut]
         public HttpResponseMessage UpdateRole([FromBody] RoleModel model)
         {
             if (this.ModelState.IsValid)
             {
-                var userId = ServiceUtil.GetUser();
-                var data = this.roleService.UpdateRole(model, userId);
+                var data = this.roleService.UpdateRole(model);
                 return this.Request.CreateResponse(HttpStatusCode.OK, data);
             }
 
@@ -77,12 +80,11 @@
             return this.Request.CreateErrorResponse((HttpStatusCode)615, messages);
         }
 
-        [Route("api/deleteRole")]
-        [HttpPost]
-        public HttpResponseMessage DeleteRole([FromBody] RoleModel model)
+        [Route("DeleteRole/{roleId}")]
+        [HttpDelete]
+        public HttpResponseMessage DeleteRole(int roleId)
         {
-            var userId = ServiceUtil.GetUser();
-            var data = this.roleService.DeleteRole(model, userId);
+            var data = this.roleService.DeleteRole(roleId);
             return this.Request.CreateResponse(HttpStatusCode.OK, data);
         }
 

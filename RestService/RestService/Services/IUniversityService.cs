@@ -22,24 +22,31 @@
         /// Inserts a new University in system
         /// </summary>
         /// <param name="model">University model</param>
-        /// <param name="userId">User</param>
         /// <returns>Insert acknowledgement</returns>
-        ResponseModel AddUniversity(UniversityModel model, int userId);
+        ResponseModel AddUniversity(UniversityModel model);
 
         /// <summary>
         /// Removes an existing university from system
         /// </summary>
-        /// <param name="model">University model</param>
-        /// <param name="userId">User</param>
-        /// <returns>Delete acknowledgement</returns>
-        ResponseModel DeleteUniversity(UniversityModel model, int userId);
+        /// <param name="universityId">The university identifier.</param>
+        /// <returns>
+        /// Delete acknowledgement
+        /// </returns>
+        ResponseModel DeleteUniversity(int universityId);
 
         /// <summary>
         /// Updates information of an existing university
         /// </summary>
         /// <param name="model">University model</param>
-        /// <param name="userId">User</param>
         /// <returns>Update acknowledgement</returns>
-        ResponseModel UpdateUniversity(UniversityModel model, int userId);
+        ResponseModel UpdateUniversity(UniversityModel model);
+
+        /// <summary>
+        /// Adds the campuses to university.
+        /// </summary>
+        /// <param name="universityId">The university identifier.</param>
+        /// <param name="campusIds">The campus ids.</param>
+        /// <returns>Campus added to university confirmation</returns>
+        ResponseModel AddCampusesToUniversity(int universityId, List<int> campusIds);
     }
 }

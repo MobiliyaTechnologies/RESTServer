@@ -22,24 +22,23 @@
         /// Inserts a new Role in system
         /// </summary>
         /// <param name="model">Role model</param>
-        /// <param name="userId">User</param>
-        /// <returns>Insert acknowledgement</returns>
-        ResponseModel AddRole(RoleModel model, int userId);
+        /// <returns>Insert acknowledgment</returns>
+        ResponseModel AddRole(RoleModel model);
 
         /// <summary>
         /// Removes an existing Role from system
         /// </summary>
-        /// <param name="model">Role model</param>
-        /// <param name="userId">User</param>
-        /// <returns>Delete acknowledgement</returns>
-        ResponseModel DeleteRole(RoleModel model, int userId);
+        /// <param name="roleId">The role identifier to be deleted.</param>
+        /// <returns>
+        /// Delete acknowledgment
+        /// </returns>
+        ResponseModel DeleteRole(int roleId);
 
         /// <summary>
         /// Updates information of an existing Role
         /// </summary>
         /// <param name="model">Role model</param>
-        /// <param name="userId">User</param>
-        /// <returns>Update acknowledgement</returns>
-        ResponseModel UpdateRole(RoleModel model, int userId);
+        /// <returns>Update acknowledgment</returns>
+        ResponseModel UpdateRole(RoleModel model);
     }
 }

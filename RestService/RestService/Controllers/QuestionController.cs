@@ -7,6 +7,7 @@
     using RestService.Services;
     using RestService.Services.Impl;
 
+    [RoutePrefix("api")]
     public class QuestionController : ApiController
     {
         private IQuestionService questionService;
@@ -19,7 +20,7 @@
             this.questionService = new QuestionService();
         }
 
-        [Route("api/getquestionanswers")]
+        [Route("GetQuestionAnswers")]
         public HttpResponseMessage GetQuestionAnswers()
         {
             var data = this.questionService.GetQuestionAnswers();

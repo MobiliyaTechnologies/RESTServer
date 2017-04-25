@@ -31,7 +31,7 @@
 
         public MeterDailyConsumptionModel Map(DailyConsumptionDetails source)
         {
-            return this.Map(new List<DailyConsumptionDetails> { source }.AsQueryable()).FirstOrDefault();
+            return source == null ? null : this.Map(new List<DailyConsumptionDetails> { source }.AsQueryable()).FirstOrDefault();
         }
     }
 }

@@ -5,10 +5,10 @@
     using System.Net;
     using System.Net.Http;
     using System.Web.Http;
-    using RestService.Models;
     using RestService.Services;
     using RestService.Services.Impl;
 
+    [RoutePrefix("api")]
     public class SensorController : ApiController
     {
         private ISensorService sensorService;
@@ -21,49 +21,46 @@
             this.sensorService = new SensorService();
         }
 
-        [Route("api/getallsensors")]
+        [Route("GetAllSensors")]
         public HttpResponseMessage GetAllSensors()
         {
             var data = this.sensorService.GetAllSensors();
             return this.Request.CreateResponse(HttpStatusCode.OK, data);
         }
 
-        [Route("api/mapsensortoclass")]
-        [HttpPost]
-        public HttpResponseMessage MapSensor([FromBody] SensorModel sensorDetail)
+        [Route("MapSensor/{sensorId}/{classId}")]
+        [HttpPut]
+        public HttpResponseMessage MapSensor(int sensorId, int classId)
         {
-            if (sensorDetail != null && sensorDetail.Class_Id.HasValue && sensorDetail.Class_Id.Value > 0)
+            if (sensorId < 1 || classId < 1)
             {
-                var data = this.sensorService.MapSensor(sensorDetail);
-                return this.Request.CreateResponse(HttpStatusCode.OK, data);
+                return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Invalid sensor id or class id");
             }
 
-            // Create an error message for returning
-            var errorMessage = sensorDetail == null ? "Invalid sensor model" : "Please enter Class Id to map sensor";
-            return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, errorMessage);
+            var data = this.sensorService.MapSensor(sensorId, classId);
+            return this.Request.CreateResponse(HttpStatusCode.OK, data);
         }
 
-        [Route("api/getallsensorsforclass")]
-        [HttpPost]
-        public HttpResponseMessage GetAllSensorsForClass([FromBody] SensorModel sensorData)
+        [Route("GetAllSensorsForClass/{classId}")]
+        public HttpResponseMessage GetAllSensorsForClass(int classId)
         {
-            if (sensorData == null)
+            if (classId < 1)
             {
-                return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Invalid sensor model");
+                return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Invalid class id.");
             }
 
-            var data = this.sensorService.GetAllSensorsForClass(sensorData);
+            var data = this.sensorService.GetAllSensorsForClass(classId);
 
             if (data != null && data.Count() > 0)
             {
                 return this.Request.CreateResponse(HttpStatusCode.OK, data);
             }
 
-            return this.Request.CreateErrorResponse(HttpStatusCode.NotFound, string.Format("Sensors does not mapped to given class id - {0}", sensorData.Class_Id));
+            return this.Request.CreateErrorResponse(HttpStatusCode.NotFound, string.Format("Sensors does not mapped to given class id - {0}", classId));
         }
 
-        [Route("api/resetsensors")]
-        [HttpGet]
+        [Route("ResetSensors")]
+        [HttpDelete]
         public HttpResponseMessage ResetSensors()
         {
             var data = this.sensorService.ResetSensors();

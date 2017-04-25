@@ -8,6 +8,7 @@
     using RestService.Services;
     using RestService.Services.Impl;
 
+    [RoutePrefix("api")]
     public class AlertController : ApiController
     {
         private IAlertService alertService;
@@ -20,14 +21,14 @@
             this.alertService = new AlertService();
         }
 
-        [Route("api/getallalerts")]
+        [Route("GetAllAlerts")]
         public HttpResponseMessage GetAllAlerts()
         {
             var data = this.alertService.GetAllAlerts();
             return this.Request.CreateResponse(HttpStatusCode.OK, data);
         }
 
-        [Route("api/getalertdetails/{LogId}")]
+        [Route("GetAlertDetails/{LogId}")]
         public HttpResponseMessage GetAlertDetails(int logId)
         {
             var data = this.alertService.GetAlertDetails(logId);
@@ -40,8 +41,8 @@
             return this.Request.CreateErrorResponse(HttpStatusCode.NotFound, string.Format("Alert does not exists for given sensor - {0}", logId));
         }
 
-        [Route("api/acknowledgealert")]
-        [HttpPost]
+        [Route("AcknowledgeAlert")]
+        [HttpPut]
         public HttpResponseMessage AcknowledgeAlert([FromBody] AlertModel alertDetail)
         {
             if (alertDetail != null && !string.IsNullOrWhiteSpace(alertDetail.Acknowledged_By))
@@ -53,7 +54,7 @@
             return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Please enter User name for Acknowledgment");
         }
 
-        [Route("api/getrecommendations")]
+        [Route("GetRecommendations")]
         public HttpResponseMessage GetRecommendations()
         {
             var data = this.alertService.GetRecommendations();

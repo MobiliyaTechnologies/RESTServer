@@ -25,7 +25,7 @@
 
         public QuestionModel Map(Questions source)
         {
-            return this.Map(new List<Questions> { source }.AsQueryable()).FirstOrDefault();
+            return source == null ? null : this.Map(new List<Questions> { source }.AsQueryable()).FirstOrDefault();
         }
     }
 }

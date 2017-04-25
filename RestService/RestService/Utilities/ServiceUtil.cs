@@ -10,9 +10,9 @@
 
     public class ServiceUtil
     {
-        public static int GetDayOfWeek(string Day)
+        public static int GetDayOfWeek(string day)
         {
-            switch (Day.ToLower())
+            switch (day.ToLower())
             {
                 case "mon":
                     return (int)DayofWeek.Mon;
@@ -94,15 +94,6 @@
             DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
             dtDateTime = dtDateTime.AddSeconds(unixTimeStamp);
             return dtDateTime;
-        }
-
-        public static int GetUser()
-        {
-            return 1;
-            string serviceUrl = ApiConfiguration.B2CServiceURL;
-            string userIdString = ClaimsPrincipal.Current.FindFirst(serviceUrl).Value;
-            int userId = int.Parse(userIdString.ToString());
-            //return userId;
         }
     }
 }

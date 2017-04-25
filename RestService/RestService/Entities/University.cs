@@ -18,6 +18,7 @@ namespace RestService.Entities
         public University()
         {
             this.Campus = new HashSet<Campus>();
+            this.Campus1 = new HashSet<Campus>();
         }
     
         public int UniversityID { get; set; }
@@ -33,5 +34,7 @@ namespace RestService.Entities
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Campus> Campus { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Campus> Campus1 { get; set; }
     }
 }

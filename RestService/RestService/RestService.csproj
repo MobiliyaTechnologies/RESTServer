@@ -234,13 +234,38 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="App_Start\FilterConfig.cs" />
-    <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\OpenIdConnectCachingSecurityTokenProvider.cs" />
-    <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\SwaggerConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Areas\HelpPage\ApiDescriptionExtensions.cs" />
+    <Compile Include="Areas\HelpPage\App_Start\HelpPageConfig.cs" />
+    <Compile Include="Areas\HelpPage\Controllers\HelpController.cs" />
+    <Compile Include="Areas\HelpPage\HelpPageAreaRegistration.cs" />
+    <Compile Include="Areas\HelpPage\HelpPageConfigurationExtensions.cs" />
+    <Compile Include="Areas\HelpPage\ModelDescriptions\CollectionModelDescription.cs" />
+    <Compile Include="Areas\HelpPage\ModelDescriptions\ComplexTypeModelDescription.cs" />
+    <Compile Include="Areas\HelpPage\ModelDescriptions\DictionaryModelDescription.cs" />
+    <Compile Include="Areas\HelpPage\ModelDescriptions\EnumTypeModelDescription.cs" />
+    <Compile Include="Areas\HelpPage\ModelDescriptions\EnumValueDescription.cs" />
+    <Compile Include="Areas\HelpPage\ModelDescriptions\IModelDocumentationProvider.cs" />
+    <Compile Include="Areas\HelpPage\ModelDescriptions\KeyValuePairModelDescription.cs" />
+    <Compile Include="Areas\HelpPage\ModelDescriptions\ModelDescription.cs" />
+    <Compile Include="Areas\HelpPage\ModelDescriptions\ModelDescriptionGenerator.cs" />
+    <Compile Include="Areas\HelpPage\ModelDescriptions\ModelNameAttribute.cs" />
+    <Compile Include="Areas\HelpPage\ModelDescriptions\ModelNameHelper.cs" />
+    <Compile Include="Areas\HelpPage\ModelDescriptions\ParameterAnnotation.cs" />
+    <Compile Include="Areas\HelpPage\ModelDescriptions\ParameterDescription.cs" />
+    <Compile Include="Areas\HelpPage\ModelDescriptions\SimpleTypeModelDescription.cs" />
+    <Compile Include="Areas\HelpPage\Models\HelpPageApiModel.cs" />
+    <Compile Include="Areas\HelpPage\SampleGeneration\HelpPageSampleGenerator.cs" />
+    <Compile Include="Areas\HelpPage\SampleGeneration\HelpPageSampleKey.cs" />
+    <Compile Include="Areas\HelpPage\SampleGeneration\ImageSample.cs" />
+    <Compile Include="Areas\HelpPage\SampleGeneration\InvalidSample.cs" />
+    <Compile Include="Areas\HelpPage\SampleGeneration\ObjectGenerator.cs" />
+    <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
+    <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
+    <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\AlertController.cs" />
     <Compile Include="Controllers\AnomalyController.cs" />
     <Compile Include="Controllers\BuildingController.cs" />
@@ -250,11 +275,11 @@
     <Compile Include="Controllers\InsightController.cs" />
     <Compile Include="Controllers\MeterController.cs" />
     <Compile Include="Controllers\PiServerController.cs" />
-    <Compile Include="Controllers\PowerBIController.cs" />
     <Compile Include="Controllers\QuestionController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\SensorController.cs" />
     <Compile Include="Controllers\UniversityController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Entities\AlertRules.cs">
       <DependentUpon>PowergridModel.tt</DependentUpon>
     </Compile>
@@ -265,6 +290,9 @@
       <DependentUpon>PowergridModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\Answers.cs">
+      <DependentUpon>PowergridModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\AzureLiveData.cs">
       <DependentUpon>PowergridModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\Building.cs">
@@ -298,6 +326,9 @@
       <DependentUpon>PowergridModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\MSLiveData.cs">
+      <DependentUpon>PowergridModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\Person.cs">
       <DependentUpon>PowergridModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\PiServer.cs">
@@ -351,9 +382,6 @@
     <Compile Include="Entities\User.cs">
       <DependentUpon>PowergridModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Entities\UserRole.cs">
-      <DependentUpon>PowergridModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Entities\UserSession.cs">
       <DependentUpon>PowergridModel.tt</DependentUpon>
     </Compile>
@@ -361,7 +389,9 @@
       <DependentUpon>PowergridModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Enums\DayofWeek.cs" />
+    <Compile Include="Enums\UserRole.cs" />
     <Compile Include="Enums\StatusCode.cs" />
+    <Compile Include="Filters\CustomAuthorizeAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -378,6 +408,7 @@
     <Compile Include="Mappings\QuestionModelMapping.cs" />
     <Compile Include="Mappings\RoleModelMapping.cs" />
     <Compile Include="Mappings\UniversityModelMapping.cs" />
+    <Compile Include="Mappings\UserModelMapping.cs" />
     <Compile Include="Models\AlertDetailsModel.cs" />
     <Compile Include="Models\AlertModel.cs" />
     <Compile Include="Models\AnomalyInfoModel.cs" />
@@ -399,13 +430,12 @@
     <Compile Include="Models\MeterWeekWiseMonthlyConsumptionModel.cs" />
     <Compile Include="Models\MonthListModel.cs" />
     <Compile Include="Models\PiServerModel.cs" />
-    <Compile Include="Models\PowerBIGeneralURLModel.cs" />
     <Compile Include="Models\QuestionModel.cs" />
     <Compile Include="Models\ResponseModel.cs" />
     <Compile Include="Models\RoleModel.cs" />
     <Compile Include="Models\SensorModel.cs" />
     <Compile Include="Models\UniversityModel.cs" />
-    <Compile Include="Models\UserDataModel.cs" />
+    <Compile Include="Models\UserModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services.Impl\AlertService.cs" />
     <Compile Include="Services.Impl\AnomalyService.cs" />
@@ -416,11 +446,12 @@
     <Compile Include="Services.Impl\InsightService.cs" />
     <Compile Include="Services.Impl\MeterService.cs" />
     <Compile Include="Services.Impl\PiServerService.cs" />
-    <Compile Include="Services.Impl\PowerBIService.cs" />
     <Compile Include="Services.Impl\QuestionService.cs" />
     <Compile Include="Services.Impl\RoleService.cs" />
     <Compile Include="Services.Impl\SensorService.cs" />
     <Compile Include="Services.Impl\UniversityService.cs" />
+    <Compile Include="Services.Impl\ContextInfoAccessorService.cs" />
+    <Compile Include="Services.Impl\UserService.cs" />
     <Compile Include="Services\IAlertService.cs" />
     <Compile Include="Services\IAnomalyService.cs" />
     <Compile Include="Services\IBuildingService.cs" />
@@ -430,21 +461,19 @@
     <Compile Include="Services\IInsightService.cs" />
     <Compile Include="Services\IMeterService.cs" />
     <Compile Include="Services\IPiServerService.cs" />
-    <Compile Include="Services\IPowerBIService.cs" />
     <Compile Include="Services\IQuestionService.cs" />
     <Compile Include="Services\IRoleService.cs" />
     <Compile Include="Services\ISensorService.cs" />
     <Compile Include="Services\IUniversityService.cs" />
+    <Compile Include="Services\IContextInfoAccessorService.cs" />
+    <Compile Include="Services\IUserService.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Utilities\ApiConfiguration.cs" />
-    <Compile Include="Utilities\PowerBIUtil.cs" />
+    <Compile Include="Utilities\B2C_ClaimTypes.cs" />
     <Compile Include="Utilities\ServiceUtil.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\bootstrap-theme.css" />
-    <Content Include="Content\bootstrap-theme.min.css" />
-    <Content Include="Content\bootstrap.css" />
-    <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Areas\HelpPage\HelpPage.css" />
     <Content Include="Entities\PowergridModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>PowergridModel.edmx</DependentUpon>
@@ -457,14 +486,26 @@
     </Content>
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
-    <Content Include="fonts\glyphicons-halflings-regular.woff2" />
-    <Content Include="fonts\glyphicons-halflings-regular.woff" />
-    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
-    <Content Include="fonts\glyphicons-halflings-regular.eot" />
-    <Content Include="Content\bootstrap.min.css.map" />
-    <Content Include="Content\bootstrap.css.map" />
-    <Content Include="Content\bootstrap-theme.min.css.map" />
-    <Content Include="Content\bootstrap-theme.css.map" />
+    <Content Include="Areas\HelpPage\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Web.config" />
+    <Content Include="Areas\HelpPage\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\ResourceModel.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\Index.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\TextSample.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\SimpleTypeModelDescription.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\Samples.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\Parameters.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\ModelDescriptionLink.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\KeyValuePairModelDescription.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\InvalidSample.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\ImageSample.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\HelpPageApiModel.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\EnumTypeModelDescription.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\DictionaryModelDescription.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\ComplexTypeModelDescription.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\CollectionModelDescription.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\ApiGroup.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\Api.cshtml" />
     <EntityDeploy Include="Entities\PowergridModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>PowergridModel.Designer.cs</LastGenOutput>
@@ -479,21 +520,6 @@
     <None Include="Properties\PublishProfiles\PowergridRESTService - Web Deploy %283%29.pubxml" />
     <None Include="Properties\PublishProfiles\PowergridRESTService - Web Deploy.pubxml" />
     <Content Include="Project_Readme.html" />
-    <None Include="Scripts\jquery-3.1.1.intellisense.js" />
-    <Content Include="Scripts\bootstrap.js" />
-    <Content Include="Scripts\bootstrap.min.js" />
-    <Content Include="Scripts\jquery-3.1.1.js" />
-    <Content Include="Scripts\jquery-3.1.1.min.js" />
-    <Content Include="Scripts\jquery-3.1.1.slim.js" />
-    <Content Include="Scripts\jquery-3.1.1.slim.min.js" />
-    <None Include="Scripts\jquery.validate-vsdoc.js" />
-    <Content Include="Scripts\jquery.validate.js" />
-    <Content Include="Scripts\jquery.validate.min.js" />
-    <Content Include="Scripts\modernizr-2.8.3.js" />
-    <Content Include="Scripts\respond.js" />
-    <Content Include="Scripts\respond.matchmedia.addListener.js" />
-    <Content Include="Scripts\respond.matchmedia.addListener.min.js" />
-    <Content Include="Scripts\respond.min.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -505,8 +531,6 @@
     </Content>
     <Content Include="Service References\Application Insights\ConnectedService.json" />
     <Content Include="StyleCop.Cache" />
-    <Content Include="Scripts\jquery-3.1.1.slim.min.map" />
-    <Content Include="Scripts\jquery-3.1.1.min.map" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

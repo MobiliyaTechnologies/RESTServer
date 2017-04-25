@@ -17,16 +17,21 @@
         /// <summary>
         /// Maps the sensor to classroom.
         /// </summary>
-        /// <param name="sensorDetail">The sensor detail to be mapped.</param>
-        /// <returns>The sensor mapped confirmation.</returns>
-        ResponseModel MapSensor(SensorModel sensorDetail);
+        /// <param name="sensorId">The sensor identifier.</param>
+        /// <param name="classId">The class identifier.</param>
+        /// <returns>
+        /// The sensor mapped confirmation.
+        /// </returns>
+        ResponseModel MapSensor(int sensorId, int classId);
 
         /// <summary>
         /// Gets all sensors for class.
         /// </summary>
-        /// <param name="sensorData">The sensor data.</param>
-        /// <returns>The class sensors.</returns>
-        List<SensorModel> GetAllSensorsForClass(SensorModel sensorData);
+        /// <param name="classId">The class identifier.</param>
+        /// <returns>
+        /// The class sensors.
+        /// </returns>
+        List<SensorModel> GetAllSensorsForClass(int classId);
 
         /// <summary>
         /// Resets or remove all sensors.

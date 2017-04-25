@@ -1,14 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Web.Http;
-using RestService.Services;
-using RestService.Services.Impl;
-
-namespace RestService.Controllers
+﻿namespace RestService.Controllers
 {
+    using System;
+    using System.Linq;
+    using System.Net;
+    using System.Net.Http;
+    using System.Web.Http;
+    using RestService.Services;
+    using RestService.Services.Impl;
+
+    [RoutePrefix("api")]
     public class AnomalyController : ApiController
     {
         private IAnomalyService anomalyService;
@@ -18,8 +18,7 @@ namespace RestService.Controllers
             this.anomalyService = new AnomalyService();
         }
 
-
-        [Route("api/getAnomalyDetailsByDay/{Timestamp}")]
+        [Route("GetAnomalyDetailsByDay/{timestamp}")]
         public HttpResponseMessage GetAnomalyDetailsByDay(string timestamp)
         {
             var data = this.anomalyService.GetAnomalyDetails(timestamp);

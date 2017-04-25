@@ -12,10 +12,12 @@
     public sealed class UniversityService : IUniversityService, IDisposable
     {
         private readonly PowerGridEntities dbContext;
+        private readonly IContextInfoAccessorService context;
 
         public UniversityService()
         {
             this.dbContext = new PowerGridEntities();
+            this.context = new ContextInfoAccessorService();
         }
 
         List<UniversityModel> IUniversityService.GetAllUniversities()
@@ -30,15 +32,15 @@
             return new UniversityModelMapping().Map(university);
         }
 
-        ResponseModel IUniversityService.AddUniversity(UniversityModel model, int userId)
+        ResponseModel IUniversityService.AddUniversity(UniversityModel model)
         {
             var university = new University();
             university.UniversityName = model.UniversityName;
             university.UniversityDesc = model.UniversityDesc;
             university.UniversityAddress = model.UniversityAddress;
-            university.CreatedBy = userId;
+            university.CreatedBy = this.context.Current.UserId;
             university.CreatedOn = DateTime.UtcNow;
-            university.ModifiedBy = userId;
+            university.ModifiedBy = this.context.Current.UserId;
             university.ModifiedOn = DateTime.UtcNow;
             university.IsActive = true;
             university.IsDeleted = false;
@@ -48,9 +50,9 @@
             return new ResponseModel { Message = "University added successfully", Status_Code = (int)StatusCode.Ok };
         }
 
-        ResponseModel IUniversityService.DeleteUniversity(UniversityModel model, int userId)
+        ResponseModel IUniversityService.DeleteUniversity(int universityId)
         {
-            var data = this.dbContext.University.FirstOrDefault(f => f.UniversityID == model.UniversityID);
+            var data = this.dbContext.University.FirstOrDefault(f => f.UniversityID == universityId);
             if (data == null)
             {
                 return new ResponseModel { Message = "Invalid University", Status_Code = (int)StatusCode.Error };
@@ -59,14 +61,14 @@
             {
                 data.IsActive = false;
                 data.IsDeleted = true;
-                data.ModifiedBy = userId;
+                data.ModifiedBy = this.context.Current.UserId;
                 data.ModifiedOn = DateTime.UtcNow;
                 this.dbContext.SaveChanges();
                 return new ResponseModel { Message = "University deleted successfully", Status_Code = (int)StatusCode.Ok };
             }
         }
 
-        ResponseModel IUniversityService.UpdateUniversity(UniversityModel model, int userId)
+        ResponseModel IUniversityService.UpdateUniversity(UniversityModel model)
         {
             var data = this.dbContext.University.FirstOrDefault(f => f.UniversityID == model.UniversityID);
 
@@ -92,13 +94,40 @@
                 }
 
                 data.IsActive = model.IsActive;
-                data.IsDeleted = model.IsDeleted;
-                data.ModifiedBy = userId;
+                data.ModifiedBy = this.context.Current.UserId;
                 data.ModifiedOn = DateTime.UtcNow;
             }
 
             this.dbContext.SaveChanges();
             return new ResponseModel { Message = "University details Updated", Status_Code = (int)StatusCode.Ok };
+        }
+
+        ResponseModel IUniversityService.AddCampusesToUniversity(int universityId, List<int> campusIds)
+        {
+            var campuses = this.dbContext.Campus.Where(c => campusIds.Any(i => i == c.CampusID));
+
+            if (campuses.Count() != campusIds.Count() || campuses.Count() == 0)
+            {
+                return new ResponseModel { Status_Code = (int)StatusCode.Error, Message = "Campus does not exists for given ids" };
+            }
+
+            var university = this.dbContext.University.FirstOrDefault(u => u.UniversityID == universityId);
+
+            if (university == null)
+            {
+                return new ResponseModel { Status_Code = (int)StatusCode.Error, Message = string.Format("University does not exists for id - {0}", universityId) };
+            }
+
+            var newCampusToAdd = campuses.Where(c => c.UniversityID != universityId);
+
+            foreach (var campus in newCampusToAdd)
+            {
+                campus.UniversityID = universityId;
+            }
+
+            this.dbContext.SaveChanges();
+
+            return new ResponseModel { Status_Code = (int)StatusCode.Ok, Message = "Campuses added to university successfully." };
         }
 
         /// <summary>
