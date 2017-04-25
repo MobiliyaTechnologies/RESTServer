@@ -4,7 +4,6 @@
 
     public class AnomalyInfoModel
     {
-
         public string PowerScout { get; set; }
 
         public double? Temperature { get; set; }

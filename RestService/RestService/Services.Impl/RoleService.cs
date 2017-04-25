@@ -9,13 +9,15 @@
     using RestService.Models;
     using RestService.Utilities;
 
-    public class RoleService : IRoleService,IDisposable
+    public class RoleService : IRoleService, IDisposable
     {
         private readonly PowerGridEntities dbContext;
+        private readonly IContextInfoAccessorService context;
 
         public RoleService()
         {
             this.dbContext = new PowerGridEntities();
+            this.context = new ContextInfoAccessorService();
         }
 
         List<RoleModel> IRoleService.GetAllRoles()
@@ -30,14 +32,14 @@
             return new RoleModelMapping().Map(role);
         }
 
-        ResponseModel IRoleService.AddRole(RoleModel model, int userId)
+        ResponseModel IRoleService.AddRole(RoleModel model)
         {
             var role = new Role();
             role.RoleName = model.RoleName;
             role.Description = model.Description;
-            role.CreatedBy = userId;
+            role.CreatedBy = this.context.Current.UserId;
             role.CreatedOn = DateTime.UtcNow;
-            role.ModifiedBy = userId;
+            role.ModifiedBy = this.context.Current.UserId;
             role.ModifiedOn = DateTime.UtcNow;
             role.IsActive = true;
             role.IsDeleted = false;
@@ -47,9 +49,9 @@
             return new ResponseModel { Message = "Role added successfully", Status_Code = (int)StatusCode.Ok };
         }
 
-        ResponseModel IRoleService.DeleteRole(RoleModel model, int userId)
+        ResponseModel IRoleService.DeleteRole(int roleId)
         {
-            var data = this.dbContext.Role.FirstOrDefault(f => f.Id == model.Id);
+            var data = this.dbContext.Role.FirstOrDefault(f => f.Id == roleId);
             if (data == null)
             {
                 return new ResponseModel { Message = "Invalid Role", Status_Code = (int)StatusCode.Error };
@@ -58,14 +60,14 @@
             {
                 data.IsActive = false;
                 data.IsDeleted = true;
-                data.ModifiedBy = userId;
+                data.ModifiedBy = this.context.Current.UserId;
                 data.ModifiedOn = DateTime.UtcNow;
                 this.dbContext.SaveChanges();
                 return new ResponseModel { Message = "Role deleted successfully", Status_Code = (int)StatusCode.Ok };
             }
         }
 
-        ResponseModel IRoleService.UpdateRole(RoleModel model, int userId)
+        ResponseModel IRoleService.UpdateRole(RoleModel model)
         {
             var data = this.dbContext.Role.FirstOrDefault(f => f.Id == model.Id);
 
@@ -87,7 +89,7 @@
 
                 data.IsActive = model.IsActive;
                 data.IsDeleted = model.IsDeleted;
-                data.ModifiedBy = userId;
+                data.ModifiedBy = this.context.Current.UserId;
                 data.ModifiedOn = DateTime.UtcNow;
             }
 

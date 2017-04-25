@@ -17,7 +17,6 @@ namespace RestService.Entities
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public User()
         {
-            this.UserRole = new HashSet<UserRole>();
             this.UserSession = new HashSet<UserSession>();
         }
     
@@ -30,9 +29,11 @@ namespace RestService.Entities
         public Nullable<short> Status { get; set; }
         public Nullable<System.DateTime> Creation_Date { get; set; }
         public int RewardPoints { get; set; }
+        public string B2C_ObjectIdentifier { get; set; }
+        public bool IsDeleted { get; set; }
+        public Nullable<int> RoleId { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<UserRole> UserRole { get; set; }
+        public virtual Role Role { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserSession> UserSession { get; set; }
     }

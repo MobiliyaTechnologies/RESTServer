@@ -1,29 +1,27 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.IdentityModel.Tokens;
-using Microsoft.IdentityModel.Protocols;
-using System.Threading;
-using Microsoft.Owin.Security.Jwt;
-
-namespace RestService
+﻿namespace RestService
 {
-    // This class is necessary because the OAuthBearer Middleware does not leverage
-    // the OpenID Connect metadata endpoint exposed by the STS by default.
+    using System.Collections.Generic;
+    using System.IdentityModel.Tokens;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using Microsoft.IdentityModel.Protocols;
+
+    // This class is necessary because the OAuthBearer Middle-ware does not leverage
+    // the OpenID Connect meta-data endpoint exposed by the STS by default.
     public class OpenIdConnectCachingSecurityTokenProvider : Microsoft.Owin.Security.Jwt.IIssuerSecurityTokenProvider
     {
-        public ConfigurationManager<OpenIdConnectConfiguration> _configManager;
-        private string _issuer;
-        private IEnumerable<SecurityToken> _tokens;
-        private readonly string _metadataEndpoint;
-
-        private readonly ReaderWriterLockSlim _synclock = new ReaderWriterLockSlim();
+        private readonly string metadataEndpoint;
+        private readonly ReaderWriterLockSlim synclock = new ReaderWriterLockSlim();
+        private readonly ConfigurationManager<OpenIdConnectConfiguration> configManager;
+        private string issuer;
+        private IEnumerable<SecurityToken> tokens;
 
         public OpenIdConnectCachingSecurityTokenProvider(string metadataEndpoint)
         {
-            _metadataEndpoint = metadataEndpoint;
-            _configManager = new ConfigurationManager<OpenIdConnectConfiguration>(metadataEndpoint);
+            this.metadataEndpoint = metadataEndpoint;
+            this.configManager = new ConfigurationManager<OpenIdConnectConfiguration>(metadataEndpoint);
 
-            RetrieveMetadata();
+            this.RetrieveMetadata();
         }
 
         /// <summary>
@@ -36,15 +34,15 @@ namespace RestService
         {
             get
             {
-                RetrieveMetadata();
-                _synclock.EnterReadLock();
+                this.RetrieveMetadata();
+                this.synclock.EnterReadLock();
                 try
                 {
-                    return _issuer;
+                    return this.issuer;
                 }
                 finally
                 {
-                    _synclock.ExitReadLock();
+                    this.synclock.ExitReadLock();
                 }
             }
         }
@@ -59,31 +57,31 @@ namespace RestService
         {
             get
             {
-                RetrieveMetadata();
-                _synclock.EnterReadLock();
+                this.RetrieveMetadata();
+                this.synclock.EnterReadLock();
                 try
                 {
-                    return _tokens;
+                    return this.tokens;
                 }
                 finally
                 {
-                    _synclock.ExitReadLock();
+                    this.synclock.ExitReadLock();
                 }
             }
         }
 
         private void RetrieveMetadata()
         {
-            _synclock.EnterWriteLock();
+            this.synclock.EnterWriteLock();
             try
             {
-                OpenIdConnectConfiguration config = Task.Run(_configManager.GetConfigurationAsync).Result;
-                _issuer = config.Issuer;
-                _tokens = config.SigningTokens;
+                OpenIdConnectConfiguration config = Task.Run(this.configManager.GetConfigurationAsync).Result;
+                this.issuer = config.Issuer;
+                this.tokens = config.SigningTokens;
             }
             finally
             {
-                _synclock.ExitWriteLock();
+                this.synclock.ExitWriteLock();
             }
         }
     }

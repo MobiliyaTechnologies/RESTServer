@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="PowerGridModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="PowerGrid_CopyModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="AlertRules">
           <Key>
             <PropertyRef Name="Rule_Id" />
@@ -58,6 +58,52 @@
           <Property Name="AnswerDesc" Type="nvarchar" MaxLength="500" Nullable="false" />
           <Property Name="QuestionID" Type="int" />
         </EntityType>
+        <EntityType Name="AzureLiveData">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AMPS_L1" Type="float" />
+          <Property Name="AMPS_L2" Type="float" />
+          <Property Name="AMPS_L3" Type="float" />
+          <Property Name="AMPS_SYSTEM_AVG" Type="float" />
+          <Property Name="Breaker_details" Type="text" />
+          <Property Name="Breaker_label" Type="text" />
+          <Property Name="Building" Type="text" />
+          <Property Name="ClassOccupanyRemaining" Type="int" />
+          <Property Name="ClassOccupiedValue" Type="int" />
+          <Property Name="TotalClassCapacity" Type="int" />
+          <Property Name="Daily_electric_cost" Type="float" />
+          <Property Name="Daily_KWH_System" Type="float" />
+          <Property Name="isClassOccupied" Type="int" />
+          <Property Name="KW_L1" Type="float" />
+          <Property Name="KW_L2" Type="float" />
+          <Property Name="KW_L3" Type="float" />
+          <Property Name="Monthly_electric_cost" Type="float" />
+          <Property Name="Monthly_KWH_System" Type="float" />
+          <Property Name="PowerScout" Type="varchar(max)" />
+          <Property Name="Rated_Amperage" Type="float" />
+          <Property Name="Pressure" Type="float" />
+          <Property Name="Relative_humidity" Type="float" />
+          <Property Name="Rolling_hourly_kwh_system" Type="float" />
+          <Property Name="Serial_number" Type="varchar(max)" />
+          <Property Name="Temperature" Type="float" />
+          <Property Name="Timestamp" Type="datetime" />
+          <Property Name="Type" Type="text" />
+          <Property Name="Visibility" Type="float" />
+          <Property Name="Volts_L1_to_neutral" Type="float" />
+          <Property Name="Volts_L2_to_neutral" Type="float" />
+          <Property Name="Volts_L3_to_neutral" Type="float" />
+          <Property Name="kW_System" Type="float" />
+          <Property Name="days" Type="varchar(max)" />
+          <Property Name="time_period" Type="varchar(max)" />
+          <Property Name="current_week" Type="datetime" />
+          <Property Name="last_week" Type="datetime" />
+          <Property Name="current_day" Type="datetime" />
+          <Property Name="previous_day" Type="datetime" />
+          <Property Name="current_month" Type="datetime" />
+          <Property Name="last_month" Type="datetime" />
+        </EntityType>
         <EntityType Name="Building">
           <Key>
             <PropertyRef Name="BuildingID" />
@@ -87,6 +133,8 @@
           <Property Name="ModifiedBy" Type="int" />
           <Property Name="ModifiedOn" Type="datetime" />
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="Longitude" Type="decimal" Precision="12" Scale="9" Nullable="false" />
+          <Property Name="Latitude" Type="decimal" Precision="12" Scale="9" Nullable="false" />
         </EntityType>
         <EntityType Name="ClassroomDetails">
           <Key>
@@ -307,6 +355,14 @@
           <Property Name="Volts_L3_to_neutral" Type="float" />
           <Property Name="kW_System" Type="float" />
         </EntityType>
+        <EntityType Name="Person">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="255" />
+          <Property Name="Email" Type="varchar" MaxLength="255" />
+        </EntityType>
         <!--Errors Found During Generation:
 warning 6013: The table/view 'PowerGrid_Copy.dbo.Persons' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
         <EntityType Name="Persons">
@@ -399,8 +455,6 @@ warning 6002: The table/view 'PowerGrid_Copy.dbo.RoleBK' does not have a primary
           <Property Name="Role" Type="nvarchar" MaxLength="50" />
           <Property Name="Description" Type="nvarchar(max)" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'PowerGrid_Copy.dbo.RoleCampusLinkUp' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="RoleCampusLinkUp">
           <Key>
             <PropertyRef Name="RoleID" />
@@ -551,14 +605,9 @@ warning 6002: The table/view 'PowerGrid_Copy.dbo.TempMLData' does not have a pri
           <Property Name="Status" Type="smallint" />
           <Property Name="Creation_Date" Type="datetime" />
           <Property Name="RewardPoints" Type="int" Nullable="false" />
-        </EntityType>
-        <EntityType Name="UserRole">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="User_Id" Type="int" />
-          <Property Name="Role_Id" Type="int" />
+          <Property Name="B2C_ObjectIdentifier" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="RoleId" Type="int" />
         </EntityType>
         <EntityType Name="UserSession">
           <Key>
@@ -687,27 +736,27 @@ warning 6002: The table/view 'PowerGrid_Copy.dbo.TempMLData' does not have a pri
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_UserRole_Role">
+        <Association Name="FK_University_UniversityID">
+          <End Role="University" Type="Self.University" Multiplicity="1" />
+          <End Role="Campus" Type="Self.Campus" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="University">
+              <PropertyRef Name="UniversityID" />
+            </Principal>
+            <Dependent Role="Campus">
+              <PropertyRef Name="UniversityID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserRole_RoleID">
           <End Role="Role" Type="Self.Role" Multiplicity="0..1" />
-          <End Role="UserRole" Type="Self.UserRole" Multiplicity="*" />
+          <End Role="User" Type="Self.User" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Role">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="UserRole">
-              <PropertyRef Name="Role_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_UserRole_User">
-          <End Role="User" Type="Self.User" Multiplicity="0..1" />
-          <End Role="UserRole" Type="Self.UserRole" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="UserRole">
-              <PropertyRef Name="User_Id" />
+            <Dependent Role="User">
+              <PropertyRef Name="RoleId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -723,11 +772,12 @@ warning 6002: The table/view 'PowerGrid_Copy.dbo.TempMLData' does not have a pri
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="PowerGridModelStoreContainer">
+        <EntityContainer Name="PowerGrid_CopyModelStoreContainer">
           <EntitySet Name="AlertRules" EntityType="Self.AlertRules" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Alerts" EntityType="Self.Alerts" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AnomalyOutput" EntityType="Self.AnomalyOutput" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Answers" EntityType="Self.Answers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AzureLiveData" EntityType="Self.AzureLiveData" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Building" EntityType="Self.Building" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Campus" EntityType="Self.Campus" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ClassroomDetails" EntityType="Self.ClassroomDetails" Schema="dbo" store:Type="Tables" />
@@ -739,16 +789,17 @@ warning 6002: The table/view 'PowerGrid_Copy.dbo.TempMLData' does not have a pri
           <EntitySet Name="MeterDetails" EntityType="Self.MeterDetails" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MonthlyConsumptionDetails" EntityType="Self.MonthlyConsumptionDetails" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MSLiveData" EntityType="Self.MSLiveData" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Person" EntityType="Self.Person" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PiServer" EntityType="Self.PiServer" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Questions" EntityType="Self.Questions" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Role" EntityType="Self.Role" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RoleCampusLinkUp" EntityType="Self.RoleCampusLinkUp" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SensorData" EntityType="Self.SensorData" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SensorLiveData" EntityType="Self.SensorLiveData" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SensorMaster" EntityType="Self.SensorMaster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TempMSLiveData" EntityType="Self.TempMSLiveData" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="University" EntityType="Self.University" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="UserRole" EntityType="Self.UserRole" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserSession" EntityType="Self.UserSession" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="WeeklyConsumptionPrediction" EntityType="Self.WeeklyConsumptionPrediction" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PowergridAzureMLData" EntityType="Self.PowergridAzureMLData" store:Type="Tables" store:Schema="dbo">
@@ -793,12 +844,6 @@ warning 6002: The table/view 'PowerGrid_Copy.dbo.TempMLData' does not have a pri
     [RoleBK].[Role] AS [Role], 
     [RoleBK].[Description] AS [Description]
     FROM [dbo].[RoleBK] AS [RoleBK]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="RoleCampusLinkUp" EntityType="Self.RoleCampusLinkUp" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [RoleCampusLinkUp].[RoleID] AS [RoleID], 
-    [RoleCampusLinkUp].[CampusID] AS [CampusID]
-    FROM [dbo].[RoleCampusLinkUp] AS [RoleCampusLinkUp]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="TempMLData" EntityType="Self.TempMLData" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -873,13 +918,13 @@ warning 6002: The table/view 'PowerGrid_Copy.dbo.TempMLData' does not have a pri
             <End Role="Role" EntitySet="Role" />
             <End Role="RoleCampusLinkUp" EntitySet="RoleCampusLinkUp" />
           </AssociationSet>
-          <AssociationSet Name="FK_UserRole_Role" Association="Self.FK_UserRole_Role">
-            <End Role="Role" EntitySet="Role" />
-            <End Role="UserRole" EntitySet="UserRole" />
+          <AssociationSet Name="FK_University_UniversityID" Association="Self.FK_University_UniversityID">
+            <End Role="University" EntitySet="University" />
+            <End Role="Campus" EntitySet="Campus" />
           </AssociationSet>
-          <AssociationSet Name="FK_UserRole_User" Association="Self.FK_UserRole_User">
+          <AssociationSet Name="FK_UserRole_RoleID" Association="Self.FK_UserRole_RoleID">
+            <End Role="Role" EntitySet="Role" />
             <End Role="User" EntitySet="User" />
-            <End Role="UserRole" EntitySet="UserRole" />
           </AssociationSet>
           <AssociationSet Name="FK_UserSession_User" Association="Self.FK_UserSession_User">
             <End Role="User" EntitySet="User" />
@@ -890,7 +935,7 @@ warning 6002: The table/view 'PowerGrid_Copy.dbo.TempMLData' does not have a pri
     </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="PowerGridModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+      <Schema Namespace="PowerGrid_CopyModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityType Name="AlertRules">
           <Key>
             <PropertyRef Name="Rule_Id" />
@@ -946,6 +991,52 @@ warning 6002: The table/view 'PowerGrid_Copy.dbo.TempMLData' does not have a pri
           <NavigationProperty Name="Questions" Relationship="Self.FK_Answers_QuestionID" FromRole="Answers" ToRole="Questions" />
           <NavigationProperty Name="Feedback" Relationship="Self.FK_Feedback_AnswerID" FromRole="Answers" ToRole="Feedback" />
         </EntityType>
+        <EntityType Name="AzureLiveData">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AMPS_L1" Type="Double" />
+          <Property Name="AMPS_L2" Type="Double" />
+          <Property Name="AMPS_L3" Type="Double" />
+          <Property Name="AMPS_SYSTEM_AVG" Type="Double" />
+          <Property Name="Breaker_details" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Breaker_label" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Building" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="ClassOccupanyRemaining" Type="Int32" />
+          <Property Name="ClassOccupiedValue" Type="Int32" />
+          <Property Name="TotalClassCapacity" Type="Int32" />
+          <Property Name="Daily_electric_cost" Type="Double" />
+          <Property Name="Daily_KWH_System" Type="Double" />
+          <Property Name="isClassOccupied" Type="Int32" />
+          <Property Name="KW_L1" Type="Double" />
+          <Property Name="KW_L2" Type="Double" />
+          <Property Name="KW_L3" Type="Double" />
+          <Property Name="Monthly_electric_cost" Type="Double" />
+          <Property Name="Monthly_KWH_System" Type="Double" />
+          <Property Name="PowerScout" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Rated_Amperage" Type="Double" />
+          <Property Name="Pressure" Type="Double" />
+          <Property Name="Relative_humidity" Type="Double" />
+          <Property Name="Rolling_hourly_kwh_system" Type="Double" />
+          <Property Name="Serial_number" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Temperature" Type="Double" />
+          <Property Name="Timestamp" Type="DateTime" Precision="3" />
+          <Property Name="Type" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Visibility" Type="Double" />
+          <Property Name="Volts_L1_to_neutral" Type="Double" />
+          <Property Name="Volts_L2_to_neutral" Type="Double" />
+          <Property Name="Volts_L3_to_neutral" Type="Double" />
+          <Property Name="kW_System" Type="Double" />
+          <Property Name="days" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="time_period" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="current_week" Type="DateTime" Precision="3" />
+          <Property Name="last_week" Type="DateTime" Precision="3" />
+          <Property Name="current_day" Type="DateTime" Precision="3" />
+          <Property Name="previous_day" Type="DateTime" Precision="3" />
+          <Property Name="current_month" Type="DateTime" Precision="3" />
+          <Property Name="last_month" Type="DateTime" Precision="3" />
+        </EntityType>
         <EntityType Name="Building">
           <Key>
             <PropertyRef Name="BuildingID" />
@@ -976,9 +1067,12 @@ warning 6002: The table/view 'PowerGrid_Copy.dbo.TempMLData' does not have a pri
           <Property Name="ModifiedBy" Type="Int32" />
           <Property Name="ModifiedOn" Type="DateTime" Precision="3" />
           <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="Longitude" Type="Decimal" Precision="12" Scale="9" Nullable="false" />
+          <Property Name="Latitude" Type="Decimal" Precision="12" Scale="9" Nullable="false" />
           <NavigationProperty Name="Building" Relationship="Self.FK_Building_CampusID" FromRole="Campus" ToRole="Building" />
           <NavigationProperty Name="University" Relationship="Self.FK_Campus_UniversityID" FromRole="Campus" ToRole="University" />
           <NavigationProperty Name="PiServer" Relationship="Self.FK_PiServer_CampusID" FromRole="Campus" ToRole="PiServer" />
+          <NavigationProperty Name="University1" Relationship="Self.FK_University_UniversityID" FromRole="Campus" ToRole="University" />
           <NavigationProperty Name="Role" Relationship="Self.RoleCampusLinkUp" FromRole="Campus" ToRole="Role" />
         </EntityType>
         <EntityType Name="ClassroomDetails">
@@ -1204,6 +1298,14 @@ warning 6002: The table/view 'PowerGrid_Copy.dbo.TempMLData' does not have a pri
           <Property Name="Volts_L3_to_neutral" Type="Double" />
           <Property Name="kW_System" Type="Double" />
         </EntityType>
+        <EntityType Name="Person">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+        </EntityType>
         <EntityType Name="PiServer">
           <Key>
             <PropertyRef Name="PiServerID" />
@@ -1243,7 +1345,7 @@ warning 6002: The table/view 'PowerGrid_Copy.dbo.TempMLData' does not have a pri
           <Property Name="ModifiedBy" Type="Int32" />
           <Property Name="ModifiedOn" Type="DateTime" Precision="3" />
           <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="UserRole" Relationship="Self.FK_UserRole_Role" FromRole="Role" ToRole="UserRole" />
+          <NavigationProperty Name="User" Relationship="Self.FK_UserRole_RoleID" FromRole="Role" ToRole="User" />
           <NavigationProperty Name="Campus" Relationship="Self.RoleCampusLinkUp" FromRole="Role" ToRole="Campus" />
         </EntityType>
         <EntityType Name="SensorData">
@@ -1335,6 +1437,7 @@ warning 6002: The table/view 'PowerGrid_Copy.dbo.TempMLData' does not have a pri
           <Property Name="ModifiedOn" Type="DateTime" Precision="3" />
           <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Campus" Relationship="Self.FK_Campus_UniversityID" FromRole="University" ToRole="Campus" />
+          <NavigationProperty Name="Campus1" Relationship="Self.FK_University_UniversityID" FromRole="University" ToRole="Campus" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -1349,18 +1452,11 @@ warning 6002: The table/view 'PowerGrid_Copy.dbo.TempMLData' does not have a pri
           <Property Name="Status" Type="Int16" />
           <Property Name="Creation_Date" Type="DateTime" Precision="3" />
           <Property Name="RewardPoints" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="UserRole" Relationship="Self.FK_UserRole_User" FromRole="User" ToRole="UserRole" />
+          <Property Name="B2C_ObjectIdentifier" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="RoleId" Type="Int32" />
+          <NavigationProperty Name="Role" Relationship="Self.FK_UserRole_RoleID" FromRole="User" ToRole="Role" />
           <NavigationProperty Name="UserSession" Relationship="Self.FK_UserSession_User" FromRole="User" ToRole="UserSession" />
-        </EntityType>
-        <EntityType Name="UserRole">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="User_Id" Type="Int32" />
-          <Property Name="Role_Id" Type="Int32" />
-          <NavigationProperty Name="Role" Relationship="Self.FK_UserRole_Role" FromRole="UserRole" ToRole="Role" />
-          <NavigationProperty Name="User" Relationship="Self.FK_UserRole_User" FromRole="UserRole" ToRole="User" />
         </EntityType>
         <EntityType Name="UserSession">
           <Key>
@@ -1525,6 +1621,18 @@ warning 6002: The table/view 'PowerGrid_Copy.dbo.TempMLData' does not have a pri
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_University_UniversityID">
+          <End Role="University" Type="Self.University" Multiplicity="1" />
+          <End Role="Campus" Type="Self.Campus" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="University">
+              <PropertyRef Name="UniversityID" />
+            </Principal>
+            <Dependent Role="Campus">
+              <PropertyRef Name="UniversityID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Feedback_ClassId">
           <End Role="ClassroomDetails" Type="Self.ClassroomDetails" Multiplicity="0..1" />
           <End Role="Feedback" Type="Self.Feedback" Multiplicity="*" />
@@ -1549,27 +1657,15 @@ warning 6002: The table/view 'PowerGrid_Copy.dbo.TempMLData' does not have a pri
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_UserRole_Role">
+        <Association Name="FK_UserRole_RoleID">
           <End Role="Role" Type="Self.Role" Multiplicity="0..1" />
-          <End Role="UserRole" Type="Self.UserRole" Multiplicity="*" />
+          <End Role="User" Type="Self.User" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Role">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="UserRole">
-              <PropertyRef Name="Role_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_UserRole_User">
-          <End Role="User" Type="Self.User" Multiplicity="0..1" />
-          <End Role="UserRole" Type="Self.UserRole" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="UserRole">
-              <PropertyRef Name="User_Id" />
+            <Dependent Role="User">
+              <PropertyRef Name="RoleId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1594,6 +1690,7 @@ warning 6002: The table/view 'PowerGrid_Copy.dbo.TempMLData' does not have a pri
           <EntitySet Name="Alerts" EntityType="Self.Alerts" />
           <EntitySet Name="AnomalyOutput" EntityType="Self.AnomalyOutput" />
           <EntitySet Name="Answers" EntityType="Self.Answers" />
+          <EntitySet Name="AzureLiveData" EntityType="Self.AzureLiveData" />
           <EntitySet Name="Building" EntityType="Self.Building" />
           <EntitySet Name="Campus" EntityType="Self.Campus" />
           <EntitySet Name="ClassroomDetails" EntityType="Self.ClassroomDetails" />
@@ -1605,6 +1702,7 @@ warning 6002: The table/view 'PowerGrid_Copy.dbo.TempMLData' does not have a pri
           <EntitySet Name="MeterDetails" EntityType="Self.MeterDetails" />
           <EntitySet Name="MonthlyConsumptionDetails" EntityType="Self.MonthlyConsumptionDetails" />
           <EntitySet Name="MSLiveData" EntityType="Self.MSLiveData" />
+          <EntitySet Name="Person" EntityType="Self.Person" />
           <EntitySet Name="PiServer" EntityType="Self.PiServer" />
           <EntitySet Name="Questions" EntityType="Self.Questions" />
           <EntitySet Name="Role" EntityType="Self.Role" />
@@ -1614,7 +1712,6 @@ warning 6002: The table/view 'PowerGrid_Copy.dbo.TempMLData' does not have a pri
           <EntitySet Name="TempMSLiveData" EntityType="Self.TempMSLiveData" />
           <EntitySet Name="University" EntityType="Self.University" />
           <EntitySet Name="User" EntityType="Self.User" />
-          <EntitySet Name="UserRole" EntityType="Self.UserRole" />
           <EntitySet Name="UserSession" EntityType="Self.UserSession" />
           <EntitySet Name="WeeklyConsumptionPrediction" EntityType="Self.WeeklyConsumptionPrediction" />
           <EntitySet Name="PowergridAzureMLData" EntityType="Self.PowergridAzureMLData" />
@@ -1640,6 +1737,10 @@ warning 6002: The table/view 'PowerGrid_Copy.dbo.TempMLData' does not have a pri
             <End Role="Campus" EntitySet="Campus" />
             <End Role="PiServer" EntitySet="PiServer" />
           </AssociationSet>
+          <AssociationSet Name="FK_University_UniversityID" Association="Self.FK_University_UniversityID">
+            <End Role="University" EntitySet="University" />
+            <End Role="Campus" EntitySet="Campus" />
+          </AssociationSet>
           <AssociationSet Name="FK_Feedback_ClassId" Association="Self.FK_Feedback_ClassId">
             <End Role="ClassroomDetails" EntitySet="ClassroomDetails" />
             <End Role="Feedback" EntitySet="Feedback" />
@@ -1648,13 +1749,9 @@ warning 6002: The table/view 'PowerGrid_Copy.dbo.TempMLData' does not have a pri
             <End Role="Questions" EntitySet="Questions" />
             <End Role="Feedback" EntitySet="Feedback" />
           </AssociationSet>
-          <AssociationSet Name="FK_UserRole_Role" Association="Self.FK_UserRole_Role">
+          <AssociationSet Name="FK_UserRole_RoleID" Association="Self.FK_UserRole_RoleID">
             <End Role="Role" EntitySet="Role" />
-            <End Role="UserRole" EntitySet="UserRole" />
-          </AssociationSet>
-          <AssociationSet Name="FK_UserRole_User" Association="Self.FK_UserRole_User">
             <End Role="User" EntitySet="User" />
-            <End Role="UserRole" EntitySet="UserRole" />
           </AssociationSet>
           <AssociationSet Name="FK_UserSession_User" Association="Self.FK_UserSession_User">
             <End Role="User" EntitySet="User" />
@@ -1670,9 +1767,9 @@ warning 6002: The table/view 'PowerGrid_Copy.dbo.TempMLData' does not have a pri
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="PowerGridModelStoreContainer" CdmEntityContainer="PowerGridEntities">
+        <EntityContainerMapping StorageEntityContainer="PowerGrid_CopyModelStoreContainer" CdmEntityContainer="PowerGridEntities">
           <EntitySetMapping Name="AlertRules">
-            <EntityTypeMapping TypeName="PowerGridModel.AlertRules">
+            <EntityTypeMapping TypeName="PowerGrid_CopyModel.AlertRules">
               <MappingFragment StoreEntitySet="AlertRules">
                 <ScalarProperty Name="Rule_Id" ColumnName="Rule_Id" />
                 <ScalarProperty Name="Class_Id" ColumnName="Class_Id" />
@@ -1689,7 +1786,7 @@ warning 6002: The table/view 'PowerGrid_Copy.dbo.TempMLData' does not have a pri
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Alerts">
-            <EntityTypeMapping TypeName="PowerGridModel.Alerts">
+            <EntityTypeMapping TypeName="PowerGrid_CopyModel.Alerts">
               <MappingFragment StoreEntitySet="Alerts">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Sensor_Log_Id" ColumnName="Sensor_Log_Id" />
@@ -1704,7 +1801,7 @@ warning 6002: The table/view 'PowerGrid_Copy.dbo.TempMLData' does not have a pri
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="AnomalyOutput">
-            <EntityTypeMapping TypeName="PowerGridModel.AnomalyOutput">
+            <EntityTypeMapping TypeName="PowerGrid_CopyModel.AnomalyOutput">
               <MappingFragment StoreEntitySet="AnomalyOutput">
                 <ScalarProperty Name="PowerScout" ColumnName="PowerScout" />
                 <ScalarProperty Name="Temperature" ColumnName="Temperature" />
@@ -1720,7 +1817,7 @@ warning 6002: The table/view 'PowerGrid_Copy.dbo.TempMLData' does not have a pri
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Answers">
-            <EntityTypeMapping TypeName="PowerGridModel.Answers">
+            <EntityTypeMapping TypeName="PowerGrid_CopyModel.Answers">
               <MappingFragment StoreEntitySet="Answers">
                 <ScalarProperty Name="AnswerID" ColumnName="AnswerID" />
                 <ScalarProperty Name="AnswerDesc" ColumnName="AnswerDesc" />
@@ -1728,8 +1825,55 @@ warning 6002: The table/view 'PowerGrid_Copy.dbo.TempMLData' does not have a pri
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="AzureLiveData">
+            <EntityTypeMapping TypeName="PowerGrid_CopyModel.AzureLiveData">
+              <MappingFragment StoreEntitySet="AzureLiveData">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="AMPS_L1" ColumnName="AMPS_L1" />
+                <ScalarProperty Name="AMPS_L2" ColumnName="AMPS_L2" />
+                <ScalarProperty Name="AMPS_L3" ColumnName="AMPS_L3" />
+                <ScalarProperty Name="AMPS_SYSTEM_AVG" ColumnName="AMPS_SYSTEM_AVG" />
+                <ScalarProperty Name="Breaker_details" ColumnName="Breaker_details" />
+                <ScalarProperty Name="Breaker_label" ColumnName="Breaker_label" />
+                <ScalarProperty Name="Building" ColumnName="Building" />
+                <ScalarProperty Name="ClassOccupanyRemaining" ColumnName="ClassOccupanyRemaining" />
+                <ScalarProperty Name="ClassOccupiedValue" ColumnName="ClassOccupiedValue" />
+                <ScalarProperty Name="TotalClassCapacity" ColumnName="TotalClassCapacity" />
+                <ScalarProperty Name="Daily_electric_cost" ColumnName="Daily_electric_cost" />
+                <ScalarProperty Name="Daily_KWH_System" ColumnName="Daily_KWH_System" />
+                <ScalarProperty Name="isClassOccupied" ColumnName="isClassOccupied" />
+                <ScalarProperty Name="KW_L1" ColumnName="KW_L1" />
+                <ScalarProperty Name="KW_L2" ColumnName="KW_L2" />
+                <ScalarProperty Name="KW_L3" ColumnName="KW_L3" />
+                <ScalarProperty Name="Monthly_electric_cost" ColumnName="Monthly_electric_cost" />
+                <ScalarProperty Name="Monthly_KWH_System" ColumnName="Monthly_KWH_System" />
+                <ScalarProperty Name="PowerScout" ColumnName="PowerScout" />
+                <ScalarProperty Name="Rated_Amperage" ColumnName="Rated_Amperage" />
+                <ScalarProperty Name="Pressure" ColumnName="Pressure" />
+                <ScalarProperty Name="Relative_humidity" ColumnName="Relative_humidity" />
+                <ScalarProperty Name="Rolling_hourly_kwh_system" ColumnName="Rolling_hourly_kwh_system" />
+                <ScalarProperty Name="Serial_number" ColumnName="Serial_number" />
+                <ScalarProperty Name="Temperature" ColumnName="Temperature" />
+                <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Visibility" ColumnName="Visibility" />
+                <ScalarProperty Name="Volts_L1_to_neutral" ColumnName="Volts_L1_to_neutral" />
+                <ScalarProperty Name="Volts_L2_to_neutral" ColumnName="Volts_L2_to_neutral" />
+                <ScalarProperty Name="Volts_L3_to_neutral" ColumnName="Volts_L3_to_neutral" />
+                <ScalarProperty Name="kW_System" ColumnName="kW_System" />
+                <ScalarProperty Name="days" ColumnName="days" />
+                <ScalarProperty Name="time_period" ColumnName="time_period" />
+                <ScalarProperty Name="current_week" ColumnName="current_week" />
+                <ScalarProperty Name="last_week" ColumnName="last_week" />
+                <ScalarProperty Name="current_day" ColumnName="current_day" />
+                <ScalarProperty Name="previous_day" ColumnName="previous_day" />
+                <ScalarProperty Name="current_month" ColumnName="current_month" />
+                <ScalarProperty Name="last_month" ColumnName="last_month" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Building">
-            <EntityTypeMapping TypeName="PowerGridModel.Building">
+            <EntityTypeMapping TypeName="PowerGrid_CopyModel.Building">
               <MappingFragment StoreEntitySet="Building">
                 <ScalarProperty Name="BuildingID" ColumnName="BuildingID" />
                 <ScalarProperty Name="BuildingName" ColumnName="BuildingName" />
@@ -1745,7 +1889,7 @@ warning 6002: The table/view 'PowerGrid_Copy.dbo.TempMLData' does not have a pri
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Campus">
-            <EntityTypeMapping TypeName="PowerGridModel.Campus">
+            <EntityTypeMapping TypeName="PowerGrid_CopyModel.Campus">
               <MappingFragment StoreEntitySet="Campus">
                 <ScalarProperty Name="CampusID" ColumnName="CampusID" />
                 <ScalarProperty Name="CampusName" ColumnName="CampusName" />
@@ -1757,11 +1901,13 @@ warning 6002: The table/view 'PowerGrid_Copy.dbo.TempMLData' does not have a pri
                 <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
                 <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="Longitude" ColumnName="Longitude" />
+                <ScalarProperty Name="Latitude" ColumnName="Latitude" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="ClassroomDetails">
-            <EntityTypeMapping TypeName="PowerGridModel.ClassroomDetails">
+            <EntityTypeMapping TypeName="PowerGrid_CopyModel.ClassroomDetails">
               <MappingFragment StoreEntitySet="ClassroomDetails">
                 <ScalarProperty Name="Class_Id" ColumnName="Class_Id" />
                 <ScalarProperty Name="Class_Name" ColumnName="Class_Name" />
@@ -1774,7 +1920,7 @@ warning 6002: The table/view 'PowerGrid_Copy.dbo.TempMLData' does not have a pri
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="DailyConsumptionDetails">
-            <EntityTypeMapping TypeName="PowerGridModel.DailyConsumptionDetails">
+            <EntityTypeMapping TypeName="PowerGrid_CopyModel.DailyConsumptionDetails">
               <MappingFragment StoreEntitySet="DailyConsumptionDetails">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="AMPS_SYSTEM_AVG" ColumnName="AMPS_SYSTEM_AVG" />
@@ -1793,7 +1939,7 @@ warning 6002: The table/view 'PowerGrid_Copy.dbo.TempMLData' does not have a pri
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="DailyConsumptionPrediction">
-            <EntityTypeMapping TypeName="PowerGridModel.DailyConsumptionPrediction">
+            <EntityTypeMapping TypeName="PowerGrid_CopyModel.DailyConsumptionPrediction">
               <MappingFragment StoreEntitySet="DailyConsumptionPrediction">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="PowerScout" ColumnName="PowerScout" />
@@ -1806,7 +1952,7 @@ warning 6002: The table/view 'PowerGrid_Copy.dbo.TempMLData' does not have a pri
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Feedback">
-            <EntityTypeMapping TypeName="PowerGridModel.Feedback">
+            <EntityTypeMapping TypeName="PowerGrid_CopyModel.Feedback">
               <MappingFragment StoreEntitySet="Feedback">
                 <ScalarProperty Name="FeedbackID" ColumnName="FeedbackID" />
                 <ScalarProperty Name="ClassID" ColumnName="ClassID" />
@@ -1821,7 +1967,7 @@ warning 6002: The table/view 'PowerGrid_Copy.dbo.TempMLData' does not have a pri
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="HalfHourlyData">
-            <EntityTypeMapping TypeName="PowerGridModel.HalfHourlyData">
+            <EntityTypeMapping TypeName="PowerGrid_CopyModel.HalfHourlyData">
               <MappingFragment StoreEntitySet="HalfHourlyData">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="AMPS_L1" ColumnName="AMPS_L1" />
@@ -1868,7 +2014,7 @@ warning 6002: The table/view 'PowerGrid_Copy.dbo.TempMLData' does not have a pri
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="HalfYearlyData">
-            <EntityTypeMapping TypeName="PowerGridModel.HalfYearlyData">
+            <EntityTypeMapping TypeName="PowerGrid_CopyModel.HalfYearlyData">
               <MappingFragment StoreEntitySet="HalfYearlyData">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="AMPS_L1" ColumnName="AMPS_L1" />
@@ -1917,7 +2063,7 @@ warning 6002: The table/view 'PowerGrid_Copy.dbo.TempMLData' does not have a pri
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="MeterDetails">
-            <EntityTypeMapping TypeName="PowerGridModel.MeterDetails">
+            <EntityTypeMapping TypeName="PowerGrid_CopyModel.MeterDetails">
               <MappingFragment StoreEntitySet="MeterDetails">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="PowerScout" ColumnName="PowerScout" />
@@ -1931,7 +2077,7 @@ warning 6002: The table/view 'PowerGrid_Copy.dbo.TempMLData' does not have a pri
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="MonthlyConsumptionDetails">
-            <EntityTypeMapping TypeName="PowerGridModel.MonthlyConsumptionDetails">
+            <EntityTypeMapping TypeName="PowerGrid_CopyModel.MonthlyConsumptionDetails">
               <MappingFragment StoreEntitySet="MonthlyConsumptionDetails">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Month" ColumnName="Month" />
@@ -1950,7 +2096,7 @@ warning 6002: The table/view 'PowerGrid_Copy.dbo.TempMLData' does not have a pri
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="MSLiveData">
-            <EntityTypeMapping TypeName="PowerGridModel.MSLiveData">
+            <EntityTypeMapping TypeName="PowerGrid_CopyModel.MSLiveData">
               <MappingFragment StoreEntitySet="MSLiveData">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="AMPS_L1" ColumnName="AMPS_L1" />
@@ -1988,8 +2134,17 @@ warning 6002: The table/view 'PowerGrid_Copy.dbo.TempMLData' does not have a pri
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Person">
+            <EntityTypeMapping TypeName="PowerGrid_CopyModel.Person">
+              <MappingFragment StoreEntitySet="Person">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="PiServer">
-            <EntityTypeMapping TypeName="PowerGridModel.PiServer">
+            <EntityTypeMapping TypeName="PowerGrid_CopyModel.PiServer">
               <MappingFragment StoreEntitySet="PiServer">
                 <ScalarProperty Name="PiServerID" ColumnName="PiServerID" />
                 <ScalarProperty Name="PiServerName" ColumnName="PiServerName" />
@@ -2006,7 +2161,7 @@ warning 6002: The table/view 'PowerGrid_Copy.dbo.TempMLData' does not have a pri
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Questions">
-            <EntityTypeMapping TypeName="PowerGridModel.Questions">
+            <EntityTypeMapping TypeName="PowerGrid_CopyModel.Questions">
               <MappingFragment StoreEntitySet="Questions">
                 <ScalarProperty Name="QuestionID" ColumnName="QuestionID" />
                 <ScalarProperty Name="QuestionDec" ColumnName="QuestionDec" />
@@ -2014,7 +2169,7 @@ warning 6002: The table/view 'PowerGrid_Copy.dbo.TempMLData' does not have a pri
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Role">
-            <EntityTypeMapping TypeName="PowerGridModel.Role">
+            <EntityTypeMapping TypeName="PowerGrid_CopyModel.Role">
               <MappingFragment StoreEntitySet="Role">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="RoleName" ColumnName="RoleName" />
@@ -2029,7 +2184,7 @@ warning 6002: The table/view 'PowerGrid_Copy.dbo.TempMLData' does not have a pri
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="SensorData">
-            <EntityTypeMapping TypeName="PowerGridModel.SensorData">
+            <EntityTypeMapping TypeName="PowerGrid_CopyModel.SensorData">
               <MappingFragment StoreEntitySet="SensorData">
                 <ScalarProperty Name="Sensor_Log_Id" ColumnName="Sensor_Log_Id" />
                 <ScalarProperty Name="Sensor_Id" ColumnName="Sensor_Id" />
@@ -2045,7 +2200,7 @@ warning 6002: The table/view 'PowerGrid_Copy.dbo.TempMLData' does not have a pri
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="SensorLiveData">
-            <EntityTypeMapping TypeName="PowerGridModel.SensorLiveData">
+            <EntityTypeMapping TypeName="PowerGrid_CopyModel.SensorLiveData">
               <MappingFragment StoreEntitySet="SensorLiveData">
                 <ScalarProperty Name="Sensor_Log_Id" ColumnName="Sensor_Log_Id" />
                 <ScalarProperty Name="Sensor_Id" ColumnName="Sensor_Id" />
@@ -2057,7 +2212,7 @@ warning 6002: The table/view 'PowerGrid_Copy.dbo.TempMLData' does not have a pri
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="SensorMaster">
-            <EntityTypeMapping TypeName="PowerGridModel.SensorMaster">
+            <EntityTypeMapping TypeName="PowerGrid_CopyModel.SensorMaster">
               <MappingFragment StoreEntitySet="SensorMaster">
                 <ScalarProperty Name="Sensor_Id" ColumnName="Sensor_Id" />
                 <ScalarProperty Name="Sensor_Name" ColumnName="Sensor_Name" />
@@ -2068,7 +2223,7 @@ warning 6002: The table/view 'PowerGrid_Copy.dbo.TempMLData' does not have a pri
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="TempMSLiveData">
-            <EntityTypeMapping TypeName="PowerGridModel.TempMSLiveData">
+            <EntityTypeMapping TypeName="PowerGrid_CopyModel.TempMSLiveData">
               <MappingFragment StoreEntitySet="TempMSLiveData">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="AMPS_L1" ColumnName="AMPS_L1" />
@@ -2107,7 +2262,7 @@ warning 6002: The table/view 'PowerGrid_Copy.dbo.TempMLData' does not have a pri
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="University">
-            <EntityTypeMapping TypeName="PowerGridModel.University">
+            <EntityTypeMapping TypeName="PowerGrid_CopyModel.University">
               <MappingFragment StoreEntitySet="University">
                 <ScalarProperty Name="UniversityID" ColumnName="UniversityID" />
                 <ScalarProperty Name="UniversityName" ColumnName="UniversityName" />
@@ -2123,7 +2278,7 @@ warning 6002: The table/view 'PowerGrid_Copy.dbo.TempMLData' does not have a pri
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="User">
-            <EntityTypeMapping TypeName="PowerGridModel.User">
+            <EntityTypeMapping TypeName="PowerGrid_CopyModel.User">
               <MappingFragment StoreEntitySet="User">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="First_Name" ColumnName="First_Name" />
@@ -2134,20 +2289,14 @@ warning 6002: The table/view 'PowerGrid_Copy.dbo.TempMLData' does not have a pri
                 <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="Creation_Date" ColumnName="Creation_Date" />
                 <ScalarProperty Name="RewardPoints" ColumnName="RewardPoints" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="UserRole">
-            <EntityTypeMapping TypeName="PowerGridModel.UserRole">
-              <MappingFragment StoreEntitySet="UserRole">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="User_Id" ColumnName="User_Id" />
-                <ScalarProperty Name="Role_Id" ColumnName="Role_Id" />
+                <ScalarProperty Name="B2C_ObjectIdentifier" ColumnName="B2C_ObjectIdentifier" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="UserSession">
-            <EntityTypeMapping TypeName="PowerGridModel.UserSession">
+            <EntityTypeMapping TypeName="PowerGrid_CopyModel.UserSession">
               <MappingFragment StoreEntitySet="UserSession">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="User_Id" ColumnName="User_Id" />
@@ -2156,7 +2305,7 @@ warning 6002: The table/view 'PowerGrid_Copy.dbo.TempMLData' does not have a pri
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="WeeklyConsumptionPrediction">
-            <EntityTypeMapping TypeName="PowerGridModel.WeeklyConsumptionPrediction">
+            <EntityTypeMapping TypeName="PowerGrid_CopyModel.WeeklyConsumptionPrediction">
               <MappingFragment StoreEntitySet="WeeklyConsumptionPrediction">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Start_Time" ColumnName="Start_Time" />
@@ -2168,7 +2317,7 @@ warning 6002: The table/view 'PowerGrid_Copy.dbo.TempMLData' does not have a pri
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="PowergridAzureMLData">
-            <EntityTypeMapping TypeName="PowerGridModel.PowergridAzureMLData">
+            <EntityTypeMapping TypeName="PowerGrid_CopyModel.PowergridAzureMLData">
               <MappingFragment StoreEntitySet="PowergridAzureMLData">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="AMPS_L1" ColumnName="AMPS_L1" />
@@ -2206,7 +2355,7 @@ warning 6002: The table/view 'PowerGrid_Copy.dbo.TempMLData' does not have a pri
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="RoleBK">
-            <EntityTypeMapping TypeName="PowerGridModel.RoleBK">
+            <EntityTypeMapping TypeName="PowerGrid_CopyModel.RoleBK">
               <MappingFragment StoreEntitySet="RoleBK">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Role" ColumnName="Role" />
@@ -2215,7 +2364,7 @@ warning 6002: The table/view 'PowerGrid_Copy.dbo.TempMLData' does not have a pri
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="TempMLData">
-            <EntityTypeMapping TypeName="PowerGridModel.TempMLData">
+            <EntityTypeMapping TypeName="PowerGrid_CopyModel.TempMLData">
               <MappingFragment StoreEntitySet="TempMLData">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="AMPS_L1" ColumnName="AMPS_L1" />
@@ -2253,7 +2402,7 @@ warning 6002: The table/view 'PowerGrid_Copy.dbo.TempMLData' does not have a pri
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <AssociationSetMapping Name="RoleCampusLinkUp" TypeName="PowerGridModel.RoleCampusLinkUp" StoreEntitySet="RoleCampusLinkUp">
+          <AssociationSetMapping Name="RoleCampusLinkUp" TypeName="PowerGrid_CopyModel.RoleCampusLinkUp" StoreEntitySet="RoleCampusLinkUp">
             <EndProperty Name="Campus">
               <ScalarProperty Name="CampusID" ColumnName="CampusID" />
             </EndProperty>

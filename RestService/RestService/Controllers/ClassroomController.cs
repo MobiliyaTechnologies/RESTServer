@@ -7,6 +7,7 @@
     using RestService.Services;
     using RestService.Services.Impl;
 
+    [RoutePrefix("api")]
     public class ClassroomController : ApiController
     {
         private IClassroomService classroomService;
@@ -19,7 +20,7 @@
             this.classroomService = new ClassroomService();
         }
 
-        [Route("api/getclassrooms")]
+        [Route("GetAllClassrooms")]
         public HttpResponseMessage GetAllClassrooms()
         {
             var data = this.classroomService.GetAllClassrooms();

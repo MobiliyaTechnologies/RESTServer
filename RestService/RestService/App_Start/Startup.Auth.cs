@@ -1,39 +1,32 @@
-﻿
-namespace RestService
+﻿namespace RestService
 {
-    using System;
-    using Microsoft.AspNet.Identity;
-    using Microsoft.AspNet.Identity.Owin;
-    using Microsoft.Owin;
-    using Microsoft.Owin.Security.Cookies;
-    using Owin;
-    using RestService.Models;
     using System.Configuration;
-    using Microsoft.Owin.Security.OAuth;
-    using Microsoft.Owin.Security.Jwt;
     using System.IdentityModel.Tokens;
+    using Microsoft.Owin.Security.Jwt;
+    using Microsoft.Owin.Security.OAuth;
+    using Owin;
 
     public partial class Startup
     {
-        public static string aadInstance;
-        public static string tenant;
-        public static string clientId;
-        public static string signUpPolicy;
-        public static string signInPolicy;
-        public static string editProfilePolicy;
-        public static string MFAPolicyName;
+        private string aadInstance;
+        private string tenant;
+        private string clientId;
+        private string signUpSignInPolicy;
+        private string editProfilePolicy;
+        private string signInPolicy;
 
         public void ConfigureAuth(IAppBuilder app)
         {
-            aadInstance = ConfigurationManager.AppSettings["b2c:AadInstance"];
-            tenant = ConfigurationManager.AppSettings["b2c:Tenant"];
-            clientId = ConfigurationManager.AppSettings["b2c:ClientId"];
-            signUpPolicy = ConfigurationManager.AppSettings["b2c:SignUpPolicyId"];
-            signInPolicy = ConfigurationManager.AppSettings["b2c:SignInPolicyId"];
-            editProfilePolicy = ConfigurationManager.AppSettings["b2c:UserProfilePolicyId"];
-            MFAPolicyName = ConfigurationManager.AppSettings["b2c:MFAPolicyName"];
-            // app.UseOAuthBearerAuthentication(CreateBearerOptionsFromPolicy(signUpPolicy));
-            app.UseOAuthBearerAuthentication(CreateBearerOptionsFromPolicy(signInPolicy));
+            this.aadInstance = ConfigurationManager.AppSettings["b2c:AadInstance"];
+            this.tenant = ConfigurationManager.AppSettings["b2c:Tenant"];
+            this.clientId = ConfigurationManager.AppSettings["b2c:ClientId"];
+            this.signUpSignInPolicy = ConfigurationManager.AppSettings["b2c:SignUpSignInPolicyId"];
+           this.signInPolicy = ConfigurationManager.AppSettings["b2c:SignInPolicyId"];
+         this.editProfilePolicy = ConfigurationManager.AppSettings["b2c:UserProfilePolicyId"];
+
+            app.UseOAuthBearerAuthentication(this.CreateBearerOptionsFromPolicy(this.signUpSignInPolicy));
+            app.UseOAuthBearerAuthentication(this.CreateBearerOptionsFromPolicy(this.signInPolicy));
+            app.UseOAuthBearerAuthentication(this.CreateBearerOptionsFromPolicy(this.editProfilePolicy));
         }
 
         public OAuthBearerAuthenticationOptions CreateBearerOptionsFromPolicy(string policy)
@@ -41,15 +34,14 @@ namespace RestService
             TokenValidationParameters tvps = new TokenValidationParameters
             {
                 // This is where you specify that your API only accepts tokens from its own clients
-                ValidAudience = clientId,
+                ValidAudience = this.clientId,
                 AuthenticationType = policy,
             };
 
             return new OAuthBearerAuthenticationOptions
             {
-                // This SecurityTokenProvider fetches the Azure AD B2C metadata & signing keys from the OpenIDConnect metadata endpoint
-                AccessTokenFormat = new JwtFormat(tvps,
-                new OpenIdConnectCachingSecurityTokenProvider(String.Format(aadInstance, tenant, policy))),
+                // This SecurityTokenProvider fetches the Azure AD B2C meta-data & signing keys from the OpenIDConnect meta data endpoint
+                AccessTokenFormat = new JwtFormat(tvps, new OpenIdConnectCachingSecurityTokenProvider(string.Format(this.aadInstance, this.tenant, policy))),
             };
         }
     }

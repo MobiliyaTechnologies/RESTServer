@@ -7,60 +7,55 @@
     using RestService.Enums;
     using RestService.Mappings;
     using RestService.Models;
-    using RestService.Utilities;
 
     public sealed class PiServerService : IPiServerService, IDisposable
     {
         private readonly PowerGridEntities dbContext;
+        private readonly IContextInfoAccessorService context;
 
         public PiServerService()
         {
+            this.context = new ContextInfoAccessorService();
             this.dbContext = new PowerGridEntities();
         }
 
         List<PiServerModel> IPiServerService.GetAllPiServers()
         {
-            var piServer = this.dbContext.PiServer;
+            var piServer = this.dbContext.PiServer.Where(p => p.Campus.Role.Any(r => r.Id == this.context.Current.RoleId));
             return new PiServerModelMapping().Map(piServer).ToList();
         }
 
         PiServerModel IPiServerService.GetPiServerByID(int piServerID)
         {
-            var piServer = this.dbContext.PiServer.FirstOrDefault(data => data.PiServerID == piServerID);
+            var piServer = this.dbContext.PiServer.FirstOrDefault(data => data.PiServerID == piServerID && data.Campus.Role.Any(r => r.Id == this.context.Current.RoleId));
+
             return new PiServerModelMapping().Map(piServer);
         }
 
-        PiServerModel IPiServerService.GetPiServerByName(PiServerModel model)
+        PiServerModel IPiServerService.GetPiServerByName(string piServerName)
         {
-            var piServer = (from data in this.dbContext.PiServer
-                            where data.PiServerName == model.PiServerName
-                            select new PiServerModel
-                            {
-                                PiServerID = data.PiServerID,
-                                PiServerName = data.PiServerName,
-                                PiServerDesc = data.PiServerDesc,
-                                CampusID = data.CampusID,
-                                PiServerURL = data.PiServerURL,
-                                CreatedBy = data.CreatedBy ?? default(int),
-                                CreatedOn = data.CreatedOn ?? default(DateTime),
-                                ModifiedBy = data.ModifiedBy ?? default(int),
-                                ModifiedOn = data.ModifiedOn ?? default(DateTime),
-                                IsActive = data.IsActive,
-                                IsDeleted = data.IsDeleted
-                            }).FirstOrDefault();
-            return piServer;
+            var piServer = this.dbContext.PiServer.FirstOrDefault(data => data.PiServerName.Equals(piServerName, StringComparison.InvariantCultureIgnoreCase) && data.Campus.Role.Any(r => r.Id == this.context.Current.RoleId));
+
+            return new PiServerModelMapping().Map(piServer);
         }
 
-        ResponseModel IPiServerService.AddPiServer(PiServerModel model, int userId)
+        ResponseModel IPiServerService.AddPiServer(PiServerModel model)
         {
+            var hasAuthorizeCampus = this.dbContext.Campus.Any(c => c.CampusID == model.CampusID && c.Role.Any(r => r.Id == this.context.Current.RoleId));
+
+            if (!hasAuthorizeCampus)
+            {
+                return new ResponseModel(StatusCode.Error, "User does not have access to campus.");
+            }
+
             var piServer = new PiServer();
             piServer.PiServerName = model.PiServerName;
             piServer.PiServerDesc = model.PiServerDesc;
             piServer.CampusID = model.CampusID;
             piServer.PiServerURL = model.PiServerURL;
-            piServer.CreatedBy = userId;
+            piServer.CreatedBy = this.context.Current.UserId;
             piServer.CreatedOn = DateTime.UtcNow;
-            piServer.ModifiedBy = userId;
+            piServer.ModifiedBy = this.context.Current.UserId;
             piServer.ModifiedOn = DateTime.UtcNow;
             piServer.IsActive = true;
             piServer.IsDeleted = false;
@@ -70,31 +65,31 @@
             return new ResponseModel { Message = "Pi Server added successfully", Status_Code = (int)StatusCode.Ok };
         }
 
-        ResponseModel IPiServerService.DeletePiServer(PiServerModel model, int userId)
+        ResponseModel IPiServerService.DeletePiServer(int piServerId)
         {
-            var data = this.dbContext.PiServer.FirstOrDefault(f => f.PiServerID == model.PiServerID);
+            var data = this.dbContext.PiServer.FirstOrDefault(f => f.PiServerID == piServerId && f.Campus.Role.Any(r => r.Id == this.context.Current.RoleId));
             if (data == null)
             {
-                return new ResponseModel { Message = "Invalid Pi Server", Status_Code = (int)StatusCode.Error };
+                return new ResponseModel { Message = "Pi Server does not exists or user does not have a permission.", Status_Code = (int)StatusCode.Error };
             }
             else
             {
                 data.IsActive = false;
                 data.IsDeleted = true;
-                data.ModifiedBy = userId;
+                data.ModifiedBy = this.context.Current.UserId;
                 data.ModifiedOn = DateTime.UtcNow;
                 this.dbContext.SaveChanges();
                 return new ResponseModel { Message = "Pi Server deleted successfully", Status_Code = (int)StatusCode.Ok };
             }
         }
 
-        ResponseModel IPiServerService.UpdatePiServer(PiServerModel model, int userId)
+        ResponseModel IPiServerService.UpdatePiServer(PiServerModel model)
         {
-            var data = this.dbContext.PiServer.FirstOrDefault(f => f.PiServerID == model.PiServerID);
+            var data = this.dbContext.PiServer.FirstOrDefault(f => f.PiServerID == model.PiServerID && f.Campus.Role.Any(r => r.Id == this.context.Current.RoleId));
 
             if (data == null)
             {
-                return new ResponseModel { Message = "Invalid Pi Server", Status_Code = (int)StatusCode.Error };
+                return new ResponseModel { Message = "Pi Server does not exists or user does not have a permission.", Status_Code = (int)StatusCode.Error };
             }
             else
             {
@@ -113,10 +108,8 @@
                     data.PiServerURL = model.PiServerURL;
                 }
 
-                data.CampusID = model.CampusID;
                 data.IsActive = model.IsActive;
-                data.IsDeleted = model.IsDeleted;
-                data.ModifiedBy = userId;
+                data.ModifiedBy = this.context.Current.UserId;
                 data.ModifiedOn = DateTime.UtcNow;
             }
 

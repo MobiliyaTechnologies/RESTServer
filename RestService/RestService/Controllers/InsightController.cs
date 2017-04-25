@@ -7,6 +7,7 @@
     using RestService.Services;
     using RestService.Services.Impl;
 
+    [RoutePrefix("api")]
     public class InsightController : ApiController
     {
         private IInsightService insightService;
@@ -19,7 +20,7 @@
             this.insightService = new InsightService();
         }
 
-        [Route("api/getinsightdata")]
+        [Route("GetInsightData")]
         public HttpResponseMessage GetInsightData()
         {
             var data = this.insightService.GetInsightData();

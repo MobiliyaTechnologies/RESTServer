@@ -7,11 +7,14 @@
     using System.Net.Http;
     using System.Web;
     using System.Web.Http;
+    using RestService.Enums;
+    using RestService.Filters;
     using RestService.Models;
     using RestService.Services;
     using RestService.Services.Impl;
     using RestService.Utilities;
 
+    [RoutePrefix("api")]
     public class BuildingController : ApiController
     {
         private readonly IBuildingService buildingService;
@@ -21,7 +24,7 @@
             this.buildingService = new BuildingService();
         }
 
-        [Route("api/getallbuildings")]
+        [Route("GetAllBuildings")]
         public HttpResponseMessage GetAllBuildings()
         {
             var data = this.buildingService.GetAllBuildings();
@@ -33,10 +36,10 @@
             return this.Request.CreateErrorResponse(HttpStatusCode.NotFound, string.Format("No Building found"));
         }
 
-        [Route("api/getbuildingbyid/{buildingID}")]
-        public HttpResponseMessage GetBuildingByID(int buildingID)
+        [Route("GetBuildingByID/{buildingId}")]
+        public HttpResponseMessage GetBuildingByID(int buildingId)
         {
-            var data = this.buildingService.GetBuildingByID(buildingID);
+            var data = this.buildingService.GetBuildingByID(buildingId);
             if (data != null)
             {
                 return this.Request.CreateResponse(HttpStatusCode.OK, data);
@@ -45,14 +48,27 @@
             return this.Request.CreateErrorResponse(HttpStatusCode.NotFound, string.Format("No Building found"));
         }
 
-        [Route("api/addbuilding")]
+        [Route("GetBuildingsByCampus/{campusId}")]
+        public HttpResponseMessage GetBuildingsByCampus(int campusId)
+        {
+            var data = this.buildingService.GetBuildingsByCampus(campusId);
+            if (data.Count != 0)
+            {
+                return this.Request.CreateResponse(HttpStatusCode.OK, data);
+            }
+
+            return this.Request.CreateErrorResponse(HttpStatusCode.NotFound, string.Format("No Building found"));
+        }
+
+        [Route("AddBuilding")]
+        [CustomAuthorize(UserRole = UserRole.SuperAdmin)]
+        [OverrideAuthorization]
         [HttpPost]
         public HttpResponseMessage AddBuilding([FromBody] BuildingModel model)
         {
             if (this.ModelState.IsValid)
             {
-                var userId = ServiceUtil.GetUser();
-                var data = this.buildingService.AddBuilding(model, userId);
+                var data = this.buildingService.AddBuilding(model);
                 return this.Request.CreateResponse(HttpStatusCode.OK, data);
             }
 
@@ -61,14 +77,13 @@
             return this.Request.CreateErrorResponse((HttpStatusCode)613, messages);
         }
 
-        [Route("api/updatebuilding")]
-        [HttpPost]
+        [Route("UpdateBuilding")]
+        [HttpPut]
         public HttpResponseMessage UpdateBuilding([FromBody] BuildingModel model)
         {
             if (this.ModelState.IsValid)
             {
-                var userId = ServiceUtil.GetUser();
-                var data = this.buildingService.UpdateBuilding(model, userId);
+                var data = this.buildingService.UpdateBuilding(model);
                 return this.Request.CreateResponse(HttpStatusCode.OK, data);
             }
 
@@ -77,12 +92,11 @@
             return this.Request.CreateErrorResponse((HttpStatusCode)613, messages);
         }
 
-        [Route("api/deletebuilding")]
-        [HttpPost]
-        public HttpResponseMessage DeleteBuilding([FromBody] BuildingModel model)
+        [Route("DeleteBuilding/{buildingId}")]
+        [HttpDelete]
+        public HttpResponseMessage DeleteBuilding(int buildingId)
         {
-            var userId = ServiceUtil.GetUser();
-            var data = this.buildingService.DeleteBuilding(model, userId);
+            var data = this.buildingService.DeleteBuilding(buildingId);
             return this.Request.CreateResponse(HttpStatusCode.OK, data);
         }
 

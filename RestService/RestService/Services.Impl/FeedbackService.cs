@@ -71,18 +71,18 @@
             return new FeedbackModelMappings().Map(feedbacks).ToList();
         }
 
-        List<FeedbackCountModel> IFeedbackService.GetFeedbackCount(FeedbackCountModel feedbackCountModel)
+        List<FeedbackCountModel> IFeedbackService.GetFeedbackCount(int classId)
         {
             List<FeedbackCountModel> feedbackCount = new List<FeedbackCountModel>();
             var answerList = (from answer in this.dbContext.Answers select answer).ToList();
 
-            var feedbackDetail = (from feedback in this.dbContext.Feedback where feedback.ClassID == feedbackCountModel.ClassId select feedback).ToList();
-            var classDetails = (from classData in this.dbContext.ClassroomDetails where classData.Class_Id == feedbackCountModel.ClassId select classData).FirstOrDefault();
+            var feedbackDetail = (from feedback in this.dbContext.Feedback where feedback.ClassID == classId select feedback).ToList();
+            var classDetails = (from classData in this.dbContext.ClassroomDetails where classData.Class_Id == classId select classData).FirstOrDefault();
 
             answerList.All(answer =>
             {
                 var answerCount = feedbackDetail.Where(feedback => feedback.AnswerID == answer.AnswerID).ToList().Count();
-                feedbackCount.Add(new FeedbackCountModel { AnswerCount = answerCount, AnswerDesc = answer.AnswerDesc, AnswerId = answer.AnswerID, ClassId = feedbackCountModel.ClassId, ClassName = classDetails.Class_Name });
+                feedbackCount.Add(new FeedbackCountModel { AnswerCount = answerCount, AnswerDesc = answer.AnswerDesc, AnswerId = answer.AnswerID, ClassId = classId, ClassName = classDetails.Class_Name });
                 return true;
             });
             var threshold = feedbackCount.Sum(feedback => feedback.AnswerCount) * 0.6;

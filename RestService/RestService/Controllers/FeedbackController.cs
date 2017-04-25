@@ -9,6 +9,7 @@
     using RestService.Services;
     using RestService.Services.Impl;
 
+    [RoutePrefix("api")]
     public class FeedbackController : ApiController
     {
         private IFeedbackService feedbackService;
@@ -21,16 +22,16 @@
             this.feedbackService = new FeedbackService();
         }
 
-        [Route("api/deletefeedback")]
-        [HttpPost]
-        public HttpResponseMessage DeleteFeedback([FromBody] FeedbackModel feedbackdetail)
+        [Route("DeleteFeedback/{feedbackId}")]
+        [HttpDelete]
+        public HttpResponseMessage DeleteFeedback(int feedbackId)
         {
-            var data = this.feedbackService.DeleteFeedback(feedbackdetail.FeedbackId);
+            var data = this.feedbackService.DeleteFeedback(feedbackId);
             return this.Request.CreateResponse(HttpStatusCode.OK, data);
         }
 
-        [Route("api/updatefeedback")]
-        [HttpPost]
+        [Route("UpdateFeedback")]
+        [HttpPut]
         public HttpResponseMessage UpdateFeedback([FromBody] FeedbackModel feedbackdetail)
         {
             if (feedbackdetail != null && this.ModelState.IsValid)
@@ -46,7 +47,7 @@
             return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, messages);
         }
 
-        [Route("api/storefeedback")]
+        [Route("StoreFeedback")]
         [HttpPost]
         public HttpResponseMessage StoreFeedback([FromBody] FeedbackModel feedbackdetail)
         {
@@ -71,34 +72,33 @@
             return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, messages);
         }
 
-        [Route("api/getallfeedback")]
+        [Route("GetAllFeedback")]
         public HttpResponseMessage GetAllFeedback()
         {
             var data = this.feedbackService.GetAllFeedback();
             return this.Request.CreateResponse(HttpStatusCode.OK, data);
         }
 
-        [Route("api/getfeedbackcount")]
-        [HttpPost]
-        public HttpResponseMessage GetFeedbackCount( [FromBody] FeedbackCountModel feedbackCountModel)
+        [Route("GetFeedbackCount/{classId}")]
+        public HttpResponseMessage GetFeedbackCount(int classId)
         {
-            if (feedbackCountModel == null)
+            if (classId < 1)
             {
-                return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Invalid feedback count model");
+                return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Class id must be grater than 0.");
             }
 
-            var data = this.feedbackService.GetFeedbackCount(feedbackCountModel);
+            var data = this.feedbackService.GetFeedbackCount(classId);
 
             if (data != null && data.Count() > 0)
             {
                 return this.Request.CreateResponse(HttpStatusCode.OK, data);
             }
 
-            return this.Request.CreateErrorResponse(HttpStatusCode.NotFound, string.Format("Feedback does not exists for given class id - {0}", feedbackCountModel.ClassId));
+            return this.Request.CreateErrorResponse(HttpStatusCode.NotFound, string.Format("Feedback does not exists for given class id - {0}", classId));
         }
 
-        [Route("api/resetfeedback")]
-        [HttpGet]
+        [Route("ResetFeedback")]
+        [HttpDelete]
         public HttpResponseMessage ResetFeedback()
         {
             var data = this.feedbackService.ResetFeedback();

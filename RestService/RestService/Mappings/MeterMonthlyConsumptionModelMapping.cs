@@ -29,7 +29,7 @@
 
         public MeterMonthlyConsumptionModel Map(MonthlyConsumptionDetails source)
         {
-            return this.Map(new List<MonthlyConsumptionDetails> { source }.AsQueryable()).FirstOrDefault();
+            return source == null ? null : this.Map(new List<MonthlyConsumptionDetails> { source }.AsQueryable()).FirstOrDefault();
         }
     }
 }

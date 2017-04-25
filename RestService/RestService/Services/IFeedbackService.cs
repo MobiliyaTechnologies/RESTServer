@@ -42,9 +42,11 @@
         /// <summary>
         /// Gets the feedback for given classroom.
         /// </summary>
-        /// <param name="feedbackCountModel">The class details.</param>
-        /// <returns>The class feedback.</returns>
-        List<FeedbackCountModel> GetFeedbackCount(FeedbackCountModel feedbackCountModel);
+        /// <param name="classId">The class identifier.</param>
+        /// <returns>
+        /// The class feedback.
+        /// </returns>
+        List<FeedbackCountModel> GetFeedbackCount(int classId);
 
         /// <summary>
         /// Resets or remove all feedback.

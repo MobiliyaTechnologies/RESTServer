@@ -3,6 +3,9 @@
     using System.Collections.Generic;
     using RestService.Models;
 
+    /// <summary>
+    /// Provides campus related operations.
+    /// </summary>
     public interface ICampusService
     {
         /// <summary>
@@ -14,32 +17,67 @@
         /// <summary>
         /// Get a Campus by ID
         /// </summary>
-        /// <param name="campusID">Campus ID</param>
-        /// <returns>Returns a specific Campus by fetching based on CampusID</returns>
-        CampusModel GetCampusByID(int campusID);
+        /// <param name="campusId">The campus identifier.</param>
+        /// <returns>
+        /// Returns a specific Campus by fetching based on CampusID
+        /// </returns>
+        CampusModel GetCampusByID(int campusId);
+
+        /// <summary>
+        /// Gets the campus accessible to current user.
+        /// </summary>
+        /// <returns>Campus list associate with current user role.</returns>
+        List<CampusModel> GetCampus();
+
+        /// <summary>
+        /// Gets the campus by location.
+        /// </summary>
+        /// <param name="latitude">The latitude.</param>
+        /// <param name="longitude">The longitude.</param>
+        /// <returns>The campus situated at given location.</returns>
+        CampusModel GetCampusByLocation(decimal latitude, decimal longitude);
 
         /// <summary>
         /// Inserts a new Campus in system
         /// </summary>
         /// <param name="model">Campus model</param>
-        /// <param name="userId">User</param>
-        /// <returns>Insert acknowledgement</returns>
-        ResponseModel AddCampus(CampusModel model, int userId);
+        /// <returns>
+        /// Insert acknowledgment.
+        /// </returns>
+        ResponseModel AddCampus(CampusModel model);
 
         /// <summary>
         /// Removes an existing Campus from system
         /// </summary>
-        /// <param name="model">Campus model</param>
-        /// <param name="userId">User</param>
-        /// <returns>Delete acknowledgement</returns>
-        ResponseModel DeleteCampus(CampusModel model, int userId);
+        /// <param name="campusId">The campus identifier.</param>
+        /// <returns>
+        /// Delete acknowledgment.
+        /// </returns>
+        ResponseModel DeleteCampus(int campusId);
 
         /// <summary>
         /// Updates information of an existing Campus
         /// </summary>
         /// <param name="model">Campus model</param>
-        /// <param name="userId">User</param>
-        /// <returns>Update acknowledgement</returns>
-        ResponseModel UpdateCampus(CampusModel model, int userId);
+        /// <returns>Update acknowledgment</returns>
+        ResponseModel UpdateCampus(CampusModel model);
+
+        /// <summary>
+        /// Assigns the role to campus.
+        /// </summary>
+        /// <param name="roleId">The role identifier.</param>
+        /// <param name="campusId">The campus identifier.</param>
+        /// <returns>
+        /// Role Assigned acknowledgment.
+        /// </returns>
+        ResponseModel AssignRoleToCampus(int roleId, int campusId);
+
+        /// <summary>
+        /// Adds the buildings to campus.
+        /// </summary>
+        /// <param name="campusId">The campus identifier.</param>
+        /// <param name="buildingIds">The building ids.</param>
+        /// <returns>Association confirmation.</returns>
+        ResponseModel AddBuildingsToCampus(int campusId, List<int> buildingIds);
     }
 }

@@ -2,11 +2,10 @@
 {
     using System;
     using System.Collections.Generic;
-    using RestService.Entities;
-    using RestService.Models;
     using System.Linq;
-    using RestService.Utilities;
+    using RestService.Entities;
     using RestService.Enums;
+    using RestService.Models;
 
     public sealed class SensorService : ISensorService, IDisposable
     {
@@ -39,11 +38,11 @@
             return sensorModels;
         }
 
-        List<SensorModel> ISensorService.GetAllSensorsForClass(SensorModel sensorData)
+        List<SensorModel> ISensorService.GetAllSensorsForClass(int classId)
         {
             var sensorModels = (from sensor in this.dbContext.SensorMaster
                                 join classData in this.dbContext.ClassroomDetails on sensor.Class_Id equals classData.Class_Id
-                                where classData.Class_Id == sensorData.Class_Id
+                                where classData.Class_Id == classId
                                 select new SensorModel
                                 {
                                     Class_Id = classData.Class_Id,
@@ -59,10 +58,10 @@
             return sensorModels;
         }
 
-        ResponseModel ISensorService.MapSensor(SensorModel sensorDetail)
+        ResponseModel ISensorService.MapSensor(int sensorId, int classId)
         {
             ResponseModel responseModel = new ResponseModel();
-            var sensorData = this.dbContext.SensorMaster.FirstOrDefault(s => s.Sensor_Id == sensorDetail.Sensor_Id);
+            var sensorData = this.dbContext.SensorMaster.FirstOrDefault(s => s.Sensor_Id == sensorId);
 
             if (sensorData == null)
             {
@@ -71,7 +70,7 @@
             }
             else
             {
-                sensorData.Class_Id = sensorDetail.Class_Id;
+                sensorData.Class_Id = classId;
                 this.dbContext.SaveChanges();
 
                 responseModel.Message = "Sensor mapped successfully";

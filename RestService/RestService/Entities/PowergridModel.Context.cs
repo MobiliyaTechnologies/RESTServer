@@ -29,6 +29,7 @@ namespace RestService.Entities
         public virtual DbSet<Alerts> Alerts { get; set; }
         public virtual DbSet<AnomalyOutput> AnomalyOutput { get; set; }
         public virtual DbSet<Answers> Answers { get; set; }
+        public virtual DbSet<AzureLiveData> AzureLiveData { get; set; }
         public virtual DbSet<Building> Building { get; set; }
         public virtual DbSet<Campus> Campus { get; set; }
         public virtual DbSet<ClassroomDetails> ClassroomDetails { get; set; }
@@ -40,6 +41,7 @@ namespace RestService.Entities
         public virtual DbSet<MeterDetails> MeterDetails { get; set; }
         public virtual DbSet<MonthlyConsumptionDetails> MonthlyConsumptionDetails { get; set; }
         public virtual DbSet<MSLiveData> MSLiveData { get; set; }
+        public virtual DbSet<Person> Person { get; set; }
         public virtual DbSet<PiServer> PiServer { get; set; }
         public virtual DbSet<Questions> Questions { get; set; }
         public virtual DbSet<Role> Role { get; set; }
@@ -49,7 +51,6 @@ namespace RestService.Entities
         public virtual DbSet<TempMSLiveData> TempMSLiveData { get; set; }
         public virtual DbSet<University> University { get; set; }
         public virtual DbSet<User> User { get; set; }
-        public virtual DbSet<UserRole> UserRole { get; set; }
         public virtual DbSet<UserSession> UserSession { get; set; }
         public virtual DbSet<WeeklyConsumptionPrediction> WeeklyConsumptionPrediction { get; set; }
         public virtual DbSet<PowergridAzureMLData> PowergridAzureMLData { get; set; }
