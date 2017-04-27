@@ -14,6 +14,7 @@
     public sealed class MeterService : IMeterService, IDisposable
     {
         private readonly PowerGridEntities dbContext;
+        private readonly IContextInfoAccessorService context;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MeterService"/> class.
@@ -21,12 +22,13 @@
         public MeterService()
         {
             this.dbContext = new PowerGridEntities();
+            this.context = new ContextInfoAccessorService();
         }
 
-        List<MeterDailyConsumptionModel> IMeterService.GetMeterDailyConsumption()
+        List<MeterDailyConsumptionModel> IMeterService.GetMeterDailyConsumption(int buildingId)
         {
             var utcOffset = Convert.ToDouble(ConfigurationManager.AppSettings["UTCOffset"]);
-            var meterdetails = this.dbContext.MeterDetails;
+            var meterdetails = this.GetMeterDetails(buildingId);
             var meterDailyConsumptionModel = new List<MeterDailyConsumptionModel>();
             DateTime today = DateTime.UtcNow.AddHours(utcOffset);
 
@@ -59,9 +61,9 @@
             return meterDailyConsumptionModel;
         }
 
-        List<MeterDayWiseMonthlyConsumptionPredictionModel> IMeterService.GetDayWiseCurrentMonthPrediction(string month, int year)
+        List<MeterDayWiseMonthlyConsumptionPredictionModel> IMeterService.GetDayWiseCurrentMonthPrediction(int buildingId, string month, int year)
         {
-            var meterdetails = this.dbContext.MeterDetails;
+            var meterdetails = this.GetMeterDetails(buildingId);
             var dayWisePredictionList = new List<MeterDayWiseMonthlyConsumptionPredictionModel>();
 
             DateTime monthDate;
@@ -92,9 +94,9 @@
             return dayWisePredictionList;
         }
 
-        List<MeterDayWiseMonthlyConsumptionModel> IMeterService.GetDayWiseMonthlyConsumption(string month, int year)
+        List<MeterDayWiseMonthlyConsumptionModel> IMeterService.GetDayWiseMonthlyConsumption(int buildingId, string month, int year)
         {
-            var meterDetails = this.dbContext.MeterDetails;
+            var meterDetails = this.GetMeterDetails(buildingId);
             List<MeterDayWiseMonthlyConsumptionModel> meterDayWiseMonthlyConsumptionModelList = new List<MeterDayWiseMonthlyConsumptionModel>();
 
             DateTime monthDate;
@@ -126,9 +128,9 @@
             return meterDayWiseMonthlyConsumptionModelList;
         }
 
-        List<MeterDayWiseMonthlyConsumptionPredictionModel> IMeterService.GetDayWiseNextMonthPrediction(string month, int year)
+        List<MeterDayWiseMonthlyConsumptionPredictionModel> IMeterService.GetDayWiseNextMonthPrediction(int buildingId, string month, int year)
         {
-            var meterdetails = this.dbContext.MeterDetails;
+            var meterdetails = this.GetMeterDetails(buildingId);
             var dayWisePredictionList = new List<MeterDayWiseMonthlyConsumptionPredictionModel>();
 
             DateTime monthDate;
@@ -164,15 +166,15 @@
             return dayWisePredictionList;
         }
 
-        List<MeterDetailsModel> IMeterService.GetMeterList()
+        List<MeterDetailsModel> IMeterService.GetMeterList(int buildingId)
         {
-            var meterDetails = this.dbContext.MeterDetails;
+            var meterDetails = this.GetMeterDetails(buildingId);
             return new MeterDetailsModelMapping().Map(meterDetails).ToList();
         }
 
-        List<MeterMonthlyConsumptionModel> IMeterService.GetMeterMonthlyConsumption()
+        List<MeterMonthlyConsumptionModel> IMeterService.GetMeterMonthlyConsumption(int buildingId)
         {
-            var meterDetails = this.dbContext.MeterDetails;
+            var meterDetails = this.GetMeterDetails(buildingId);
             List<MeterMonthlyConsumptionModel> meterMonthlyConsumptionModels = new List<MeterMonthlyConsumptionModel>();
             string currentMonth = DateTime.UtcNow.ToString("MMM");
 
@@ -190,9 +192,9 @@
             return meterMonthlyConsumptionModels;
         }
 
-        List<MeterMonthWiseConsumptionModel> IMeterService.GetMonthWiseConsumptionForOffset(string month, int year, int offset)
+        List<MeterMonthWiseConsumptionModel> IMeterService.GetMonthWiseConsumptionForOffset(int buildingId, string month, int year, int offset)
         {
-            var meterDetails = this.dbContext.MeterDetails;
+            var meterDetails = this.GetMeterDetails(buildingId);
             var meterMonthWiseConsumptions = new List<MeterMonthWiseConsumptionModel>();
 
             DateTime endDate;
@@ -239,9 +241,9 @@
             return meterMonthWiseConsumptions;
         }
 
-        List<MeterWeekWiseMonthlyConsumptionModel> IMeterService.GetWeekWiseMonthlyConsumption(string month, int year)
+        List<MeterWeekWiseMonthlyConsumptionModel> IMeterService.GetWeekWiseMonthlyConsumption(int buildingId, string month, int year)
         {
-            var meterDetails = this.dbContext.MeterDetails;
+            var meterDetails = this.GetMeterDetails(buildingId);
             List<MeterWeekWiseMonthlyConsumptionModel> meterWeekWiseMonthlyConsumptions = new List<MeterWeekWiseMonthlyConsumptionModel>();
 
             DateTime monthDate;
@@ -273,9 +275,9 @@
             return meterWeekWiseMonthlyConsumptions;
         }
 
-        List<MeterWeekWiseMonthlyConsumptionModel> IMeterService.GetWeekWiseMonthlyConsumptionForOffset(string month, int year, int offset)
+        List<MeterWeekWiseMonthlyConsumptionModel> IMeterService.GetWeekWiseMonthlyConsumptionForOffset(int buildingId, string month, int year, int offset)
         {
-            var meterDetails = this.dbContext.MeterDetails;
+            var meterDetails = this.GetMeterDetails(buildingId);
             List<MeterWeekWiseMonthlyConsumptionModel> weekWiseConsumption = new List<MeterWeekWiseMonthlyConsumptionModel>();
 
             DateTime monthDate;
@@ -322,9 +324,9 @@
             return weekWiseConsumption;
         }
 
-        List<MeterMonthWiseConsumptionModel> IMeterService.GetMonthWiseConsumption(int year)
+        List<MeterMonthWiseConsumptionModel> IMeterService.GetMonthWiseConsumption(int buildingId, int year)
         {
-            var meterDetails = this.dbContext.MeterDetails;
+            var meterDetails = this.GetMeterDetails(buildingId);
             List<MeterMonthWiseConsumptionModel> meterDataList = new List<MeterMonthWiseConsumptionModel>();
 
             foreach (var meterDetail in meterDetails)
@@ -511,6 +513,13 @@
             }
 
             return meterMonthWiseConsumption;
+        }
+
+        private IQueryable<MeterDetails> GetMeterDetails(int buildingId)
+        {
+            var meterdetails = this.dbContext.MeterDetails.Where(m => m.BuildingId == buildingId && m.Building.Campus.Role.Any(r => r.Id == this.context.Current.RoleId));
+
+            return meterdetails;
         }
     }
 }

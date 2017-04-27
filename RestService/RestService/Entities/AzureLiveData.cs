@@ -55,5 +55,6 @@ namespace RestService.Entities
         public Nullable<System.DateTime> previous_day { get; set; }
         public Nullable<System.DateTime> current_month { get; set; }
         public Nullable<System.DateTime> last_month { get; set; }
+        public string PiServerName { get; set; }
     }
 }

@@ -14,6 +14,12 @@ namespace RestService.Entities
     
     public partial class Building
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Building()
+        {
+            this.MeterDetails = new HashSet<MeterDetails>();
+        }
+    
         public int BuildingID { get; set; }
         public string BuildingName { get; set; }
         public string BuildingDesc { get; set; }
@@ -26,5 +32,7 @@ namespace RestService.Entities
         public bool IsDeleted { get; set; }
     
         public virtual Campus Campus { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<MeterDetails> MeterDetails { get; set; }
     }
 }
