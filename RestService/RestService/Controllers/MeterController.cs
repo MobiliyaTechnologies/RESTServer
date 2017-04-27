@@ -21,72 +21,59 @@
             this.meterService = new MeterService();
         }
 
-        [Route("GetMeterList")]
-        public HttpResponseMessage GetMeterList()
+        [Route("GetMeterList/{buildingId}")]
+        public HttpResponseMessage GetMeterList(int buildingId)
         {
-            var data = this.meterService.GetMeterList();
-            return this.Request.CreateResponse(HttpStatusCode.OK, data);
+            var data = this.meterService.GetMeterList(buildingId);
+            if (data != null && data.Count() > 0)
+            {
+                return this.Request.CreateResponse(HttpStatusCode.OK, data);
+            }
+
+            return this.Request.CreateErrorResponse(HttpStatusCode.NotFound, string.Format("Meter does not associated with given building id - {0}", buildingId));
         }
 
-        [Route("GetMeterMonthlyConsumption")]
-        public HttpResponseMessage GetMeterMonthlyConsumption()
+        [Route("GetMeterMonthlyConsumption/{buildingId}")]
+        public HttpResponseMessage GetMeterMonthlyConsumption(int buildingId)
         {
-            var data = this.meterService.GetMeterMonthlyConsumption();
-            return this.Request.CreateResponse(HttpStatusCode.OK, data);
+            var data = this.meterService.GetMeterMonthlyConsumption(buildingId);
+            if (data != null && data.Count() > 0)
+            {
+                return this.Request.CreateResponse(HttpStatusCode.OK, data);
+            }
+
+            return this.Request.CreateErrorResponse(HttpStatusCode.NotFound, string.Format("Month wise consumption of electricity does not exists for given building id - {0}", buildingId));
         }
 
-        [Route("GetMeterDailyConsumption")]
-        public HttpResponseMessage GetMeterDailyConsumption()
+        [Route("GetMeterDailyConsumption/{buildingId}")]
+        public HttpResponseMessage GetMeterDailyConsumption(int buildingId)
         {
-            var data = this.meterService.GetMeterDailyConsumption();
-            return this.Request.CreateResponse(HttpStatusCode.OK, data);
+            var data = this.meterService.GetMeterDailyConsumption(buildingId);
+            if (data != null && data.Count() > 0)
+            {
+                return this.Request.CreateResponse(HttpStatusCode.OK, data);
+            }
+
+            return this.Request.CreateErrorResponse(HttpStatusCode.NotFound, string.Format("Day wise consumption of electricity does not exists for given building id - {0}", buildingId));
         }
 
-        [Route("GetMonthWiseConsumption/{year}")]
-        public HttpResponseMessage GetMonthWiseConsumption(int year)
+        [Route("GetMonthWiseConsumption/{buildingId}/{year}")]
+        public HttpResponseMessage GetMonthWiseConsumption(int buildingId, int year)
         {
-            var data = this.meterService.GetMonthWiseConsumption(year);
+            var data = this.meterService.GetMonthWiseConsumption(buildingId, year);
 
             if (data != null && data.Count() > 0)
             {
                 return this.Request.CreateResponse(HttpStatusCode.OK, data);
             }
 
-            return this.Request.CreateErrorResponse(HttpStatusCode.NotFound, string.Format("Month wise consumption of electricity does not exists for given year - {0}", year));
+            return this.Request.CreateErrorResponse(HttpStatusCode.NotFound, string.Format("Month wise consumption of electricity does not exists for given year - {0}, building id - {1}", year, buildingId));
         }
 
-        [Route("GetMonthWiseConsumptionForOffset/{month}/{year}/{offset}")]
-        public HttpResponseMessage GetMonthWiseConsumptionForOffset(string month, int year, int offset)
+        [Route("GetMonthWiseConsumptionForOffset/{buildingId}/{month}/{year}/{offset}")]
+        public HttpResponseMessage GetMonthWiseConsumptionForOffset(int buildingId, string month, int year, int offset)
         {
-            var data = this.meterService.GetMonthWiseConsumptionForOffset(month, year, offset);
-
-            if (data != null && data.Count() > 0)
-            {
-                return this.Request.CreateResponse(HttpStatusCode.OK, data);
-            }
-
-            return this.Request.CreateErrorResponse(HttpStatusCode.NotFound, string.Format(
-                "Month wise consumption of electricity does not exists for given month - {0}, year - {1}, offset - {2}", month, year, offset));
-        }
-
-        [Route("GetWeekWiseMonthlyConsumption/{month}/{year}")]
-        public HttpResponseMessage GetWeekWiseMonthlyConsumption(string month, int year)
-        {
-            var data = this.meterService.GetWeekWiseMonthlyConsumption(month, year);
-
-            if (data != null && data.Count() > 0)
-            {
-                return this.Request.CreateResponse(HttpStatusCode.OK, data);
-            }
-
-            return this.Request.CreateErrorResponse(HttpStatusCode.NotFound, string.Format(
-                "Week wise monthly consumption of electricity does not exists for given month - {0}, year - {1}", month, year));
-        }
-
-        [Route("GetWeekWiseMonthlyConsumptionForOffset/{month}/{year}/{offset}")]
-        public HttpResponseMessage GetWeekWiseMonthlyConsumptionForOffset(string month, int year, int offset)
-        {
-            var data = this.meterService.GetWeekWiseMonthlyConsumptionForOffset(month, year, offset);
+            var data = this.meterService.GetMonthWiseConsumptionForOffset(buildingId, month, year, offset);
 
             if (data != null && data.Count() > 0)
             {
@@ -94,13 +81,13 @@
             }
 
             return this.Request.CreateErrorResponse(HttpStatusCode.NotFound, string.Format(
-                "Week wise monthly consumption of electricity does not exists for given month -{0}, year - {1}, offset -{2}", month, year, offset));
+                "Month wise consumption of electricity does not exists for given month - {0}, year - {1}, offset - {2}, building id - {3}", month, year, offset, buildingId));
         }
 
-        [Route("GetDayWiseMonthlyConsumption/{month}/{year}")]
-        public HttpResponseMessage GetDayWiseMonthlyConsumption(string month, int year)
+        [Route("GetWeekWiseMonthlyConsumption/{buildingId}/{month}/{year}")]
+        public HttpResponseMessage GetWeekWiseMonthlyConsumption(int buildingId, string month, int year)
         {
-            var data = this.meterService.GetDayWiseMonthlyConsumption(month, year);
+            var data = this.meterService.GetWeekWiseMonthlyConsumption(buildingId, month, year);
 
             if (data != null && data.Count() > 0)
             {
@@ -108,13 +95,13 @@
             }
 
             return this.Request.CreateErrorResponse(HttpStatusCode.NotFound, string.Format(
-                "Day wise monthly consumption of electricity does not exists for given month - {0}, year - {1}", month, year));
+                "Week wise monthly consumption of electricity does not exists for given month - {0}, year - {1}, building id - {2}", month, year, buildingId));
         }
 
-        [Route("GetDayWiseNextMonthConsumptionPrediction/{month}/{year}")]
-        public HttpResponseMessage GetDayWiseNextMonthConsumptionPrediction(string month, int year)
+        [Route("GetWeekWiseMonthlyConsumptionForOffset/{buildingId}/{month}/{year}/{offset}")]
+        public HttpResponseMessage GetWeekWiseMonthlyConsumptionForOffset(int buildingId, string month, int year, int offset)
         {
-            var data = this.meterService.GetDayWiseNextMonthPrediction(month, year);
+            var data = this.meterService.GetWeekWiseMonthlyConsumptionForOffset(buildingId, month, year, offset);
 
             if (data != null && data.Count() > 0)
             {
@@ -122,13 +109,13 @@
             }
 
             return this.Request.CreateErrorResponse(HttpStatusCode.NotFound, string.Format(
-                "Day wise next monthly prediction of electricity consumption does not exists for given month - " + "{0}, year {1}", month, year));
+                "Week wise monthly consumption of electricity does not exists for given month -{0}, year - {1}, offset -{2}, building id - {3}", month, year, offset, buildingId));
         }
 
-        [Route("GetDayWiseCurrentMonthConsumptionPrediction/{month}/{year}")]
-        public HttpResponseMessage GetDayWiseCurrentMonthConsumptionPrediction(string month, int year)
+        [Route("GetDayWiseMonthlyConsumption/{buildingId}/{month}/{year}")]
+        public HttpResponseMessage GetDayWiseMonthlyConsumption(int buildingId, string month, int year)
         {
-            var data = this.meterService.GetDayWiseCurrentMonthPrediction(month, year);
+            var data = this.meterService.GetDayWiseMonthlyConsumption(buildingId, month, year);
 
             if (data != null && data.Count() > 0)
             {
@@ -136,7 +123,35 @@
             }
 
             return this.Request.CreateErrorResponse(HttpStatusCode.NotFound, string.Format(
-                "Day wise monthly prediction of electricity consumption does not exists for given month - " + "{0}, year - {1}", month, year));
+                "Day wise monthly consumption of electricity does not exists for given month - {0}, year - {1}, building id - {2}", month, year, buildingId));
+        }
+
+        [Route("GetDayWiseNextMonthConsumptionPrediction/{buildingId}/{month}/{year}")]
+        public HttpResponseMessage GetDayWiseNextMonthConsumptionPrediction(int buildingId, string month, int year)
+        {
+            var data = this.meterService.GetDayWiseNextMonthPrediction(buildingId, month, year);
+
+            if (data != null && data.Count() > 0)
+            {
+                return this.Request.CreateResponse(HttpStatusCode.OK, data);
+            }
+
+            return this.Request.CreateErrorResponse(HttpStatusCode.NotFound, string.Format(
+                "Day wise next monthly prediction of electricity consumption does not exists for given month - " + "{0}, year {1}, building id - {2}", month, year, buildingId));
+        }
+
+        [Route("GetDayWiseCurrentMonthConsumptionPrediction/{buildingId}/{month}/{year}")]
+        public HttpResponseMessage GetDayWiseCurrentMonthConsumptionPrediction(int buildingId, string month, int year)
+        {
+            var data = this.meterService.GetDayWiseCurrentMonthPrediction(buildingId, month, year);
+
+            if (data != null && data.Count() > 0)
+            {
+                return this.Request.CreateResponse(HttpStatusCode.OK, data);
+            }
+
+            return this.Request.CreateErrorResponse(HttpStatusCode.NotFound, string.Format(
+                "Day wise monthly prediction of electricity consumption does not exists for given month - " + "{0}, year - {1}, building id - {2}", month, year, buildingId));
         }
 
         /// <summary>

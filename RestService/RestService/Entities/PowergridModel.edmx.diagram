@@ -4,49 +4,51 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="3364c7e79fb34ac384b5edb0de43eb37" Name="Diagram1">
-        <EntityTypeShape EntityType="PowerGrid_CopyModel.AlertRules" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="PowerGrid_CopyModel.Alerts" Width="1.5" PointX="0.75" PointY="10.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="PowerGrid_CopyModel.AnomalyOutput" Width="1.5" PointX="11.75" PointY="8.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="PowerGrid_CopyModel.Answers" Width="1.5" PointX="10" PointY="1.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="PowerGrid_CopyModel.AzureLiveData" Width="1.5" PointX="11.75" PointY="12.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="PowerGrid_CopyModel.Building" Width="1.5" PointX="5.25" PointY="1.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="PowerGrid_CopyModel.Campus" Width="1.5" PointX="3" PointY="5.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="PowerGrid_CopyModel.ClassroomDetails" Width="1.5" PointX="10" PointY="5.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="PowerGrid_CopyModel.DailyConsumptionDetails" Width="1.5" PointX="2.75" PointY="13.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="PowerGrid_CopyModel.DailyConsumptionPrediction" Width="1.5" PointX="4.75" PointY="13.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="PowerGrid_CopyModel.Feedback" Width="1.5" PointX="12.25" PointY="1" IsExpanded="true" />
-        <EntityTypeShape EntityType="PowerGrid_CopyModel.HalfHourlyData" Width="1.5" PointX="13.75" PointY="5.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="PowerGrid_CopyModel.HalfYearlyData" Width="1.5" PointX="6.75" PointY="14.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="PowerGrid_CopyModel.MeterDetails" Width="1.5" PointX="14.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="PowerGrid_CopyModel.MonthlyConsumptionDetails" Width="1.5" PointX="8.75" PointY="14.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="PowerGrid_CopyModel.MSLiveData" Width="1.5" PointX="15.75" PointY="4.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="PowerGrid_CopyModel.Person" Width="1.5" PointX="15.75" PointY="13.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="PowerGrid_CopyModel.PiServer" Width="1.5" PointX="5.25" PointY="5.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="PowerGrid_CopyModel.Questions" Width="1.5" PointX="7.75" PointY="1.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="PowerGrid_CopyModel.Role" Width="1.5" PointX="5.25" PointY="9.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="PowerGrid_CopyModel.SensorData" Width="1.5" PointX="16.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="PowerGrid_CopyModel.SensorLiveData" Width="1.5" PointX="13.75" PointY="16.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="PowerGrid_CopyModel.SensorMaster" Width="1.5" PointX="15.75" PointY="16.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="PowerGrid_CopyModel.TempMSLiveData" Width="1.5" PointX="17.75" PointY="4.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="PowerGrid_CopyModel.University" Width="1.5" PointX="0.75" PointY="5.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="PowerGrid_CopyModel.User" Width="1.5" PointX="7.5" PointY="9.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="PowerGrid_CopyModel.UserSession" Width="1.5" PointX="9.75" PointY="10.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="PowerGrid_CopyModel.WeeklyConsumptionPrediction" Width="1.5" PointX="17.75" PointY="13.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="PowerGrid_CopyModel.PowergridAzureMLData" Width="1.5" PointX="17.75" PointY="16.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="PowerGrid_CopyModel.RoleBK" Width="1.5" PointX="18.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="PowerGrid_CopyModel.TempMLData" Width="1.5" PointX="0.75" PointY="18.75" IsExpanded="true" />
-        <AssociationConnector Association="PowerGrid_CopyModel.FK_Answers_QuestionID" ManuallyRouted="false" />
-        <AssociationConnector Association="PowerGrid_CopyModel.FK_Feedback_AnswerID" ManuallyRouted="false" />
-        <AssociationConnector Association="PowerGrid_CopyModel.FK_Building_CampusID" ManuallyRouted="false" />
-        <AssociationConnector Association="PowerGrid_CopyModel.FK_Campus_UniversityID" ManuallyRouted="false" />
-        <AssociationConnector Association="PowerGrid_CopyModel.FK_PiServer_CampusID" ManuallyRouted="false" />
-        <AssociationConnector Association="PowerGrid_CopyModel.FK_University_UniversityID" ManuallyRouted="false" />
-        <AssociationConnector Association="PowerGrid_CopyModel.FK_Feedback_ClassId" ManuallyRouted="false" />
-        <AssociationConnector Association="PowerGrid_CopyModel.FK_Feedback_QuestionID" ManuallyRouted="false" />
-        <AssociationConnector Association="PowerGrid_CopyModel.FK_UserRole_RoleID" ManuallyRouted="false" />
-        <AssociationConnector Association="PowerGrid_CopyModel.FK_UserSession_User" ManuallyRouted="false" />
-        <AssociationConnector Association="PowerGrid_CopyModel.RoleCampusLinkUp" ManuallyRouted="false" />
+      <Diagram DiagramId="f9573bbe73ef4b0ba36f2be4efe5fcc8" Name="Diagram1">
+        <EntityTypeShape EntityType="PowerGrid_CopyModel1.AlertRules" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PowerGrid_CopyModel1.Alerts" Width="1.5" PointX="7.75" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PowerGrid_CopyModel1.AnomalyOutput" Width="1.5" PointX="0.75" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PowerGrid_CopyModel1.Answers" Width="1.5" PointX="12" PointY="1.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="PowerGrid_CopyModel1.AzureLiveData" Width="1.5" PointX="11.75" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PowerGrid_CopyModel1.Building" Width="1.5" PointX="5.25" PointY="1.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="PowerGrid_CopyModel1.Campus" Width="1.5" PointX="3" PointY="5.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="PowerGrid_CopyModel1.ClassroomDetails" Width="1.5" PointX="12" PointY="5.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="PowerGrid_CopyModel1.DailyConsumptionDetails" Width="1.5" PointX="2.75" PointY="13.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PowerGrid_CopyModel1.DailyConsumptionPrediction" Width="1.5" PointX="4.75" PointY="13.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PowerGrid_CopyModel1.DimDate" Width="1.5" PointX="13.75" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PowerGrid_CopyModel1.Feedback" Width="1.5" PointX="14.25" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="PowerGrid_CopyModel1.HalfHourlyData" Width="1.5" PointX="6.75" PointY="14.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PowerGrid_CopyModel1.HalfYearlyData" Width="1.5" PointX="8.75" PointY="14.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PowerGrid_CopyModel1.MeterDetails" Width="1.5" PointX="7.5" PointY="1.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="PowerGrid_CopyModel1.MonthlyConsumptionDetails" Width="1.5" PointX="15.75" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PowerGrid_CopyModel1.MSLiveData" Width="1.5" PointX="15.75" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PowerGrid_CopyModel1.Person" Width="1.5" PointX="16.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PowerGrid_CopyModel1.PiServer" Width="1.5" PointX="5.25" PointY="5.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="PowerGrid_CopyModel1.Questions" Width="1.5" PointX="9.75" PointY="1.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PowerGrid_CopyModel1.Role" Width="1.5" PointX="5.25" PointY="9.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="PowerGrid_CopyModel1.SensorData" Width="1.5" PointX="17.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PowerGrid_CopyModel1.SensorLiveData" Width="1.5" PointX="17.75" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PowerGrid_CopyModel1.SensorMaster" Width="1.5" PointX="17.75" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PowerGrid_CopyModel1.TempMSLiveData" Width="1.5" PointX="17.75" PointY="13.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PowerGrid_CopyModel1.University" Width="1.5" PointX="0.75" PointY="5.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="PowerGrid_CopyModel1.User" Width="1.5" PointX="7.5" PointY="9.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="PowerGrid_CopyModel1.UserSession" Width="1.5" PointX="9.75" PointY="10.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="PowerGrid_CopyModel1.WeeklyConsumptionPrediction" Width="1.5" PointX="0.75" PointY="18.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PowerGrid_CopyModel1.PowergridAzureMLData" Width="1.5" PointX="2.75" PointY="18.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PowerGrid_CopyModel1.RoleBK" Width="1.5" PointX="18.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PowerGrid_CopyModel1.TempMLData" Width="1.5" PointX="10.75" PointY="18.75" IsExpanded="true" />
+        <AssociationConnector Association="PowerGrid_CopyModel1.FK_Answers_QuestionID" ManuallyRouted="false" />
+        <AssociationConnector Association="PowerGrid_CopyModel1.FK_Feedback_AnswerID" ManuallyRouted="false" />
+        <AssociationConnector Association="PowerGrid_CopyModel1.FK_Building_CampusID" ManuallyRouted="false" />
+        <AssociationConnector Association="PowerGrid_CopyModel1.FK_MeterDetails_BuildingId" ManuallyRouted="false" />
+        <AssociationConnector Association="PowerGrid_CopyModel1.FK_Campus_UniversityID" ManuallyRouted="false" />
+        <AssociationConnector Association="PowerGrid_CopyModel1.FK_PiServer_CampusID" ManuallyRouted="false" />
+        <AssociationConnector Association="PowerGrid_CopyModel1.FK_University_UniversityID" ManuallyRouted="false" />
+        <AssociationConnector Association="PowerGrid_CopyModel1.FK_Feedback_ClassId" ManuallyRouted="false" />
+        <AssociationConnector Association="PowerGrid_CopyModel1.FK_Feedback_QuestionID" ManuallyRouted="false" />
+        <AssociationConnector Association="PowerGrid_CopyModel1.FK_UserRole_RoleID" ManuallyRouted="false" />
+        <AssociationConnector Association="PowerGrid_CopyModel1.FK_UserSession_User" ManuallyRouted="false" />
+        <AssociationConnector Association="PowerGrid_CopyModel1.RoleCampusLinkUp" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

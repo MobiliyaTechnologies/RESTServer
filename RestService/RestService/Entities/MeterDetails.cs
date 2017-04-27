@@ -22,5 +22,8 @@ namespace RestService.Entities
         public Nullable<double> Longitude { get; set; }
         public Nullable<double> Altitude { get; set; }
         public string Description { get; set; }
+        public Nullable<int> BuildingId { get; set; }
+    
+        public virtual Building Building { get; set; }
     }
 }
