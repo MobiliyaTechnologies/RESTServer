@@ -474,6 +474,7 @@
     <Compile Include="Startup.cs" />
     <Compile Include="Utilities\ApiConfiguration.cs" />
     <Compile Include="Utilities\B2C_ClaimTypes.cs" />
+    <Compile Include="Utilities\QueryableExtention.cs" />
     <Compile Include="Utilities\ServiceUtil.cs" />
   </ItemGroup>
   <ItemGroup>

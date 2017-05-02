@@ -22,14 +22,14 @@
 
         List<UniversityModel> IUniversityService.GetAllUniversities()
         {
-            var universities = this.dbContext.University;
+            var universities = this.dbContext.University.WhereActiveUniversity();
             return new UniversityModelMapping().Map(universities).ToList();
         }
 
         UniversityModel IUniversityService.GetUniversityByID(int universityID)
         {
-            var university = this.dbContext.University.FirstOrDefault(data => data.UniversityID == universityID);
-            return new UniversityModelMapping().Map(university);
+            var university = this.dbContext.University.WhereActiveUniversity(data => data.UniversityID == universityID);
+            return new UniversityModelMapping().Map(university).FirstOrDefault();
         }
 
         ResponseModel IUniversityService.AddUniversity(UniversityModel model)
@@ -52,14 +52,13 @@
 
         ResponseModel IUniversityService.DeleteUniversity(int universityId)
         {
-            var data = this.dbContext.University.FirstOrDefault(f => f.UniversityID == universityId);
+            var data = this.dbContext.University.WhereActiveUniversity(f => f.UniversityID == universityId).FirstOrDefault();
             if (data == null)
             {
                 return new ResponseModel { Message = "Invalid University", Status_Code = (int)StatusCode.Error };
             }
             else
             {
-                data.IsActive = false;
                 data.IsDeleted = true;
                 data.ModifiedBy = this.context.Current.UserId;
                 data.ModifiedOn = DateTime.UtcNow;
@@ -70,7 +69,7 @@
 
         ResponseModel IUniversityService.UpdateUniversity(UniversityModel model)
         {
-            var data = this.dbContext.University.FirstOrDefault(f => f.UniversityID == model.UniversityID);
+            var data = this.dbContext.University.WhereActiveUniversity(f => f.UniversityID == model.UniversityID).FirstOrDefault();
 
             if (data == null)
             {
@@ -93,7 +92,6 @@
                     data.UniversityAddress = model.UniversityAddress;
                 }
 
-                data.IsActive = model.IsActive;
                 data.ModifiedBy = this.context.Current.UserId;
                 data.ModifiedOn = DateTime.UtcNow;
             }
@@ -104,14 +102,14 @@
 
         ResponseModel IUniversityService.AddCampusesToUniversity(int universityId, List<int> campusIds)
         {
-            var campuses = this.dbContext.Campus.Where(c => campusIds.Any(i => i == c.CampusID));
+            var campuses = this.dbContext.Campus.WhereActiveCampus(c => campusIds.Any(i => i == c.CampusID));
 
             if (campuses.Count() != campusIds.Count() || campuses.Count() == 0)
             {
                 return new ResponseModel { Status_Code = (int)StatusCode.Error, Message = "Campus does not exists for given ids" };
             }
 
-            var university = this.dbContext.University.FirstOrDefault(u => u.UniversityID == universityId);
+            var university = this.dbContext.University.WhereActiveUniversity(u => u.UniversityID == universityId);
 
             if (university == null)
             {

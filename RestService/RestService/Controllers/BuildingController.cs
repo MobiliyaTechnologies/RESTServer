@@ -60,6 +60,36 @@
             return this.Request.CreateErrorResponse(HttpStatusCode.NotFound, string.Format("No Building found"));
         }
 
+        [Route("GetBuildingByLocation/{latitude}/{longitude}")]
+        public HttpResponseMessage GetBuildingByLocation(decimal latitude, decimal longitude)
+        {
+            if (latitude == default(decimal) || longitude == default(decimal))
+            {
+                return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Invalid latitude or longitude");
+            }
+
+            var campus = this.buildingService.GetBuildingByLocation(latitude, longitude);
+
+            if (campus != null)
+            {
+                return this.Request.CreateResponse(HttpStatusCode.OK, campus);
+            }
+
+            return this.Request.CreateErrorResponse(HttpStatusCode.NotFound, string.Format("Building does not exists for given location, latitude - {0}  longitude - {1}", latitude, longitude));
+        }
+
+        [Route("GetBuildings")]
+        public HttpResponseMessage GetBuildings()
+        {
+            var data = this.buildingService.GetBuildings();
+            if (data.Count != 0)
+            {
+                return this.Request.CreateResponse(HttpStatusCode.OK, data);
+            }
+
+            return this.Request.CreateErrorResponse(HttpStatusCode.NotFound, string.Format("No Building found"));
+        }
+
         [Route("AddBuilding")]
         [CustomAuthorize(UserRole = UserRole.SuperAdmin)]
         [OverrideAuthorization]

@@ -17,6 +17,8 @@
 
         public int RoleId { get; set; }
 
+        public string Avatar { get; set; }
+
         public UserRole RoleType
         {
             get

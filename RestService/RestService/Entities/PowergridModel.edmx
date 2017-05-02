@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="PowerGrid_CopyModel1.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="PowerGrid_CopyModel1.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="AlertRules">
           <Key>
             <PropertyRef Name="Rule_Id" />
@@ -119,6 +119,8 @@
           <Property Name="ModifiedBy" Type="int" />
           <Property Name="ModifiedOn" Type="datetime" />
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="Latitude" Type="decimal" Precision="12" Scale="9" Nullable="false" />
+          <Property Name="Longitude" Type="decimal" Precision="12" Scale="9" Nullable="false" />
         </EntityType>
         <EntityType Name="Campus">
           <Key>
@@ -986,8 +988,7 @@ warning 6002: The table/view 'PowerGrid_Copy.dbo.TempMLData' does not have a pri
             <End Role="UserSession" EntitySet="UserSession" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="PowerGrid_CopyModel1" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -1109,6 +1110,8 @@ warning 6002: The table/view 'PowerGrid_Copy.dbo.TempMLData' does not have a pri
           <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Campus" Relationship="Self.FK_Building_CampusID" FromRole="Building" ToRole="Campus" />
           <NavigationProperty Name="MeterDetails" Relationship="Self.FK_MeterDetails_BuildingId" FromRole="Building" ToRole="MeterDetails" />
+          <Property Name="Latitude" Type="Decimal" Nullable="false" Precision="12" Scale="9" />
+          <Property Name="Longitude" Type="Decimal" Nullable="false" Precision="12" Scale="9" />
         </EntityType>
         <EntityType Name="Campus">
           <Key>
@@ -1988,6 +1991,8 @@ warning 6002: The table/view 'PowerGrid_Copy.dbo.TempMLData' does not have a pri
           <EntitySetMapping Name="Building">
             <EntityTypeMapping TypeName="PowerGrid_CopyModel1.Building">
               <MappingFragment StoreEntitySet="Building">
+                <ScalarProperty Name="Longitude" ColumnName="Longitude" />
+                <ScalarProperty Name="Latitude" ColumnName="Latitude" />
                 <ScalarProperty Name="BuildingID" ColumnName="BuildingID" />
                 <ScalarProperty Name="BuildingName" ColumnName="BuildingName" />
                 <ScalarProperty Name="BuildingDesc" ColumnName="BuildingDesc" />

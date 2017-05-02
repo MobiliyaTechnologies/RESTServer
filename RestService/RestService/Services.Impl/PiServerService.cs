@@ -7,6 +7,7 @@
     using RestService.Enums;
     using RestService.Mappings;
     using RestService.Models;
+    using RestService.Utilities;
 
     public sealed class PiServerService : IPiServerService, IDisposable
     {
@@ -21,27 +22,27 @@
 
         List<PiServerModel> IPiServerService.GetAllPiServers()
         {
-            var piServer = this.dbContext.PiServer.Where(p => p.Campus.Role.Any(r => r.Id == this.context.Current.RoleId));
+            var piServer = this.dbContext.PiServer.WhereActiveAccesiblePiServer();
             return new PiServerModelMapping().Map(piServer).ToList();
         }
 
         PiServerModel IPiServerService.GetPiServerByID(int piServerID)
         {
-            var piServer = this.dbContext.PiServer.FirstOrDefault(data => data.PiServerID == piServerID && data.Campus.Role.Any(r => r.Id == this.context.Current.RoleId));
+            var piServer = this.dbContext.PiServer.WhereActiveAccesiblePiServer(data => data.PiServerID == piServerID);
 
-            return new PiServerModelMapping().Map(piServer);
+            return new PiServerModelMapping().Map(piServer).FirstOrDefault();
         }
 
         PiServerModel IPiServerService.GetPiServerByName(string piServerName)
         {
-            var piServer = this.dbContext.PiServer.FirstOrDefault(data => data.PiServerName.Equals(piServerName, StringComparison.InvariantCultureIgnoreCase) && data.Campus.Role.Any(r => r.Id == this.context.Current.RoleId));
+            var piServer = this.dbContext.PiServer.WhereActiveAccesiblePiServer(data => data.PiServerName.Equals(piServerName, StringComparison.InvariantCultureIgnoreCase));
 
-            return new PiServerModelMapping().Map(piServer);
+            return new PiServerModelMapping().Map(piServer).FirstOrDefault();
         }
 
         ResponseModel IPiServerService.AddPiServer(PiServerModel model)
         {
-            var hasAuthorizeCampus = this.dbContext.Campus.Any(c => c.CampusID == model.CampusID && c.Role.Any(r => r.Id == this.context.Current.RoleId));
+            var hasAuthorizeCampus = this.dbContext.Campus.WhereActiveAccesibleCampus(c => c.CampusID == model.CampusID).Any();
 
             if (!hasAuthorizeCampus)
             {
@@ -67,14 +68,13 @@
 
         ResponseModel IPiServerService.DeletePiServer(int piServerId)
         {
-            var data = this.dbContext.PiServer.FirstOrDefault(f => f.PiServerID == piServerId && f.Campus.Role.Any(r => r.Id == this.context.Current.RoleId));
+            var data = this.dbContext.PiServer.WhereActiveAccesiblePiServer(f => f.PiServerID == piServerId).FirstOrDefault();
             if (data == null)
             {
                 return new ResponseModel { Message = "Pi Server does not exists or user does not have a permission.", Status_Code = (int)StatusCode.Error };
             }
             else
             {
-                data.IsActive = false;
                 data.IsDeleted = true;
                 data.ModifiedBy = this.context.Current.UserId;
                 data.ModifiedOn = DateTime.UtcNow;
@@ -85,7 +85,7 @@
 
         ResponseModel IPiServerService.UpdatePiServer(PiServerModel model)
         {
-            var data = this.dbContext.PiServer.FirstOrDefault(f => f.PiServerID == model.PiServerID && f.Campus.Role.Any(r => r.Id == this.context.Current.RoleId));
+            var data = this.dbContext.PiServer.WhereActiveAccesiblePiServer(f => f.PiServerID == model.PiServerID).FirstOrDefault();
 
             if (data == null)
             {
@@ -108,7 +108,6 @@
                     data.PiServerURL = model.PiServerURL;
                 }
 
-                data.IsActive = model.IsActive;
                 data.ModifiedBy = this.context.Current.UserId;
                 data.ModifiedOn = DateTime.UtcNow;
             }
