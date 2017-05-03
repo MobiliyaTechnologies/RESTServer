@@ -70,20 +70,6 @@
             return this.Request.CreateErrorResponse(HttpStatusCode.NotFound, string.Format("Month wise consumption of electricity does not exists for given year - {0}, building id - {1}", year, buildingId));
         }
 
-        [Route("GetMonthWiseConsumptionForOffset/{buildingId}/{month}/{year}/{offset}")]
-        public HttpResponseMessage GetMonthWiseConsumptionForOffset(int buildingId, string month, int year, int offset)
-        {
-            var data = this.meterService.GetMonthWiseConsumptionForOffset(buildingId, month, year, offset);
-
-            if (data != null && data.Count() > 0)
-            {
-                return this.Request.CreateResponse(HttpStatusCode.OK, data);
-            }
-
-            return this.Request.CreateErrorResponse(HttpStatusCode.NotFound, string.Format(
-                "Month wise consumption of electricity does not exists for given month - {0}, year - {1}, offset - {2}, building id - {3}", month, year, offset, buildingId));
-        }
-
         [Route("GetWeekWiseMonthlyConsumption/{buildingId}/{month}/{year}")]
         public HttpResponseMessage GetWeekWiseMonthlyConsumption(int buildingId, string month, int year)
         {
@@ -97,21 +83,7 @@
             return this.Request.CreateErrorResponse(HttpStatusCode.NotFound, string.Format(
                 "Week wise monthly consumption of electricity does not exists for given month - {0}, year - {1}, building id - {2}", month, year, buildingId));
         }
-
-        [Route("GetWeekWiseMonthlyConsumptionForOffset/{buildingId}/{month}/{year}/{offset}")]
-        public HttpResponseMessage GetWeekWiseMonthlyConsumptionForOffset(int buildingId, string month, int year, int offset)
-        {
-            var data = this.meterService.GetWeekWiseMonthlyConsumptionForOffset(buildingId, month, year, offset);
-
-            if (data != null && data.Count() > 0)
-            {
-                return this.Request.CreateResponse(HttpStatusCode.OK, data);
-            }
-
-            return this.Request.CreateErrorResponse(HttpStatusCode.NotFound, string.Format(
-                "Week wise monthly consumption of electricity does not exists for given month -{0}, year - {1}, offset -{2}, building id - {3}", month, year, offset, buildingId));
-        }
-
+       
         [Route("GetDayWiseMonthlyConsumption/{buildingId}/{month}/{year}")]
         public HttpResponseMessage GetDayWiseMonthlyConsumption(int buildingId, string month, int year)
         {
@@ -153,6 +125,34 @@
             return this.Request.CreateErrorResponse(HttpStatusCode.NotFound, string.Format(
                 "Day wise monthly prediction of electricity consumption does not exists for given month - " + "{0}, year - {1}, building id - {2}", month, year, buildingId));
         }
+
+        //[Route("GetMonthWiseConsumptionForOffset/{buildingId}/{month}/{year}/{offset}")]
+        //public HttpResponseMessage GetMonthWiseConsumptionForOffset(int buildingId, string month, int year, int offset)
+        //{
+        //    var data = this.meterService.GetMonthWiseConsumptionForOffset(buildingId, month, year, offset);
+
+        //    if (data != null && data.Count() > 0)
+        //    {
+        //        return this.Request.CreateResponse(HttpStatusCode.OK, data);
+        //    }
+
+        //    return this.Request.CreateErrorResponse(HttpStatusCode.NotFound, string.Format(
+        //        "Month wise consumption of electricity does not exists for given month - {0}, year - {1}, offset - {2}, building id - {3}", month, year, offset, buildingId));
+        //}
+
+        //[Route("GetWeekWiseMonthlyConsumptionForOffset/{buildingId}/{month}/{year}/{offset}")]
+        //public HttpResponseMessage GetWeekWiseMonthlyConsumptionForOffset(int buildingId, string month, int year, int offset)
+        //{
+        //    var data = this.meterService.GetWeekWiseMonthlyConsumptionForOffset(buildingId, month, year, offset);
+
+        //    if (data != null && data.Count() > 0)
+        //    {
+        //        return this.Request.CreateResponse(HttpStatusCode.OK, data);
+        //    }
+
+        //    return this.Request.CreateErrorResponse(HttpStatusCode.NotFound, string.Format(
+        //        "Week wise monthly consumption of electricity does not exists for given month -{0}, year - {1}, offset -{2}, building id - {3}", month, year, offset, buildingId));
+        //}
 
         /// <summary>
         /// Releases the unmanaged resources that are used by the object and, optionally, releases the managed resources.

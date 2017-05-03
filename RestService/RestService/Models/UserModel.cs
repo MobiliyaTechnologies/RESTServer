@@ -1,10 +1,16 @@
 ﻿namespace RestService.Models
 {
     using System;
+    using System.Collections.Generic;
     using RestService.Enums;
 
     public class UserModel
     {
+        public UserModel()
+        {
+            this.UserCampus = new List<CampusModel>();
+        }
+
         public int UserId { get; set; }
 
         public string B2C_ObjectIdentifier { get; set; }
@@ -26,5 +32,7 @@
                 return Enum.IsDefined(typeof(UserRole), this.RoleId) ? (UserRole)this.RoleId : UserRole.CampusAdmin;
             }
         }
+
+        public List<CampusModel> UserCampus { get; set; }
     }
 }

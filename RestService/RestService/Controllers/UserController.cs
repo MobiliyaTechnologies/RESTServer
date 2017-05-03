@@ -12,11 +12,13 @@
     public class UserController : ApiController
     {
         private readonly IUserService userService;
+        private readonly ICampusService campusService;
         private readonly IContextInfoAccessorService context;
 
         public UserController()
         {
             this.userService = new UserService();
+            this.campusService = new CampusService();
             this.context = new ContextInfoAccessorService();
         }
 
@@ -29,6 +31,21 @@
             {
                 return this.Request.CreateErrorResponse(HttpStatusCode.NotFound, "User not exists.");
             }
+
+            return this.Request.CreateResponse(HttpStatusCode.OK, user);
+        }
+
+        [Route("GetCurrentUserWithCampus")]
+        public HttpResponseMessage GetCurrentUserWithCampus()
+        {
+            var user = this.context.Current;
+
+            if (user == null)
+            {
+                return this.Request.CreateErrorResponse(HttpStatusCode.NotFound, "User not exists.");
+            }
+
+            user.UserCampus = this.campusService.GetCampus();
 
             return this.Request.CreateResponse(HttpStatusCode.OK, user);
         }
