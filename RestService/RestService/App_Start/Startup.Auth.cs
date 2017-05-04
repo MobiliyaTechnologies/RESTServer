@@ -11,8 +11,7 @@
         private string aadInstance;
         private string tenant;
         private string clientId;
-        private string signUpSignInPolicy;
-        private string editProfilePolicy;
+        private string signUpPolicy;
         private string signInPolicy;
 
         public void ConfigureAuth(IAppBuilder app)
@@ -20,13 +19,11 @@
             this.aadInstance = ConfigurationManager.AppSettings["b2c:AadInstance"];
             this.tenant = ConfigurationManager.AppSettings["b2c:Tenant"];
             this.clientId = ConfigurationManager.AppSettings["b2c:ClientId"];
-            this.signUpSignInPolicy = ConfigurationManager.AppSettings["b2c:SignUpSignInPolicyId"];
+            this.signUpPolicy = ConfigurationManager.AppSettings["b2c:SignUpPolicyId"];
            this.signInPolicy = ConfigurationManager.AppSettings["b2c:SignInPolicyId"];
-         this.editProfilePolicy = ConfigurationManager.AppSettings["b2c:UserProfilePolicyId"];
 
-            app.UseOAuthBearerAuthentication(this.CreateBearerOptionsFromPolicy(this.signUpSignInPolicy));
+            app.UseOAuthBearerAuthentication(this.CreateBearerOptionsFromPolicy(this.signUpPolicy));
             app.UseOAuthBearerAuthentication(this.CreateBearerOptionsFromPolicy(this.signInPolicy));
-            app.UseOAuthBearerAuthentication(this.CreateBearerOptionsFromPolicy(this.editProfilePolicy));
         }
 
         public OAuthBearerAuthenticationOptions CreateBearerOptionsFromPolicy(string policy)
