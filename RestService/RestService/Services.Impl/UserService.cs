@@ -7,6 +7,7 @@
     using RestService.Enums;
     using RestService.Mappings;
     using RestService.Models;
+    using RestService.Utilities;
 
     public class UserService : IUserService, IDisposable
     {
@@ -24,7 +25,7 @@
 
         int IUserService.CreateUser(UserModel userModel)
         {
-            var userRole = this.dbContext.Role.First(r => r.Id == userModel.RoleId);
+            var userRole = this.dbContext.Role.WhereActiveRole(r => r.Id == userModel.RoleId).FirstOrDefault();
 
             if (userRole == null)
             {
@@ -37,8 +38,9 @@
                 Email_Id = userModel.Email,
                 First_Name = userModel.FirstName,
                 Last_Name = userModel.LastName,
-                Creation_Date = DateTime.Now ,
-                Role = userRole
+                Creation_Date = DateTime.Now,
+                Role = userRole,
+                Avatar = userModel.Avatar
             };
 
             this.dbContext.User.Add(user);
@@ -49,7 +51,7 @@
 
         ResponseModel IUserService.DeleteUser(string b2cObjectIdentifier)
         {
-            var user = this.dbContext.User.FirstOrDefault(u => u.B2C_ObjectIdentifier == b2cObjectIdentifier);
+            var user = this.dbContext.User.FirstOrDefault(u => u.B2C_ObjectIdentifier == b2cObjectIdentifier && !u.IsDeleted);
 
             if (user == null)
             {
@@ -66,7 +68,7 @@
 
         UserModel IUserService.GetCurrentUser(string b2cObjectIdentifier)
         {
-            var user = this.dbContext.User.FirstOrDefault(u => u.B2C_ObjectIdentifier.Equals(b2cObjectIdentifier));
+            var user = this.dbContext.User.FirstOrDefault(u => u.B2C_ObjectIdentifier.Equals(b2cObjectIdentifier) && !u.IsDeleted);
 
             if (user == null)
             {
@@ -78,14 +80,14 @@
 
         List<UserModel> IUserService.GetAllUser()
         {
-            var user = this.dbContext.User;
+            var user = this.dbContext.User.Where(u => !u.IsDeleted);
 
             return new UserModelMapping().Map(user).ToList();
         }
 
         ResponseModel IUserService.UpdateUser(UserModel userModel)
         {
-            var user = this.dbContext.User.FirstOrDefault(u => u.Id == userModel.UserId);
+            var user = this.dbContext.User.FirstOrDefault(u => u.Id == userModel.UserId && !u.IsDeleted);
 
             if (user == null)
             {
@@ -108,9 +110,10 @@
             user.Email_Id = string.IsNullOrWhiteSpace(userModel.Email) ? user.Email_Id : userModel.Email;
             user.First_Name = string.IsNullOrWhiteSpace(userModel.FirstName) ? user.First_Name : userModel.FirstName;
             user.Last_Name = string.IsNullOrWhiteSpace(userModel.LastName) ? user.Last_Name : userModel.LastName;
+            user.Avatar = string.IsNullOrWhiteSpace(userModel.Avatar) ? user.Avatar : userModel.Avatar;
 
             this.dbContext.SaveChanges();
-            return new ResponseModel(StatusCode.Ok, "User added successfully.");
+            return new ResponseModel(StatusCode.Ok, "User Updated successfully.");
         }
 
         /// <summary>

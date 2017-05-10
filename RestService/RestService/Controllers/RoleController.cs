@@ -30,12 +30,7 @@
         public HttpResponseMessage GetAllRoles()
         {
             var data = this.roleService.GetAllRoles();
-            if (data.Count != 0)
-            {
-                return this.Request.CreateResponse(HttpStatusCode.OK, data);
-            }
-
-            return this.Request.CreateErrorResponse(HttpStatusCode.NotFound, string.Format("No Role found"));
+            return this.Request.CreateResponse(HttpStatusCode.OK, data);
         }
 
         [Route("GetRoleByID/{roleId}")]

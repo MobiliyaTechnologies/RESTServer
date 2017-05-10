@@ -17,7 +17,8 @@
                        Email = s.Email_Id,
                        FirstName = s.First_Name,
                        LastName = s.Last_Name,
-                       RoleId = s.RoleId ?? default(int)
+                       RoleId = s.RoleId ?? default(int),
+                       Avatar = s.Avatar
                    };
         }
 

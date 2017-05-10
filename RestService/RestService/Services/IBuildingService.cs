@@ -8,8 +8,16 @@
         /// <summary>
         /// Get all the Buildings
         /// </summary>
-        /// <returns>Returns list of all Buildinges</returns>
+        /// <returns>Returns list of all Buildings</returns>
         List<BuildingModel> GetAllBuildings();
+
+        /// <summary>
+        /// Get all the Buildings accessible to current user.
+        /// </summary>
+        /// <returns>
+        /// Returns list of all Buildings.
+        /// </returns>
+        List<BuildingModel> GetBuildings();
 
         /// <summary>
         /// Get a Building by ID
@@ -26,6 +34,14 @@
         /// <param name="campusId">The campus identifier.</param>
         /// <returns>Buildings associated with given campus id.</returns>
         List<BuildingModel> GetBuildingsByCampus(int campusId);
+
+        /// <summary>
+        /// Gets the building by location.
+        /// </summary>
+        /// <param name="latitude">The latitude.</param>
+        /// <param name="longitude">The longitude.</param>
+        /// <returns>The building situated at given location.</returns>
+        BuildingModel GetBuildingByLocation(decimal latitude, decimal longitude);
 
         /// <summary>
         /// Inserts a new Building in system

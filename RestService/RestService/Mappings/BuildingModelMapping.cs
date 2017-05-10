@@ -22,7 +22,9 @@
                        CreatedOn = s.CreatedOn ?? default(DateTime),
                        ModifiedBy = s.ModifiedBy ?? default(int),
                        ModifiedOn = s.ModifiedOn ?? default(DateTime),
-                       IsDeleted = s.IsDeleted
+                       IsDeleted = s.IsDeleted,
+                       Latitude = s.Latitude,
+                       Longitude = s.Longitude
                    };
         }
 

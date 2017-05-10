@@ -30,6 +30,8 @@ namespace RestService.Entities
         public Nullable<int> ModifiedBy { get; set; }
         public Nullable<System.DateTime> ModifiedOn { get; set; }
         public bool IsDeleted { get; set; }
+        public decimal Latitude { get; set; }
+        public decimal Longitude { get; set; }
     
         public virtual Campus Campus { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

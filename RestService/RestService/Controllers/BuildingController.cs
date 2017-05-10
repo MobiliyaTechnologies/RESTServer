@@ -28,12 +28,7 @@
         public HttpResponseMessage GetAllBuildings()
         {
             var data = this.buildingService.GetAllBuildings();
-            if (data.Count != 0)
-            {
-                return this.Request.CreateResponse(HttpStatusCode.OK, data);
-            }
-
-            return this.Request.CreateErrorResponse(HttpStatusCode.NotFound, string.Format("No Building found"));
+            return this.Request.CreateResponse(HttpStatusCode.OK, data);
         }
 
         [Route("GetBuildingByID/{buildingId}")]
@@ -52,12 +47,32 @@
         public HttpResponseMessage GetBuildingsByCampus(int campusId)
         {
             var data = this.buildingService.GetBuildingsByCampus(campusId);
-            if (data.Count != 0)
+            return this.Request.CreateResponse(HttpStatusCode.OK, data);
+        }
+
+        [Route("GetBuildingByLocation/{latitude}/{longitude}")]
+        public HttpResponseMessage GetBuildingByLocation(decimal latitude, decimal longitude)
+        {
+            if (latitude == default(decimal) || longitude == default(decimal))
             {
-                return this.Request.CreateResponse(HttpStatusCode.OK, data);
+                return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Invalid latitude or longitude");
             }
 
-            return this.Request.CreateErrorResponse(HttpStatusCode.NotFound, string.Format("No Building found"));
+            var campus = this.buildingService.GetBuildingByLocation(latitude, longitude);
+
+            if (campus != null)
+            {
+                return this.Request.CreateResponse(HttpStatusCode.OK, campus);
+            }
+
+            return this.Request.CreateErrorResponse(HttpStatusCode.NotFound, string.Format("Building does not exists for given location, latitude - {0}  longitude - {1}", latitude, longitude));
+        }
+
+        [Route("GetBuildings")]
+        public HttpResponseMessage GetBuildings()
+        {
+            var data = this.buildingService.GetBuildings();
+            return this.Request.CreateResponse(HttpStatusCode.OK, data);
         }
 
         [Route("AddBuilding")]

@@ -26,6 +26,24 @@
         List<MeterMonthlyConsumptionModel> GetMeterMonthlyConsumption(int buildingId);
 
         /// <summary>
+        /// Gets the meter monthly consumption per campus.
+        /// </summary>
+        /// <param name="campusId">The campus identifier.</param>
+        /// <returns>
+        /// The current month electricity consumption per campus
+        /// </returns>
+        double GetMonthlyConsumptionPerCampus(int campusId);
+
+        /// <summary>
+        /// Gets the meter monthly consumption per building.
+        /// </summary>
+        /// <param name="buildingId">The building identifier.</param>
+        /// <returns>
+        /// The current month electricity consumption per building.
+        /// </returns>
+        double GetMonthlyConsumptionPerBuildings(int buildingId);
+
+        /// <summary>
         /// Gets the meter daily consumption.
         /// </summary>
         /// <param name="buildingId">The building identifier for which to get electricity consumption.</param>

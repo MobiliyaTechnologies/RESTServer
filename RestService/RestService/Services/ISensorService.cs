@@ -15,6 +15,12 @@
         List<SensorModel> GetAllSensors();
 
         /// <summary>
+        /// Gets all unmapped sensors.
+        /// </summary>
+        /// <returns>All unmapped sensors.</returns>
+        List<SensorModel> GetAllUnMapSensors();
+
+        /// <summary>
         /// Maps the sensor to classroom.
         /// </summary>
         /// <param name="sensorId">The sensor identifier.</param>

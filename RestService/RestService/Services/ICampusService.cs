@@ -63,14 +63,14 @@
         ResponseModel UpdateCampus(CampusModel model);
 
         /// <summary>
-        /// Assigns the role to campus.
+        /// Assigns the roles to campus.
         /// </summary>
-        /// <param name="roleId">The role identifier.</param>
+        /// <param name="roleIds">The role ids.</param>
         /// <param name="campusId">The campus identifier.</param>
         /// <returns>
-        /// Role Assigned acknowledgment.
+        /// Roles Assigned acknowledgment.
         /// </returns>
-        ResponseModel AssignRoleToCampus(int roleId, int campusId);
+        ResponseModel AssignRolesToCampus(List<int> roleIds, int campusId);
 
         /// <summary>
         /// Adds the buildings to campus.

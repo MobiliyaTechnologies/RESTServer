@@ -13,30 +13,55 @@
     {
         private readonly PowerGridEntities dbContext;
         private readonly IContextInfoAccessorService context;
+        private readonly IMeterService meterService;
 
         public BuildingService()
         {
             this.dbContext = new PowerGridEntities();
             this.context = new ContextInfoAccessorService();
+            this.meterService = new MeterService();
         }
 
         List<BuildingModel> IBuildingService.GetAllBuildings()
         {
-            var building = this.dbContext.Building.Where(b => b.Campus.Role.Any(r => r.Id == this.context.Current.RoleId));
+            var buildings = this.dbContext.Building.WhereActiveBuilding();
+            var buildingModels = new BuildingModelMapping().Map(buildings).ToList();
+
+            this.LinkConsumptionWithBuilding(buildingModels);
+            return buildingModels;
+        }
+
+        List<BuildingModel> IBuildingService.GetBuildings()
+        {
+            var building = this.dbContext.Building.WhereActiveAccessibleBuilding();
             return new BuildingModelMapping().Map(building).ToList();
         }
 
         BuildingModel IBuildingService.GetBuildingByID(int buildingID)
         {
-            var building = this.dbContext.Building.FirstOrDefault(data => data.BuildingID == buildingID && data.Campus.Role.Any(r => r.Id == this.context.Current.RoleId));
-            return new BuildingModelMapping().Map(building);
+            var buildings = this.dbContext.Building.WhereActiveAccessibleBuilding(data => data.BuildingID == buildingID);
+            var buildingModels = new BuildingModelMapping().Map(buildings).ToList();
+
+            this.LinkConsumptionWithBuilding(buildingModels);
+            return buildingModels.FirstOrDefault();
         }
 
         List<BuildingModel> IBuildingService.GetBuildingsByCampus(int campusId)
         {
-            var buildings = this.dbContext.Building.Where(b => b.Campus.CampusID == campusId && b.Campus.Role.Any(r => r.Id == this.context.Current.RoleId));
+            var buildings = this.dbContext.Building.WhereActiveAccessibleBuilding(b => b.Campus.CampusID == campusId);
+            var buildingModels = new BuildingModelMapping().Map(buildings).ToList();
 
-            return new BuildingModelMapping().Map(buildings).ToList();
+            this.LinkConsumptionWithBuilding(buildingModels);
+            return buildingModels;
+        }
+
+        BuildingModel IBuildingService.GetBuildingByLocation(decimal latitude, decimal longitude)
+        {
+            var buildings = this.dbContext.Building.WhereActiveAccessibleBuilding(b => b.Latitude == latitude && b.Longitude == longitude);
+            var buildingModels = new BuildingModelMapping().Map(buildings).ToList();
+
+            this.LinkConsumptionWithBuilding(buildingModels);
+            return buildingModels.FirstOrDefault();
         }
 
         ResponseModel IBuildingService.AddBuilding(BuildingModel model)
@@ -59,7 +84,7 @@
 
         ResponseModel IBuildingService.DeleteBuilding(int buildingId)
         {
-            var data = this.dbContext.Building.FirstOrDefault(f => f.BuildingID == buildingId);
+            var data = this.dbContext.Building.WhereActiveAccessibleBuilding(f => f.BuildingID == buildingId).FirstOrDefault();
             if (data == null)
             {
                 return new ResponseModel { Message = "Invalid Building", Status_Code = (int)StatusCode.Error };
@@ -77,7 +102,7 @@
 
         ResponseModel IBuildingService.UpdateBuilding(BuildingModel model)
         {
-            var data = this.dbContext.Building.FirstOrDefault(f => f.BuildingID == model.BuildingID && f.Campus.Role.Any(r => r.Id == this.context.Current.RoleId));
+            var data = this.dbContext.Building.WhereActiveAccessibleBuilding(f => f.BuildingID == model.BuildingID).FirstOrDefault();
 
             if (data == null)
             {
@@ -95,7 +120,6 @@
                     data.BuildingDesc = model.BuildingDesc;
                 }
 
-                data.IsActive = model.IsActive;
                 data.ModifiedBy = this.context.Current.UserId;
                 data.ModifiedOn = DateTime.UtcNow;
             }
@@ -112,6 +136,14 @@
             if (this.dbContext != null)
             {
                 this.dbContext.Dispose();
+            }
+        }
+
+        private void LinkConsumptionWithBuilding(List<BuildingModel> buildingModels)
+        {
+            foreach (var buildingModel in buildingModels)
+            {
+                buildingModel.MonthlyConsumption = this.meterService.GetMonthlyConsumptionPerBuildings(buildingModel.BuildingID);
             }
         }
     }

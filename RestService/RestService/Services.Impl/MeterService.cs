@@ -192,6 +192,46 @@
             return meterMonthlyConsumptionModels;
         }
 
+        double IMeterService.GetMonthlyConsumptionPerCampus(int campusId)
+        {
+            var meterDetails = this.GetMeterDetailsPerCampus(campusId);
+            string currentMonth = DateTime.UtcNow.ToString("MMM");
+
+            double monthly_KWH_Consumption = default(double);
+
+            foreach (var meterDetail in meterDetails)
+            {
+                var monthlyConsumptionDetail = this.dbContext.MonthlyConsumptionDetails.FirstOrDefault(m => m.PowerScout.Equals(meterDetail.Serial, StringComparison.InvariantCultureIgnoreCase) && m.Month.Equals(currentMonth, StringComparison.InvariantCultureIgnoreCase));
+
+                if (monthlyConsumptionDetail != null && monthlyConsumptionDetail.Monthly_KWH_System.HasValue)
+                {
+                    monthly_KWH_Consumption = monthly_KWH_Consumption + monthlyConsumptionDetail.Monthly_KWH_System.Value;
+                }
+            }
+
+            return monthly_KWH_Consumption;
+        }
+
+        double IMeterService.GetMonthlyConsumptionPerBuildings(int buildingId)
+        {
+            var meterDetails = this.GetMeterDetails(buildingId);
+            string currentMonth = DateTime.UtcNow.ToString("MMM");
+
+            double monthly_KWH_Consumption = default(double);
+
+            foreach (var meterDetail in meterDetails)
+            {
+                var monthlyConsumptionDetail = this.dbContext.MonthlyConsumptionDetails.FirstOrDefault(m => m.PowerScout.Equals(meterDetail.Serial, StringComparison.InvariantCultureIgnoreCase) && m.Month.Equals(currentMonth, StringComparison.InvariantCultureIgnoreCase));
+
+                if (monthlyConsumptionDetail != null && monthlyConsumptionDetail.Monthly_KWH_System.HasValue)
+                {
+                    monthly_KWH_Consumption = monthly_KWH_Consumption + monthlyConsumptionDetail.Monthly_KWH_System.Value;
+                }
+            }
+
+            return monthly_KWH_Consumption;
+        }
+
         List<MeterMonthWiseConsumptionModel> IMeterService.GetMonthWiseConsumptionForOffset(int buildingId, string month, int year, int offset)
         {
             var meterDetails = this.GetMeterDetails(buildingId);
@@ -517,8 +557,13 @@
 
         private IQueryable<MeterDetails> GetMeterDetails(int buildingId)
         {
-            var meterdetails = this.dbContext.MeterDetails.Where(m => m.BuildingId == buildingId && m.Building.Campus.Role.Any(r => r.Id == this.context.Current.RoleId));
+            var meterdetails = this.dbContext.MeterDetails.WhereActiveAccessibleMeterDetails(m => m.BuildingId == buildingId);
+            return meterdetails;
+        }
 
+        private IQueryable<MeterDetails> GetMeterDetailsPerCampus(int campusId)
+        {
+            var meterdetails = this.dbContext.MeterDetails.WhereActiveAccessibleMeterDetails(m => m.Building.Campus.CampusID == campusId);
             return meterdetails;
         }
     }

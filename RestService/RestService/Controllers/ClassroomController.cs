@@ -27,6 +27,14 @@
             return this.Request.CreateResponse(HttpStatusCode.OK, data);
         }
 
+        [Route("GetClassroomByBuilding/{buildingId}")]
+        public HttpResponseMessage GetClassroomByBuilding(int buildingId)
+        {
+            var data = this.classroomService.GetClassroomByBuilding(buildingId);
+            return this.Request.CreateResponse(HttpStatusCode.OK, data);
+        }
+
+
         /// <summary>
         /// Releases the unmanaged resources that are used by the object and, optionally, releases the managed resources.
         /// </summary>

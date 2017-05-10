@@ -22,13 +22,13 @@
 
         List<RoleModel> IRoleService.GetAllRoles()
         {
-            var roles = this.dbContext.Role;
+            var roles = this.dbContext.Role.WhereActiveRole();
             return new RoleModelMapping().Map(roles).ToList();
         }
 
         RoleModel IRoleService.GetRoleByID(int roleId)
         {
-            var role = this.dbContext.Role.FirstOrDefault(data => data.Id == roleId);
+            var role = this.dbContext.Role.WhereActiveRole(data => data.Id == roleId).FirstOrDefault();
             return new RoleModelMapping().Map(role);
         }
 
@@ -51,14 +51,13 @@
 
         ResponseModel IRoleService.DeleteRole(int roleId)
         {
-            var data = this.dbContext.Role.FirstOrDefault(f => f.Id == roleId);
+            var data = this.dbContext.Role.WhereActiveRole(f => f.Id == roleId).FirstOrDefault();
             if (data == null)
             {
                 return new ResponseModel { Message = "Invalid Role", Status_Code = (int)StatusCode.Error };
             }
             else
             {
-                data.IsActive = false;
                 data.IsDeleted = true;
                 data.ModifiedBy = this.context.Current.UserId;
                 data.ModifiedOn = DateTime.UtcNow;
@@ -69,7 +68,7 @@
 
         ResponseModel IRoleService.UpdateRole(RoleModel model)
         {
-            var data = this.dbContext.Role.FirstOrDefault(f => f.Id == model.Id);
+            var data = this.dbContext.Role.WhereActiveRole(f => f.Id == model.Id).FirstOrDefault();
 
             if (data == null)
             {
@@ -87,8 +86,6 @@
                     data.Description = model.Description;
                 }
 
-                data.IsActive = model.IsActive;
-                data.IsDeleted = model.IsDeleted;
                 data.ModifiedBy = this.context.Current.UserId;
                 data.ModifiedOn = DateTime.UtcNow;
             }

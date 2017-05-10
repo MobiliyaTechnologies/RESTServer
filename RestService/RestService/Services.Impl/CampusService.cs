@@ -13,52 +13,61 @@
     {
         private readonly PowerGridEntities dbContext;
         private readonly IContextInfoAccessorService context;
+        private readonly IMeterService meterService;
 
         public CampusService()
         {
             this.dbContext = new PowerGridEntities();
             this.context = new ContextInfoAccessorService();
+            this.meterService = new MeterService();
         }
 
         List<CampusModel> ICampusService.GetAllCampus()
         {
-            var campus = this.dbContext.Campus;
-            return new CampusModelMapping().Map(campus).ToList();
+            var campus = this.dbContext.Campus.WhereActiveCampus();
+            var campusModels = new CampusModelMapping().Map(campus).ToList();
+
+            this.LinkConsumptionWithCampus(campusModels);
+            return campusModels;
         }
 
         CampusModel ICampusService.GetCampusByID(int campusId)
         {
-            var campus = this.dbContext.Campus.FirstOrDefault(c => c.CampusID == campusId);
+            var campus = this.dbContext.Campus.WhereActiveCampus(c => c.CampusID == campusId);
+            var campusModels = new CampusModelMapping().Map(campus).ToList();
 
-            return new CampusModelMapping().Map(campus);
+            this.LinkConsumptionWithCampus(campusModels);
+            return campusModels.FirstOrDefault();
         }
 
         List<CampusModel> ICampusService.GetCampus()
         {
-            var roleCampus = this.dbContext.Campus.Where(c => c.Role.Any(r => r.Id == this.context.Current.RoleId));
+            var roleCampus = this.dbContext.Campus.WhereActiveAccessibleCampus();
+            var roleCampusModels = new CampusModelMapping().Map(roleCampus).ToList();
 
-            return new CampusModelMapping().Map(roleCampus).ToList();
+            this.LinkConsumptionWithCampus(roleCampusModels);
+            return roleCampusModels;
         }
 
         CampusModel ICampusService.GetCampusByLocation(decimal latitude, decimal longitude)
         {
-            var currentUserRole = this.context.Current.RoleId;
+            var campus = this.dbContext.Campus.WhereActiveAccessibleCampus(c => c.Latitude == latitude && c.Longitude == longitude);
+            var campusModels = new CampusModelMapping().Map(campus).ToList();
 
-            var campus = this.dbContext.Campus.Where(c => c.Role.Any(r => r.Id == currentUserRole) && c.Latitude == latitude && c.Longitude == longitude);
-
-            return new CampusModelMapping().Map(campus).FirstOrDefault();
+            this.LinkConsumptionWithCampus(campusModels);
+            return campusModels.FirstOrDefault();
         }
 
         ResponseModel ICampusService.AddCampus(CampusModel model)
         {
-            var hasUniversity = this.dbContext.University.Any(u => u.UniversityID == model.UniversityID);
+            var hasUniversity = this.dbContext.University.WhereActiveUniversity(u => u.UniversityID == model.UniversityID).Any();
 
             if (!hasUniversity)
             {
                 return new ResponseModel { Status_Code = (int)StatusCode.Error, Message = string.Format("University does not exist for id - {0}", model.UniversityID) };
             }
 
-            var userRole = this.dbContext.Role.First(u => u.Id == this.context.Current.RoleId);
+            var userRole = this.dbContext.Role.WhereActiveAccessibleRole().First();
 
             // create campus with role
             var campus = new Campus();
@@ -81,7 +90,7 @@
 
         ResponseModel ICampusService.DeleteCampus(int campusId)
         {
-            var data = this.dbContext.Campus.FirstOrDefault(f => f.CampusID == campusId);
+            var data = this.dbContext.Campus.WhereActiveCampus(f => f.CampusID == campusId).FirstOrDefault();
 
             if (data == null)
             {
@@ -100,7 +109,7 @@
 
         ResponseModel ICampusService.UpdateCampus(CampusModel model)
         {
-            var data = this.dbContext.Campus.FirstOrDefault(c => c.CampusID == model.CampusID && c.Role.Any(r => r.Id == this.context.Current.RoleId));
+            var data = this.dbContext.Campus.WhereActiveAccessibleCampus(c => c.CampusID == model.CampusID).FirstOrDefault();
 
             if (data == null)
             {
@@ -118,7 +127,16 @@
                     data.CampusDesc = model.CampusDesc;
                 }
 
-                data.IsActive = model.IsActive;
+                if (model.Latitude != default(decimal))
+                {
+                    data.Latitude = model.Latitude;
+                }
+
+                if (model.Longitude != default(decimal))
+                {
+                    data.Longitude = model.Longitude;
+                }
+
                 data.ModifiedBy = this.context.Current.UserId;
                 data.ModifiedOn = DateTime.UtcNow;
             }
@@ -127,23 +145,27 @@
             return new ResponseModel { Message = "Campus details Updated", Status_Code = (int)StatusCode.Ok };
         }
 
-        ResponseModel ICampusService.AssignRoleToCampus(int roleId, int campusId)
+        ResponseModel ICampusService.AssignRolesToCampus(List<int> roleIds, int campusId)
         {
-            var campus = this.dbContext.Campus.FirstOrDefault(c => c.CampusID == campusId);
+            var campus = this.dbContext.Campus.WhereActiveCampus(c => c.CampusID == campusId).FirstOrDefault();
 
             if (campus == null)
             {
                 return new ResponseModel { Status_Code = (int)StatusCode.Error, Message = "Campus does not exist" };
             }
 
-            var role = this.dbContext.Role.FirstOrDefault(r => r.Id == roleId);
-
-            if (role == null)
+            foreach (var roleId in roleIds)
             {
-                return new ResponseModel { Status_Code = (int)StatusCode.Error, Message = string.Format("Role does not exist for role id - {0}", roleId) };
+                var role = this.dbContext.Role.WhereActiveRole(r => r.Id == roleId).FirstOrDefault();
+
+                if (role == null)
+                {
+                    return new ResponseModel { Status_Code = (int)StatusCode.Error, Message = string.Format("Role does not exist for role id - {0}", roleId) };
+                }
+
+                campus.Role.Add(role);
             }
 
-            campus.Role.Add(role);
             this.dbContext.SaveChanges();
 
             return new ResponseModel { Status_Code = (int)StatusCode.Error, Message = "Role assigned to campus successfully" };
@@ -151,14 +173,14 @@
 
         ResponseModel ICampusService.AddBuildingsToCampus(int campusId, List<int> buildingIds)
         {
-            var campus = this.dbContext.Campus.FirstOrDefault(c => c.CampusID == campusId);
+            var campus = this.dbContext.Campus.WhereActiveCampus(c => c.CampusID == campusId);
 
             if (campus == null)
             {
                 return new ResponseModel(StatusCode.Error, "Campus does not exists.");
             }
 
-            var buildings = this.dbContext.Building.Where(b => buildingIds.Any(id => id == b.BuildingID));
+            var buildings = this.dbContext.Building.WhereActiveBuilding(b => buildingIds.Any(id => id == b.BuildingID));
 
             if (buildings.Count() != buildingIds.Count() || buildingIds.Count() == 0)
             {
@@ -182,6 +204,14 @@
             if (this.dbContext != null)
             {
                 this.dbContext.Dispose();
+            }
+        }
+
+        private void LinkConsumptionWithCampus(List<CampusModel> campusModels)
+        {
+            foreach (var campusModel in campusModels)
+            {
+                campusModel.MonthlyConsumption = this.meterService.GetMonthlyConsumptionPerCampus(campusModel.CampusID);
             }
         }
     }

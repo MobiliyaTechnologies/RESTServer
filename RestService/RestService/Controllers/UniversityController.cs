@@ -33,12 +33,7 @@
         public HttpResponseMessage GetAllUniversities()
         {
             var data = this.universityService.GetAllUniversities();
-            if (data.Count != 0)
-            {
-                return this.Request.CreateResponse(HttpStatusCode.OK, data);
-            }
-
-            return this.Request.CreateErrorResponse(HttpStatusCode.NotFound, string.Format("No university found"));
+            return this.Request.CreateResponse(HttpStatusCode.OK, data);
         }
 
         [Route("GetUniversityByID/{universityID}")]

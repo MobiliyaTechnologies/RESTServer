@@ -88,13 +88,7 @@
             }
 
             var data = this.feedbackService.GetFeedbackCount(classId);
-
-            if (data != null && data.Count() > 0)
-            {
-                return this.Request.CreateResponse(HttpStatusCode.OK, data);
-            }
-
-            return this.Request.CreateErrorResponse(HttpStatusCode.NotFound, string.Format("Feedback does not exists for given class id - {0}", classId));
+            return this.Request.CreateResponse(HttpStatusCode.OK, data);
         }
 
         [Route("ResetFeedback")]

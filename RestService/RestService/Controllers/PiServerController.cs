@@ -26,12 +26,7 @@
         public HttpResponseMessage GetAllPiServers()
         {
             var data = this.piServerService.GetAllPiServers();
-            if (data.Count != 0)
-            {
-                return this.Request.CreateResponse(HttpStatusCode.OK, data);
-            }
-
-            return this.Request.CreateErrorResponse(HttpStatusCode.NotFound, string.Format("No Pi Server found"));
+            return this.Request.CreateResponse(HttpStatusCode.OK, data);
         }
 
         [Route("GetPiServerByID/{piServerID}")]
