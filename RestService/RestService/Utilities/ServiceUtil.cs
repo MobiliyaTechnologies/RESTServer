@@ -53,8 +53,8 @@
                     {
                         body = body,
                         title = title,
-                        click_action = ApiConfiguration.NotificationClickActionURL,
-                        icon = "./csu/Assets/logo.png",
+                        click_action = ApiConfiguration.NotificationClickAction,
+                        icon = ApiConfiguration.NotificationIcon,
                         sound = "default"
                     },
                     to = ApiConfiguration.NotificationReceiver
@@ -62,7 +62,7 @@
 
                 var json = JsonConvert.SerializeObject(data);
                 byte[] byteArray = Encoding.UTF8.GetBytes(json);
-                tRequest.Headers.Add(string.Format("Authorization: key={0}", ApiConfiguration.ApplicationId));
+                tRequest.Headers.Add(string.Format("Authorization: key={0}", ApiConfiguration.NotificationAuthorizationKey));
                 tRequest.Headers.Add(string.Format("Sender: id={0}", ApiConfiguration.NotificationSender));
                 tRequest.ContentLength = byteArray.Length;
 

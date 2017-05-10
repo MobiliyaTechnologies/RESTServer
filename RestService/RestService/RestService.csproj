@@ -478,6 +478,9 @@
     <Compile Include="Utilities\ServiceUtil.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\jobs\continuous\DataUtilWebJob\EnergyManagementScheduler.WebJob.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Areas\HelpPage\HelpPage.css" />
     <Content Include="Entities\PowergridModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -519,6 +522,8 @@
       <DependentUpon>PowergridModel.edmx</DependentUpon>
     </Content>
     <None Include="Properties\PublishProfiles\CSUWebApp - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
+    <None Include="Properties\PublishProfiles\EnergyManagementAPI - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\PowergridRESTService - FTP %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\PowergridRESTService - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\PowergridRESTService - Web Deploy %282%29.pubxml" />
@@ -537,9 +542,7 @@
     <Content Include="Service References\Application Insights\ConnectedService.json" />
     <Content Include="StyleCop.Cache" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="App_Data\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="packages.config" />
   </ItemGroup>

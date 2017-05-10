@@ -33,13 +33,13 @@
 
         List<BuildingModel> IBuildingService.GetBuildings()
         {
-            var building = this.dbContext.Building.WhereActiveAccesibleBuilding();
+            var building = this.dbContext.Building.WhereActiveAccessibleBuilding();
             return new BuildingModelMapping().Map(building).ToList();
         }
 
         BuildingModel IBuildingService.GetBuildingByID(int buildingID)
         {
-            var buildings = this.dbContext.Building.WhereActiveAccesibleBuilding(data => data.BuildingID == buildingID);
+            var buildings = this.dbContext.Building.WhereActiveAccessibleBuilding(data => data.BuildingID == buildingID);
             var buildingModels = new BuildingModelMapping().Map(buildings).ToList();
 
             this.LinkConsumptionWithBuilding(buildingModels);
@@ -48,16 +48,16 @@
 
         List<BuildingModel> IBuildingService.GetBuildingsByCampus(int campusId)
         {
-            var buildings = this.dbContext.Building.WhereActiveAccesibleBuilding(b => b.Campus.CampusID == campusId);
+            var buildings = this.dbContext.Building.WhereActiveAccessibleBuilding(b => b.Campus.CampusID == campusId);
             var buildingModels = new BuildingModelMapping().Map(buildings).ToList();
 
             this.LinkConsumptionWithBuilding(buildingModels);
             return buildingModels;
         }
-        
+
         BuildingModel IBuildingService.GetBuildingByLocation(decimal latitude, decimal longitude)
         {
-            var buildings = this.dbContext.Building.WhereActiveAccesibleBuilding(b => b.Latitude == latitude && b.Longitude == longitude);
+            var buildings = this.dbContext.Building.WhereActiveAccessibleBuilding(b => b.Latitude == latitude && b.Longitude == longitude);
             var buildingModels = new BuildingModelMapping().Map(buildings).ToList();
 
             this.LinkConsumptionWithBuilding(buildingModels);
@@ -84,7 +84,7 @@
 
         ResponseModel IBuildingService.DeleteBuilding(int buildingId)
         {
-            var data = this.dbContext.Building.WhereActiveAccesibleBuilding(f => f.BuildingID == buildingId).FirstOrDefault();
+            var data = this.dbContext.Building.WhereActiveAccessibleBuilding(f => f.BuildingID == buildingId).FirstOrDefault();
             if (data == null)
             {
                 return new ResponseModel { Message = "Invalid Building", Status_Code = (int)StatusCode.Error };
@@ -102,7 +102,7 @@
 
         ResponseModel IBuildingService.UpdateBuilding(BuildingModel model)
         {
-            var data = this.dbContext.Building.WhereActiveAccesibleBuilding(f => f.BuildingID == model.BuildingID).FirstOrDefault();
+            var data = this.dbContext.Building.WhereActiveAccessibleBuilding(f => f.BuildingID == model.BuildingID).FirstOrDefault();
 
             if (data == null)
             {

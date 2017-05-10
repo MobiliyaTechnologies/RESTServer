@@ -22,13 +22,7 @@
         public HttpResponseMessage GetAnomalyDetailsByDay(string timestamp)
         {
             var data = this.anomalyService.GetAnomalyDetails(timestamp);
-
-            if (data != null && data.Count() > 0)
-            {
-                return this.Request.CreateResponse(HttpStatusCode.OK, data);
-            }
-
-            return this.Request.CreateErrorResponse(HttpStatusCode.NotFound, string.Format("Anomaly details does not exists for given time stamp  - {0}", timestamp));
+            return this.Request.CreateResponse(HttpStatusCode.OK, data);
         }
 
         /// <summary>

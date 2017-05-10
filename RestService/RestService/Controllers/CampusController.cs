@@ -30,13 +30,7 @@
         public HttpResponseMessage GetAllCampus()
         {
             var data = this.campusService.GetAllCampus();
-
-            if (data.Count != 0)
-            {
-                return this.Request.CreateResponse(HttpStatusCode.OK, data);
-            }
-
-            return this.Request.CreateErrorResponse(HttpStatusCode.NotFound, string.Format("No Campus found"));
+            return this.Request.CreateResponse(HttpStatusCode.OK, data);
         }
 
         [Route("GetCampusByID/{campusId}")]
@@ -57,13 +51,7 @@
         public HttpResponseMessage GetCampus()
         {
             var campus = this.campusService.GetCampus();
-
-            if (campus != null && campus.Count > 0)
-            {
-                return this.Request.CreateResponse(HttpStatusCode.OK, campus);
-            }
-
-            return this.Request.CreateErrorResponse(HttpStatusCode.NotFound, string.Format("Campuses does not associated with current user"));
+            return this.Request.CreateResponse(HttpStatusCode.OK, campus);
         }
 
         [Route("GetCampusByLocation/{latitude}/{longitude}")]
@@ -105,15 +93,13 @@
         [HttpPut]
         public HttpResponseMessage UpdateCampus([FromBody] CampusModel model)
         {
-            if (this.ModelState.IsValid)
+            if (model.CampusID > 0)
             {
                 var data = this.campusService.UpdateCampus(model);
                 return this.Request.CreateResponse(HttpStatusCode.OK, data);
             }
 
-            // Create an error message for returning
-            string messages = string.Join("; ", this.ModelState.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage));
-            return this.Request.CreateErrorResponse((HttpStatusCode)612, messages);
+            return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Campus id must be grater than zero.");
         }
 
         [Route("DeleteCampus/{campusId}")]
@@ -126,18 +112,18 @@
             return this.Request.CreateResponse(HttpStatusCode.OK, data);
         }
 
-        [Route("AssignRoleToCampus/{roleId}/{campusId}")]
+        [Route("AssignRoleToCampus/{campusId}")]
         [HttpPut]
         [CustomAuthorize(UserRole = UserRole.SuperAdmin)]
         [OverrideAuthorization]
-        public HttpResponseMessage AssignRoleToCampus(int roleId, int campusId)
+        public HttpResponseMessage AssignRoleToCampus(List<int> roleIds, int campusId)
         {
-            if (roleId == 0 || campusId == 0)
+            if (roleIds == null || roleIds.Any(r => r < 1) || campusId < 1)
             {
                 return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Invalid role id or campus id");
             }
 
-            var responseModel = this.campusService.AssignRoleToCampus(roleId, campusId);
+            var responseModel = this.campusService.AssignRolesToCampus(roleIds, campusId);
             return this.Request.CreateResponse(HttpStatusCode.OK, responseModel);
         }
 

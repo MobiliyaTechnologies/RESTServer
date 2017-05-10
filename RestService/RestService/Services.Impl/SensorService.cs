@@ -38,6 +38,21 @@
             return sensorModels;
         }
 
+        List<SensorModel> ISensorService.GetAllUnMapSensors()
+        {
+            var sensorModels = (from sensor in this.dbContext.SensorMaster
+                               where sensor.Class_Id == null || sensor.Class_Id < 1
+                                select new SensorModel
+                                {
+                                    Sensor_Id = sensor.Sensor_Id,
+                                    Sensor_Name = sensor.Sensor_Name
+                                }).ToList();
+
+            this.SetSensorLiveData(sensorModels);
+
+            return sensorModels;
+        }
+
         List<SensorModel> ISensorService.GetAllSensorsForClass(int classId)
         {
             var sensorModels = (from sensor in this.dbContext.SensorMaster

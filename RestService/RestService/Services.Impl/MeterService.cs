@@ -557,15 +557,13 @@
 
         private IQueryable<MeterDetails> GetMeterDetails(int buildingId)
         {
-            var meterdetails = this.dbContext.MeterDetails.Where(m => m.BuildingId == buildingId && m.Building.Campus.Role.Any(r => r.Id == this.context.Current.RoleId));
-
+            var meterdetails = this.dbContext.MeterDetails.WhereActiveAccessibleMeterDetails(m => m.BuildingId == buildingId);
             return meterdetails;
         }
 
         private IQueryable<MeterDetails> GetMeterDetailsPerCampus(int campusId)
         {
-            var meterdetails = this.dbContext.MeterDetails.Where(m => m.Building.Campus.CampusID == campusId && m.Building.Campus.Role.Any(r => r.Id == this.context.Current.RoleId));
-
+            var meterdetails = this.dbContext.MeterDetails.WhereActiveAccessibleMeterDetails(m => m.Building.Campus.CampusID == campusId);
             return meterdetails;
         }
     }

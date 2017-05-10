@@ -22,27 +22,27 @@
 
         List<PiServerModel> IPiServerService.GetAllPiServers()
         {
-            var piServer = this.dbContext.PiServer.WhereActiveAccesiblePiServer();
+            var piServer = this.dbContext.PiServer.WhereActiveAccessiblePiServer();
             return new PiServerModelMapping().Map(piServer).ToList();
         }
 
         PiServerModel IPiServerService.GetPiServerByID(int piServerID)
         {
-            var piServer = this.dbContext.PiServer.WhereActiveAccesiblePiServer(data => data.PiServerID == piServerID);
+            var piServer = this.dbContext.PiServer.WhereActiveAccessiblePiServer(data => data.PiServerID == piServerID);
 
             return new PiServerModelMapping().Map(piServer).FirstOrDefault();
         }
 
         PiServerModel IPiServerService.GetPiServerByName(string piServerName)
         {
-            var piServer = this.dbContext.PiServer.WhereActiveAccesiblePiServer(data => data.PiServerName.Equals(piServerName, StringComparison.InvariantCultureIgnoreCase));
+            var piServer = this.dbContext.PiServer.WhereActiveAccessiblePiServer(data => data.PiServerName.Equals(piServerName, StringComparison.InvariantCultureIgnoreCase));
 
             return new PiServerModelMapping().Map(piServer).FirstOrDefault();
         }
 
         ResponseModel IPiServerService.AddPiServer(PiServerModel model)
         {
-            var hasAuthorizeCampus = this.dbContext.Campus.WhereActiveAccesibleCampus(c => c.CampusID == model.CampusID).Any();
+            var hasAuthorizeCampus = this.dbContext.Campus.WhereActiveAccessibleCampus(c => c.CampusID == model.CampusID).Any();
 
             if (!hasAuthorizeCampus)
             {
@@ -68,7 +68,7 @@
 
         ResponseModel IPiServerService.DeletePiServer(int piServerId)
         {
-            var data = this.dbContext.PiServer.WhereActiveAccesiblePiServer(f => f.PiServerID == piServerId).FirstOrDefault();
+            var data = this.dbContext.PiServer.WhereActiveAccessiblePiServer(f => f.PiServerID == piServerId).FirstOrDefault();
             if (data == null)
             {
                 return new ResponseModel { Message = "Pi Server does not exists or user does not have a permission.", Status_Code = (int)StatusCode.Error };
@@ -85,7 +85,7 @@
 
         ResponseModel IPiServerService.UpdatePiServer(PiServerModel model)
         {
-            var data = this.dbContext.PiServer.WhereActiveAccesiblePiServer(f => f.PiServerID == model.PiServerID).FirstOrDefault();
+            var data = this.dbContext.PiServer.WhereActiveAccessiblePiServer(f => f.PiServerID == model.PiServerID).FirstOrDefault();
 
             if (data == null)
             {

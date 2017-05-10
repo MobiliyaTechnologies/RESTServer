@@ -42,7 +42,7 @@
 
         List<CampusModel> ICampusService.GetCampus()
         {
-            var roleCampus = this.dbContext.Campus.WhereActiveAccesibleCampus();
+            var roleCampus = this.dbContext.Campus.WhereActiveAccessibleCampus();
             var roleCampusModels = new CampusModelMapping().Map(roleCampus).ToList();
 
             this.LinkConsumptionWithCampus(roleCampusModels);
@@ -51,7 +51,7 @@
 
         CampusModel ICampusService.GetCampusByLocation(decimal latitude, decimal longitude)
         {
-            var campus = this.dbContext.Campus.WhereActiveAccesibleCampus(c => c.Latitude == latitude && c.Longitude == longitude);
+            var campus = this.dbContext.Campus.WhereActiveAccessibleCampus(c => c.Latitude == latitude && c.Longitude == longitude);
             var campusModels = new CampusModelMapping().Map(campus).ToList();
 
             this.LinkConsumptionWithCampus(campusModels);
@@ -109,7 +109,7 @@
 
         ResponseModel ICampusService.UpdateCampus(CampusModel model)
         {
-            var data = this.dbContext.Campus.WhereActiveAccesibleCampus(c => c.CampusID == model.CampusID).FirstOrDefault();
+            var data = this.dbContext.Campus.WhereActiveAccessibleCampus(c => c.CampusID == model.CampusID).FirstOrDefault();
 
             if (data == null)
             {
@@ -127,6 +127,16 @@
                     data.CampusDesc = model.CampusDesc;
                 }
 
+                if (model.Latitude != default(decimal))
+                {
+                    data.Latitude = model.Latitude;
+                }
+
+                if (model.Longitude != default(decimal))
+                {
+                    data.Longitude = model.Longitude;
+                }
+
                 data.ModifiedBy = this.context.Current.UserId;
                 data.ModifiedOn = DateTime.UtcNow;
             }
@@ -135,7 +145,7 @@
             return new ResponseModel { Message = "Campus details Updated", Status_Code = (int)StatusCode.Ok };
         }
 
-        ResponseModel ICampusService.AssignRoleToCampus(int roleId, int campusId)
+        ResponseModel ICampusService.AssignRolesToCampus(List<int> roleIds, int campusId)
         {
             var campus = this.dbContext.Campus.WhereActiveCampus(c => c.CampusID == campusId).FirstOrDefault();
 
@@ -144,14 +154,18 @@
                 return new ResponseModel { Status_Code = (int)StatusCode.Error, Message = "Campus does not exist" };
             }
 
-            var role = this.dbContext.Role.WhereActiveRole(r => r.Id == roleId).FirstOrDefault();
-
-            if (role == null)
+            foreach (var roleId in roleIds)
             {
-                return new ResponseModel { Status_Code = (int)StatusCode.Error, Message = string.Format("Role does not exist for role id - {0}", roleId) };
+                var role = this.dbContext.Role.WhereActiveRole(r => r.Id == roleId).FirstOrDefault();
+
+                if (role == null)
+                {
+                    return new ResponseModel { Status_Code = (int)StatusCode.Error, Message = string.Format("Role does not exist for role id - {0}", roleId) };
+                }
+
+                campus.Role.Add(role);
             }
 
-            campus.Role.Add(role);
             this.dbContext.SaveChanges();
 
             return new ResponseModel { Status_Code = (int)StatusCode.Error, Message = "Role assigned to campus successfully" };

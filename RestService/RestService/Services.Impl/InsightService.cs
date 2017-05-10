@@ -5,6 +5,7 @@
     using System.Linq;
     using RestService.Entities;
     using RestService.Models;
+    using RestService.Utilities;
 
     public sealed class InsightService : IInsightService, IDisposable
     {
@@ -22,15 +23,20 @@
 
         InsightDataModel IInsightService.GetInsightData()
         {
-            InsightDataModel insightData = new InsightDataModel();
-            var meterCount = this.dbContext.MeterDetails.Count();
-            insightData.ConsumptionValue = Math.Round(
-                (double)(from data in this.dbContext.DailyConsumptionDetails orderby data.Timestamp descending select data)
-                .Take(meterCount * ((
-                (int)DateTime.UtcNow.AddHours(this.utcOffset).DayOfWeek) == 0 ? 7 : (int)DateTime.UtcNow.AddHours(this.utcOffset).DayOfWeek)).Sum(data => data.Daily_KWH_System), 2);
+            var meterdetails = this.dbContext.MeterDetails.WhereActiveAccessibleMeterDetails();
+            return this.GetInsightData(meterdetails);
+        }
 
-            insightData.PredictedValue = Math.Round((from data in this.dbContext.WeeklyConsumptionPrediction orderby data.End_Time descending select data).Take(meterCount).Sum(data => data.Weekly_Predicted_KWH_System) ?? default(double), 2);
-            return insightData;
+        InsightDataModel IInsightService.GetInsightDataByBuilding(int buildingId)
+        {
+            var meterdetails = this.dbContext.MeterDetails.WhereActiveAccessibleMeterDetails(m => m.BuildingId == buildingId);
+            return this.GetInsightData(meterdetails);
+        }
+
+        InsightDataModel IInsightService.GetInsightDataByCampus(int campusId)
+        {
+            var meterdetails = this.dbContext.MeterDetails.WhereActiveAccessibleMeterDetails(m => m.Building.CampusID == campusId);
+            return this.GetInsightData(meterdetails);
         }
 
         /// <summary>
@@ -42,6 +48,23 @@
             {
                 this.dbContext.Dispose();
             }
+        }
+
+        private InsightDataModel GetInsightData(IQueryable<MeterDetails> meterdetails)
+        {
+            InsightDataModel insightData = new InsightDataModel();
+
+            var count = meterdetails.Count() * ((int)DateTime.UtcNow.AddHours(this.utcOffset).DayOfWeek == 0 ? 7 : (int)DateTime.UtcNow.AddHours(this.utcOffset).DayOfWeek);
+
+            var consumptionValue = this.dbContext.DailyConsumptionDetails.Where(d => meterdetails.Any(m => m.Serial.Equals(d.PowerScout, StringComparison.InvariantCultureIgnoreCase))).OrderByDescending(d => d.Timestamp).Take(count).Sum(data => data.Daily_KWH_System);
+
+            insightData.ConsumptionValue = consumptionValue.HasValue ? Math.Round(consumptionValue.Value, 2) : default(double);
+
+            var predictedValue = this.dbContext.WeeklyConsumptionPrediction.Where(w => meterdetails.Any(m => m.Serial.Equals(w.PowerScout, StringComparison.InvariantCultureIgnoreCase))).OrderByDescending(w => w.End_Time).Take(meterdetails.Count()).Sum(w => w.Weekly_Predicted_KWH_System);
+
+            insightData.PredictedValue = predictedValue.HasValue ? Math.Round(predictedValue.Value, 2) : default(double);
+
+            return insightData;
         }
     }
 }

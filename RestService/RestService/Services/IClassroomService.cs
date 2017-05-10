@@ -13,5 +13,14 @@
         /// </summary>
         /// <returns>All classrooms data</returns>
         List<ClassroomModel> GetAllClassrooms();
+
+        /// <summary>
+        /// Gets all building's classrooms.
+        /// </summary>
+        /// <param name="buildingId">The building identifier.</param>
+        /// <returns>
+        /// The building's classrooms.
+        /// </returns>
+        List<ClassroomModel> GetClassroomByBuilding(int buildingId);
     }
 }

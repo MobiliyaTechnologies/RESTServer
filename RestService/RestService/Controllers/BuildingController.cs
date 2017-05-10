@@ -28,12 +28,7 @@
         public HttpResponseMessage GetAllBuildings()
         {
             var data = this.buildingService.GetAllBuildings();
-            if (data.Count != 0)
-            {
-                return this.Request.CreateResponse(HttpStatusCode.OK, data);
-            }
-
-            return this.Request.CreateErrorResponse(HttpStatusCode.NotFound, string.Format("No Building found"));
+            return this.Request.CreateResponse(HttpStatusCode.OK, data);
         }
 
         [Route("GetBuildingByID/{buildingId}")]
@@ -52,12 +47,7 @@
         public HttpResponseMessage GetBuildingsByCampus(int campusId)
         {
             var data = this.buildingService.GetBuildingsByCampus(campusId);
-            if (data.Count != 0)
-            {
-                return this.Request.CreateResponse(HttpStatusCode.OK, data);
-            }
-
-            return this.Request.CreateErrorResponse(HttpStatusCode.NotFound, string.Format("No Building found"));
+            return this.Request.CreateResponse(HttpStatusCode.OK, data);
         }
 
         [Route("GetBuildingByLocation/{latitude}/{longitude}")]
@@ -82,12 +72,7 @@
         public HttpResponseMessage GetBuildings()
         {
             var data = this.buildingService.GetBuildings();
-            if (data.Count != 0)
-            {
-                return this.Request.CreateResponse(HttpStatusCode.OK, data);
-            }
-
-            return this.Request.CreateErrorResponse(HttpStatusCode.NotFound, string.Format("No Building found"));
+            return this.Request.CreateResponse(HttpStatusCode.OK, data);
         }
 
         [Route("AddBuilding")]

@@ -113,7 +113,7 @@
             user.Avatar = string.IsNullOrWhiteSpace(userModel.Avatar) ? user.Avatar : userModel.Avatar;
 
             this.dbContext.SaveChanges();
-            return new ResponseModel(StatusCode.Ok, "User added successfully.");
+            return new ResponseModel(StatusCode.Ok, "User Updated successfully.");
         }
 
         /// <summary>

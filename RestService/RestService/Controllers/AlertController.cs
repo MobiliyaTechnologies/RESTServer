@@ -28,17 +28,17 @@
             return this.Request.CreateResponse(HttpStatusCode.OK, data);
         }
 
-        [Route("GetAlertDetails/{LogId}")]
-        public HttpResponseMessage GetAlertDetails(int logId)
+        [Route("GetAlertDetails/{sensorLogId}")]
+        public HttpResponseMessage GetAlertDetails(int sensorLogId)
         {
-            var data = this.alertService.GetAlertDetails(logId);
+            var data = this.alertService.GetAlertDetails(sensorLogId);
 
             if (data != null)
             {
                 return this.Request.CreateResponse(HttpStatusCode.OK, data);
             }
 
-            return this.Request.CreateErrorResponse(HttpStatusCode.NotFound, string.Format("Alert does not exists for given sensor - {0}", logId));
+            return this.Request.CreateErrorResponse(HttpStatusCode.NotFound, string.Format("Alert does not exists for given sensor - {0}", sensorLogId));
         }
 
         [Route("AcknowledgeAlert")]

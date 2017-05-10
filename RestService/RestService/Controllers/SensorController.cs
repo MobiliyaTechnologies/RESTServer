@@ -28,6 +28,13 @@
             return this.Request.CreateResponse(HttpStatusCode.OK, data);
         }
 
+        [Route("GetAllUnMapSensors")]
+        public HttpResponseMessage GetAllUnMapSensors()
+        {
+            var data = this.sensorService.GetAllUnMapSensors();
+            return this.Request.CreateResponse(HttpStatusCode.OK, data);
+        }
+
         [Route("MapSensor/{sensorId}/{classId}")]
         [HttpPut]
         public HttpResponseMessage MapSensor(int sensorId, int classId)
@@ -50,13 +57,7 @@
             }
 
             var data = this.sensorService.GetAllSensorsForClass(classId);
-
-            if (data != null && data.Count() > 0)
-            {
-                return this.Request.CreateResponse(HttpStatusCode.OK, data);
-            }
-
-            return this.Request.CreateErrorResponse(HttpStatusCode.NotFound, string.Format("Sensors does not mapped to given class id - {0}", classId));
+            return this.Request.CreateResponse(HttpStatusCode.OK, data);
         }
 
         [Route("ResetSensors")]

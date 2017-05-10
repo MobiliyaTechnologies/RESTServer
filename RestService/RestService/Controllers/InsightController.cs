@@ -27,6 +27,20 @@
             return this.Request.CreateResponse(HttpStatusCode.OK, data);
         }
 
+        [Route("GetInsightDataByBuilding/{buildingId}")]
+        public HttpResponseMessage GetInsightDataByBuilding(int buildingId)
+        {
+            var data = this.insightService.GetInsightDataByBuilding(buildingId);
+            return this.Request.CreateResponse(HttpStatusCode.OK, data);
+        }
+
+        [Route("GetInsightDataByCampus/{campusId}")]
+        public HttpResponseMessage GetInsightDataByCampus(int campusId)
+        {
+            var data = this.insightService.GetInsightDataByCampus(campusId);
+            return this.Request.CreateResponse(HttpStatusCode.OK, data);
+        }
+
         /// <summary>
         /// Releases the unmanaged resources that are used by the object and, optionally, releases the managed resources.
         /// </summary>
