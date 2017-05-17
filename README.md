@@ -1,5 +1,5 @@
-# Project Title
-Energy Management REST API Server
+# Energy Management REST API Server
+
 
 ## Getting Started
 
