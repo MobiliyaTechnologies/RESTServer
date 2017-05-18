@@ -1,5 +1,6 @@
 ﻿namespace RestService.Utilities
 {
+    using System;
     using System.Configuration;
 
     public static class ApiConfiguration
@@ -16,6 +17,11 @@
         public static readonly string B2cClientId = GetConfigData("b2c:ClientId");
         public static readonly string B2cSignUpPolicy = GetConfigData("b2c:SignUpPolicyId");
         public static readonly string B2cSignInPolicy = GetConfigData("b2c:SignInPolicyId");
+
+        public static readonly string EmailHost = GetConfigData("EmailHost");
+        public static readonly string EmailSender = GetConfigData("EmailSender");
+        public static readonly string EmailHostPassword = GetConfigData("EmailHostPassword");
+        public static readonly int EmailHostPort = Convert.ToInt32(GetConfigData("EmailHostPort"));
 
         private static string GetConfigData(string key)
         {

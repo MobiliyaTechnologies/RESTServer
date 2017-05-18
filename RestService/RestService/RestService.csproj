@@ -272,6 +272,7 @@
     <Compile Include="Controllers\BuildingController.cs" />
     <Compile Include="Controllers\CampusController.cs" />
     <Compile Include="Controllers\ClassroomController.cs" />
+    <Compile Include="Controllers\EmailController.cs" />
     <Compile Include="Controllers\FeedbackController.cs" />
     <Compile Include="Controllers\InsightController.cs" />
     <Compile Include="Controllers\MeterController.cs" />
@@ -420,6 +421,7 @@
     <Compile Include="Models\BuildingModel.cs" />
     <Compile Include="Models\CampusModel.cs" />
     <Compile Include="Models\ClassroomModel.cs" />
+    <Compile Include="Models\EmailModel.cs" />
     <Compile Include="Models\FeedbackCountModel.cs" />
     <Compile Include="Models\FeedbackModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -446,6 +448,7 @@
     <Compile Include="Services.Impl\BuildingService.cs" />
     <Compile Include="Services.Impl\CampusService.cs" />
     <Compile Include="Services.Impl\ClassroomService.cs" />
+    <Compile Include="Services.Impl\EmailService.cs" />
     <Compile Include="Services.Impl\FeedbackService.cs" />
     <Compile Include="Services.Impl\InsightService.cs" />
     <Compile Include="Services.Impl\MeterService.cs" />
@@ -461,6 +464,7 @@
     <Compile Include="Services\IBuildingService.cs" />
     <Compile Include="Services\ICampusService.cs" />
     <Compile Include="Services\IClassroomService.cs" />
+    <Compile Include="Services\IEmailService.cs" />
     <Compile Include="Services\IFeedbackService.cs" />
     <Compile Include="Services\IInsightService.cs" />
     <Compile Include="Services\IMeterService.cs" />

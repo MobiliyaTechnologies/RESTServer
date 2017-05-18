@@ -8,8 +8,8 @@
     {
         public static void Register(HttpConfiguration config)
         {
-            var cors = new EnableCorsAttribute("*", "*", "*");
-            config.EnableCors(cors);
+            // added temporary to expose error outside domain for testing.
+            config.IncludeErrorDetailPolicy = IncludeErrorDetailPolicy.Always;
 
             config.MapHttpAttributeRoutes();
 
