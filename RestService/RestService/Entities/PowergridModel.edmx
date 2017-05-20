@@ -58,6 +58,71 @@
           <Property Name="AnswerDesc" Type="nvarchar" MaxLength="500" Nullable="false" />
           <Property Name="QuestionID" Type="int" />
         </EntityType>
+        <EntityType Name="ApplicationConfiguration">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ConfigurationType" Type="varchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ApplicationConfigurationEntry">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ConfigurationKey" Type="varchar(max)" Nullable="false" />
+          <Property Name="ConfigurationValue" Type="varchar(max)" Nullable="false" />
+          <Property Name="ApplicationConfigurationId" Type="int" Nullable="false" />
+          <Property Name="CreatedBy" Type="int" />
+          <Property Name="CreatedOn" Type="datetime" />
+          <Property Name="ModifiedBy" Type="int" />
+          <Property Name="ModifiedOn" Type="datetime" />
+        </EntityType>
+        <EntityType Name="AzureAlerts">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Sensor_Log_Id" Type="int" Nullable="false" />
+          <Property Name="Sensor_Id" Type="int" Nullable="false" />
+          <Property Name="Alert_Type" Type="varchar(max)" />
+          <Property Name="Description" Type="varchar(max)" />
+          <Property Name="Timestamp" Type="datetime" />
+          <Property Name="Is_Acknowledged" Type="tinyint" />
+          <Property Name="Acknowledged_By" Type="varchar(max)" />
+          <Property Name="Acknowledged_Timestamp" Type="datetime" />
+          <Property Name="PiServerName" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="AzureAnomalyOutput">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="PowerScout" Type="varchar(max)" />
+          <Property Name="Temperature" Type="float" />
+          <Property Name="Timestamp" Type="datetime" />
+          <Property Name="Visibility" Type="float" />
+          <Property Name="days" Type="varchar(max)" />
+          <Property Name="kW_System" Type="float" />
+          <Property Name="ScoredLabels" Type="float" />
+          <Property Name="ScoredProbabilities" Type="float" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PiServerName" Type="varchar(max)" />
+          <Property Name="Breaker_details" Type="text" />
+        </EntityType>
+        <EntityType Name="AzureDailyConsumptionPrediction">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PowerScout" Type="varchar(max)" />
+          <Property Name="Breaker_details" Type="varchar(max)" />
+          <Property Name="Timestamp" Type="datetime" />
+          <Property Name="Daily_KWH_System" Type="float" />
+          <Property Name="Daily_Predicted_KWH_System" Type="float" />
+          <Property Name="TomorrowPredictedKWH" Type="float" />
+          <Property Name="PiServerName" Type="varchar(max)" />
+          <Property Name="Building" Type="varchar" MaxLength="256" />
+        </EntityType>
         <EntityType Name="AzureLiveData">
           <Key>
             <PropertyRef Name="Id" />
@@ -105,6 +170,19 @@
           <Property Name="last_month" Type="datetime" />
           <Property Name="PiServerName" Type="varchar(max)" />
         </EntityType>
+        <EntityType Name="AzureWeeklyConsumptionPrediction">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Start_Time" Type="datetime" />
+          <Property Name="End_Time" Type="datetime" />
+          <Property Name="PowerScout" Type="varchar(max)" />
+          <Property Name="Breaker_details" Type="varchar(max)" />
+          <Property Name="Weekly_Predicted_KWH_System" Type="float" />
+          <Property Name="PiServerName" Type="varchar(max)" />
+          <Property Name="Building" Type="varchar" MaxLength="256" />
+        </EntityType>
         <EntityType Name="Building">
           <Key>
             <PropertyRef Name="BuildingID" />
@@ -151,6 +229,25 @@
           <Property Name="X" Type="float" />
           <Property Name="Y" Type="float" />
         </EntityType>
+        <EntityType Name="DailyConsumptionAzureDetails">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AMPS_SYSTEM_AVG" Type="float" />
+          <Property Name="Building" Type="varchar(max)" />
+          <Property Name="Breaker_details" Type="varchar(max)" />
+          <Property Name="Daily_electric_cost" Type="float" />
+          <Property Name="Daily_KWH_System" Type="float" />
+          <Property Name="Monthly_electric_cost" Type="float" />
+          <Property Name="Monthly_KWH_System" Type="float" />
+          <Property Name="PowerScout" Type="varchar(max)" />
+          <Property Name="Temperature" Type="float" />
+          <Property Name="Timestamp" Type="datetime" />
+          <Property Name="Visibility" Type="float" />
+          <Property Name="kW_System" Type="float" />
+          <Property Name="PiServerName" Type="varchar(max)" />
+        </EntityType>
         <EntityType Name="DailyConsumptionDetails">
           <Key>
             <PropertyRef Name="Id" />
@@ -182,6 +279,13 @@
           <Property Name="TomorrowPredictedKWH" Type="float" />
           <Property Name="Building" Type="varchar" MaxLength="256" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'PowerGrid_Copy.dbo.DateRange' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="DateRange">
+          <Property Name="TimeFrame" Type="varchar" MaxLength="10" />
+          <Property Name="Days" Type="int" />
+          <Property Name="Index" Type="int" />
+        </EntityType>-->
         <EntityType Name="DimDate">
           <Key>
             <PropertyRef Name="DateKey" />
@@ -337,6 +441,23 @@
           <Property Name="Description" Type="nvarchar(max)" />
           <Property Name="BuildingId" Type="int" />
         </EntityType>
+        <EntityType Name="MonthlyConsumptionAzureDetails">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Month" Type="varchar(max)" />
+          <Property Name="Year" Type="varchar(max)" />
+          <Property Name="PowerScout" Type="varchar(max)" />
+          <Property Name="Breaker_details" Type="varchar(max)" />
+          <Property Name="Monthly_KWH_System" Type="float" />
+          <Property Name="Monthly_electric_cost" Type="float" />
+          <Property Name="Timestamp" Type="datetime" />
+          <Property Name="current_month" Type="datetime" />
+          <Property Name="last_month" Type="datetime" />
+          <Property Name="Building" Type="varchar" MaxLength="256" />
+          <Property Name="PiServerName" Type="varchar(max)" />
+        </EntityType>
         <EntityType Name="MonthlyConsumptionDetails">
           <Key>
             <PropertyRef Name="Id" />
@@ -470,6 +591,53 @@ warning 6002: The table/view 'PowerGrid_Copy.dbo.PowergridAzureMLData' does not 
           <Property Name="QuestionID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="QuestionDec" Type="varchar" MaxLength="500" Nullable="false" />
         </EntityType>
+        <EntityType Name="QueueLiveData">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AMPS_L1" Type="float" />
+          <Property Name="AMPS_L2" Type="float" />
+          <Property Name="AMPS_L3" Type="float" />
+          <Property Name="AMPS_SYSTEM_AVG" Type="float" />
+          <Property Name="Breaker_details" Type="text" />
+          <Property Name="Breaker_label" Type="text" />
+          <Property Name="Building" Type="text" />
+          <Property Name="ClassOccupanyRemaining" Type="int" />
+          <Property Name="ClassOccupiedValue" Type="int" />
+          <Property Name="TotalClassCapacity" Type="int" />
+          <Property Name="Daily_electric_cost" Type="float" />
+          <Property Name="Daily_KWH_System" Type="float" />
+          <Property Name="isClassOccupied" Type="int" />
+          <Property Name="KW_L1" Type="float" />
+          <Property Name="KW_L2" Type="float" />
+          <Property Name="KW_L3" Type="float" />
+          <Property Name="Monthly_electric_cost" Type="float" />
+          <Property Name="Monthly_KWH_System" Type="float" />
+          <Property Name="PowerScout" Type="varchar(max)" />
+          <Property Name="Rated_Amperage" Type="float" />
+          <Property Name="Pressure" Type="float" />
+          <Property Name="Relative_humidity" Type="float" />
+          <Property Name="Rolling_hourly_kwh_system" Type="float" />
+          <Property Name="Serial_number" Type="varchar(max)" />
+          <Property Name="Temperature" Type="float" />
+          <Property Name="Timestamp" Type="datetime" />
+          <Property Name="Type" Type="text" />
+          <Property Name="Visibility" Type="float" />
+          <Property Name="Volts_L1_to_neutral" Type="float" />
+          <Property Name="Volts_L2_to_neutral" Type="float" />
+          <Property Name="Volts_L3_to_neutral" Type="float" />
+          <Property Name="kW_System" Type="float" />
+          <Property Name="days" Type="varchar(max)" />
+          <Property Name="time_period" Type="varchar(max)" />
+          <Property Name="current_week" Type="datetime" />
+          <Property Name="last_week" Type="datetime" />
+          <Property Name="current_day" Type="datetime" />
+          <Property Name="previous_day" Type="datetime" />
+          <Property Name="current_month" Type="datetime" />
+          <Property Name="last_month" Type="datetime" />
+          <Property Name="PiServerName" Type="varchar(max)" />
+        </EntityType>
         <EntityType Name="Role">
           <Key>
             <PropertyRef Name="Id" />
@@ -501,6 +669,29 @@ warning 6002: The table/view 'PowerGrid_Copy.dbo.RoleBK' does not have a primary
           </Key>
           <Property Name="RoleID" Type="int" Nullable="false" />
           <Property Name="CampusID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SensorAzureLiveData">
+          <Key>
+            <PropertyRef Name="Sensor_Log_Id" />
+          </Key>
+          <Property Name="Sensor_Log_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Sensor_Id" Type="int" />
+          <Property Name="Temperature" Type="float" />
+          <Property Name="Brightness" Type="float" />
+          <Property Name="Humidity" Type="float" />
+          <Property Name="Timestamp" Type="datetime" />
+          <Property Name="PiServerName" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="SensorAzureMaster">
+          <Key>
+            <PropertyRef Name="Sensor_Id" />
+          </Key>
+          <Property Name="Sensor_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Sensor_Name" Type="varchar(max)" />
+          <Property Name="PiServerName" Type="varchar(max)" />
+          <Property Name="Class_Id" Type="int" />
+          <Property Name="X" Type="float" />
+          <Property Name="Y" Type="float" />
         </EntityType>
         <EntityType Name="SensorData">
           <Key>
@@ -616,6 +807,12 @@ warning 6002: The table/view 'PowerGrid_Copy.dbo.TempMLData' does not have a pri
           <Property Name="Volts_L3_to_neutral" Type="float" />
           <Property Name="kW_System" Type="float" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'PowerGrid_Copy.dbo.Test' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="Test">
+          <Property Name="id" Type="int" />
+          <Property Name="val" Type="int" />
+        </EntityType>-->
         <EntityType Name="University">
           <Key>
             <PropertyRef Name="UniversityID" />
@@ -677,6 +874,20 @@ warning 6002: The table/view 'PowerGrid_Copy.dbo.TempMLData' does not have a pri
             </Principal>
             <Dependent Role="Answers">
               <PropertyRef Name="QuestionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ApplicationConfigurationEntryApplicationConfiguration_ApplicationConfigurationId">
+          <End Role="ApplicationConfiguration" Type="Self.ApplicationConfiguration" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ApplicationConfigurationEntry" Type="Self.ApplicationConfigurationEntry" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ApplicationConfiguration">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ApplicationConfigurationEntry">
+              <PropertyRef Name="ApplicationConfigurationId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -829,10 +1040,17 @@ warning 6002: The table/view 'PowerGrid_Copy.dbo.TempMLData' does not have a pri
           <EntitySet Name="Alerts" EntityType="Self.Alerts" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AnomalyOutput" EntityType="Self.AnomalyOutput" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Answers" EntityType="Self.Answers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ApplicationConfiguration" EntityType="Self.ApplicationConfiguration" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ApplicationConfigurationEntry" EntityType="Self.ApplicationConfigurationEntry" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AzureAlerts" EntityType="Self.AzureAlerts" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AzureAnomalyOutput" EntityType="Self.AzureAnomalyOutput" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AzureDailyConsumptionPrediction" EntityType="Self.AzureDailyConsumptionPrediction" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AzureLiveData" EntityType="Self.AzureLiveData" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AzureWeeklyConsumptionPrediction" EntityType="Self.AzureWeeklyConsumptionPrediction" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Building" EntityType="Self.Building" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Campus" EntityType="Self.Campus" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ClassroomDetails" EntityType="Self.ClassroomDetails" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DailyConsumptionAzureDetails" EntityType="Self.DailyConsumptionAzureDetails" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DailyConsumptionDetails" EntityType="Self.DailyConsumptionDetails" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DailyConsumptionPrediction" EntityType="Self.DailyConsumptionPrediction" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DimDate" EntityType="Self.DimDate" Schema="dbo" store:Type="Tables" />
@@ -840,13 +1058,17 @@ warning 6002: The table/view 'PowerGrid_Copy.dbo.TempMLData' does not have a pri
           <EntitySet Name="HalfHourlyData" EntityType="Self.HalfHourlyData" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="HalfYearlyData" EntityType="Self.HalfYearlyData" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MeterDetails" EntityType="Self.MeterDetails" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MonthlyConsumptionAzureDetails" EntityType="Self.MonthlyConsumptionAzureDetails" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MonthlyConsumptionDetails" EntityType="Self.MonthlyConsumptionDetails" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MSLiveData" EntityType="Self.MSLiveData" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Person" EntityType="Self.Person" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PiServer" EntityType="Self.PiServer" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Questions" EntityType="Self.Questions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="QueueLiveData" EntityType="Self.QueueLiveData" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Role" EntityType="Self.Role" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RoleCampusLinkUp" EntityType="Self.RoleCampusLinkUp" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SensorAzureLiveData" EntityType="Self.SensorAzureLiveData" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SensorAzureMaster" EntityType="Self.SensorAzureMaster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SensorData" EntityType="Self.SensorData" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SensorLiveData" EntityType="Self.SensorLiveData" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SensorMaster" EntityType="Self.SensorMaster" Schema="dbo" store:Type="Tables" />
@@ -938,6 +1160,10 @@ warning 6002: The table/view 'PowerGrid_Copy.dbo.TempMLData' does not have a pri
           <AssociationSet Name="FK_Answers_QuestionID" Association="Self.FK_Answers_QuestionID">
             <End Role="Questions" EntitySet="Questions" />
             <End Role="Answers" EntitySet="Answers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ApplicationConfigurationEntryApplicationConfiguration_ApplicationConfigurationId" Association="Self.FK_ApplicationConfigurationEntryApplicationConfiguration_ApplicationConfigurationId">
+            <End Role="ApplicationConfiguration" EntitySet="ApplicationConfiguration" />
+            <End Role="ApplicationConfigurationEntry" EntitySet="ApplicationConfigurationEntry" />
           </AssociationSet>
           <AssociationSet Name="FK_Building_CampusID" Association="Self.FK_Building_CampusID">
             <End Role="Campus" EntitySet="Campus" />
@@ -1876,7 +2102,222 @@ warning 6002: The table/view 'PowerGrid_Copy.dbo.TempMLData' does not have a pri
             <End Role="Campus" EntitySet="Campus" />
             <End Role="Role" EntitySet="Role" />
           </AssociationSet>
+          <EntitySet Name="ApplicationConfigurationEntry" EntityType="PowerGrid_CopyModel1.ApplicationConfigurationEntry" />
+          <EntitySet Name="AzureAlerts" EntityType="PowerGrid_CopyModel1.AzureAlerts" />
+          <EntitySet Name="AzureAnomalyOutput" EntityType="PowerGrid_CopyModel1.AzureAnomalyOutput" />
+          <EntitySet Name="AzureDailyConsumptionPrediction" EntityType="PowerGrid_CopyModel1.AzureDailyConsumptionPrediction" />
+          <EntitySet Name="AzureWeeklyConsumptionPrediction" EntityType="PowerGrid_CopyModel1.AzureWeeklyConsumptionPrediction" />
+          <EntitySet Name="DailyConsumptionAzureDetails" EntityType="PowerGrid_CopyModel1.DailyConsumptionAzureDetails" />
+          <EntitySet Name="MonthlyConsumptionAzureDetails" EntityType="PowerGrid_CopyModel1.MonthlyConsumptionAzureDetails" />
+          <EntitySet Name="QueueLiveData" EntityType="PowerGrid_CopyModel1.QueueLiveData" />
+          <EntitySet Name="SensorAzureLiveData" EntityType="PowerGrid_CopyModel1.SensorAzureLiveData" />
+          <EntitySet Name="SensorAzureMaster" EntityType="PowerGrid_CopyModel1.SensorAzureMaster" />
+          <EntitySet Name="ApplicationConfiguration" EntityType="PowerGrid_CopyModel1.ApplicationConfiguration" />
+          <AssociationSet Name="FK_ApplicationConfigurationEntryApplicationConfiguration_ApplicationConfigurationId" Association="PowerGrid_CopyModel1.FK_ApplicationConfigurationEntryApplicationConfiguration_ApplicationConfigurationId">
+            <End Role="ApplicationConfiguration" EntitySet="ApplicationConfiguration" />
+            <End Role="ApplicationConfigurationEntry" EntitySet="ApplicationConfigurationEntry" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="ApplicationConfigurationEntry">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ConfigurationKey" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="ConfigurationValue" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="ApplicationConfigurationId" Type="Int32" Nullable="false" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="CreatedOn" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedBy" Type="Int32" />
+          <Property Name="ModifiedOn" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="ApplicationConfiguration" Relationship="PowerGrid_CopyModel1.FK_ApplicationConfigurationEntryApplicationConfiguration_ApplicationConfigurationId" FromRole="ApplicationConfigurationEntry" ToRole="ApplicationConfiguration" />
+        </EntityType>
+        <EntityType Name="AzureAlerts">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Sensor_Log_Id" Type="Int32" Nullable="false" />
+          <Property Name="Sensor_Id" Type="Int32" Nullable="false" />
+          <Property Name="Alert_Type" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Timestamp" Type="DateTime" Precision="3" />
+          <Property Name="Is_Acknowledged" Type="Byte" />
+          <Property Name="Acknowledged_By" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Acknowledged_Timestamp" Type="DateTime" Precision="3" />
+          <Property Name="PiServerName" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="AzureAnomalyOutput">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="PowerScout" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Temperature" Type="Double" />
+          <Property Name="Timestamp" Type="DateTime" Precision="3" />
+          <Property Name="Visibility" Type="Double" />
+          <Property Name="days" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="kW_System" Type="Double" />
+          <Property Name="ScoredLabels" Type="Double" />
+          <Property Name="ScoredProbabilities" Type="Double" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PiServerName" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Breaker_details" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="AzureDailyConsumptionPrediction">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PowerScout" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Breaker_details" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Timestamp" Type="DateTime" Precision="3" />
+          <Property Name="Daily_KWH_System" Type="Double" />
+          <Property Name="Daily_Predicted_KWH_System" Type="Double" />
+          <Property Name="TomorrowPredictedKWH" Type="Double" />
+          <Property Name="PiServerName" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Building" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="AzureWeeklyConsumptionPrediction">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Start_Time" Type="DateTime" Precision="3" />
+          <Property Name="End_Time" Type="DateTime" Precision="3" />
+          <Property Name="PowerScout" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Breaker_details" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Weekly_Predicted_KWH_System" Type="Double" />
+          <Property Name="PiServerName" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Building" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="DailyConsumptionAzureDetails">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AMPS_SYSTEM_AVG" Type="Double" />
+          <Property Name="Building" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Breaker_details" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Daily_electric_cost" Type="Double" />
+          <Property Name="Daily_KWH_System" Type="Double" />
+          <Property Name="Monthly_electric_cost" Type="Double" />
+          <Property Name="Monthly_KWH_System" Type="Double" />
+          <Property Name="PowerScout" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Temperature" Type="Double" />
+          <Property Name="Timestamp" Type="DateTime" Precision="3" />
+          <Property Name="Visibility" Type="Double" />
+          <Property Name="kW_System" Type="Double" />
+          <Property Name="PiServerName" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="MonthlyConsumptionAzureDetails">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Month" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Year" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="PowerScout" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Breaker_details" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Monthly_KWH_System" Type="Double" />
+          <Property Name="Monthly_electric_cost" Type="Double" />
+          <Property Name="Timestamp" Type="DateTime" Precision="3" />
+          <Property Name="current_month" Type="DateTime" Precision="3" />
+          <Property Name="last_month" Type="DateTime" Precision="3" />
+          <Property Name="Building" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
+          <Property Name="PiServerName" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="QueueLiveData">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AMPS_L1" Type="Double" />
+          <Property Name="AMPS_L2" Type="Double" />
+          <Property Name="AMPS_L3" Type="Double" />
+          <Property Name="AMPS_SYSTEM_AVG" Type="Double" />
+          <Property Name="Breaker_details" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Breaker_label" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Building" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="ClassOccupanyRemaining" Type="Int32" />
+          <Property Name="ClassOccupiedValue" Type="Int32" />
+          <Property Name="TotalClassCapacity" Type="Int32" />
+          <Property Name="Daily_electric_cost" Type="Double" />
+          <Property Name="Daily_KWH_System" Type="Double" />
+          <Property Name="isClassOccupied" Type="Int32" />
+          <Property Name="KW_L1" Type="Double" />
+          <Property Name="KW_L2" Type="Double" />
+          <Property Name="KW_L3" Type="Double" />
+          <Property Name="Monthly_electric_cost" Type="Double" />
+          <Property Name="Monthly_KWH_System" Type="Double" />
+          <Property Name="PowerScout" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Rated_Amperage" Type="Double" />
+          <Property Name="Pressure" Type="Double" />
+          <Property Name="Relative_humidity" Type="Double" />
+          <Property Name="Rolling_hourly_kwh_system" Type="Double" />
+          <Property Name="Serial_number" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Temperature" Type="Double" />
+          <Property Name="Timestamp" Type="DateTime" Precision="3" />
+          <Property Name="Type" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Visibility" Type="Double" />
+          <Property Name="Volts_L1_to_neutral" Type="Double" />
+          <Property Name="Volts_L2_to_neutral" Type="Double" />
+          <Property Name="Volts_L3_to_neutral" Type="Double" />
+          <Property Name="kW_System" Type="Double" />
+          <Property Name="days" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="time_period" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="current_week" Type="DateTime" Precision="3" />
+          <Property Name="last_week" Type="DateTime" Precision="3" />
+          <Property Name="current_day" Type="DateTime" Precision="3" />
+          <Property Name="previous_day" Type="DateTime" Precision="3" />
+          <Property Name="current_month" Type="DateTime" Precision="3" />
+          <Property Name="last_month" Type="DateTime" Precision="3" />
+          <Property Name="PiServerName" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="SensorAzureLiveData">
+          <Key>
+            <PropertyRef Name="Sensor_Log_Id" />
+          </Key>
+          <Property Name="Sensor_Log_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Sensor_Id" Type="Int32" />
+          <Property Name="Temperature" Type="Double" />
+          <Property Name="Brightness" Type="Double" />
+          <Property Name="Humidity" Type="Double" />
+          <Property Name="Timestamp" Type="DateTime" Precision="3" />
+          <Property Name="PiServerName" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="SensorAzureMaster">
+          <Key>
+            <PropertyRef Name="Sensor_Id" />
+          </Key>
+          <Property Name="Sensor_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Sensor_Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="PiServerName" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Class_Id" Type="Int32" />
+          <Property Name="X" Type="Double" />
+          <Property Name="Y" Type="Double" />
+        </EntityType>
+        <EntityType Name="ApplicationConfiguration">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ConfigurationType" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="ApplicationConfigurationEntry" Relationship="PowerGrid_CopyModel1.FK_ApplicationConfigurationEntryApplicationConfiguration_ApplicationConfigurationId" FromRole="ApplicationConfiguration" ToRole="ApplicationConfigurationEntry" />
+        </EntityType>
+        <Association Name="FK_ApplicationConfigurationEntryApplicationConfiguration_ApplicationConfigurationId">
+          <End Type="PowerGrid_CopyModel1.ApplicationConfiguration" Role="ApplicationConfiguration" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="PowerGrid_CopyModel1.ApplicationConfigurationEntry" Role="ApplicationConfigurationEntry" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ApplicationConfiguration">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ApplicationConfigurationEntry">
+              <PropertyRef Name="ApplicationConfigurationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2566,6 +3007,201 @@ warning 6002: The table/view 'PowerGrid_Copy.dbo.TempMLData' does not have a pri
               <ScalarProperty Name="Id" ColumnName="RoleID" />
             </EndProperty>
           </AssociationSetMapping>
+          <EntitySetMapping Name="ApplicationConfigurationEntry">
+            <EntityTypeMapping TypeName="PowerGrid_CopyModel1.ApplicationConfigurationEntry">
+              <MappingFragment StoreEntitySet="ApplicationConfigurationEntry">
+                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="ApplicationConfigurationId" ColumnName="ApplicationConfigurationId" />
+                <ScalarProperty Name="ConfigurationValue" ColumnName="ConfigurationValue" />
+                <ScalarProperty Name="ConfigurationKey" ColumnName="ConfigurationKey" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AzureAlerts">
+            <EntityTypeMapping TypeName="PowerGrid_CopyModel1.AzureAlerts">
+              <MappingFragment StoreEntitySet="AzureAlerts">
+                <ScalarProperty Name="PiServerName" ColumnName="PiServerName" />
+                <ScalarProperty Name="Acknowledged_Timestamp" ColumnName="Acknowledged_Timestamp" />
+                <ScalarProperty Name="Acknowledged_By" ColumnName="Acknowledged_By" />
+                <ScalarProperty Name="Is_Acknowledged" ColumnName="Is_Acknowledged" />
+                <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Alert_Type" ColumnName="Alert_Type" />
+                <ScalarProperty Name="Sensor_Id" ColumnName="Sensor_Id" />
+                <ScalarProperty Name="Sensor_Log_Id" ColumnName="Sensor_Log_Id" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AzureAnomalyOutput">
+            <EntityTypeMapping TypeName="PowerGrid_CopyModel1.AzureAnomalyOutput">
+              <MappingFragment StoreEntitySet="AzureAnomalyOutput">
+                <ScalarProperty Name="Breaker_details" ColumnName="Breaker_details" />
+                <ScalarProperty Name="PiServerName" ColumnName="PiServerName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="ScoredProbabilities" ColumnName="ScoredProbabilities" />
+                <ScalarProperty Name="ScoredLabels" ColumnName="ScoredLabels" />
+                <ScalarProperty Name="kW_System" ColumnName="kW_System" />
+                <ScalarProperty Name="days" ColumnName="days" />
+                <ScalarProperty Name="Visibility" ColumnName="Visibility" />
+                <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
+                <ScalarProperty Name="Temperature" ColumnName="Temperature" />
+                <ScalarProperty Name="PowerScout" ColumnName="PowerScout" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AzureDailyConsumptionPrediction">
+            <EntityTypeMapping TypeName="PowerGrid_CopyModel1.AzureDailyConsumptionPrediction">
+              <MappingFragment StoreEntitySet="AzureDailyConsumptionPrediction">
+                <ScalarProperty Name="Building" ColumnName="Building" />
+                <ScalarProperty Name="PiServerName" ColumnName="PiServerName" />
+                <ScalarProperty Name="TomorrowPredictedKWH" ColumnName="TomorrowPredictedKWH" />
+                <ScalarProperty Name="Daily_Predicted_KWH_System" ColumnName="Daily_Predicted_KWH_System" />
+                <ScalarProperty Name="Daily_KWH_System" ColumnName="Daily_KWH_System" />
+                <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
+                <ScalarProperty Name="Breaker_details" ColumnName="Breaker_details" />
+                <ScalarProperty Name="PowerScout" ColumnName="PowerScout" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AzureWeeklyConsumptionPrediction">
+            <EntityTypeMapping TypeName="PowerGrid_CopyModel1.AzureWeeklyConsumptionPrediction">
+              <MappingFragment StoreEntitySet="AzureWeeklyConsumptionPrediction">
+                <ScalarProperty Name="Building" ColumnName="Building" />
+                <ScalarProperty Name="PiServerName" ColumnName="PiServerName" />
+                <ScalarProperty Name="Weekly_Predicted_KWH_System" ColumnName="Weekly_Predicted_KWH_System" />
+                <ScalarProperty Name="Breaker_details" ColumnName="Breaker_details" />
+                <ScalarProperty Name="PowerScout" ColumnName="PowerScout" />
+                <ScalarProperty Name="End_Time" ColumnName="End_Time" />
+                <ScalarProperty Name="Start_Time" ColumnName="Start_Time" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DailyConsumptionAzureDetails">
+            <EntityTypeMapping TypeName="PowerGrid_CopyModel1.DailyConsumptionAzureDetails">
+              <MappingFragment StoreEntitySet="DailyConsumptionAzureDetails">
+                <ScalarProperty Name="PiServerName" ColumnName="PiServerName" />
+                <ScalarProperty Name="kW_System" ColumnName="kW_System" />
+                <ScalarProperty Name="Visibility" ColumnName="Visibility" />
+                <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
+                <ScalarProperty Name="Temperature" ColumnName="Temperature" />
+                <ScalarProperty Name="PowerScout" ColumnName="PowerScout" />
+                <ScalarProperty Name="Monthly_KWH_System" ColumnName="Monthly_KWH_System" />
+                <ScalarProperty Name="Monthly_electric_cost" ColumnName="Monthly_electric_cost" />
+                <ScalarProperty Name="Daily_KWH_System" ColumnName="Daily_KWH_System" />
+                <ScalarProperty Name="Daily_electric_cost" ColumnName="Daily_electric_cost" />
+                <ScalarProperty Name="Breaker_details" ColumnName="Breaker_details" />
+                <ScalarProperty Name="Building" ColumnName="Building" />
+                <ScalarProperty Name="AMPS_SYSTEM_AVG" ColumnName="AMPS_SYSTEM_AVG" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MonthlyConsumptionAzureDetails">
+            <EntityTypeMapping TypeName="PowerGrid_CopyModel1.MonthlyConsumptionAzureDetails">
+              <MappingFragment StoreEntitySet="MonthlyConsumptionAzureDetails">
+                <ScalarProperty Name="PiServerName" ColumnName="PiServerName" />
+                <ScalarProperty Name="Building" ColumnName="Building" />
+                <ScalarProperty Name="last_month" ColumnName="last_month" />
+                <ScalarProperty Name="current_month" ColumnName="current_month" />
+                <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
+                <ScalarProperty Name="Monthly_electric_cost" ColumnName="Monthly_electric_cost" />
+                <ScalarProperty Name="Monthly_KWH_System" ColumnName="Monthly_KWH_System" />
+                <ScalarProperty Name="Breaker_details" ColumnName="Breaker_details" />
+                <ScalarProperty Name="PowerScout" ColumnName="PowerScout" />
+                <ScalarProperty Name="Year" ColumnName="Year" />
+                <ScalarProperty Name="Month" ColumnName="Month" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="QueueLiveData">
+            <EntityTypeMapping TypeName="PowerGrid_CopyModel1.QueueLiveData">
+              <MappingFragment StoreEntitySet="QueueLiveData">
+                <ScalarProperty Name="PiServerName" ColumnName="PiServerName" />
+                <ScalarProperty Name="last_month" ColumnName="last_month" />
+                <ScalarProperty Name="current_month" ColumnName="current_month" />
+                <ScalarProperty Name="previous_day" ColumnName="previous_day" />
+                <ScalarProperty Name="current_day" ColumnName="current_day" />
+                <ScalarProperty Name="last_week" ColumnName="last_week" />
+                <ScalarProperty Name="current_week" ColumnName="current_week" />
+                <ScalarProperty Name="time_period" ColumnName="time_period" />
+                <ScalarProperty Name="days" ColumnName="days" />
+                <ScalarProperty Name="kW_System" ColumnName="kW_System" />
+                <ScalarProperty Name="Volts_L3_to_neutral" ColumnName="Volts_L3_to_neutral" />
+                <ScalarProperty Name="Volts_L2_to_neutral" ColumnName="Volts_L2_to_neutral" />
+                <ScalarProperty Name="Volts_L1_to_neutral" ColumnName="Volts_L1_to_neutral" />
+                <ScalarProperty Name="Visibility" ColumnName="Visibility" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
+                <ScalarProperty Name="Temperature" ColumnName="Temperature" />
+                <ScalarProperty Name="Serial_number" ColumnName="Serial_number" />
+                <ScalarProperty Name="Rolling_hourly_kwh_system" ColumnName="Rolling_hourly_kwh_system" />
+                <ScalarProperty Name="Relative_humidity" ColumnName="Relative_humidity" />
+                <ScalarProperty Name="Pressure" ColumnName="Pressure" />
+                <ScalarProperty Name="Rated_Amperage" ColumnName="Rated_Amperage" />
+                <ScalarProperty Name="PowerScout" ColumnName="PowerScout" />
+                <ScalarProperty Name="Monthly_KWH_System" ColumnName="Monthly_KWH_System" />
+                <ScalarProperty Name="Monthly_electric_cost" ColumnName="Monthly_electric_cost" />
+                <ScalarProperty Name="KW_L3" ColumnName="KW_L3" />
+                <ScalarProperty Name="KW_L2" ColumnName="KW_L2" />
+                <ScalarProperty Name="KW_L1" ColumnName="KW_L1" />
+                <ScalarProperty Name="isClassOccupied" ColumnName="isClassOccupied" />
+                <ScalarProperty Name="Daily_KWH_System" ColumnName="Daily_KWH_System" />
+                <ScalarProperty Name="Daily_electric_cost" ColumnName="Daily_electric_cost" />
+                <ScalarProperty Name="TotalClassCapacity" ColumnName="TotalClassCapacity" />
+                <ScalarProperty Name="ClassOccupiedValue" ColumnName="ClassOccupiedValue" />
+                <ScalarProperty Name="ClassOccupanyRemaining" ColumnName="ClassOccupanyRemaining" />
+                <ScalarProperty Name="Building" ColumnName="Building" />
+                <ScalarProperty Name="Breaker_label" ColumnName="Breaker_label" />
+                <ScalarProperty Name="Breaker_details" ColumnName="Breaker_details" />
+                <ScalarProperty Name="AMPS_SYSTEM_AVG" ColumnName="AMPS_SYSTEM_AVG" />
+                <ScalarProperty Name="AMPS_L3" ColumnName="AMPS_L3" />
+                <ScalarProperty Name="AMPS_L2" ColumnName="AMPS_L2" />
+                <ScalarProperty Name="AMPS_L1" ColumnName="AMPS_L1" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SensorAzureLiveData">
+            <EntityTypeMapping TypeName="PowerGrid_CopyModel1.SensorAzureLiveData">
+              <MappingFragment StoreEntitySet="SensorAzureLiveData">
+                <ScalarProperty Name="PiServerName" ColumnName="PiServerName" />
+                <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
+                <ScalarProperty Name="Humidity" ColumnName="Humidity" />
+                <ScalarProperty Name="Brightness" ColumnName="Brightness" />
+                <ScalarProperty Name="Temperature" ColumnName="Temperature" />
+                <ScalarProperty Name="Sensor_Id" ColumnName="Sensor_Id" />
+                <ScalarProperty Name="Sensor_Log_Id" ColumnName="Sensor_Log_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SensorAzureMaster">
+            <EntityTypeMapping TypeName="PowerGrid_CopyModel1.SensorAzureMaster">
+              <MappingFragment StoreEntitySet="SensorAzureMaster">
+                <ScalarProperty Name="Y" ColumnName="Y" />
+                <ScalarProperty Name="X" ColumnName="X" />
+                <ScalarProperty Name="Class_Id" ColumnName="Class_Id" />
+                <ScalarProperty Name="PiServerName" ColumnName="PiServerName" />
+                <ScalarProperty Name="Sensor_Name" ColumnName="Sensor_Name" />
+                <ScalarProperty Name="Sensor_Id" ColumnName="Sensor_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ApplicationConfiguration">
+            <EntityTypeMapping TypeName="PowerGrid_CopyModel1.ApplicationConfiguration">
+              <MappingFragment StoreEntitySet="ApplicationConfiguration">
+                <ScalarProperty Name="ConfigurationType" ColumnName="ConfigurationType" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

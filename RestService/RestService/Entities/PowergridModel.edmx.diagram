@@ -49,6 +49,18 @@
         <AssociationConnector Association="PowerGrid_CopyModel1.FK_UserRole_RoleID" ManuallyRouted="false" />
         <AssociationConnector Association="PowerGrid_CopyModel1.FK_UserSession_User" ManuallyRouted="false" />
         <AssociationConnector Association="PowerGrid_CopyModel1.RoleCampusLinkUp" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="PowerGrid_CopyModel1.ApplicationConfigurationEntry" Width="3.5" PointX="23.375" PointY="4" />
+        <EntityTypeShape EntityType="PowerGrid_CopyModel1.AzureAlerts" Width="1.5" PointX="13.375" PointY="19.75" />
+        <EntityTypeShape EntityType="PowerGrid_CopyModel1.AzureAnomalyOutput" Width="1.5" PointX="20.375" PointY="6.75" />
+        <EntityTypeShape EntityType="PowerGrid_CopyModel1.AzureDailyConsumptionPrediction" Width="1.5" PointX="20.375" PointY="10.75" />
+        <EntityTypeShape EntityType="PowerGrid_CopyModel1.AzureWeeklyConsumptionPrediction" Width="1.5" PointX="20.375" PointY="14.75" />
+        <EntityTypeShape EntityType="PowerGrid_CopyModel1.DailyConsumptionAzureDetails" Width="1.5" PointX="20.375" PointY="18.75" />
+        <EntityTypeShape EntityType="PowerGrid_CopyModel1.MonthlyConsumptionAzureDetails" Width="1.5" PointX="22.375" PointY="6.75" />
+        <EntityTypeShape EntityType="PowerGrid_CopyModel1.QueueLiveData" Width="1.5" PointX="22.375" PointY="11.75" />
+        <EntityTypeShape EntityType="PowerGrid_CopyModel1.SensorAzureLiveData" Width="1.5" PointX="21.375" PointY="0.75" />
+        <EntityTypeShape EntityType="PowerGrid_CopyModel1.SensorAzureMaster" Width="1.5" PointX="15.375" PointY="22.75" />
+        <EntityTypeShape EntityType="PowerGrid_CopyModel1.ApplicationConfiguration" Width="2.375" PointX="17.125" PointY="22.875" />
+        <AssociationConnector Association="PowerGrid_CopyModel1.FK_ApplicationConfigurationEntryApplicationConfiguration_ApplicationConfigurationId" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

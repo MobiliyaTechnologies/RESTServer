@@ -94,6 +94,24 @@
             return new ResponseModel { Message = "Role details Updated", Status_Code = (int)StatusCode.Ok };
         }
 
+        RoleModel IRoleService.GetNewUserRole()
+        {
+            var anySuperAdminUser = this.dbContext.User.WhereActiveUser().Any(u => u.Role.RoleName.Equals(UserRole.SuperAdmin.ToString()));
+            Role role;
+
+            if (anySuperAdminUser)
+            {
+                role = this.dbContext.Role.Where(r => r.RoleName.Equals(UserRole.Student.ToString())).First();
+            }
+            else
+            {
+                role = this.dbContext.Role.Where(r => r.RoleName.Equals(UserRole.SuperAdmin.ToString())).First();
+            }
+
+            var roleModel = new RoleModelMapping().Map(role);
+            return roleModel;
+        }
+
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>

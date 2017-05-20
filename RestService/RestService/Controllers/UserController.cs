@@ -1,5 +1,6 @@
 ﻿namespace RestService.Controllers
 {
+    using System;
     using System.Net;
     using System.Net.Http;
     using System.Web.Http;
@@ -88,6 +89,38 @@
         {
             var responseModel = this.userService.DeleteUser(this.context.Current.B2C_ObjectIdentifier);
             return this.Request.CreateResponse(HttpStatusCode.OK, responseModel);
+        }
+
+        [Route("AssignRoleToUser/{userId}/{roleId}")]
+        [HttpPut]
+        [CustomAuthorize(UserRole = UserRole.SuperAdmin)]
+        [OverrideAuthorization]
+        public HttpResponseMessage AssignRoleToUser(int userId, int roleId)
+        {
+            var responseModel = this.userService.AssignRoleToUser(userId, roleId);
+            return this.Request.CreateResponse(HttpStatusCode.OK, responseModel);
+        }
+
+        /// <summary>
+        /// Releases the unmanaged resources that are used by the object and, optionally, releases the managed resources.
+        /// </summary>
+        /// <param name="disposing">true to release both managed and unmanaged resources; false to release only unmanaged resources.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if ( this.userService != null )
+                {
+                    (this.userService as IDisposable).Dispose();
+                }
+
+                if (this.campusService != null)
+                {
+                    (this.userService as IDisposable).Dispose();
+                }
+            }
+
+            base.Dispose(disposing);
         }
     }
 }

@@ -5,7 +5,7 @@
 
     public class FeedbackModel
     {
-        [Required]
+        [Range(1, int.MaxValue)]
         public int FeedbackId { get; set; }
 
         public int ClassId { get; set; }

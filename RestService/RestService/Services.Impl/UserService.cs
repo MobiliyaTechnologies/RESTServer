@@ -38,7 +38,7 @@
                 Email_Id = userModel.Email,
                 First_Name = userModel.FirstName,
                 Last_Name = userModel.LastName,
-                Creation_Date = DateTime.Now,
+                Creation_Date = DateTime.UtcNow,
                 Role = userRole,
                 Avatar = userModel.Avatar
             };
@@ -51,7 +51,7 @@
 
         ResponseModel IUserService.DeleteUser(string b2cObjectIdentifier)
         {
-            var user = this.dbContext.User.FirstOrDefault(u => u.B2C_ObjectIdentifier == b2cObjectIdentifier && !u.IsDeleted);
+            var user = this.dbContext.User.WhereActiveUser(u => u.B2C_ObjectIdentifier == b2cObjectIdentifier).FirstOrDefault();
 
             if (user == null)
             {
@@ -68,7 +68,7 @@
 
         UserModel IUserService.GetCurrentUser(string b2cObjectIdentifier)
         {
-            var user = this.dbContext.User.FirstOrDefault(u => u.B2C_ObjectIdentifier.Equals(b2cObjectIdentifier) && !u.IsDeleted);
+            var user = this.dbContext.User.WhereActiveUser(u => u.B2C_ObjectIdentifier.Equals(b2cObjectIdentifier)).FirstOrDefault();
 
             if (user == null)
             {
@@ -80,14 +80,14 @@
 
         List<UserModel> IUserService.GetAllUser()
         {
-            var user = this.dbContext.User.Where(u => !u.IsDeleted);
+            var user = this.dbContext.User.WhereActiveUser();
 
             return new UserModelMapping().Map(user).ToList();
         }
 
         ResponseModel IUserService.UpdateUser(UserModel userModel)
         {
-            var user = this.dbContext.User.FirstOrDefault(u => u.Id == userModel.UserId && !u.IsDeleted);
+            var user = this.dbContext.User.WhereActiveUser(u => u.Id == userModel.UserId).FirstOrDefault();
 
             if (user == null)
             {
@@ -114,6 +114,28 @@
 
             this.dbContext.SaveChanges();
             return new ResponseModel(StatusCode.Ok, "User Updated successfully.");
+        }
+
+        ResponseModel IUserService.AssignRoleToUser(int userId, int roleId)
+        {
+            var role = this.dbContext.Role.WhereActiveRole(r => r.Id == roleId).FirstOrDefault(); 
+
+            if (role == null)
+            {
+                return new ResponseModel { Message = "Invalid Role", Status_Code = (int)StatusCode.Error };
+            }
+
+            var user = this.dbContext.User.WhereActiveUser(u => u.Id == userId).FirstOrDefault();
+
+            if (user == null)
+            {
+                return new ResponseModel { Message = "Invalid User", Status_Code = (int)StatusCode.Error };
+            }
+
+            user.Role = role;
+            this.dbContext.SaveChanges();
+
+            return new ResponseModel(StatusCode.Ok, "Role Assigned to user successfully.");
         }
 
         /// <summary>

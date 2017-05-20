@@ -17,7 +17,7 @@
         [MaxLength(500)]
         public string PiServerDesc { get; set; }
 
-        [Required]
+        [Range(1, int.MaxValue)]
         public int CampusID { get; set; }
 
         public string PiServerURL { get; set; }

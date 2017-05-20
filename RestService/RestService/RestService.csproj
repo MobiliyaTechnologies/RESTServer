@@ -269,6 +269,7 @@
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\AlertController.cs" />
     <Compile Include="Controllers\AnomalyController.cs" />
+    <Compile Include="Controllers\ApplicationConfigurationController.cs" />
     <Compile Include="Controllers\BuildingController.cs" />
     <Compile Include="Controllers\CampusController.cs" />
     <Compile Include="Controllers\ClassroomController.cs" />
@@ -294,7 +295,25 @@
     <Compile Include="Entities\Answers.cs">
       <DependentUpon>PowergridModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\ApplicationConfiguration.cs">
+      <DependentUpon>PowergridModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\ApplicationConfigurationEntry.cs">
+      <DependentUpon>PowergridModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\AzureAlerts.cs">
+      <DependentUpon>PowergridModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\AzureAnomalyOutput.cs">
+      <DependentUpon>PowergridModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\AzureDailyConsumptionPrediction.cs">
+      <DependentUpon>PowergridModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\AzureLiveData.cs">
+      <DependentUpon>PowergridModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\AzureWeeklyConsumptionPrediction.cs">
       <DependentUpon>PowergridModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\Building.cs">
@@ -304,6 +323,9 @@
       <DependentUpon>PowergridModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\ClassroomDetails.cs">
+      <DependentUpon>PowergridModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\DailyConsumptionAzureDetails.cs">
       <DependentUpon>PowergridModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\DailyConsumptionDetails.cs">
@@ -325,6 +347,9 @@
       <DependentUpon>PowergridModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\MeterDetails.cs">
+      <DependentUpon>PowergridModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\MonthlyConsumptionAzureDetails.cs">
       <DependentUpon>PowergridModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\MonthlyConsumptionDetails.cs">
@@ -360,10 +385,19 @@
     <Compile Include="Entities\Questions.cs">
       <DependentUpon>PowergridModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\QueueLiveData.cs">
+      <DependentUpon>PowergridModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\Role.cs">
       <DependentUpon>PowergridModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\RoleBK.cs">
+      <DependentUpon>PowergridModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\SensorAzureLiveData.cs">
+      <DependentUpon>PowergridModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\SensorAzureMaster.cs">
       <DependentUpon>PowergridModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\SensorData.cs">
@@ -413,6 +447,7 @@
     <Compile Include="Mappings\QuestionModelMapping.cs" />
     <Compile Include="Mappings\RoleModelMapping.cs" />
     <Compile Include="Mappings\UniversityModelMapping.cs" />
+    <Compile Include="Mappings\ApplicationConfigurationModelMapping.cs" />
     <Compile Include="Mappings\UserModelMapping.cs" />
     <Compile Include="Models\AlertDetailsModel.cs" />
     <Compile Include="Models\AlertModel.cs" />
@@ -422,6 +457,8 @@
     <Compile Include="Models\CampusModel.cs" />
     <Compile Include="Models\ClassroomModel.cs" />
     <Compile Include="Models\EmailModel.cs" />
+    <Compile Include="Models\ApplicationConfigurationModel.cs" />
+    <Compile Include="Models\ApplicationConfigurationEntryModel.cs" />
     <Compile Include="Models\FeedbackCountModel.cs" />
     <Compile Include="Models\FeedbackModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -445,6 +482,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services.Impl\AlertService.cs" />
     <Compile Include="Services.Impl\AnomalyService.cs" />
+    <Compile Include="Services.Impl\ApplicationConfigurationService.cs" />
     <Compile Include="Services.Impl\BuildingService.cs" />
     <Compile Include="Services.Impl\CampusService.cs" />
     <Compile Include="Services.Impl\ClassroomService.cs" />
@@ -461,6 +499,7 @@
     <Compile Include="Services.Impl\UserService.cs" />
     <Compile Include="Services\IAlertService.cs" />
     <Compile Include="Services\IAnomalyService.cs" />
+    <Compile Include="Services\IApplicationConfigurationService.cs" />
     <Compile Include="Services\IBuildingService.cs" />
     <Compile Include="Services\ICampusService.cs" />
     <Compile Include="Services\IClassroomService.cs" />
@@ -482,9 +521,6 @@
     <Compile Include="Utilities\ServiceUtil.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Data\jobs\continuous\DataUtilWebJob\EnergyManagementScheduler.WebJob.exe">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="Areas\HelpPage\HelpPage.css" />
     <Content Include="Entities\PowergridModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -546,7 +582,9 @@
     <Content Include="Service References\Application Insights\ConnectedService.json" />
     <Content Include="StyleCop.Cache" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="App_Data\jobs\continuous\DataUtilWebJob\" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
   </ItemGroup>

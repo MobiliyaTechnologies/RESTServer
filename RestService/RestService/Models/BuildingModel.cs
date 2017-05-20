@@ -15,7 +15,7 @@
         [MaxLength(500)]
         public string BuildingDesc { get; set; }
 
-        [Required]
+        [Range(1, int.MaxValue)]
         public int CampusID { get; set; }
 
         public bool IsActive { get; set; }
