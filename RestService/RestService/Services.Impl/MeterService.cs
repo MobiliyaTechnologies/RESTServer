@@ -180,8 +180,8 @@
 
             foreach (var meterDetail in meterDetails)
             {
-                var monthlyConsumptionDetail = this.dbContext.MonthlyConsumptionDetails.FirstOrDefault(m => m.PowerScout.Equals(meterDetail.Serial, StringComparison.InvariantCultureIgnoreCase)
-                                                                      && m.Month.Equals(currentMonth, StringComparison.InvariantCultureIgnoreCase));
+                var monthlyConsumptionDetail = this.dbContext.MonthlyConsumptionDetails.FirstOrDefault(m => m.PowerScout.Equals(meterDetail.Serial, StringComparison.InvariantCultureIgnoreCase) && m.Month.Equals(currentMonth, StringComparison.InvariantCultureIgnoreCase) && m.Year.Equals(DateTime.UtcNow.Year.ToString()));
+
                 MeterMonthlyConsumptionModel meterMonthlyConsumption = monthlyConsumptionDetail == null ? new MeterMonthlyConsumptionModel { Powerscout = meterDetail.PowerScout }
                                                                                     : new MeterMonthlyConsumptionModelMapping().Map(monthlyConsumptionDetail);
 

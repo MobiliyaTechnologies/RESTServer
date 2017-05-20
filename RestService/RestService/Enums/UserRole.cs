@@ -6,10 +6,8 @@
 
         SuperAdmin = 1,
 
-        Admin = 2,
+        Student = 2,
 
-        Student = 3,
-
-        CampusAdmin = 4
+        CampusAdmin = 3
     }
 }

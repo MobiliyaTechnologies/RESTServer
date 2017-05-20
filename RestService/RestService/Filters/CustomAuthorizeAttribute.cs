@@ -44,19 +44,19 @@
         private UserModel InitializaUser()
         {
             IUserService userService = null;
+            IRoleService roleService = null;
             UserModel userModel = null;
 
             try
             {
                 userService = new UserService();
+                roleService = new RoleService();
 
                 userModel = userService.GetCurrentUser(this.GetClaimValue(B2C_ClaimTypes.ObjectIdentifier));
 
                 if (userModel == null)
                 {
-                    UserRole userRole;
-                    var isValidRole = Enum.TryParse<UserRole>(this.GetClaimValue(B2C_ClaimTypes.Role), out userRole);
-                    userRole = isValidRole ? userRole : UserRole.Admin;
+                    var newUserRole = roleService.GetNewUserRole();
 
                     userModel = new UserModel
                     {
@@ -64,7 +64,7 @@
                         FirstName = this.GetClaimValue(B2C_ClaimTypes.FirstName),
                         LastName = this.GetClaimValue(B2C_ClaimTypes.LastName),
                         Email = this.GetClaimValue(B2C_ClaimTypes.Email),
-                        RoleId = (int)userRole
+                        RoleId = newUserRole.Id
                     };
                     userModel.UserId = userService.CreateUser(userModel);
                 }
@@ -74,6 +74,10 @@
                 if (userService != null)
                 {
                     (userService as IDisposable).Dispose();
+                }
+                if (roleService != null)
+                {
+                    (roleService as IDisposable).Dispose();
                 }
             }
 

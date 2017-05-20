@@ -1,5 +1,6 @@
 ﻿namespace RestService.Controllers
 {
+    using System;
     using System.Linq;
     using System.Net;
     using System.Net.Http;
@@ -55,6 +56,20 @@
 
             string messages = string.Join("; ", this.ModelState.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage));
             return this.Request.CreateErrorResponse((HttpStatusCode)613, messages);
+        }
+
+        /// <summary>
+        /// Releases the unmanaged resources that are used by the object and, optionally, releases the managed resources.
+        /// </summary>
+        /// <param name="disposing">true to release both managed and unmanaged resources; false to release only unmanaged resources.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && this.userService != null)
+            {
+                (this.userService as IDisposable).Dispose();
+            }
+
+            base.Dispose(disposing);
         }
     }
 }

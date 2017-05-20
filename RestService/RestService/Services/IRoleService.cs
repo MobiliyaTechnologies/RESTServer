@@ -40,5 +40,11 @@
         /// <param name="model">Role model</param>
         /// <returns>Update acknowledgment</returns>
         ResponseModel UpdateRole(RoleModel model);
+
+        /// <summary>
+        /// Gets the new user role.
+        /// </summary>
+        /// <returns>Return super user role it it's not exist else return student role.</returns>
+        RoleModel GetNewUserRole();
     }
 }

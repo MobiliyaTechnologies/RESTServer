@@ -9,7 +9,5 @@
         public static readonly string FirstName = "name";
 
         public static readonly string LastName = "surname";
-
-        public static readonly string Role = "extension_Role";
     }
 }

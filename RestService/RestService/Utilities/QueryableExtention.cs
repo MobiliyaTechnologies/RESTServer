@@ -115,5 +115,17 @@
 
             return source;
         }
+
+        public static IQueryable<User> WhereActiveUser(this IQueryable<User> source, Expression<Func<User, bool>> predicate = null)
+        {
+            source = source.Where(s => !s.IsDeleted);
+
+            if (predicate != null)
+            {
+                source = source.Where(predicate);
+            }
+
+            return source;
+        }
     }
 }

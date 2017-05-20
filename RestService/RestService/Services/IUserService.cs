@@ -44,5 +44,13 @@
         /// </summary>
         /// <returns>All users.</returns>
         List<UserModel> GetAllUser();
+
+        /// <summary>
+        /// Assigns the role to user.
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="roleId">The role identifier.</param>
+        /// <returns>User Role assignment confirmation.</returns>
+        ResponseModel AssignRoleToUser(int userId, int roleId);
     }
 }

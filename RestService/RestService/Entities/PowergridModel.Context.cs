@@ -57,5 +57,16 @@ namespace RestService.Entities
         public virtual DbSet<PowergridAzureMLData> PowergridAzureMLData { get; set; }
         public virtual DbSet<RoleBK> RoleBK { get; set; }
         public virtual DbSet<TempMLData> TempMLData { get; set; }
+        public virtual DbSet<ApplicationConfigurationEntry> ApplicationConfigurationEntry { get; set; }
+        public virtual DbSet<AzureAlerts> AzureAlerts { get; set; }
+        public virtual DbSet<AzureAnomalyOutput> AzureAnomalyOutput { get; set; }
+        public virtual DbSet<AzureDailyConsumptionPrediction> AzureDailyConsumptionPrediction { get; set; }
+        public virtual DbSet<AzureWeeklyConsumptionPrediction> AzureWeeklyConsumptionPrediction { get; set; }
+        public virtual DbSet<DailyConsumptionAzureDetails> DailyConsumptionAzureDetails { get; set; }
+        public virtual DbSet<MonthlyConsumptionAzureDetails> MonthlyConsumptionAzureDetails { get; set; }
+        public virtual DbSet<QueueLiveData> QueueLiveData { get; set; }
+        public virtual DbSet<SensorAzureLiveData> SensorAzureLiveData { get; set; }
+        public virtual DbSet<SensorAzureMaster> SensorAzureMaster { get; set; }
+        public virtual DbSet<ApplicationConfiguration> ApplicationConfiguration { get; set; }
     }
 }

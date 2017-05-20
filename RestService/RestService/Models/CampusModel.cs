@@ -17,7 +17,7 @@
         [MaxLength(500)]
         public string CampusDesc { get; set; }
 
-        [Required]
+        [Range(1, int.MaxValue)]
         public int UniversityID { get; set; }
 
         public bool IsActive { get; set; }

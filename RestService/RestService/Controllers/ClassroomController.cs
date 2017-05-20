@@ -34,14 +34,13 @@
             return this.Request.CreateResponse(HttpStatusCode.OK, data);
         }
 
-
         /// <summary>
         /// Releases the unmanaged resources that are used by the object and, optionally, releases the managed resources.
         /// </summary>
         /// <param name="disposing">true to release both managed and unmanaged resources; false to release only unmanaged resources.</param>
         protected override void Dispose(bool disposing)
         {
-            if (disposing)
+            if (disposing && this.classroomService != null)
             {
                 (this.classroomService as IDisposable).Dispose();
             }
