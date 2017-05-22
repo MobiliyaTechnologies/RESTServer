@@ -80,6 +80,11 @@
         [HttpPut]
         public HttpResponseMessage UpdatePiServer([FromBody] PiServerModel model)
         {
+            if (model == null)
+            {
+                return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Invalid pi server model.");
+            }
+
             if (this.ModelState.IsValid)
             {
                 var data = this.piServerService.UpdatePiServer(model);

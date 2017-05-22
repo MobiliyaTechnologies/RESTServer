@@ -3,8 +3,10 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Web.Http;
     using RestService.Entities;
     using RestService.Enums;
+    using RestService.Filters;
     using RestService.Mappings;
     using RestService.Models;
     using RestService.Utilities;
@@ -22,21 +24,18 @@
             this.meterService = new MeterService();
         }
 
+        [CustomAuthorize(UserRole = UserRole.SuperAdmin)]
+        [OverrideAuthorization]
         List<BuildingModel> IBuildingService.GetAllBuildings()
         {
-            var buildings = this.dbContext.Building.WhereActiveBuilding();
+            var buildings = this.context.Current.RoleType == UserRole.Student ? this.dbContext.Building.WhereActiveBuilding() : this.dbContext.Building.WhereActiveAccessibleBuilding();
+
             var buildingModels = new BuildingModelMapping().Map(buildings).ToList();
 
             this.LinkConsumptionWithBuilding(buildingModels);
             return buildingModels;
         }
-
-        List<BuildingModel> IBuildingService.GetBuildings()
-        {
-            var building = this.dbContext.Building.WhereActiveAccessibleBuilding();
-            return new BuildingModelMapping().Map(building).ToList();
-        }
-
+      
         BuildingModel IBuildingService.GetBuildingByID(int buildingID)
         {
             var buildings = this.dbContext.Building.WhereActiveAccessibleBuilding(data => data.BuildingID == buildingID);

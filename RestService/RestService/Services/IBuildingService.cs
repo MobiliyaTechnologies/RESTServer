@@ -12,14 +12,6 @@
         List<BuildingModel> GetAllBuildings();
 
         /// <summary>
-        /// Get all the Buildings accessible to current user.
-        /// </summary>
-        /// <returns>
-        /// Returns list of all Buildings.
-        /// </returns>
-        List<BuildingModel> GetBuildings();
-
-        /// <summary>
         /// Get a Building by ID
         /// </summary>
         /// <param name="buildingId">The building identifier.</param>

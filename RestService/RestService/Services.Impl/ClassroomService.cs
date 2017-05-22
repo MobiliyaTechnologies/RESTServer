@@ -11,6 +11,7 @@
     public sealed class ClassroomService : IClassroomService, IDisposable
     {
         private readonly PowerGridEntities dbContext;
+        private readonly IContextInfoAccessorService context;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ClassroomService"/> class.
@@ -18,11 +19,13 @@
         public ClassroomService()
         {
             this.dbContext = new PowerGridEntities();
+            this.context = new ContextInfoAccessorService();
         }
 
         List<ClassroomModel> IClassroomService.GetAllClassrooms()
         {
-            var accessibleBuildings = this.dbContext.Building.WhereActiveAccessibleBuilding().Select(b => b.BuildingName.Trim());
+            var accessibleBuildings = this.context.Current.RoleType == Enums.UserRole.Student ? this.dbContext.Building.WhereActiveBuilding().Select(b => b.BuildingName.Trim()) : this.dbContext.Building.WhereActiveAccessibleBuilding().Select(b => b.BuildingName.Trim());
+
             var classroomDetails = this.dbContext.ClassroomDetails.Where(c => accessibleBuildings.Any(b => b.Equals(c.Building.Trim(), StringComparison.InvariantCultureIgnoreCase)));
 
             return new ClassroomModelMapping().Map(classroomDetails).ToList();
