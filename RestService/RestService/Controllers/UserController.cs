@@ -47,7 +47,7 @@
                 return this.Request.CreateErrorResponse(HttpStatusCode.NotFound, "User not exists.");
             }
 
-            user.UserCampus = this.campusService.GetCampus();
+            user.UserCampus = this.campusService.GetAllCampus();
 
             return this.Request.CreateResponse(HttpStatusCode.OK, user);
         }

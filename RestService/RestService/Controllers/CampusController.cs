@@ -25,8 +25,6 @@
         }
 
         [Route("GetAllCampus")]
-        [CustomAuthorize(UserRole = UserRole.SuperAdmin)]
-        [OverrideAuthorization]
         public HttpResponseMessage GetAllCampus()
         {
             var data = this.campusService.GetAllCampus();
@@ -45,13 +43,6 @@
             }
 
             return this.Request.CreateErrorResponse(HttpStatusCode.NotFound, string.Format("No Campus found"));
-        }
-
-        [Route("GetCampus")]
-        public HttpResponseMessage GetCampus()
-        {
-            var campus = this.campusService.GetCampus();
-            return this.Request.CreateResponse(HttpStatusCode.OK, campus);
         }
 
         [Route("GetCampusByLocation/{latitude}/{longitude}")]
@@ -78,6 +69,11 @@
         [OverrideAuthorization]
         public HttpResponseMessage AddCampus([FromBody] CampusModel model)
         {
+            if (model == null)
+            {
+                return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Invalid campus model.");
+            }
+
             if (this.ModelState.IsValid)
             {
                 var data = this.campusService.AddCampus(model);

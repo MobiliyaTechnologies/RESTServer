@@ -49,21 +49,41 @@
         [HttpPost]
         public HttpResponseMessage AddRole([FromBody] RoleModel model)
         {
-            if (this.ModelState.IsValid)
+            string messages = string.Empty;
+            HttpStatusCode statusCode;
+            if (model == null)
+            {
+                statusCode = HttpStatusCode.BadRequest;
+                messages = "Invalid role model.";
+            }
+            else if (model.CampusIds.Count == 0)
+            {
+                statusCode = HttpStatusCode.BadRequest;
+                messages = "Role must be created with campus ids.";
+            }
+            else if (this.ModelState.IsValid)
             {
                 var data = this.roleService.AddRole(model);
                 return this.Request.CreateResponse(HttpStatusCode.OK, data);
             }
+            else
+            {
+                messages = string.Join("; ", this.ModelState.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage));
+                statusCode = (HttpStatusCode)615;
+            }
 
-            // Create an error message for returning
-            string messages = string.Join("; ", this.ModelState.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage));
-            return this.Request.CreateErrorResponse((HttpStatusCode)615, messages);
+            return this.Request.CreateErrorResponse(statusCode, messages);
         }
 
         [Route("UpdateRole")]
         [HttpPut]
         public HttpResponseMessage UpdateRole([FromBody] RoleModel model)
         {
+            if (model == null)
+            {
+                return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Invalid role model.");
+            }
+
             if (this.ModelState.IsValid)
             {
                 var data = this.roleService.UpdateRole(model);

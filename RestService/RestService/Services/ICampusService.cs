@@ -24,12 +24,6 @@
         CampusModel GetCampusByID(int campusId);
 
         /// <summary>
-        /// Gets the campus accessible to current user.
-        /// </summary>
-        /// <returns>Campus list associate with current user role.</returns>
-        List<CampusModel> GetCampus();
-
-        /// <summary>
         /// Gets the campus by location.
         /// </summary>
         /// <param name="latitude">The latitude.</param>

@@ -8,6 +8,11 @@
 
     public class RoleModel
     {
+        public RoleModel()
+        {
+            this.CampusIds = new List<int>();
+        }
+
         public int Id { get; set; }
 
         [Required]
@@ -28,5 +33,9 @@
         public DateTime ModifiedOn { get; set; }
 
         public bool IsDeleted { get; set; }
+
+        public List<int> CampusIds { get; set; }
+
+        public List<CampusModel> Campuses { get; set; }
     }
 }

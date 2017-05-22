@@ -32,11 +32,11 @@
             return new RoleModelMapping().Map(role);
         }
 
-        ResponseModel IRoleService.AddRole(RoleModel model)
+        ResponseModel IRoleService.AddRole(RoleModel roleModel)
         {
             var role = new Role();
-            role.RoleName = model.RoleName;
-            role.Description = model.Description;
+            role.RoleName = roleModel.RoleName;
+            role.Description = roleModel.Description;
             role.CreatedBy = this.context.Current.UserId;
             role.CreatedOn = DateTime.UtcNow;
             role.ModifiedBy = this.context.Current.UserId;
@@ -45,6 +45,14 @@
             role.IsDeleted = false;
 
             this.dbContext.Role.Add(role);
+
+            var campuses = this.dbContext.Campus.WhereActiveCampus(c => roleModel.CampusIds.Any(id => id == c.CampusID));
+
+            foreach (var campus in campuses)
+            {
+                campus.Role.Add(role);
+            }
+
             this.dbContext.SaveChanges();
             return new ResponseModel { Message = "Role added successfully", Status_Code = (int)StatusCode.Ok };
         }

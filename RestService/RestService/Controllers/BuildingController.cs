@@ -68,19 +68,17 @@
             return this.Request.CreateErrorResponse(HttpStatusCode.NotFound, string.Format("Building does not exists for given location, latitude - {0}  longitude - {1}", latitude, longitude));
         }
 
-        [Route("GetBuildings")]
-        public HttpResponseMessage GetBuildings()
-        {
-            var data = this.buildingService.GetBuildings();
-            return this.Request.CreateResponse(HttpStatusCode.OK, data);
-        }
-
         [Route("AddBuilding")]
         [CustomAuthorize(UserRole = UserRole.SuperAdmin)]
         [OverrideAuthorization]
         [HttpPost]
         public HttpResponseMessage AddBuilding([FromBody] BuildingModel model)
         {
+            if (model == null)
+            {
+                return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Invalid building model.");
+            }
+
             if (this.ModelState.IsValid)
             {
                 var data = this.buildingService.AddBuilding(model);
@@ -96,6 +94,11 @@
         [HttpPut]
         public HttpResponseMessage UpdateBuilding([FromBody] BuildingModel model)
         {
+            if (model == null)
+            {
+                return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Invalid building model.");
+            }
+
             if (this.ModelState.IsValid)
             {
                 var data = this.buildingService.UpdateBuilding(model);

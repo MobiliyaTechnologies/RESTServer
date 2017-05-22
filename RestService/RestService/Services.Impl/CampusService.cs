@@ -24,7 +24,8 @@
 
         List<CampusModel> ICampusService.GetAllCampus()
         {
-            var campus = this.dbContext.Campus.WhereActiveCampus();
+            var campus = this.context.Current.RoleType == UserRole.Student ? this.dbContext.Campus.WhereActiveCampus() : this.dbContext.Campus.WhereActiveAccessibleCampus();
+
             var campusModels = new CampusModelMapping().Map(campus).ToList();
 
             this.LinkConsumptionWithCampus(campusModels);
@@ -38,15 +39,6 @@
 
             this.LinkConsumptionWithCampus(campusModels);
             return campusModels.FirstOrDefault();
-        }
-
-        List<CampusModel> ICampusService.GetCampus()
-        {
-            var roleCampus = this.dbContext.Campus.WhereActiveAccessibleCampus();
-            var roleCampusModels = new CampusModelMapping().Map(roleCampus).ToList();
-
-            this.LinkConsumptionWithCampus(roleCampusModels);
-            return roleCampusModels;
         }
 
         CampusModel ICampusService.GetCampusByLocation(decimal latitude, decimal longitude)

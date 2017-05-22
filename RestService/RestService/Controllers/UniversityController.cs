@@ -52,6 +52,11 @@
         [HttpPost]
         public HttpResponseMessage AddUniversity([FromBody] UniversityModel model)
         {
+            if (model == null)
+            {
+                return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Invalid university model.");
+            }
+
             if (this.ModelState.IsValid)
             {
                 var data = this.universityService.AddUniversity(model);
@@ -67,6 +72,11 @@
         [HttpPut]
         public HttpResponseMessage UpdateUniversity([FromBody] UniversityModel model)
         {
+            if (model == null)
+            {
+                return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Invalid university model.");
+            }
+
             if (this.ModelState.IsValid)
             {
                 var data = this.universityService.UpdateUniversity(model);
