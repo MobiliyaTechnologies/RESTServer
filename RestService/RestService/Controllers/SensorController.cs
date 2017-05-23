@@ -28,6 +28,13 @@
             return this.Request.CreateResponse(HttpStatusCode.OK, data);
         }
 
+        [Route("GetAllMapSensors")]
+        public HttpResponseMessage GetAllMapSensors()
+        {
+            var data = this.sensorService.GetAllMapSensors();
+            return this.Request.CreateResponse(HttpStatusCode.OK, data);
+        }
+
         [Route("GetAllUnMapSensors")]
         public HttpResponseMessage GetAllUnMapSensors()
         {

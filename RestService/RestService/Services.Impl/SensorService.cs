@@ -22,13 +22,36 @@
         List<SensorModel> ISensorService.GetAllSensors()
         {
             var sensorModels = (from sensor in this.dbContext.SensorMaster
-                                join classData in this.dbContext.ClassroomDetails on sensor.Class_Id equals classData.Class_Id into temp
-                                from subclass in temp.DefaultIfEmpty()
+                                let classRoomDetail = this.dbContext.ClassroomDetails.FirstOrDefault(c => c.Class_Id == sensor.Class_Id)
                                 select new SensorModel
                                 {
-                                    Class_Id = subclass.Class_Id,
-                                    Class_X = subclass.X,
-                                    Class_Y = subclass.Y,
+                                    Class_Id = classRoomDetail.Class_Id,
+                                    Class_X = classRoomDetail.X,
+                                    Class_Y = classRoomDetail.Y,
+                                    Class_Name = classRoomDetail.Class_Name,
+                                    X = sensor.X,
+                                    Y = sensor.Y,
+                                    Sensor_Id = sensor.Sensor_Id,
+                                    Sensor_Name = sensor.Sensor_Name
+                                }).ToList();
+
+            this.SetSensorLiveData(sensorModels);
+
+            return sensorModels;
+        }
+
+        List<SensorModel> ISensorService.GetAllMapSensors()
+        {
+            var sensorModels = (from sensor in this.dbContext.SensorMaster.Where(s => s.Class_Id.HasValue && s.Class_Id > 0)
+                                let classRoomDetail = this.dbContext.ClassroomDetails.FirstOrDefault(c => c.Class_Id == sensor.Class_Id)
+                                select new SensorModel
+                                {
+                                    Class_Id = classRoomDetail.Class_Id,
+                                    Class_X = classRoomDetail.X,
+                                    Class_Y = classRoomDetail.Y,
+                                    Class_Name = classRoomDetail.Class_Name,
+                                    X = sensor.X,
+                                    Y = sensor.Y,
                                     Sensor_Id = sensor.Sensor_Id,
                                     Sensor_Name = sensor.Sensor_Name
                                 }).ToList();
@@ -45,7 +68,9 @@
                                 select new SensorModel
                                 {
                                     Sensor_Id = sensor.Sensor_Id,
-                                    Sensor_Name = sensor.Sensor_Name
+                                    Sensor_Name = sensor.Sensor_Name,
+                                    X = sensor.X,
+                                    Y = sensor.Y
                                 }).ToList();
 
             this.SetSensorLiveData(sensorModels);
@@ -55,17 +80,18 @@
 
         List<SensorModel> ISensorService.GetAllSensorsForClass(int classId)
         {
-            var sensorModels = (from sensor in this.dbContext.SensorMaster
-                                join classData in this.dbContext.ClassroomDetails on sensor.Class_Id equals classData.Class_Id
-                                where classData.Class_Id == classId
+            var sensorModels = (from sensor in this.dbContext.SensorMaster.Where(s => s.Class_Id == classId)
+                                let classRoomDetail = this.dbContext.ClassroomDetails.FirstOrDefault(c => c.Class_Id == sensor.Class_Id)
                                 select new SensorModel
                                 {
-                                    Class_Id = classData.Class_Id,
-                                    Class_Name = classData.Class_Name,
-                                    Class_X = classData.X,
-                                    Class_Y = classData.Y,
+                                    Class_Id = classRoomDetail.Class_Id,
+                                    Class_Name = classRoomDetail.Class_Name,
+                                    Class_X = classRoomDetail.X,
+                                    Class_Y = classRoomDetail.Y,
                                     Sensor_Id = sensor.Sensor_Id,
-                                    Sensor_Name = sensor.Sensor_Name
+                                    Sensor_Name = sensor.Sensor_Name,
+                                    X = sensor.X,
+                                    Y = sensor.Y
                                 }).ToList();
 
             this.SetSensorLiveData(sensorModels);
