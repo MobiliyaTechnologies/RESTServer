@@ -15,6 +15,12 @@
         List<SensorModel> GetAllSensors();
 
         /// <summary>
+        /// Gets all mapped sensors.
+        /// </summary>
+        /// <returns>All mapped sensors.</returns>
+        List<SensorModel> GetAllMapSensors();
+
+        /// <summary>
         /// Gets all unmapped sensors.
         /// </summary>
         /// <returns>All unmapped sensors.</returns>
