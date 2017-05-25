@@ -13,11 +13,13 @@
     {
         private readonly PowerGridEntities dbContext;
         private readonly IContextInfoAccessorService context;
+        private readonly IBlobStorageService blobStorageService;
 
         public PiServerService()
         {
             this.context = new ContextInfoAccessorService();
             this.dbContext = new PowerGridEntities();
+            this.blobStorageService = new BlobStorageService();
         }
 
         List<PiServerModel> IPiServerService.GetAllPiServers()
@@ -63,6 +65,16 @@
 
             this.dbContext.PiServer.Add(piServer);
             this.dbContext.SaveChanges();
+
+            var blobStorageModel = new BlobStorageModel
+            {
+                BlobName = ApiConfiguration.BlobPrefix + model.PiServerName,
+                BlobType = model.CampusScheduleFileType,
+                Blob = model.CampusScheduleFile,
+                StorageContainer = ApiConfiguration.BlobContainer
+            };
+
+            this.blobStorageService.UploadBlob(blobStorageModel);
             return new ResponseModel { Message = "Pi Server added successfully", Status_Code = (int)StatusCode.Ok };
         }
 
@@ -79,6 +91,14 @@
                 data.ModifiedBy = this.context.Current.UserId;
                 data.ModifiedOn = DateTime.UtcNow;
                 this.dbContext.SaveChanges();
+
+                var blobStorageModel = new BlobStorageModel
+                {
+                    BlobName = ApiConfiguration.BlobPrefix + data.PiServerName,
+                    StorageContainer = ApiConfiguration.BlobContainer
+                };
+                this.blobStorageService.DeleteBlob(blobStorageModel);
+
                 return new ResponseModel { Message = "Pi Server deleted successfully", Status_Code = (int)StatusCode.Ok };
             }
         }
@@ -86,6 +106,7 @@
         ResponseModel IPiServerService.UpdatePiServer(PiServerModel model)
         {
             var data = this.dbContext.PiServer.WhereActiveAccessiblePiServer(f => f.PiServerID == model.PiServerID).FirstOrDefault();
+            var piServerName = string.Empty;
 
             if (data == null)
             {
@@ -93,8 +114,9 @@
             }
             else
             {
-                if (!string.IsNullOrWhiteSpace(model.PiServerName))
+                if (!string.IsNullOrWhiteSpace(model.PiServerName) && !data.PiServerName.Equals(model.PiServerName))
                 {
+                    piServerName = data.PiServerName;
                     data.PiServerName = model.PiServerName;
                 }
 
@@ -113,6 +135,44 @@
             }
 
             this.dbContext.SaveChanges();
+
+            if (piServerName != string.Empty && model.CampusScheduleFile != null)
+            {
+                var blobStorageModel = new BlobStorageModel
+                {
+                    BlobName = ApiConfiguration.BlobPrefix + piServerName,
+                    BlobType = model.CampusScheduleFileType,
+                    Blob = model.CampusScheduleFile,
+                    StorageContainer = ApiConfiguration.BlobContainer
+                };
+                this.blobStorageService.DeleteBlob(blobStorageModel);
+
+                blobStorageModel.BlobName = ApiConfiguration.BlobPrefix + data.PiServerName;
+                this.blobStorageService.UploadBlob(blobStorageModel);
+            }
+           else if (piServerName != string.Empty && model.CampusScheduleFile == null)
+            {
+                var blobStorageModel = new BlobStorageModel
+                {
+                    BlobName = ApiConfiguration.BlobPrefix + piServerName,
+                    StorageContainer = ApiConfiguration.BlobContainer
+                };
+                var newBlobName = ApiConfiguration.BlobPrefix + data.PiServerName;
+
+                this.blobStorageService.RenameBlob(blobStorageModel, newBlobName);
+            }
+            else if (piServerName == string.Empty && model.CampusScheduleFile != null)
+            {
+                var blobStorageModel = new BlobStorageModel
+                {
+                    BlobName = ApiConfiguration.BlobPrefix + data.PiServerName,
+                    BlobType = model.CampusScheduleFileType,
+                    Blob = model.CampusScheduleFile,
+                    StorageContainer = ApiConfiguration.BlobContainer
+                };
+                this.blobStorageService.UploadBlob(blobStorageModel);
+            }
+
             return new ResponseModel { Message = "Pi Server details Updated", Status_Code = (int)StatusCode.Ok };
         }
 

@@ -23,6 +23,10 @@
         public static readonly string EmailHostPassword = GetConfigData("EmailHostPassword");
         public static readonly int EmailHostPort = Convert.ToInt32(GetConfigData("EmailHostPort"));
 
+        public static readonly string BlobStorageConnectionString = GetConfigData("BlobStorageConnectionString");
+        public static readonly string BlobContainer = GetConfigData("BlobContainer");
+        public static readonly string BlobPrefix = GetConfigData("BlobPrefix");
+
         private static string GetConfigData(string key)
         {
             return ConfigurationManager.AppSettings[key];

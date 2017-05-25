@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using System.IO;
     using System.Linq;
     using System.Web;
 
@@ -20,6 +21,7 @@
         [Range(1, int.MaxValue)]
         public int CampusID { get; set; }
 
+        [Required]
         public string PiServerURL { get; set; }
 
         public bool IsActive { get; set; }
@@ -33,5 +35,9 @@
         public DateTime ModifiedOn { get; set; }
 
         public bool IsDeleted { get; set; }
+
+        public Stream CampusScheduleFile { get; set; }
+
+        public string CampusScheduleFileType { get; set; }
     }
 }

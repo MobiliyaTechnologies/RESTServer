@@ -61,6 +61,7 @@
         <EntityTypeShape EntityType="PowerGrid_CopyModel1.SensorAzureMaster" Width="1.5" PointX="15.375" PointY="22.75" />
         <EntityTypeShape EntityType="PowerGrid_CopyModel1.ApplicationConfiguration" Width="2.375" PointX="17.125" PointY="22.875" />
         <AssociationConnector Association="PowerGrid_CopyModel1.FK_ApplicationConfigurationEntryApplicationConfiguration_ApplicationConfigurationId" />
+        <EntityTypeShape EntityType="PowerGrid_CopyModel1.AzureMeterDetails" Width="1.5" PointX="22.375" PointY="21.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

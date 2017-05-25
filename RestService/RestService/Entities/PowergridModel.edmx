@@ -170,6 +170,15 @@
           <Property Name="last_month" Type="datetime" />
           <Property Name="PiServerName" Type="varchar(max)" />
         </EntityType>
+        <EntityType Name="AzureMeterDetails">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PowerScout" Type="nvarchar" MaxLength="50" />
+          <Property Name="Breaker_details" Type="varchar(max)" />
+          <Property Name="PiServerName" Type="nvarchar" MaxLength="50" />
+        </EntityType>
         <EntityType Name="AzureWeeklyConsumptionPrediction">
           <Key>
             <PropertyRef Name="Id" />
@@ -535,7 +544,7 @@ warning 6013: The table/view 'PowerGrid_Copy.dbo.Persons' does not have a primar
           </Key>
           <Property Name="PiServerID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="PiServerName" Type="nvarchar" MaxLength="200" Nullable="false" />
-          <Property Name="PiServerDesc" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="PiServerDesc" Type="nvarchar" MaxLength="500" />
           <Property Name="CampusID" Type="int" Nullable="false" />
           <Property Name="PiServerURL" Type="nvarchar" MaxLength="500" Nullable="false" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
@@ -544,6 +553,7 @@ warning 6013: The table/view 'PowerGrid_Copy.dbo.Persons' does not have a primar
           <Property Name="ModifiedBy" Type="int" />
           <Property Name="ModifiedOn" Type="datetime" />
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="UTCConversionTime" Type="float" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'PowerGrid_Copy.dbo.PowergridAzureMLData' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -1046,6 +1056,7 @@ warning 6013: The table/view 'PowerGrid_Copy.dbo.Test' does not have a primary k
           <EntitySet Name="AzureAnomalyOutput" EntityType="Self.AzureAnomalyOutput" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AzureDailyConsumptionPrediction" EntityType="Self.AzureDailyConsumptionPrediction" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AzureLiveData" EntityType="Self.AzureLiveData" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AzureMeterDetails" EntityType="Self.AzureMeterDetails" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AzureWeeklyConsumptionPrediction" EntityType="Self.AzureWeeklyConsumptionPrediction" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Building" EntityType="Self.Building" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Campus" EntityType="Self.Campus" Schema="dbo" store:Type="Tables" />
@@ -1635,7 +1646,7 @@ warning 6013: The table/view 'PowerGrid_Copy.dbo.Test' does not have a primary k
           </Key>
           <Property Name="PiServerID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="PiServerName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="PiServerDesc" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PiServerDesc" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="CampusID" Type="Int32" Nullable="false" />
           <Property Name="PiServerURL" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
@@ -1645,6 +1656,7 @@ warning 6013: The table/view 'PowerGrid_Copy.dbo.Test' does not have a primary k
           <Property Name="ModifiedOn" Type="DateTime" Precision="3" />
           <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Campus" Relationship="Self.FK_PiServer_CampusID" FromRole="PiServer" ToRole="Campus" />
+          <Property Name="UTCConversionTime" Type="Double" />
         </EntityType>
         <EntityType Name="Questions">
           <Key>
@@ -2117,6 +2129,7 @@ warning 6013: The table/view 'PowerGrid_Copy.dbo.Test' does not have a primary k
             <End Role="ApplicationConfiguration" EntitySet="ApplicationConfiguration" />
             <End Role="ApplicationConfigurationEntry" EntitySet="ApplicationConfigurationEntry" />
           </AssociationSet>
+          <EntitySet Name="AzureMeterDetails" EntityType="PowerGrid_CopyModel1.AzureMeterDetails" />
         </EntityContainer>
         <EntityType Name="ApplicationConfigurationEntry">
           <Key>
@@ -2318,6 +2331,15 @@ warning 6013: The table/view 'PowerGrid_Copy.dbo.Test' does not have a primary k
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="AzureMeterDetails">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PowerScout" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Breaker_details" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="PiServerName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2742,6 +2764,7 @@ warning 6013: The table/view 'PowerGrid_Copy.dbo.Test' does not have a primary k
           <EntitySetMapping Name="PiServer">
             <EntityTypeMapping TypeName="PowerGrid_CopyModel1.PiServer">
               <MappingFragment StoreEntitySet="PiServer">
+                <ScalarProperty Name="UTCConversionTime" ColumnName="UTCConversionTime" />
                 <ScalarProperty Name="PiServerID" ColumnName="PiServerID" />
                 <ScalarProperty Name="PiServerName" ColumnName="PiServerName" />
                 <ScalarProperty Name="PiServerDesc" ColumnName="PiServerDesc" />
@@ -3198,6 +3221,16 @@ warning 6013: The table/view 'PowerGrid_Copy.dbo.Test' does not have a primary k
             <EntityTypeMapping TypeName="PowerGrid_CopyModel1.ApplicationConfiguration">
               <MappingFragment StoreEntitySet="ApplicationConfiguration">
                 <ScalarProperty Name="ConfigurationType" ColumnName="ConfigurationType" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AzureMeterDetails">
+            <EntityTypeMapping TypeName="PowerGrid_CopyModel1.AzureMeterDetails">
+              <MappingFragment StoreEntitySet="AzureMeterDetails">
+                <ScalarProperty Name="PiServerName" ColumnName="PiServerName" />
+                <ScalarProperty Name="Breaker_details" ColumnName="Breaker_details" />
+                <ScalarProperty Name="PowerScout" ColumnName="PowerScout" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
