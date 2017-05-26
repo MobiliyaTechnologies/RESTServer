@@ -14,6 +14,7 @@
         private readonly PowerGridEntities dbContext;
         private readonly IContextInfoAccessorService context;
         private readonly IBlobStorageService blobStorageService;
+        private readonly string csvFileType = ".csv";
 
         public PiServerService()
         {
@@ -68,7 +69,7 @@
 
             var blobStorageModel = new BlobStorageModel
             {
-                BlobName = ApiConfiguration.BlobPrefix + model.PiServerName,
+                BlobName = ApiConfiguration.BlobPrefix + model.PiServerName + this.csvFileType,
                 BlobType = model.CampusScheduleFileType,
                 Blob = model.CampusScheduleFile,
                 StorageContainer = ApiConfiguration.BlobContainer
@@ -94,7 +95,7 @@
 
                 var blobStorageModel = new BlobStorageModel
                 {
-                    BlobName = ApiConfiguration.BlobPrefix + data.PiServerName,
+                    BlobName = ApiConfiguration.BlobPrefix + data.PiServerName + this.csvFileType,
                     StorageContainer = ApiConfiguration.BlobContainer
                 };
                 this.blobStorageService.DeleteBlob(blobStorageModel);
@@ -140,24 +141,24 @@
             {
                 var blobStorageModel = new BlobStorageModel
                 {
-                    BlobName = ApiConfiguration.BlobPrefix + piServerName,
+                    BlobName = ApiConfiguration.BlobPrefix + piServerName + this.csvFileType,
                     BlobType = model.CampusScheduleFileType,
                     Blob = model.CampusScheduleFile,
                     StorageContainer = ApiConfiguration.BlobContainer
                 };
                 this.blobStorageService.DeleteBlob(blobStorageModel);
 
-                blobStorageModel.BlobName = ApiConfiguration.BlobPrefix + data.PiServerName;
+                blobStorageModel.BlobName = ApiConfiguration.BlobPrefix + data.PiServerName + this.csvFileType;
                 this.blobStorageService.UploadBlob(blobStorageModel);
             }
            else if (piServerName != string.Empty && model.CampusScheduleFile == null)
             {
                 var blobStorageModel = new BlobStorageModel
                 {
-                    BlobName = ApiConfiguration.BlobPrefix + piServerName,
+                    BlobName = ApiConfiguration.BlobPrefix + piServerName + this.csvFileType,
                     StorageContainer = ApiConfiguration.BlobContainer
                 };
-                var newBlobName = ApiConfiguration.BlobPrefix + data.PiServerName;
+                var newBlobName = ApiConfiguration.BlobPrefix + data.PiServerName + this.csvFileType;
 
                 this.blobStorageService.RenameBlob(blobStorageModel, newBlobName);
             }
@@ -165,7 +166,7 @@
             {
                 var blobStorageModel = new BlobStorageModel
                 {
-                    BlobName = ApiConfiguration.BlobPrefix + data.PiServerName,
+                    BlobName = ApiConfiguration.BlobPrefix + data.PiServerName + this.csvFileType,
                     BlobType = model.CampusScheduleFileType,
                     Blob = model.CampusScheduleFile,
                     StorageContainer = ApiConfiguration.BlobContainer
