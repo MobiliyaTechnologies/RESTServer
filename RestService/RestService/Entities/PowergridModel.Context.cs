@@ -68,5 +68,6 @@ namespace RestService.Entities
         public virtual DbSet<SensorAzureLiveData> SensorAzureLiveData { get; set; }
         public virtual DbSet<SensorAzureMaster> SensorAzureMaster { get; set; }
         public virtual DbSet<ApplicationConfiguration> ApplicationConfiguration { get; set; }
+        public virtual DbSet<AzureMeterDetails> AzureMeterDetails { get; set; }
     }
 }

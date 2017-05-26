@@ -25,6 +25,7 @@ namespace RestService.Entities
         public Nullable<int> ModifiedBy { get; set; }
         public Nullable<System.DateTime> ModifiedOn { get; set; }
         public bool IsDeleted { get; set; }
+        public Nullable<double> UTCConversionTime { get; set; }
     
         public virtual Campus Campus { get; set; }
     }
