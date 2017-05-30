@@ -35,6 +35,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>App_Data/XmlDocument.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -546,6 +547,7 @@
     <Compile Include="Utilities\ServiceUtil.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\XmlDocument.xml" />
     <Content Include="Areas\HelpPage\HelpPage.css" />
     <Content Include="Entities\PowergridModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
