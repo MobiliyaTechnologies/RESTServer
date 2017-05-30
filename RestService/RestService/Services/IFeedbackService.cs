@@ -11,12 +11,11 @@
         /// <summary>
         /// Stores the student feedback for a classroom.
         /// </summary>
-        /// <param name="userId">The user identifier, updating feedback.</param>
         /// <param name="feedbackModel">The feedbackModel to be stored.</param>
         /// <returns>
         /// The feedback stored confirmation.
         /// </returns>
-        ResponseModel StoreFeedback(int userId, FeedbackModel feedbackModel);
+        ResponseModel StoreFeedback( FeedbackModel feedbackModel);
 
         /// <summary>
         /// Gets all feedback.
@@ -34,10 +33,11 @@
         /// <summary>
         /// Updates the feedback.
         /// </summary>
-        /// <param name="userId">The user identifier.</param>
         /// <param name="feedbackModel">The feedbackModel to be updated.</param>
-        /// <returns>The feedback updated confirmation</returns>
-        ResponseModel UpdateFeedback(int userId, FeedbackModel feedbackModel);
+        /// <returns>
+        /// The feedback updated confirmation
+        /// </returns>
+        ResponseModel UpdateFeedback(FeedbackModel feedbackModel);
 
         /// <summary>
         /// Gets the feedback for given classroom.

@@ -7,6 +7,7 @@
     using System.Net.Http;
     using System.Web;
     using System.Web.Http;
+    using System.Web.Http.Description;
     using RestService.Enums;
     using RestService.Filters;
     using RestService.Models;
@@ -24,16 +25,32 @@
             this.buildingService = new BuildingService();
         }
 
+        /// <summary>
+        /// Gets all building details.
+        /// </summary>
+        /// <returns>The building details.</returns>
         [Route("GetAllBuildings")]
+        [ResponseType(typeof(List<BuildingModel>))]
         public HttpResponseMessage GetAllBuildings()
         {
             var data = this.buildingService.GetAllBuildings();
             return this.Request.CreateResponse(HttpStatusCode.OK, data);
         }
 
+        /// <summary>
+        /// Gets the building by identifier.
+        /// </summary>
+        /// <param name="buildingId">The building identifier.</param>
+        /// <returns>The building detail if found else not found error response, or bad request error response if invalid building id.</returns>
         [Route("GetBuildingByID/{buildingId}")]
+        [ResponseType(typeof(BuildingModel))]
         public HttpResponseMessage GetBuildingByID(int buildingId)
         {
+            if (buildingId < 1)
+            {
+                return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, string.Format("Building id must be grater than zero."));
+            }
+
             var data = this.buildingService.GetBuildingByID(buildingId);
             if (data != null)
             {
@@ -43,14 +60,27 @@
             return this.Request.CreateErrorResponse(HttpStatusCode.NotFound, string.Format("No Building found"));
         }
 
+        /// <summary>
+        /// Gets the buildings by campus.
+        /// </summary>
+        /// <param name="campusId">The campus identifier.</param>
+        /// <returns>The building details.</returns>
         [Route("GetBuildingsByCampus/{campusId}")]
+        [ResponseType(typeof(List<BuildingModel>))]
         public HttpResponseMessage GetBuildingsByCampus(int campusId)
         {
             var data = this.buildingService.GetBuildingsByCampus(campusId);
             return this.Request.CreateResponse(HttpStatusCode.OK, data);
         }
 
+        /// <summary>
+        /// Gets the building by location.
+        /// </summary>
+        /// <param name="latitude">The latitude.</param>
+        /// <param name="longitude">The longitude.</param>
+        /// <returns>The building detail if found else not found error response, or bad request error response if invalid location details.</returns>
         [Route("GetBuildingByLocation/{latitude}/{longitude}")]
+        [ResponseType(typeof(BuildingModel))]
         public HttpResponseMessage GetBuildingByLocation(decimal latitude, decimal longitude)
         {
             if (latitude == default(decimal) || longitude == default(decimal))
@@ -58,62 +88,80 @@
                 return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Invalid latitude or longitude");
             }
 
-            var campus = this.buildingService.GetBuildingByLocation(latitude, longitude);
+            var buildings = this.buildingService.GetBuildingByLocation(latitude, longitude);
 
-            if (campus != null)
+            if (buildings != null)
             {
-                return this.Request.CreateResponse(HttpStatusCode.OK, campus);
+                return this.Request.CreateResponse(HttpStatusCode.OK, buildings);
             }
 
             return this.Request.CreateErrorResponse(HttpStatusCode.NotFound, string.Format("Building does not exists for given location, latitude - {0}  longitude - {1}", latitude, longitude));
         }
 
+        /// <summary>
+        /// Adds the building.
+        /// </summary>
+        /// <param name="buildingModel">The building model.</param>
+        /// <returns>The building created confirmation, or bad request error response if invalid parameters.</returns>
         [Route("AddBuilding")]
         [CustomAuthorize(UserRole = UserRole.SuperAdmin)]
         [OverrideAuthorization]
         [HttpPost]
-        public HttpResponseMessage AddBuilding([FromBody] BuildingModel model)
+        [ResponseType(typeof(ResponseModel))]
+        public HttpResponseMessage AddBuilding([FromBody] BuildingModel buildingModel)
         {
-            if (model == null)
+            if (buildingModel == null)
             {
                 return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Invalid building model.");
             }
 
             if (this.ModelState.IsValid)
             {
-                var data = this.buildingService.AddBuilding(model);
+                var data = this.buildingService.AddBuilding(buildingModel);
                 return this.Request.CreateResponse(HttpStatusCode.OK, data);
             }
 
             // Create an error message for returning
             string messages = string.Join("; ", this.ModelState.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage));
-            return this.Request.CreateErrorResponse((HttpStatusCode)613, messages);
+            return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, messages);
         }
 
+        /// <summary>
+        /// Updates the building.
+        /// Building id is required to update building details other fields are optional, passed only fields required to update.
+        /// Building name and description are only modifiable fields.
+        /// </summary>
+        /// <param name="buildingModel">The building model.</param>
+        /// <returns>The building updated confirmation, or bad request error response if invalid parameters. </returns>
         [Route("UpdateBuilding")]
         [HttpPut]
-        public HttpResponseMessage UpdateBuilding([FromBody] BuildingModel model)
+        [ResponseType(typeof(ResponseModel))]
+        public HttpResponseMessage UpdateBuilding([FromBody] BuildingModel buildingModel)
         {
-            if (model == null)
+            if (buildingModel == null && buildingModel.BuildingID < 1)
             {
                 return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Invalid building model.");
             }
 
-            if (this.ModelState.IsValid)
-            {
-                var data = this.buildingService.UpdateBuilding(model);
-                return this.Request.CreateResponse(HttpStatusCode.OK, data);
-            }
-
-            // Create an error message for returning
-            string messages = string.Join("; ", this.ModelState.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage));
-            return this.Request.CreateErrorResponse((HttpStatusCode)613, messages);
+            var data = this.buildingService.UpdateBuilding(buildingModel);
+            return this.Request.CreateResponse(HttpStatusCode.OK, data);
         }
 
+        /// <summary>
+        /// Deletes the building for given id.
+        /// </summary>
+        /// <param name="buildingId">The building identifier.</param>
+        /// <returns>The building deleted confirmation, or bad request error response if invalid parameters.</returns>
         [Route("DeleteBuilding/{buildingId}")]
         [HttpDelete]
+        [ResponseType(typeof(ResponseModel))]
         public HttpResponseMessage DeleteBuilding(int buildingId)
         {
+            if (buildingId < 1)
+            {
+                return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Building id must be grater than 0");
+            }
+
             var data = this.buildingService.DeleteBuilding(buildingId);
             return this.Request.CreateResponse(HttpStatusCode.OK, data);
         }

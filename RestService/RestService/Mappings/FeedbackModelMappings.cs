@@ -16,11 +16,7 @@
                        AnswerID = s.AnswerID ?? default(int),
                        ClassId = s.ClassID ?? default(int),
                        FeedbackId = s.FeedbackID,
-                       FeedbackDesc = s.FeedbackDesc,
-                       CreatedBy = s.CreatedBy,
-                       ModifiedBy = s.ModifiedBy ?? default(int),
-                       CreatedOn = s.CreatedOn ?? default(DateTime),
-                       ModifiedOn = s.ModiifiedOn ?? default(DateTime),
+                       FeedbackDesc = s.FeedbackDesc
                    };
         }
 

@@ -17,12 +17,6 @@
                        CampusName = s.CampusName,
                        CampusDesc = s.CampusDesc,
                        UniversityID = s.UniversityID,
-                       IsActive = s.IsActive,
-                       CreatedBy = s.CreatedBy ?? default(int),
-                       CreatedOn = s.CreatedOn ?? default(DateTime),
-                       ModifiedBy = s.ModifiedBy ?? default(int),
-                       ModifiedOn = s.ModifiedOn ?? default(DateTime),
-                       IsDeleted = s.IsDeleted,
                        Latitude = s.Latitude,
                        Longitude = s.Longitude
                    };

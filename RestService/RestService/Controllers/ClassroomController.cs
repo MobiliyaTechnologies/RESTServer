@@ -1,9 +1,12 @@
 ﻿namespace RestService.Controllers
 {
     using System;
+    using System.Collections.Generic;
     using System.Net;
     using System.Net.Http;
     using System.Web.Http;
+    using System.Web.Http.Description;
+    using RestService.Models;
     using RestService.Services;
     using RestService.Services.Impl;
 
@@ -20,14 +23,25 @@
             this.classroomService = new ClassroomService();
         }
 
+        /// <summary>
+        /// Gets all classrooms.
+        /// </summary>
+        /// <returns>The classroom details.</returns>
         [Route("GetAllClassrooms")]
+        [ResponseType(typeof(List<ClassroomModel>))]
         public HttpResponseMessage GetAllClassrooms()
         {
             var data = this.classroomService.GetAllClassrooms();
             return this.Request.CreateResponse(HttpStatusCode.OK, data);
         }
 
+        /// <summary>
+        /// Gets the classroom by building.
+        /// </summary>
+        /// <param name="buildingId">The building identifier.</param>
+        /// <returns>The classroom details.</returns>
         [Route("GetClassroomByBuilding/{buildingId}")]
+        [ResponseType(typeof(List<ClassroomModel>))]
         public HttpResponseMessage GetClassroomByBuilding(int buildingId)
         {
             var data = this.classroomService.GetClassroomByBuilding(buildingId);

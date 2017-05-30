@@ -1,10 +1,12 @@
 ﻿namespace RestService.Controllers
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Net;
     using System.Net.Http;
     using System.Web.Http;
+    using System.Web.Http.Description;
     using RestService.Models;
     using RestService.Services;
     using RestService.Services.Impl;
@@ -22,49 +24,60 @@
             this.feedbackService = new FeedbackService();
         }
 
+        /// <summary>
+        /// Deletes the feedback for given identifier.
+        /// </summary>
+        /// <param name="feedbackId">The feedback identifier.</param>
+        /// <returns>The feedback deleted confirmation, or bad request error response if invalid parameters.</returns>
         [Route("DeleteFeedback/{feedbackId}")]
         [HttpDelete]
+        [ResponseType(typeof(ResponseModel))]
         public HttpResponseMessage DeleteFeedback(int feedbackId)
         {
+            if (feedbackId < 1)
+            {
+                this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Feedback id must be grater than 0.");
+            }
+
             var data = this.feedbackService.DeleteFeedback(feedbackId);
             return this.Request.CreateResponse(HttpStatusCode.OK, data);
         }
 
+        /// <summary>
+        /// Updates the feedback.
+        /// Feedback id is required to update feedback other fields are optional, passed only fields required to update.
+        /// </summary>
+        /// <param name="feedbackdetail">The feedback detail.</param>
+        /// <returns>The feedback updated confirmation, or bad request error response if invalid parameters.</returns>
         [Route("UpdateFeedback")]
         [HttpPut]
+        [ResponseType(typeof(ResponseModel))]
         public HttpResponseMessage UpdateFeedback([FromBody] FeedbackModel feedbackdetail)
         {
-            if (feedbackdetail != null && this.ModelState.IsValid)
+            if (feedbackdetail != null && feedbackdetail.FeedbackId > 0)
             {
-                // TODO : get user id from claim.
-                int userId = 0;
-                var data = this.feedbackService.UpdateFeedback(userId, feedbackdetail);
+                var data = this.feedbackService.UpdateFeedback(feedbackdetail);
                 return this.Request.CreateResponse(HttpStatusCode.OK, data);
             }
 
-            // Create an error message for returning
-            string messages = feedbackdetail == null ? "Invalid feedback model" : string.Join("; ", this.ModelState.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage));
+            string messages = feedbackdetail == null ? "Invalid feedback model" : "Invalid feedback id.";
             return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, messages);
         }
 
+        /// <summary>
+        /// Stores the feedback.
+        /// </summary>
+        /// <param name="feedbackdetail">The feedback detail.</param>
+        /// <returns>The feedback created confirmation, or bad request error response if invalid parameters.</returns>
         [Route("StoreFeedback")]
         [HttpPost]
+        [ResponseType(typeof(ResponseModel))]
         public HttpResponseMessage StoreFeedback([FromBody] FeedbackModel feedbackdetail)
         {
             if (feedbackdetail != null && this.ModelState.IsValid)
             {
-                if (feedbackdetail.AnswerID == 0 && string.IsNullOrWhiteSpace(feedbackdetail.FeedbackDesc))
-                {
-                    // Create an error message for returning
-                    return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Please choose any answer or provide description");
-                }
-                else
-                {
-                    // TODO : get user id from claim.
-                    int userId = 0;
-                    var data = this.feedbackService.StoreFeedback(userId, feedbackdetail);
+                    var data = this.feedbackService.StoreFeedback(feedbackdetail);
                     return this.Request.CreateResponse(HttpStatusCode.OK, data);
-                }
             }
 
             // Create an error message for returning
@@ -72,14 +85,25 @@
             return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, messages);
         }
 
+        /// <summary>
+        /// Gets all feedback.
+        /// </summary>
+        /// <returns>The feedback details.</returns>
         [Route("GetAllFeedback")]
+        [ResponseType(typeof(List<FeedbackModel>))]
         public HttpResponseMessage GetAllFeedback()
         {
             var data = this.feedbackService.GetAllFeedback();
             return this.Request.CreateResponse(HttpStatusCode.OK, data);
         }
 
+        /// <summary>
+        /// Gets the feedback count details for given class identifier.
+        /// </summary>
+        /// <param name="classId">The class identifier.</param>
+        /// <returns>The feedback details, or bad request error response if invalid parameters.</returns>
         [Route("GetFeedbackCount/{classId}")]
+        [ResponseType(typeof(List<FeedbackModel>))]
         public HttpResponseMessage GetFeedbackCount(int classId)
         {
             if (classId < 1)
@@ -91,12 +115,17 @@
             return this.Request.CreateResponse(HttpStatusCode.OK, data);
         }
 
+        /// <summary>
+        /// Resets the feedback.
+        /// </summary>
+        /// <returns>The feedback reset confirmation.</returns>
         [Route("ResetFeedback")]
         [HttpDelete]
+        [ResponseType(typeof(ResponseModel))]
         public HttpResponseMessage ResetFeedback()
         {
             var data = this.feedbackService.ResetFeedback();
-            return this.Request.CreateResponse(HttpStatusCode.OK, data.Message);
+            return this.Request.CreateResponse(HttpStatusCode.OK, data);
         }
 
         /// <summary>

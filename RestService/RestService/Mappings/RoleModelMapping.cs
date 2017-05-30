@@ -16,12 +16,6 @@
                        Id = s.Id,
                        RoleName = s.RoleName,
                        Description = s.Description,
-                       IsActive = s.IsActive,
-                       CreatedBy = s.CreatedBy ?? default(int),
-                       CreatedOn = s.CreatedOn ?? default(DateTime),
-                       ModifiedBy = s.ModifiedBy ?? default(int),
-                       ModifiedOn = s.ModifiedOn ?? default(DateTime),
-                       IsDeleted = s.IsDeleted,
                        Campuses = (from campus in s.Campus
                                   select new CampusModel
                                   {
@@ -29,12 +23,6 @@
                                       CampusName = campus.CampusName,
                                       CampusDesc = campus.CampusDesc,
                                       UniversityID = campus.UniversityID,
-                                      IsActive = campus.IsActive,
-                                      CreatedBy = campus.CreatedBy ?? default(int),
-                                      CreatedOn = campus.CreatedOn ?? default(DateTime),
-                                      ModifiedBy = campus.ModifiedBy ?? default(int),
-                                      ModifiedOn = campus.ModifiedOn ?? default(DateTime),
-                                      IsDeleted = campus.IsDeleted,
                                       Latitude = campus.Latitude,
                                       Longitude = campus.Longitude
                                   }).ToList()

@@ -1,9 +1,12 @@
 ﻿namespace RestService.Controllers
 {
     using System;
+    using System.Collections.Generic;
     using System.Net;
     using System.Net.Http;
     using System.Web.Http;
+    using System.Web.Http.Description;
+    using RestService.Models;
     using RestService.Services;
     using RestService.Services.Impl;
 
@@ -20,7 +23,12 @@
             this.questionService = new QuestionService();
         }
 
+        /// <summary>
+        /// Gets the question answers.
+        /// </summary>
+        /// <returns>The question and it's answers.</returns>
         [Route("GetQuestionAnswers")]
+        [ResponseType(typeof(List<QuestionModel>))]
         public HttpResponseMessage GetQuestionAnswers()
         {
             var data = this.questionService.GetQuestionAnswers();

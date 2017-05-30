@@ -1,10 +1,12 @@
 ﻿namespace RestService.Controllers
 {
     using System;
-    using System.Linq;
+    using System.Collections.Generic;
     using System.Net;
     using System.Net.Http;
     using System.Web.Http;
+    using System.Web.Http.Description;
+    using RestService.Models;
     using RestService.Services;
     using RestService.Services.Impl;
 
@@ -21,29 +23,51 @@
             this.sensorService = new SensorService();
         }
 
+        /// <summary>
+        /// Gets all sensors.
+        /// </summary>
+        /// <returns>The sensor details.</returns>
         [Route("GetAllSensors")]
+        [ResponseType(typeof(List<SensorModel>))]
         public HttpResponseMessage GetAllSensors()
         {
             var data = this.sensorService.GetAllSensors();
             return this.Request.CreateResponse(HttpStatusCode.OK, data);
         }
 
+        /// <summary>
+        /// Gets all sensors mapped to class.
+        /// </summary>
+        /// <returns>The sensor details.</returns>
         [Route("GetAllMapSensors")]
+        [ResponseType(typeof(List<SensorModel>))]
         public HttpResponseMessage GetAllMapSensors()
         {
             var data = this.sensorService.GetAllMapSensors();
             return this.Request.CreateResponse(HttpStatusCode.OK, data);
         }
 
+        /// <summary>
+        /// Gets all sensors unmapped to class.
+        /// </summary>
+        /// <returns>The sensor details.</returns>
         [Route("GetAllUnMapSensors")]
+        [ResponseType(typeof(List<SensorModel>))]
         public HttpResponseMessage GetAllUnMapSensors()
         {
             var data = this.sensorService.GetAllUnMapSensors();
             return this.Request.CreateResponse(HttpStatusCode.OK, data);
         }
 
+        /// <summary>
+        /// Maps the sensor to class.
+        /// </summary>
+        /// <param name="sensorId">The sensor identifier.</param>
+        /// <param name="classId">The class identifier.</param>
+        /// <returns>The sensor class mapping confirmation, or bad request error response if invalid parameters.</returns>
         [Route("MapSensor/{sensorId}/{classId}")]
         [HttpPut]
+        [ResponseType(typeof(ResponseModel))]
         public HttpResponseMessage MapSensor(int sensorId, int classId)
         {
             if (sensorId < 1 || classId < 1)
@@ -55,7 +79,13 @@
             return this.Request.CreateResponse(HttpStatusCode.OK, data);
         }
 
+        /// <summary>
+        /// Gets all sensors for class.
+        /// </summary>
+        /// <param name="classId">The class identifier.</param>
+        /// <returns>The sensor details, or bad request error response if invalid parameters.</returns>
         [Route("GetAllSensorsForClass/{classId}")]
+        [ResponseType(typeof(List<SensorModel>))]
         public HttpResponseMessage GetAllSensorsForClass(int classId)
         {
             if (classId < 1)
@@ -67,8 +97,13 @@
             return this.Request.CreateResponse(HttpStatusCode.OK, data);
         }
 
+        /// <summary>
+        /// Resets the sensors.
+        /// </summary>
+        /// <returns>The sensor reset confirmation.</returns>
         [Route("ResetSensors")]
         [HttpDelete]
+        [ResponseType(typeof(ResponseModel))]
         public HttpResponseMessage ResetSensors()
         {
             var data = this.sensorService.ResetSensors();

@@ -7,6 +7,7 @@
     using System.Net.Http;
     using System.Web;
     using System.Web.Http;
+    using System.Web.Http.Description;
     using RestService.Enums;
     using RestService.Filters;
     using RestService.Models;
@@ -29,14 +30,27 @@
             this.universityService = new UniversityService();
         }
 
+        /// <summary>
+        /// Gets all universities.
+        /// This API is accessible to only super admin user.
+        /// </summary>
+        /// <returns>The university details.</returns>
         [Route("GetAllUniversities")]
+        [ResponseType(typeof(List<UniversityModel>))]
         public HttpResponseMessage GetAllUniversities()
         {
             var data = this.universityService.GetAllUniversities();
             return this.Request.CreateResponse(HttpStatusCode.OK, data);
         }
 
+        /// <summary>
+        /// Gets the university by identifier.
+        /// This API is accessible to only super admin user.
+        /// </summary>
+        /// <param name="universityID">The university identifier.</param>
+        /// <returns>The university detail if found else not found error response.</returns>
         [Route("GetUniversityByID/{universityID}")]
+        [ResponseType(typeof(UniversityModel))]
         public HttpResponseMessage GetUniversityByID(int universityID)
         {
             var data = this.universityService.GetUniversityByID(universityID);
@@ -48,56 +62,79 @@
             return this.Request.CreateErrorResponse(HttpStatusCode.NotFound, string.Format("No university found"));
         }
 
+        /// <summary>
+        /// Adds the university.
+        /// This API is accessible to only super admin user.
+        /// </summary>
+        /// <param name="universityModel">The university model.</param>
+        /// <returns>The university added confirmation, or bad request error response if invalid parameters.</returns>
         [Route("AddUniversity")]
         [HttpPost]
-        public HttpResponseMessage AddUniversity([FromBody] UniversityModel model)
+        [ResponseType(typeof(ResponseModel))]
+        public HttpResponseMessage AddUniversity([FromBody] UniversityModel universityModel)
         {
-            if (model == null)
+            if (universityModel == null)
             {
                 return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Invalid university model.");
             }
 
             if (this.ModelState.IsValid)
             {
-                var data = this.universityService.AddUniversity(model);
+                var data = this.universityService.AddUniversity(universityModel);
                 return this.Request.CreateResponse(HttpStatusCode.OK, data);
             }
 
             // Create an error message for returning
             string messages = string.Join("; ", this.ModelState.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage));
-            return this.Request.CreateErrorResponse((HttpStatusCode)611, messages);
+            return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, messages);
         }
 
+        /// <summary>
+        /// Updates the university.
+        /// University id is required to update university other fields are optional, passed only fields required to update.
+        /// This API is accessible to only super admin user.
+        /// </summary>
+        /// <param name="universityModel">The university model.</param>
+        /// <returns>The university updated confirmation, or bad request error response if invalid parameters.</returns>
         [Route("UpdateUniversity")]
         [HttpPut]
-        public HttpResponseMessage UpdateUniversity([FromBody] UniversityModel model)
+        [ResponseType(typeof(ResponseModel))]
+        public HttpResponseMessage UpdateUniversity([FromBody] UniversityModel universityModel)
         {
-            if (model == null)
+            if (universityModel == null || universityModel.UniversityID < 1)
             {
                 return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Invalid university model.");
             }
 
-            if (this.ModelState.IsValid)
-            {
-                var data = this.universityService.UpdateUniversity(model);
-                return this.Request.CreateResponse(HttpStatusCode.OK, data);
-            }
-
-            // Create an error message for returning
-            string messages = string.Join("; ", this.ModelState.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage));
-            return this.Request.CreateErrorResponse((HttpStatusCode)611, messages);
+            var data = this.universityService.UpdateUniversity(universityModel);
+            return this.Request.CreateResponse(HttpStatusCode.OK, data);
         }
 
+        /// <summary>
+        /// Deletes the university for given identifier.
+        /// This API is accessible to only super admin user.
+        /// </summary>
+        /// <param name="universityID">The university identifier.</param>
+        /// <returns>The university deleted confirmation.</returns>
         [Route("DeleteUniversity/{universityID}")]
         [HttpDelete]
+        [ResponseType(typeof(ResponseModel))]
         public HttpResponseMessage DeleteUniversity(int universityID)
         {
             var data = this.universityService.DeleteUniversity(universityID);
             return this.Request.CreateResponse(HttpStatusCode.OK, data);
         }
 
+        /// <summary>
+        /// Adds the campus to university.
+        /// This API is accessible to only super admin user.
+        /// </summary>
+        /// <param name="universityId">The university identifier.</param>
+        /// <param name="campusIds">The campus ids.</param>
+        /// <returns>The campus added to university confirmation, or bad request error response if invalid parameters.</returns>
         [Route("AddCampusToUniversity/{universityId}")]
         [HttpPut]
+        [ResponseType(typeof(ResponseModel))]
         public HttpResponseMessage AddCampusToUniversity(int universityId, [FromBody] List<int> campusIds)
         {
             if (universityId < 1 || campusIds.Count() < 1 || campusIds.Any(c => c < 1))
