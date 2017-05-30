@@ -16,13 +16,7 @@
                        UniversityID = s.UniversityID,
                        UniversityName = s.UniversityName,
                        UniversityDesc = s.UniversityDesc,
-                       UniversityAddress = s.UniversityAddress,
-                       IsActive = s.IsActive,
-                       CreatedBy = s.CreatedBy ?? default(int),
-                       CreatedOn = s.CreatedOn ?? default(DateTime),
-                       ModifiedBy = s.ModifiedBy ?? default(int),
-                       ModifiedOn = s.ModifiedOn ?? default(DateTime),
-                       IsDeleted = s.IsDeleted
+                       UniversityAddress = s.UniversityAddress
                    };
         }
 

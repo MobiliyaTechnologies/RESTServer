@@ -5,6 +5,7 @@
     using System.Net;
     using System.Net.Http;
     using System.Web.Http;
+    using System.Web.Http.Description;
     using RestService.Models;
     using RestService.Services;
     using RestService.Services.Impl;
@@ -16,24 +17,28 @@
         private readonly IEmailService emailService;
         private readonly IUserService userService;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EmailController"/> class.
+        /// </summary>
         public EmailController()
         {
             this.emailService = new EmailService();
             this.userService = new UserService();
         }
 
+        /// <summary>
+        /// Sends the email.
+        /// </summary>
+        /// <param name="emailModel">The email model.</param>
+        /// <returns>The email send confirmation, or bad request error response if invalid parameters.</returns>
         [Route("SendMail")]
         [HttpPost]
+        [ResponseType(typeof(ResponseModel))]
         public HttpResponseMessage SendMail(EmailModel emailModel)
         {
             if (emailModel == null)
             {
                 return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Email model can not be null.");
-            }
-
-            if (string.IsNullOrWhiteSpace(emailModel.Subject) || string.IsNullOrWhiteSpace(emailModel.Body))
-            {
-                return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Invalid email subject or body.");
             }
 
             if (this.ModelState.IsValid)
@@ -55,7 +60,7 @@
             }
 
             string messages = string.Join("; ", this.ModelState.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage));
-            return this.Request.CreateErrorResponse((HttpStatusCode)613, messages);
+            return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, messages);
         }
 
         /// <summary>

@@ -258,7 +258,6 @@
   <ItemGroup>
     <Compile Include="App_Start\OpenIdConnectCachingSecurityTokenProvider.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
-    <Compile Include="App_Start\SwaggerConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Areas\HelpPage\ApiDescriptionExtensions.cs" />
     <Compile Include="Areas\HelpPage\App_Start\HelpPageConfig.cs" />
@@ -486,7 +485,6 @@
     <Compile Include="Models\ApplicationConfigurationEntryModel.cs" />
     <Compile Include="Models\FeedbackCountModel.cs" />
     <Compile Include="Models\FeedbackModel.cs" />
-    <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\InsightDataModel.cs" />
     <Compile Include="Models\MeterDailyConsumptionModel.cs" />
     <Compile Include="Models\MeterDayWiseMonthlyConsumptionModel.cs" />

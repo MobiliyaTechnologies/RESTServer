@@ -16,13 +16,7 @@
                        PiServerID = s.PiServerID,
                        PiServerName = s.PiServerName,
                        PiServerDesc = s.PiServerDesc,
-                       PiServerURL = s.PiServerURL,
-                       IsActive = s.IsActive,
-                       CreatedBy = s.CreatedBy ?? default(int),
-                       CreatedOn = s.CreatedOn ?? default(DateTime),
-                       ModifiedBy = s.ModifiedBy ?? default(int),
-                       ModifiedOn = s.ModifiedOn ?? default(DateTime),
-                       IsDeleted = s.IsDeleted
+                       PiServerURL = s.PiServerURL
                    };
         }
 

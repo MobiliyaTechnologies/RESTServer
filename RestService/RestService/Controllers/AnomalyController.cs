@@ -1,10 +1,12 @@
 ﻿namespace RestService.Controllers
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Net;
     using System.Net.Http;
     using System.Web.Http;
+    using System.Web.Http.Description;
     using RestService.Services;
     using RestService.Services.Impl;
 
@@ -13,12 +15,21 @@
     {
         private IAnomalyService anomalyService;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AnomalyController"/> class.
+        /// </summary>
         public AnomalyController()
         {
             this.anomalyService = new AnomalyService();
         }
 
+        /// <summary>
+        /// Gets the anomaly details for given date.
+        /// </summary>
+        /// <param name="timestamp">The date.</param>
+        /// <returns>The anomaly info models.</returns>
         [Route("GetAnomalyDetailsByDay/{timestamp}")]
+        [ResponseType(typeof(List<Models.AnomalyInfoModel>))]
         public HttpResponseMessage GetAnomalyDetailsByDay(string timestamp)
         {
             var data = this.anomalyService.GetAnomalyDetails(timestamp);

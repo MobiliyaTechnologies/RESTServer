@@ -9,6 +9,7 @@
     using System.Threading.Tasks;
     using System.Web;
     using System.Web.Http;
+    using System.Web.Http.Description;
     using Newtonsoft.Json.Linq;
     using RestService.Models;
     using RestService.Services;
@@ -27,14 +28,25 @@
             this.piServerService = new PiServerService();
         }
 
+        /// <summary>
+        /// Gets all pi servers.
+        /// </summary>
+        /// <returns>The PiServer details.</returns>
         [Route("GetAllPiServers")]
+        [ResponseType(typeof(List<PiServerModel>))]
         public HttpResponseMessage GetAllPiServers()
         {
             var data = this.piServerService.GetAllPiServers();
             return this.Request.CreateResponse(HttpStatusCode.OK, data);
         }
 
+        /// <summary>
+        /// Gets the pi server by identifier.
+        /// </summary>
+        /// <param name="piServerID">The pi server identifier.</param>
+        /// <returns>The PiServer detail if found else not found error message.</returns>
         [Route("GetPiServerByID/{piServerID}")]
+        [ResponseType(typeof(PiServerModel))]
         public HttpResponseMessage GetPiServerByID(int piServerID)
         {
             var data = this.piServerService.GetPiServerByID(piServerID);
@@ -47,12 +59,18 @@
             return this.Request.CreateErrorResponse(HttpStatusCode.NotFound, string.Format("No Pi Server found"));
         }
 
+        /// <summary>
+        /// Gets the pi server by it's unique name.
+        /// </summary>
+        /// <param name="piServerName">Name of the pi server.</param>
+        /// <returns>The PiServer detail if found else not found error response, or bad request error response if invalid PiServer name.</returns>
         [Route("GetPiServerByName/{piServerName}")]
+        [ResponseType(typeof(PiServerModel))]
         public HttpResponseMessage GetPiServerByName(string piServerName)
         {
             if (string.IsNullOrWhiteSpace(piServerName))
             {
-                return this.Request.CreateResponse((HttpStatusCode)614, string.Format("Pi Server name cannot be blank"));
+                return this.Request.CreateResponse(HttpStatusCode.BadRequest, string.Format("Pi Server name cannot be blank"));
             }
             else
             {
@@ -66,8 +84,18 @@
             }
         }
 
+        /// <summary>
+        /// Adds the pi server.
+        /// It receive only multipart/form-data content-type.
+        /// Required fields - CampusId, PiServerName(must be unique), PiServerURL and CSV campus schedule file
+        /// Sample request -
+        /// {  "PiServerID": 0,  "PiServerName": "", "PiServerDesc": "",  "CampusID": 1,  "PiServerURL": ""}
+        /// Campus schedule file with any name but must be CSV type.
+        /// </summary>
+        /// <returns>The PiServer added confirmation, or bad request error response if invalid parameters.</returns>
         [Route("AddPiServer")]
         [HttpPost]
+        [ResponseType(typeof(ResponseModel))]
         public HttpResponseMessage AddPiServer()
         {
             var model = this.GetPiServerModelFromRequest().Result;
@@ -81,8 +109,18 @@
             return this.Request.CreateResponse(HttpStatusCode.OK, data);
         }
 
+        /// <summary>
+        /// Updates the pi server.
+        /// It receive only multipart/form-data content-type.
+        /// Required fields - PiServerID and fields to update.
+        /// Sample request -
+        /// {  "PiServerID": 0,  "PiServerName": "", "PiServerDesc": "",  "CampusID": 1,  "PiServerURL": ""}
+        /// Campus schedule file with any name but must be CSV type, it's optional post only to update existing campus schedule.
+        /// </summary>
+        /// <returns>The PiServer updated confirmation, or bad request error response if invalid parameters.</returns>
         [Route("UpdatePiServer")]
         [HttpPut]
+        [ResponseType(typeof(ResponseModel))]
         public HttpResponseMessage UpdatePiServer()
         {
             var model = this.GetPiServerModelFromRequest().Result;
@@ -96,8 +134,14 @@
             return this.Request.CreateResponse(HttpStatusCode.OK, data);
         }
 
+        /// <summary>
+        /// Deletes the pi server for given PiServer identifier.
+        /// </summary>
+        /// <param name="piServerId">The pi server identifier.</param>
+        /// <returns>The PiServer deleted confirmation</returns>
         [Route("DeletePiServer/{piServerId}")]
         [HttpDelete]
+        [ResponseType(typeof(ResponseModel))]
         public HttpResponseMessage DeletePiServer(int piServerId)
         {
             var data = this.piServerService.DeletePiServer(piServerId);

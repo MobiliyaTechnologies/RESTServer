@@ -12,6 +12,7 @@
     public sealed class FeedbackService : IFeedbackService, IDisposable
     {
         private readonly PowerGridEntities dbContext;
+        private readonly IContextInfoAccessorService context;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FeedbackService"/> class.
@@ -19,6 +20,7 @@
         public FeedbackService()
         {
             this.dbContext = new PowerGridEntities();
+            this.context = new ContextInfoAccessorService();
         }
 
         ResponseModel IFeedbackService.DeleteFeedback(int feedbackId)
@@ -36,7 +38,7 @@
             }
         }
 
-        ResponseModel IFeedbackService.UpdateFeedback(int userId, FeedbackModel feedbackDetail)
+        ResponseModel IFeedbackService.UpdateFeedback(FeedbackModel feedbackDetail)
         {
             var data = this.dbContext.Feedback.FirstOrDefault(f => f.FeedbackID == feedbackDetail.FeedbackId);
 
@@ -56,7 +58,7 @@
                     data.FeedbackDesc = feedbackDetail.FeedbackDesc;
                 }
 
-                data.ModifiedBy = userId;
+                data.ModifiedBy = this.context.Current.UserId;
                 data.ModiifiedOn = DateTime.UtcNow;
                 this.dbContext.SaveChanges();
 
@@ -109,9 +111,9 @@
             }
         }
 
-        ResponseModel IFeedbackService.StoreFeedback(int userId, FeedbackModel feedbackModel)
+        ResponseModel IFeedbackService.StoreFeedback(FeedbackModel feedbackModel)
         {
-            var responseModel = this.StoreFeedback(userId, feedbackModel);
+            var responseModel = this.StoreFeedback(feedbackModel);
             var feedbackCount = this.GetFeedbackCount(feedbackModel);
             this.AlertFeedback(feedbackCount, feedbackModel);
 
@@ -129,15 +131,15 @@
             }
         }
 
-        private ResponseModel StoreFeedback(int userId, FeedbackModel feedbackModel)
+        private ResponseModel StoreFeedback(FeedbackModel feedbackModel)
         {
             var feedback = new Feedback();
             feedback.ClassID = feedbackModel.ClassId;
             feedback.QuestionID = feedbackModel.QuestionId;
             feedback.AnswerID = feedback.AnswerID;
             feedback.FeedbackDesc = feedbackModel.FeedbackDesc == null ? string.Empty : feedbackModel.FeedbackDesc;
-            feedback.CreatedBy = userId;
-            feedback.ModifiedBy = userId;
+            feedback.CreatedBy = this.context.Current.UserId;
+            feedback.ModifiedBy = this.context.Current.UserId;
             feedback.CreatedOn = DateTime.UtcNow;
             feedback.ModiifiedOn = DateTime.UtcNow;
 
@@ -145,7 +147,7 @@
             this.dbContext.SaveChanges();
 
             // Add reward points
-            var user = this.dbContext.User.FirstOrDefault(u => u.Id == userId);
+            var user = this.dbContext.User.FirstOrDefault(u => u.Id == this.context.Current.UserId);
             user.RewardPoints += 10;
             this.dbContext.SaveChanges();
             return new ResponseModel { Message = "Feedback successfully recorded", Status_Code = (int)StatusCode.Ok };
