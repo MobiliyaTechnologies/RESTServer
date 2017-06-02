@@ -23,5 +23,6 @@ namespace RestService.Entities
         public Nullable<byte> Is_Acknowledged { get; set; }
         public string Acknowledged_By { get; set; }
         public Nullable<System.DateTime> Acknowledged_Timestamp { get; set; }
+        public string PiServerName { get; set; }
     }
 }

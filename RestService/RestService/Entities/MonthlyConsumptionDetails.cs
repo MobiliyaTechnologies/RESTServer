@@ -19,14 +19,12 @@ namespace RestService.Entities
         public string Year { get; set; }
         public string PowerScout { get; set; }
         public string Breaker_details { get; set; }
-        public Nullable<double> X { get; set; }
-        public Nullable<double> Y { get; set; }
-        public string Ligne { get; set; }
         public Nullable<double> Monthly_KWH_System { get; set; }
         public Nullable<double> Monthly_electric_cost { get; set; }
         public Nullable<System.DateTime> Timestamp { get; set; }
         public Nullable<System.DateTime> current_month { get; set; }
         public Nullable<System.DateTime> last_month { get; set; }
         public string Building { get; set; }
+        public string PiServerName { get; set; }
     }
 }

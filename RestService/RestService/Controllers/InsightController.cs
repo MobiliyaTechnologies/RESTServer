@@ -48,15 +48,15 @@
         }
 
         /// <summary>
-        /// Gets the insight data by campus.
+        /// Gets the insight data by premise.
         /// </summary>
-        /// <param name="campusId">The campus identifier.</param>
+        /// <param name="premiseID">The premise identifier.</param>
         /// <returns>The detail of consumption and prediction of current week.</returns>
-        [Route("GetInsightDataByCampus/{campusId}")]
+        [Route("GetInsightDataByPremise/{premiseID}")]
         [ResponseType(typeof(InsightDataModel))]
-        public HttpResponseMessage GetInsightDataByCampus(int campusId)
+        public HttpResponseMessage GetInsightDataByPremise(int premiseID)
         {
-            var data = this.insightService.GetInsightDataByCampus(campusId);
+            var data = this.insightService.GetInsightDataByPremise(premiseID);
             return this.Request.CreateResponse(HttpStatusCode.OK, data);
         }
 

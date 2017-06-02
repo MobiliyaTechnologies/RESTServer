@@ -61,15 +61,15 @@
         }
 
         /// <summary>
-        /// Gets the buildings by campus.
+        /// Gets the buildings by premise.
         /// </summary>
-        /// <param name="campusId">The campus identifier.</param>
+        /// <param name="premiseId">The premise identifier.</param>
         /// <returns>The building details.</returns>
-        [Route("GetBuildingsByCampus/{campusId}")]
+        [Route("GetBuildingsByPremise/{premiseId}")]
         [ResponseType(typeof(List<BuildingModel>))]
-        public HttpResponseMessage GetBuildingsByCampus(int campusId)
+        public HttpResponseMessage GetBuildingsByPremise(int premiseId)
         {
-            var data = this.buildingService.GetBuildingsByCampus(campusId);
+            var data = this.buildingService.GetBuildingsByPremise(premiseId);
             return this.Request.CreateResponse(HttpStatusCode.OK, data);
         }
 

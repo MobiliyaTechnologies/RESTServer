@@ -16,7 +16,7 @@
         public string BuildingDesc { get; set; }
 
         [Range(1, int.MaxValue)]
-        public int CampusID { get; set; }
+        public int PremiseID { get; set; }
 
         public double MonthlyConsumption { get; set; }
 

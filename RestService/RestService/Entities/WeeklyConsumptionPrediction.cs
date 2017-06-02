@@ -21,5 +21,6 @@ namespace RestService.Entities
         public string Breaker_details { get; set; }
         public Nullable<double> Weekly_Predicted_KWH_System { get; set; }
         public string Building { get; set; }
+        public string PiServerName { get; set; }
     }
 }

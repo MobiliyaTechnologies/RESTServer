@@ -10,7 +10,7 @@
     {
         public RoleModel()
         {
-            this.CampusIds = new List<int>();
+            this.PremiseIds = new List<int>();
         }
 
         public int Id { get; set; }
@@ -22,8 +22,8 @@
         [MaxLength(1000)]
         public string Description { get; set; }
 
-        public List<int> CampusIds { get; set; }
+        public List<int> PremiseIds { get; set; }
 
-        public List<CampusModel> Campuses { get; set; }
+        public List<PremiseModel> Premises { get; set; }
     }
 }

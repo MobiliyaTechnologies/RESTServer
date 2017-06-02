@@ -6,6 +6,7 @@
     using System.IO;
     using System.Linq;
     using System.Web;
+    using Newtonsoft.Json;
 
     public class PiServerModel
     {
@@ -19,13 +20,15 @@
         public string PiServerDesc { get; set; }
 
         [Range(1, int.MaxValue)]
-        public int CampusID { get; set; }
+        public int PremiseID { get; set; }
 
         [Required]
         public string PiServerURL { get; set; }
 
-        public Stream CampusScheduleFile { get; set; }
+        [JsonIgnore]
+        public Stream PremiseScheduleFile { get; set; }
 
-        public string CampusScheduleFileType { get; set; }
+        [JsonIgnore]
+        public string PremiseScheduleFileType { get; set; }
     }
 }

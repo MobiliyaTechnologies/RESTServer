@@ -46,11 +46,11 @@
 
             this.dbContext.Role.Add(role);
 
-            var campuses = this.dbContext.Campus.WhereActiveCampus(c => roleModel.CampusIds.Any(id => id == c.CampusID));
+            var premises = this.dbContext.Premise.WhereActivePremise(c => roleModel.PremiseIds.Any(id => id == c.PremiseID));
 
-            foreach (var campus in campuses)
+            foreach (var premise in premises)
             {
-                campus.Role.Add(role);
+                premise.Role.Add(role);
             }
 
             this.dbContext.SaveChanges();

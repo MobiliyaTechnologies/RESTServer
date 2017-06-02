@@ -26,5 +26,14 @@
         /// </summary>
         /// <param name="blobStorageModel">The BLOB storage model.</param>
         void DeleteBlob(BlobStorageModel blobStorageModel);
+
+        /// <summary>
+        /// Gets the BLOB uri.
+        /// </summary>
+        /// <param name="blobStorageModel">The BLOB storage model.</param>
+        /// <returns>
+        /// The blob uri.
+        /// </returns>
+        string GetBlobUri(BlobStorageModel blobStorageModel);
     }
 }

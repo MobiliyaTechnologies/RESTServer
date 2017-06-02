@@ -16,13 +16,13 @@
     public class UserController : ApiController
     {
         private readonly IUserService userService;
-        private readonly ICampusService campusService;
+        private readonly IPremiseService premiseService;
         private readonly IContextInfoAccessorService context;
 
         public UserController()
         {
             this.userService = new UserService();
-            this.campusService = new CampusService();
+            this.premiseService = new PremiseService();
             this.context = new ContextInfoAccessorService();
         }
 
@@ -39,15 +39,15 @@
         }
 
         /// <summary>
-        /// Gets the logged-in user with it's accessible campus.
+        /// Gets the logged-in user with it's accessible premise.
         /// </summary>
-        /// <returns>The user detail with campus.</returns>
-        [Route("GetCurrentUserWithCampus")]
+        /// <returns>The user detail with premise.</returns>
+        [Route("GetCurrentUserWithPremise")]
         [ResponseType(typeof(UserModel))]
-        public HttpResponseMessage GetCurrentUserWithCampus()
+        public HttpResponseMessage GetCurrentUserWithPremise()
         {
             var user = this.context.Current;
-            user.UserCampus = this.campusService.GetAllCampus();
+            user.UserPremises = this.premiseService.GetAllPremise();
 
             return this.Request.CreateResponse(HttpStatusCode.OK, user);
         }
@@ -147,7 +147,7 @@
                     (this.userService as IDisposable).Dispose();
                 }
 
-                if (this.campusService != null)
+                if (this.premiseService != null)
                 {
                     (this.userService as IDisposable).Dispose();
                 }

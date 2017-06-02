@@ -16,7 +16,8 @@
                        PiServerID = s.PiServerID,
                        PiServerName = s.PiServerName,
                        PiServerDesc = s.PiServerDesc,
-                       PiServerURL = s.PiServerURL
+                       PiServerURL = s.PiServerURL,
+                       PremiseID = s.Premise.PremiseID
                    };
         }
 

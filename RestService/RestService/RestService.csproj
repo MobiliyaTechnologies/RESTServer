@@ -292,7 +292,7 @@
     <Compile Include="Controllers\AnomalyController.cs" />
     <Compile Include="Controllers\ApplicationConfigurationController.cs" />
     <Compile Include="Controllers\BuildingController.cs" />
-    <Compile Include="Controllers\CampusController.cs" />
+    <Compile Include="Controllers\PremiseController.cs" />
     <Compile Include="Controllers\ClassroomController.cs" />
     <Compile Include="Controllers\EmailController.cs" />
     <Compile Include="Controllers\FeedbackController.cs" />
@@ -302,7 +302,7 @@
     <Compile Include="Controllers\QuestionController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\SensorController.cs" />
-    <Compile Include="Controllers\UniversityController.cs" />
+    <Compile Include="Controllers\OrganizationController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Entities\AlertRules.cs">
       <DependentUpon>PowergridModel.tt</DependentUpon>
@@ -322,34 +322,10 @@
     <Compile Include="Entities\ApplicationConfigurationEntry.cs">
       <DependentUpon>PowergridModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Entities\AzureAlerts.cs">
-      <DependentUpon>PowergridModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Entities\AzureAnomalyOutput.cs">
-      <DependentUpon>PowergridModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Entities\AzureDailyConsumptionPrediction.cs">
-      <DependentUpon>PowergridModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Entities\AzureLiveData.cs">
-      <DependentUpon>PowergridModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Entities\AzureMeterDetails.cs">
-      <DependentUpon>PowergridModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Entities\AzureWeeklyConsumptionPrediction.cs">
-      <DependentUpon>PowergridModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Entities\Building.cs">
       <DependentUpon>PowergridModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Entities\Campus.cs">
-      <DependentUpon>PowergridModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Entities\ClassroomDetails.cs">
-      <DependentUpon>PowergridModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Entities\DailyConsumptionAzureDetails.cs">
       <DependentUpon>PowergridModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\DailyConsumptionDetails.cs">
@@ -364,31 +340,19 @@
     <Compile Include="Entities\Feedback.cs">
       <DependentUpon>PowergridModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Entities\HalfHourlyData.cs">
-      <DependentUpon>PowergridModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Entities\HalfYearlyData.cs">
+    <Compile Include="Entities\LiveData.cs">
       <DependentUpon>PowergridModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\MeterDetails.cs">
       <DependentUpon>PowergridModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Entities\MonthlyConsumptionAzureDetails.cs">
-      <DependentUpon>PowergridModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Entities\MonthlyConsumptionDetails.cs">
       <DependentUpon>PowergridModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Entities\MSLiveData.cs">
-      <DependentUpon>PowergridModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Entities\Person.cs">
+    <Compile Include="Entities\Organization.cs">
       <DependentUpon>PowergridModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\PiServer.cs">
-      <DependentUpon>PowergridModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Entities\PowergridAzureMLData.cs">
       <DependentUpon>PowergridModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\PowergridModel.Context.cs">
@@ -406,22 +370,13 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>PowergridModel.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Entities\Premise.cs">
+      <DependentUpon>PowergridModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\Questions.cs">
       <DependentUpon>PowergridModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Entities\QueueLiveData.cs">
-      <DependentUpon>PowergridModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Entities\Role.cs">
-      <DependentUpon>PowergridModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Entities\RoleBK.cs">
-      <DependentUpon>PowergridModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Entities\SensorAzureLiveData.cs">
-      <DependentUpon>PowergridModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Entities\SensorAzureMaster.cs">
       <DependentUpon>PowergridModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\SensorData.cs">
@@ -433,19 +388,7 @@
     <Compile Include="Entities\SensorMaster.cs">
       <DependentUpon>PowergridModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Entities\TempMLData.cs">
-      <DependentUpon>PowergridModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Entities\TempMSLiveData.cs">
-      <DependentUpon>PowergridModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Entities\University.cs">
-      <DependentUpon>PowergridModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Entities\User.cs">
-      <DependentUpon>PowergridModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Entities\UserSession.cs">
       <DependentUpon>PowergridModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\WeeklyConsumptionPrediction.cs">
@@ -461,7 +404,7 @@
     <Compile Include="Mappings\AnomalyInfoModelMapping.cs" />
     <Compile Include="Mappings\AnswerModelMapping.cs" />
     <Compile Include="Mappings\BuildingModelMapping.cs" />
-    <Compile Include="Mappings\CampusModelMapping.cs" />
+    <Compile Include="Mappings\PremiseModelMapping.cs" />
     <Compile Include="Mappings\ClassroomModelMapping.cs" />
     <Compile Include="Mappings\FeedbackModelMappings.cs" />
     <Compile Include="Mappings\MeterDailyConsumptionModelMapping.cs" />
@@ -470,7 +413,7 @@
     <Compile Include="Mappings\PiServerModelMapping.cs" />
     <Compile Include="Mappings\QuestionModelMapping.cs" />
     <Compile Include="Mappings\RoleModelMapping.cs" />
-    <Compile Include="Mappings\UniversityModelMapping.cs" />
+    <Compile Include="Mappings\OrganizationModelMapping.cs" />
     <Compile Include="Mappings\ApplicationConfigurationModelMapping.cs" />
     <Compile Include="Mappings\UserModelMapping.cs" />
     <Compile Include="Models\AlertDetailsModel.cs" />
@@ -479,7 +422,7 @@
     <Compile Include="Models\AnswerModel.cs" />
     <Compile Include="Models\BlobStorageModel.cs" />
     <Compile Include="Models\BuildingModel.cs" />
-    <Compile Include="Models\CampusModel.cs" />
+    <Compile Include="Models\PremiseModel.cs" />
     <Compile Include="Models\ClassroomModel.cs" />
     <Compile Include="Models\EmailModel.cs" />
     <Compile Include="Models\ApplicationConfigurationModel.cs" />
@@ -496,12 +439,13 @@
     <Compile Include="Models\MeterURLKeyModel.cs" />
     <Compile Include="Models\MeterWeekWiseMonthlyConsumptionModel.cs" />
     <Compile Include="Models\MonthListModel.cs" />
+    <Compile Include="Models\NotificationModel.cs" />
     <Compile Include="Models\PiServerModel.cs" />
     <Compile Include="Models\QuestionModel.cs" />
     <Compile Include="Models\ResponseModel.cs" />
     <Compile Include="Models\RoleModel.cs" />
     <Compile Include="Models\SensorModel.cs" />
-    <Compile Include="Models\UniversityModel.cs" />
+    <Compile Include="Models\OrganizationModel.cs" />
     <Compile Include="Models\UserModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services.Impl\AlertService.cs" />
@@ -509,7 +453,7 @@
     <Compile Include="Services.Impl\ApplicationConfigurationService.cs" />
     <Compile Include="Services.Impl\BlobStorageService.cs" />
     <Compile Include="Services.Impl\BuildingService.cs" />
-    <Compile Include="Services.Impl\CampusService.cs" />
+    <Compile Include="Services.Impl\PremiseService.cs" />
     <Compile Include="Services.Impl\ClassroomService.cs" />
     <Compile Include="Services.Impl\EmailService.cs" />
     <Compile Include="Services.Impl\FeedbackService.cs" />
@@ -519,7 +463,7 @@
     <Compile Include="Services.Impl\QuestionService.cs" />
     <Compile Include="Services.Impl\RoleService.cs" />
     <Compile Include="Services.Impl\SensorService.cs" />
-    <Compile Include="Services.Impl\UniversityService.cs" />
+    <Compile Include="Services.Impl\OrganizationService.cs" />
     <Compile Include="Services.Impl\ContextInfoAccessorService.cs" />
     <Compile Include="Services.Impl\UserService.cs" />
     <Compile Include="Services\IAlertService.cs" />
@@ -527,7 +471,7 @@
     <Compile Include="Services\IApplicationConfigurationService.cs" />
     <Compile Include="Services\IBlobStorageService.cs" />
     <Compile Include="Services\IBuildingService.cs" />
-    <Compile Include="Services\ICampusService.cs" />
+    <Compile Include="Services\IPremiseService.cs" />
     <Compile Include="Services\IClassroomService.cs" />
     <Compile Include="Services\IEmailService.cs" />
     <Compile Include="Services\IFeedbackService.cs" />
@@ -537,12 +481,12 @@
     <Compile Include="Services\IQuestionService.cs" />
     <Compile Include="Services\IRoleService.cs" />
     <Compile Include="Services\ISensorService.cs" />
-    <Compile Include="Services\IUniversityService.cs" />
+    <Compile Include="Services\IOrganizationService.cs" />
     <Compile Include="Services\IContextInfoAccessorService.cs" />
     <Compile Include="Services\IUserService.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Utilities\ApiConfiguration.cs" />
-    <Compile Include="Utilities\B2C_ClaimTypes.cs" />
+    <Compile Include="Utilities\ApiConstant.cs" />
     <Compile Include="Utilities\QueryableExtention.cs" />
     <Compile Include="Utilities\ServiceUtil.cs" />
   </ItemGroup>

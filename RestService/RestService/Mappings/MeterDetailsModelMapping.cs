@@ -14,12 +14,7 @@
                    {
                        Id = s.Id,
                        PowerScout = s.PowerScout,
-                       Altitude = s.Altitude ?? default(double),
-                       Description = s.Description,
-                       Latitude = s.Latitude ?? default(double),
-                       Longitude = s.Longitude ?? default(double),
                        Name = s.Breaker_details,
-                       Serial = s.Serial
                    };
         }
 

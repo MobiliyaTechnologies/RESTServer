@@ -22,5 +22,6 @@ namespace RestService.Entities
         public Nullable<double> Daily_Predicted_KWH_System { get; set; }
         public Nullable<double> TomorrowPredictedKWH { get; set; }
         public string Building { get; set; }
+        public string PiServerName { get; set; }
     }
 }

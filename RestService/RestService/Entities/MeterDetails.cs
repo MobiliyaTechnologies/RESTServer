@@ -17,11 +17,7 @@ namespace RestService.Entities
         public int Id { get; set; }
         public string PowerScout { get; set; }
         public string Breaker_details { get; set; }
-        public string Serial { get; set; }
-        public Nullable<double> Latitude { get; set; }
-        public Nullable<double> Longitude { get; set; }
-        public Nullable<double> Altitude { get; set; }
-        public string Description { get; set; }
+        public string PiServerName { get; set; }
         public Nullable<int> BuildingId { get; set; }
     
         public virtual Building Building { get; set; }

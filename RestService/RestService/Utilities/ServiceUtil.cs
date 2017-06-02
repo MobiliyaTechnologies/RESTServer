@@ -7,6 +7,7 @@
     using System.Text;
     using Newtonsoft.Json;
     using RestService.Enums;
+    using RestService.Models;
 
     public class ServiceUtil
     {
@@ -40,7 +41,7 @@
             }
         }
 
-        public static void SendNotification(string title, string body)
+        public static void SendNotification(NotificationModel notificationModel)
         {
             try
             {
@@ -51,19 +52,19 @@
                 {
                     notification = new
                     {
-                        body = body,
-                        title = title,
-                        click_action = ApiConfiguration.NotificationClickAction,
-                        icon = ApiConfiguration.NotificationIcon,
+                        body = notificationModel.NotificationMessage,
+                        title = notificationModel.NotificationTitle,
+                        click_action = notificationModel.NotificationClickAction,
+                        icon = notificationModel.NotificationIcon,
                         sound = "default"
                     },
-                    to = ApiConfiguration.NotificationReceiver
+                    to = notificationModel.NotificationReceiver
                 };
 
                 var json = JsonConvert.SerializeObject(data);
                 byte[] byteArray = Encoding.UTF8.GetBytes(json);
-                tRequest.Headers.Add(string.Format("Authorization: key={0}", ApiConfiguration.NotificationAuthorizationKey));
-                tRequest.Headers.Add(string.Format("Sender: id={0}", ApiConfiguration.NotificationSender));
+                tRequest.Headers.Add(string.Format("Authorization: key={0}", notificationModel.NotificationAuthorizationKey));
+                tRequest.Headers.Add(string.Format("Sender: id={0}", notificationModel.NotificationSender));
                 tRequest.ContentLength = byteArray.Length;
 
                 using (Stream dataStream = tRequest.GetRequestStream())

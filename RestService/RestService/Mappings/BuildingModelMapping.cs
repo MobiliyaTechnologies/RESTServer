@@ -16,7 +16,7 @@
                        BuildingID = s.BuildingID,
                        BuildingName = s.BuildingName,
                        BuildingDesc = s.BuildingDesc,
-                       CampusID = s.CampusID,
+                       PremiseID = s.PremiseID,
                        Latitude = s.Latitude,
                        Longitude = s.Longitude
                    };

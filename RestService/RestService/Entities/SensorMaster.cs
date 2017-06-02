@@ -19,5 +19,6 @@ namespace RestService.Entities
         public Nullable<int> Class_Id { get; set; }
         public Nullable<double> X { get; set; }
         public Nullable<double> Y { get; set; }
+        public string PiServerName { get; set; }
     }
 }

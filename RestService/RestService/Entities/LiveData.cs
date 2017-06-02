@@ -12,7 +12,7 @@ namespace RestService.Entities
     using System;
     using System.Collections.Generic;
     
-    public partial class HalfHourlyData
+    public partial class LiveData
     {
         public int Id { get; set; }
         public Nullable<double> AMPS_L1 { get; set; }
@@ -55,5 +55,6 @@ namespace RestService.Entities
         public Nullable<System.DateTime> previous_day { get; set; }
         public Nullable<System.DateTime> current_month { get; set; }
         public Nullable<System.DateTime> last_month { get; set; }
+        public string PiServerName { get; set; }
     }
 }

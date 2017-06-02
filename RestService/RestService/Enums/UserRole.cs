@@ -8,6 +8,6 @@
 
         Student = 2,
 
-        CampusAdmin = 3
+        PremiseAdmin = 3
     }
 }

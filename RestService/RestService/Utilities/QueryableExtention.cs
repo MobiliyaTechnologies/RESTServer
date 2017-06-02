@@ -24,8 +24,8 @@
 
         public static IQueryable<Building> WhereActiveAccessibleBuilding(this IQueryable<Building> source, Expression<Func<Building, bool>> predicate = null)
         {
-            source = source.Where(b => b.IsActive && !b.IsDeleted && b.Campus != null && b.Campus.IsActive && !b.Campus.IsDeleted &&
-            b.Campus.Role.Any(r => r.IsActive && !r.IsDeleted && r.Id == Context.Current.RoleId));
+            source = source.Where(b => b.IsActive && !b.IsDeleted && b.Premise != null && b.Premise.IsActive && !b.Premise.IsDeleted &&
+            b.Premise.Role.Any(r => r.IsActive && !r.IsDeleted && r.Id == Context.Current.RoleId));
 
             if (predicate != null)
             {
@@ -35,7 +35,7 @@
             return source;
         }
 
-        public static IQueryable<Campus> WhereActiveCampus(this IQueryable<Campus> source, Expression<Func<Campus, bool>> predicate = null)
+        public static IQueryable<Premise> WhereActivePremise(this IQueryable<Premise> source, Expression<Func<Premise, bool>> predicate = null)
         {
             source = source.Where(s => s.IsActive && !s.IsDeleted);
             if (predicate != null)
@@ -46,7 +46,7 @@
             return source;
         }
 
-        public static IQueryable<Campus> WhereActiveAccessibleCampus(this IQueryable<Campus> source, Expression<Func<Campus, bool>> predicate = null)
+        public static IQueryable<Premise> WhereActiveAccessiblePremise(this IQueryable<Premise> source, Expression<Func<Premise, bool>> predicate = null)
         {
             source = source.Where(s => s.IsActive && !s.IsDeleted && s.Role.Any(r => r.IsActive && !r.IsDeleted && r.Id == Context.Current.RoleId));
             if (predicate != null)
@@ -57,7 +57,7 @@
             return source;
         }
 
-        public static IQueryable<University> WhereActiveUniversity(this IQueryable<University> source, Expression<Func<University, bool>> predicate = null)
+        public static IQueryable<Organization> WhereActiveOrganization(this IQueryable<Organization> source, Expression<Func<Organization, bool>> predicate = null)
         {
             source = source.Where(s => s.IsActive && !s.IsDeleted);
             if (predicate != null)
@@ -92,8 +92,8 @@
 
         public static IQueryable<PiServer> WhereActiveAccessiblePiServer(this IQueryable<PiServer> source, Expression<Func<PiServer, bool>> predicate = null)
         {
-            source = source.Where(b => b.IsActive && !b.IsDeleted && b.Campus != null && b.Campus.IsActive && !b.Campus.IsDeleted &&
-            b.Campus.Role.Any(r => r.IsActive && !r.IsDeleted && r.Id == Context.Current.RoleId));
+            source = source.Where(b => b.IsActive && !b.IsDeleted && b.Premise != null && b.Premise.IsActive && !b.Premise.IsDeleted &&
+            b.Premise.Role.Any(r => r.IsActive && !r.IsDeleted && r.Id == Context.Current.RoleId));
 
             if (predicate != null)
             {
@@ -105,8 +105,8 @@
 
         public static IQueryable<MeterDetails> WhereActiveAccessibleMeterDetails(this IQueryable<MeterDetails> source, Expression<Func<MeterDetails, bool>> predicate = null)
         {
-            source = source.Where(m => m.Building.IsActive && !m.Building.IsDeleted && m.Building.Campus != null && m.Building.Campus.IsActive && !m.Building.Campus.IsDeleted &&
-          m.Building.Campus.Role.Any(r => r.IsActive && !r.IsDeleted && r.Id == Context.Current.RoleId));
+            source = source.Where(m => m.Building.IsActive && !m.Building.IsDeleted && m.Building.Premise != null && m.Building.Premise.IsActive && !m.Building.Premise.IsDeleted &&
+          m.Building.Premise.Role.Any(r => r.IsActive && !r.IsDeleted && r.Id == Context.Current.RoleId));
 
             if (predicate != null)
             {

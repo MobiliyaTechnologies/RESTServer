@@ -16,15 +16,15 @@
                        Id = s.Id,
                        RoleName = s.RoleName,
                        Description = s.Description,
-                       Campuses = (from campus in s.Campus
-                                  select new CampusModel
+                       Premises = (from premise in s.Premise
+                                  select new PremiseModel
                                   {
-                                      CampusID = campus.CampusID,
-                                      CampusName = campus.CampusName,
-                                      CampusDesc = campus.CampusDesc,
-                                      UniversityID = campus.UniversityID,
-                                      Latitude = campus.Latitude,
-                                      Longitude = campus.Longitude
+                                      PremiseID = premise.PremiseID,
+                                      PremiseName = premise.PremiseName,
+                                      PremiseDesc = premise.PremiseDesc,
+                                      OrganizationID = premise.OrganizationID,
+                                      Latitude = premise.Latitude,
+                                      Longitude = premise.Longitude
                                   }).ToList()
         };
         }
