@@ -33,9 +33,9 @@
             return this.GetInsightData(meterdetails);
         }
 
-        InsightDataModel IInsightService.GetInsightDataByCampus(int campusId)
+        InsightDataModel IInsightService.GetInsightDataByPremise(int premiseID)
         {
-            var meterdetails = this.dbContext.MeterDetails.WhereActiveAccessibleMeterDetails(m => m.Building.CampusID == campusId);
+            var meterdetails = this.dbContext.MeterDetails.WhereActiveAccessibleMeterDetails(m => m.Building.PremiseID == premiseID);
             return this.GetInsightData(meterdetails);
         }
 
@@ -56,11 +56,11 @@
 
             var count = meterdetails.Count() * ((int)DateTime.UtcNow.AddHours(this.utcOffset).DayOfWeek == 0 ? 7 : (int)DateTime.UtcNow.AddHours(this.utcOffset).DayOfWeek);
 
-            var consumptionValue = this.dbContext.DailyConsumptionDetails.Where(d => meterdetails.Any(m => m.Serial.Equals(d.PowerScout, StringComparison.InvariantCultureIgnoreCase))).OrderByDescending(d => d.Timestamp).Take(count).Sum(data => data.Daily_KWH_System);
+            var consumptionValue = this.dbContext.DailyConsumptionDetails.Where(d => meterdetails.Any(m => m.PowerScout.Equals(d.PowerScout, StringComparison.InvariantCultureIgnoreCase))).OrderByDescending(d => d.Timestamp).Take(count).Sum(data => data.Daily_KWH_System);
 
             insightData.ConsumptionValue = consumptionValue.HasValue ? Math.Round(consumptionValue.Value, 2) : default(double);
 
-            var predictedValue = this.dbContext.WeeklyConsumptionPrediction.Where(w => meterdetails.Any(m => m.Serial.Equals(w.PowerScout, StringComparison.InvariantCultureIgnoreCase))).OrderByDescending(w => w.End_Time).Take(meterdetails.Count()).Sum(w => w.Weekly_Predicted_KWH_System);
+            var predictedValue = this.dbContext.WeeklyConsumptionPrediction.Where(w => meterdetails.Any(m => m.PowerScout.Equals(w.PowerScout, StringComparison.InvariantCultureIgnoreCase))).OrderByDescending(w => w.End_Time).Take(meterdetails.Count()).Sum(w => w.Weekly_Predicted_KWH_System);
 
             insightData.PredictedValue = predictedValue.HasValue ? Math.Round(predictedValue.Value, 2) : default(double);
 

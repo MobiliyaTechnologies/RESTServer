@@ -20,5 +20,6 @@ namespace RestService.Entities
         public Nullable<double> Brightness { get; set; }
         public Nullable<double> Humidity { get; set; }
         public Nullable<System.DateTime> Timestamp { get; set; }
+        public string PiServerName { get; set; }
     }
 }

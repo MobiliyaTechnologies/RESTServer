@@ -13,6 +13,7 @@
     {
         private readonly PowerGridEntities dbContext;
         private readonly IContextInfoAccessorService context;
+        private readonly IApplicationConfigurationService applicationConfigurationService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FeedbackService"/> class.
@@ -21,6 +22,7 @@
         {
             this.dbContext = new PowerGridEntities();
             this.context = new ContextInfoAccessorService();
+            this.applicationConfigurationService = new ApplicationConfigurationService();
         }
 
         ResponseModel IFeedbackService.DeleteFeedback(int feedbackId)
@@ -183,17 +185,39 @@
         private void AlertFeedback(List<FeedbackCountModel> feedbackCount, FeedbackModel feedbackModel)
         {
             var exceptionData = feedbackCount.Where(f => f.AnswerCount > f.Threshold && f.AnswerId == feedbackModel.AnswerID);
+
+            var applicationConfigurationEntry = this.applicationConfigurationService.GetApplicationConfiguration(ApiConstant.FirebaseApplicationConfiguration);
+
+            var notificationAuthEntry = applicationConfigurationEntry.ApplicationConfigurationEntries.FirstOrDefault(a => a.ConfigurationKey.Equals("NotificationAuthorizationKey", StringComparison.InvariantCultureIgnoreCase));
+
+            var notificationSenderEntry = applicationConfigurationEntry.ApplicationConfigurationEntries.FirstOrDefault(a => a.ConfigurationKey.Equals("NotificationSender", StringComparison.InvariantCultureIgnoreCase));
+
+            var notificationReceiverEntry = applicationConfigurationEntry.ApplicationConfigurationEntries.FirstOrDefault(a => a.ConfigurationKey.Equals("NotificationReceiver", StringComparison.InvariantCultureIgnoreCase));
+
+            var notificationModel = new NotificationModel
+            {
+                NotificationAuthorizationKey = notificationAuthEntry != null ? notificationAuthEntry.ConfigurationValue : null,
+                NotificationSender = notificationSenderEntry != null ? notificationSenderEntry.ConfigurationValue : null,
+                NotificationReceiver = notificationReceiverEntry != null ? notificationReceiverEntry.ConfigurationValue : null,
+                NotificationTitle = "Temperature Alert"
+            };
+
+
             foreach (var exception in exceptionData)
             {
-                var title = "Temperature Alert";
-                var message = "Students are feeling " + exception.AnswerDesc + " in the class " + exception.ClassName + ". Take appropriate measures.";
-                ServiceUtil.SendNotification(title, message);
+                notificationModel.NotificationMessage = "Students are feeling " + exception.AnswerDesc + " in the class " + exception.ClassName + ". Take appropriate measures.";
+
+                if (!string.IsNullOrWhiteSpace(notificationModel.NotificationAuthorizationKey) && !string.IsNullOrWhiteSpace(notificationModel.NotificationSender) && !string.IsNullOrWhiteSpace(notificationModel.NotificationReceiver))
+                {
+                    ServiceUtil.SendNotification(notificationModel);
+                }
+
                 var alert = new Alerts
                 {
                     Sensor_Id = 0,
                     Sensor_Log_Id = 0,
-                    Alert_Type = title,
-                    Description = message,
+                    Alert_Type = notificationModel.NotificationTitle,
+                    Description = notificationModel.NotificationMessage,
                     Is_Acknowledged = 0,
                     Timestamp = DateTime.UtcNow
                 };

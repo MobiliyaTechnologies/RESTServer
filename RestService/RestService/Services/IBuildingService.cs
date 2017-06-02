@@ -21,11 +21,11 @@
         BuildingModel GetBuildingByID(int buildingId);
 
         /// <summary>
-        /// Gets the buildings by campus.
+        /// Gets the buildings by premise.
         /// </summary>
-        /// <param name="campusId">The campus identifier.</param>
-        /// <returns>Buildings associated with given campus id.</returns>
-        List<BuildingModel> GetBuildingsByCampus(int campusId);
+        /// <param name="premiseID">The premise identifier.</param>
+        /// <returns>Buildings associated with given premise id.</returns>
+        List<BuildingModel> GetBuildingsByPremise(int premiseID);
 
         /// <summary>
         /// Gets the building by location.

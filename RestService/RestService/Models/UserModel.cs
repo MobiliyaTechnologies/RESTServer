@@ -8,7 +8,7 @@
     {
         public UserModel()
         {
-            this.UserCampus = new List<CampusModel>();
+            this.UserPremises = new List<PremiseModel>();
         }
 
         public int UserId { get; set; }
@@ -29,10 +29,10 @@
         {
             get
             {
-                return Enum.IsDefined(typeof(UserRole), this.RoleId) ? (UserRole)this.RoleId : UserRole.CampusAdmin;
+                return Enum.IsDefined(typeof(UserRole), this.RoleId) ? (UserRole)this.RoleId : UserRole.PremiseAdmin;
             }
         }
 
-        public List<CampusModel> UserCampus { get; set; }
+        public List<PremiseModel> UserPremises { get; set; }
     }
 }

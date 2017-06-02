@@ -44,7 +44,7 @@
             }
             else
             {
-                throw new InvalidOperationException("Campus schedule file does not exist.");
+                throw new InvalidOperationException("Blob does not exist.");
             }
         }
 
@@ -54,13 +54,24 @@
 
             if (container.CreateIfNotExists())
             {
-                container.SetPermissions(new BlobContainerPermissions { PublicAccess = BlobContainerPublicAccessType.Blob });
+                if (blobStorageModel.IsPublicContainer)
+                {
+                    container.SetPermissions(new BlobContainerPermissions { PublicAccess = BlobContainerPublicAccessType.Blob });
+                }
             }
 
             var blockBlob = container.GetBlockBlobReference(blobStorageModel.BlobName);
 
             blockBlob.Properties.ContentType = blobStorageModel.BlobType;
             blockBlob.UploadFromStream(blobStorageModel.Blob);
+        }
+
+        string IBlobStorageService.GetBlobUri(BlobStorageModel blobStorageModel)
+        {
+            var container = this.cloudBlobClient.GetContainerReference(blobStorageModel.StorageContainer);
+            var blockBlob = container.GetBlockBlobReference(blobStorageModel.BlobName);
+
+            return blockBlob.Uri.AbsoluteUri;
         }
     }
 }

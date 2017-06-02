@@ -622,11 +622,11 @@
             <param name="buildingId">The building identifier.</param>
             <returns>The building detail if found else not found error response, or bad request error response if invalid building id.</returns>
         </member>
-        <member name="M:RestService.Controllers.BuildingController.GetBuildingsByCampus(System.Int32)">
+        <member name="M:RestService.Controllers.BuildingController.GetBuildingsByPremise(System.Int32)">
             <summary>
-            Gets the buildings by campus.
+            Gets the buildings by premise.
             </summary>
-            <param name="campusId">The campus identifier.</param>
+            <param name="premiseId">The premise identifier.</param>
             <returns>The building details.</returns>
         </member>
         <member name="M:RestService.Controllers.BuildingController.GetBuildingByLocation(System.Decimal,System.Decimal)">
@@ -666,76 +666,76 @@
             </summary>
             <param name="disposing">true to release both managed and unmanaged resources; false to release only unmanaged resources.</param>
         </member>
-        <member name="M:RestService.Controllers.CampusController.#ctor">
+        <member name="M:RestService.Controllers.PremiseController.#ctor">
             <summary>
-            Initializes a new instance of the <see cref="T:RestService.Controllers.CampusController"/> class.
+            Initializes a new instance of the <see cref="T:RestService.Controllers.PremiseController"/> class.
             </summary>
         </member>
-        <member name="M:RestService.Controllers.CampusController.GetAllCampus">
+        <member name="M:RestService.Controllers.PremiseController.GetAllPremises">
             <summary>
-            Gets all campus.
+            Gets all premises.
             </summary>
-            <returns>The CampusDetails</returns>
+            <returns>The Premise Details</returns>
         </member>
-        <member name="M:RestService.Controllers.CampusController.GetCampusByID(System.Int32)">
+        <member name="M:RestService.Controllers.PremiseController.GetPremiseByID(System.Int32)">
             <summary>
-            Gets the campus by identifier.
+            Gets the premise by identifier.
             This API is accessible to only super admin user.
             </summary>
-            <param name="campusId">The campus identifier.</param>
-            <returns>The campus detail if found else not found error response, or bad request error response if invalid parameters.</returns>
+            <param name="premiseID">The premise identifier.</param>
+            <returns>The premise detail if found else not found error response, or bad request error response if invalid parameters.</returns>
         </member>
-        <member name="M:RestService.Controllers.CampusController.GetCampusByLocation(System.Decimal,System.Decimal)">
+        <member name="M:RestService.Controllers.PremiseController.GetPremiseByLocation(System.Decimal,System.Decimal)">
             <summary>
-            Gets the campus by location.
+            Gets the premise by location.
             </summary>
             <param name="latitude">The latitude.</param>
             <param name="longitude">The longitude.</param>
-            <returns>The campus detail if found else not found error response, or bad request error response if invalid parameters.</returns>
+            <returns>The premise detail if found else not found error response, or bad request error response if invalid parameters.</returns>
         </member>
-        <member name="M:RestService.Controllers.CampusController.AddCampus(RestService.Models.CampusModel)">
+        <member name="M:RestService.Controllers.PremiseController.AddPremise(RestService.Models.PremiseModel)">
             <summary>
-            Adds the campus.
+            Adds the premise.
             This API is accessible to only super admin user.
             </summary>
-            <param name="campusModel">The campus model.</param>
-            <returns>The campus created confirmation, or bad request error response if invalid parameters.</returns>
+            <param name="premiseModel">The premise model.</param>
+            <returns>The premise created confirmation, or bad request error response if invalid parameters.</returns>
         </member>
-        <member name="M:RestService.Controllers.CampusController.UpdateCampus(RestService.Models.CampusModel)">
+        <member name="M:RestService.Controllers.PremiseController.UpdatePremise(RestService.Models.PremiseModel)">
             <summary>
-            Updates the campus.
-            Campus id is required to update campus other fields are optional, passed only fields required to update.
+            Updates the premise.
+            Premise id is required to update premise other fields are optional, passed only fields required to update.
             </summary>
-            <param name="campusModel">The campus model.</param>
-            <returns>The campus update confirmation, or bad request error response if invalid parameters.</returns>
+            <param name="premiseModel">The premise model.</param>
+            <returns>The premise update confirmation, or bad request error response if invalid parameters.</returns>
         </member>
-        <member name="M:RestService.Controllers.CampusController.DeleteCampus(System.Int32)">
+        <member name="M:RestService.Controllers.PremiseController.DeletePremise(System.Int32)">
             <summary>
-            Deletes the campus for given campus identifier.
+            Deletes the premise for given premise identifier.
             This API is accessible to only super admin user.
             </summary>
-            <param name="campusId">The campus identifier.</param>
-            <returns>The campus deleted confirmation, or bad request error response if invalid parameters.</returns>
+            <param name="premiseID">The premise identifier.</param>
+            <returns>The premise deleted confirmation, or bad request error response if invalid parameters.</returns>
         </member>
-        <member name="M:RestService.Controllers.CampusController.AssignRoleToCampus(System.Collections.Generic.List{System.Int32},System.Int32)">
+        <member name="M:RestService.Controllers.PremiseController.AssignRoleToPremise(System.Collections.Generic.List{System.Int32},System.Int32)">
             <summary>
-            Assigns the role to campus.
+            Assigns the role to premise.
             This API is accessible to only super admin user.
             </summary>
             <param name="roleIds">The role ids.</param>
-            <param name="campusId">The campus identifier.</param>
+            <param name="premiseID">The premise identifier.</param>
             <returns>The role assigned confirmation, or bad request error response if invalid parameters.</returns>
         </member>
-        <member name="M:RestService.Controllers.CampusController.AddBuildingsToCampus(System.Int32,System.Collections.Generic.List{System.Int32})">
+        <member name="M:RestService.Controllers.PremiseController.AddBuildingsToPremise(System.Int32,System.Collections.Generic.List{System.Int32})">
             <summary>
-            Adds the buildings to campus.
+            Adds the buildings to premise.
             This API is accessible to only super admin user.
             </summary>
-            <param name="campusId">The campus identifier.</param>
+            <param name="premiseID">The premise identifier.</param>
             <param name="buildingIds">The building ids.</param>
             <returns>The building assigned confirmation, or bad request error response if invalid parameters.</returns>
         </member>
-        <member name="M:RestService.Controllers.CampusController.Dispose(System.Boolean)">
+        <member name="M:RestService.Controllers.PremiseController.Dispose(System.Boolean)">
             <summary>
             Releases the unmanaged resources that are used by the object and, optionally, releases the managed resources.
             </summary>
@@ -853,11 +853,11 @@
             <param name="buildingId">The building identifier.</param>
             <returns>The detail of consumption and prediction of current week.</returns>
         </member>
-        <member name="M:RestService.Controllers.InsightController.GetInsightDataByCampus(System.Int32)">
+        <member name="M:RestService.Controllers.InsightController.GetInsightDataByPremise(System.Int32)">
             <summary>
-            Gets the insight data by campus.
+            Gets the insight data by premise.
             </summary>
-            <param name="campusId">The campus identifier.</param>
+            <param name="premiseID">The premise identifier.</param>
             <returns>The detail of consumption and prediction of current week.</returns>
         </member>
         <member name="M:RestService.Controllers.InsightController.Dispose(System.Boolean)">
@@ -971,10 +971,10 @@
             <summary>
             Adds the pi server.
             It receive only multipart/form-data content-type.
-            Required fields - CampusId, PiServerName(must be unique), PiServerURL and CSV campus schedule file
+            Required fields - premiseId, PiServerName(must be unique), PiServerURL and CSV premise schedule file
             Sample request -
-            {  "PiServerID": 0,  "PiServerName": "", "PiServerDesc": "",  "CampusID": 1,  "PiServerURL": ""}
-            Campus schedule file with any name but must be CSV type.
+            {  "PiServerID": 0,  "PiServerName": "", "PiServerDesc": "",  "PremiseID": 1,  "PiServerURL": ""}
+            Premise schedule file with any name but must be CSV type.
             </summary>
             <returns>The PiServer added confirmation, or bad request error response if invalid parameters.</returns>
         </member>
@@ -984,8 +984,8 @@
             It receive only multipart/form-data content-type.
             Required fields - PiServerID and fields to update.
             Sample request -
-            {  "PiServerID": 0,  "PiServerName": "", "PiServerDesc": "",  "CampusID": 1,  "PiServerURL": ""}
-            Campus schedule file with any name but must be CSV type, it's optional post only to update existing campus schedule.
+            {  "PiServerID": 0,  "PiServerName": "", "PiServerDesc": "",  "PremiseID": 1,  "PiServerURL": ""}
+            Premise schedule file with any name but must be CSV type, it's optional post only to update existing premise schedule.
             </summary>
             <returns>The PiServer updated confirmation, or bad request error response if invalid parameters.</returns>
         </member>
@@ -1120,61 +1120,42 @@
             </summary>
             <param name="disposing">true to release both managed and unmanaged resources; false to release only unmanaged resources.</param>
         </member>
-        <member name="M:RestService.Controllers.UniversityController.#ctor">
+        <member name="M:RestService.Controllers.OrganizationController.#ctor">
             <summary>
-            Initializes a new instance of the <see cref="T:RestService.Controllers.UniversityController"/> class.
+            Initializes a new instance of the <see cref="T:RestService.Controllers.OrganizationController"/> class.
             </summary>
         </member>
-        <member name="M:RestService.Controllers.UniversityController.GetAllUniversities">
+        <member name="M:RestService.Controllers.OrganizationController.GetOrganization">
             <summary>
-            Gets all universities.
+            Gets organization.
             This API is accessible to only super admin user.
             </summary>
-            <returns>The university details.</returns>
+            <returns>The organization detail.</returns>
         </member>
-        <member name="M:RestService.Controllers.UniversityController.GetUniversityByID(System.Int32)">
+        <member name="M:RestService.Controllers.OrganizationController.AddOrganization">
             <summary>
-            Gets the university by identifier.
+            Adds the organization if not exist or update existing organization.
+            This API is accessible to only super admin user.
+            It receive only multipart/form-data content-type.
+            Required fields for new organization - OrganizationName.
+            For update only modified fields require.
+            Sample request -
+            {  "OrganizationName": "",  "OrganizationDesc": "", "OrganizationAddress": ""}.
+            Organization logo file with any name but must be image.
+            </summary>
+            <param name="organizationModel">The organization model.</param>
+            <returns>The organization added confirmation, or bad request error response if invalid parameters.</returns>
+        </member>
+        <member name="M:RestService.Controllers.OrganizationController.AddPremisesToOrganization(System.Int32,System.Collections.Generic.List{System.Int32})">
+            <summary>
+            Adds the premises to organization.
             This API is accessible to only super admin user.
             </summary>
-            <param name="universityID">The university identifier.</param>
-            <returns>The university detail if found else not found error response.</returns>
+            <param name="organizationId">The organization identifier.</param>
+            <param name="premiseIds">The premise ids.</param>
+            <returns>The premises added to organization confirmation, or bad request error response if invalid parameters.</returns>
         </member>
-        <member name="M:RestService.Controllers.UniversityController.AddUniversity(RestService.Models.UniversityModel)">
-            <summary>
-            Adds the university.
-            This API is accessible to only super admin user.
-            </summary>
-            <param name="universityModel">The university model.</param>
-            <returns>The university added confirmation, or bad request error response if invalid parameters.</returns>
-        </member>
-        <member name="M:RestService.Controllers.UniversityController.UpdateUniversity(RestService.Models.UniversityModel)">
-            <summary>
-            Updates the university.
-            University id is required to update university other fields are optional, passed only fields required to update.
-            This API is accessible to only super admin user.
-            </summary>
-            <param name="universityModel">The university model.</param>
-            <returns>The university updated confirmation, or bad request error response if invalid parameters.</returns>
-        </member>
-        <member name="M:RestService.Controllers.UniversityController.DeleteUniversity(System.Int32)">
-            <summary>
-            Deletes the university for given identifier.
-            This API is accessible to only super admin user.
-            </summary>
-            <param name="universityID">The university identifier.</param>
-            <returns>The university deleted confirmation.</returns>
-        </member>
-        <member name="M:RestService.Controllers.UniversityController.AddCampusToUniversity(System.Int32,System.Collections.Generic.List{System.Int32})">
-            <summary>
-            Adds the campus to university.
-            This API is accessible to only super admin user.
-            </summary>
-            <param name="universityId">The university identifier.</param>
-            <param name="campusIds">The campus ids.</param>
-            <returns>The campus added to university confirmation, or bad request error response if invalid parameters.</returns>
-        </member>
-        <member name="M:RestService.Controllers.UniversityController.Dispose(System.Boolean)">
+        <member name="M:RestService.Controllers.OrganizationController.Dispose(System.Boolean)">
             <summary>
             Releases the unmanaged resources that are used by the object and, optionally, releases the managed resources.
             </summary>
@@ -1186,11 +1167,11 @@
             </summary>
             <returns>The user detail.</returns>
         </member>
-        <member name="M:RestService.Controllers.UserController.GetCurrentUserWithCampus">
+        <member name="M:RestService.Controllers.UserController.GetCurrentUserWithPremise">
             <summary>
-            Gets the logged-in user with it's accessible campus.
+            Gets the logged-in user with it's accessible premise.
             </summary>
-            <returns>The user detail with campus.</returns>
+            <returns>The user detail with premise.</returns>
         </member>
         <member name="M:RestService.Controllers.UserController.GetAllUsers">
             <summary>
@@ -1289,7 +1270,7 @@
             Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
             </summary>
         </member>
-        <member name="M:RestService.Services.Impl.CampusService.System#IDisposable#Dispose">
+        <member name="M:RestService.Services.Impl.PremiseService.System#IDisposable#Dispose">
             <summary>
             Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
             </summary>
@@ -1364,7 +1345,7 @@
             Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
             </summary>
         </member>
-        <member name="M:RestService.Services.Impl.UniversityService.System#IDisposable#Dispose">
+        <member name="M:RestService.Services.Impl.OrganizationService.System#IDisposable#Dispose">
             <summary>
             Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
             </summary>
@@ -1495,6 +1476,15 @@
             </summary>
             <param name="blobStorageModel">The BLOB storage model.</param>
         </member>
+        <member name="M:RestService.Services.IBlobStorageService.GetBlobUri(RestService.Models.BlobStorageModel)">
+            <summary>
+            Gets the BLOB uri.
+            </summary>
+            <param name="blobStorageModel">The BLOB storage model.</param>
+            <returns>
+            The blob uri.
+            </returns>
+        </member>
         <member name="M:RestService.Services.IBuildingService.GetAllBuildings">
             <summary>
             Get all the Buildings
@@ -1510,12 +1500,12 @@
             Returns a specific Building by fetching based on BuildingID
             </returns>
         </member>
-        <member name="M:RestService.Services.IBuildingService.GetBuildingsByCampus(System.Int32)">
+        <member name="M:RestService.Services.IBuildingService.GetBuildingsByPremise(System.Int32)">
             <summary>
-            Gets the buildings by campus.
+            Gets the buildings by premise.
             </summary>
-            <param name="campusId">The campus identifier.</param>
-            <returns>Buildings associated with given campus id.</returns>
+            <param name="premiseID">The premise identifier.</param>
+            <returns>Buildings associated with given premise id.</returns>
         </member>
         <member name="M:RestService.Services.IBuildingService.GetBuildingByLocation(System.Decimal,System.Decimal)">
             <summary>
@@ -1550,74 +1540,74 @@
             Update acknowledgment.
             </returns>
         </member>
-        <member name="T:RestService.Services.ICampusService">
+        <member name="T:RestService.Services.IPremiseService">
             <summary>
-            Provides campus related operations.
+            Provides premise related operations.
             </summary>
         </member>
-        <member name="M:RestService.Services.ICampusService.GetAllCampus">
+        <member name="M:RestService.Services.IPremiseService.GetAllPremise">
             <summary>
-            Get all the campus
+            Get all the premise
             </summary>
-            <returns>Returns list of all campuses</returns>
+            <returns>Returns list of all premises</returns>
         </member>
-        <member name="M:RestService.Services.ICampusService.GetCampusByID(System.Int32)">
+        <member name="M:RestService.Services.IPremiseService.GetPremiseByID(System.Int32)">
             <summary>
-            Get a Campus by ID
+            Get a Premise by ID
             </summary>
-            <param name="campusId">The campus identifier.</param>
+            <param name="premiseID">The premise identifier.</param>
             <returns>
-            Returns a specific Campus by fetching based on CampusID
+            Returns a specific Premise by fetching based on PremiseID
             </returns>
         </member>
-        <member name="M:RestService.Services.ICampusService.GetCampusByLocation(System.Decimal,System.Decimal)">
+        <member name="M:RestService.Services.IPremiseService.GetPremiseByLocation(System.Decimal,System.Decimal)">
             <summary>
-            Gets the campus by location.
+            Gets the premise by location.
             </summary>
             <param name="latitude">The latitude.</param>
             <param name="longitude">The longitude.</param>
-            <returns>The campus situated at given location.</returns>
+            <returns>The premise situated at given location.</returns>
         </member>
-        <member name="M:RestService.Services.ICampusService.AddCampus(RestService.Models.CampusModel)">
+        <member name="M:RestService.Services.IPremiseService.AddPremise(RestService.Models.PremiseModel)">
             <summary>
-            Inserts a new Campus in system
+            Inserts a new Premise in system
             </summary>
-            <param name="model">Campus model</param>
+            <param name="model">Premise model</param>
             <returns>
             Insert acknowledgment.
             </returns>
         </member>
-        <member name="M:RestService.Services.ICampusService.DeleteCampus(System.Int32)">
+        <member name="M:RestService.Services.IPremiseService.DeletePremise(System.Int32)">
             <summary>
-            Removes an existing Campus from system
+            Removes an existing Premise from system
             </summary>
-            <param name="campusId">The campus identifier.</param>
+            <param name="premiseID">The premise identifier.</param>
             <returns>
             Delete acknowledgment.
             </returns>
         </member>
-        <member name="M:RestService.Services.ICampusService.UpdateCampus(RestService.Models.CampusModel)">
+        <member name="M:RestService.Services.IPremiseService.UpdatePremise(RestService.Models.PremiseModel)">
             <summary>
-            Updates information of an existing Campus
+            Updates information of an existing Premise
             </summary>
-            <param name="model">Campus model</param>
+            <param name="model">Premise model</param>
             <returns>Update acknowledgment</returns>
         </member>
-        <member name="M:RestService.Services.ICampusService.AssignRolesToCampus(System.Collections.Generic.List{System.Int32},System.Int32)">
+        <member name="M:RestService.Services.IPremiseService.AssignRolesToPremise(System.Collections.Generic.List{System.Int32},System.Int32)">
             <summary>
-            Assigns the roles to campus.
+            Assigns the roles to premise.
             </summary>
             <param name="roleIds">The role ids.</param>
-            <param name="campusId">The campus identifier.</param>
+            <param name="premiseID">The premise identifier.</param>
             <returns>
             Roles Assigned acknowledgment.
             </returns>
         </member>
-        <member name="M:RestService.Services.ICampusService.AddBuildingsToCampus(System.Int32,System.Collections.Generic.List{System.Int32})">
+        <member name="M:RestService.Services.IPremiseService.AddBuildingsToPremise(System.Int32,System.Collections.Generic.List{System.Int32})">
             <summary>
-            Adds the buildings to campus.
+            Adds the buildings to premise.
             </summary>
-            <param name="campusId">The campus identifier.</param>
+            <param name="premiseID">The premise identifier.</param>
             <param name="buildingIds">The building ids.</param>
             <returns>Association confirmation.</returns>
         </member>
@@ -1724,12 +1714,12 @@
             <param name="buildingId">The building identifier.</param>
             <returns>The consumption and prediction of electricity for given building.</returns>
         </member>
-        <member name="M:RestService.Services.IInsightService.GetInsightDataByCampus(System.Int32)">
+        <member name="M:RestService.Services.IInsightService.GetInsightDataByPremise(System.Int32)">
             <summary>
-            Gets the insight data by campus.
+            Gets the insight data by premise.
             </summary>
-            <param name="campusId">The campus identifier.</param>
-            <returns>The consumption and prediction of electricity for given campus.</returns>
+            <param name="premiseID">The premise identifier.</param>
+            <returns>The consumption and prediction of electricity for given premise.</returns>
         </member>
         <member name="T:RestService.Services.IMeterService">
             <summary>
@@ -1752,13 +1742,13 @@
             <param name="buildingId">The building identifier for which to get electricity consumption.</param>
             <returns>The current month consumption.</returns>
         </member>
-        <member name="M:RestService.Services.IMeterService.GetMonthlyConsumptionPerCampus(System.Int32)">
+        <member name="M:RestService.Services.IMeterService.GetMonthlyConsumptionPerPremise(System.Int32)">
             <summary>
-            Gets the meter monthly consumption per campus.
+            Gets the meter monthly consumption per premise.
             </summary>
-            <param name="campusId">The campus identifier.</param>
+            <param name="premiseID">The premise identifier.</param>
             <returns>
-            The current month electricity consumption per campus
+            The current month electricity consumption per premise
             </returns>
         </member>
         <member name="M:RestService.Services.IMeterService.GetMonthlyConsumptionPerBuildings(System.Int32)">
@@ -1987,49 +1977,31 @@
             </summary>
             <returns>The reset sensor confirmation. </returns>
         </member>
-        <member name="M:RestService.Services.IUniversityService.GetAllUniversities">
+        <member name="M:RestService.Services.IOrganizationService.GetOrganization">
             <summary>
-            Get all the universities
+            Get the organization.
             </summary>
-            <returns>Returns list of all universities</returns>
-        </member>
-        <member name="M:RestService.Services.IUniversityService.GetUniversityByID(System.Int32)">
-            <summary>
-            Get a university by ID
-            </summary>
-            <param name="universityID">University ID</param>
-            <returns>Returns a specific University by fetching based on UniversityID</returns>
-        </member>
-        <member name="M:RestService.Services.IUniversityService.AddUniversity(RestService.Models.UniversityModel)">
-            <summary>
-            Inserts a new University in system
-            </summary>
-            <param name="model">University model</param>
-            <returns>Insert acknowledgement</returns>
-        </member>
-        <member name="M:RestService.Services.IUniversityService.DeleteUniversity(System.Int32)">
-            <summary>
-            Removes an existing university from system
-            </summary>
-            <param name="universityId">The university identifier.</param>
             <returns>
-            Delete acknowledgement
+            Return organization.
             </returns>
         </member>
-        <member name="M:RestService.Services.IUniversityService.UpdateUniversity(RestService.Models.UniversityModel)">
+        <member name="M:RestService.Services.IOrganizationService.AddOrganization(RestService.Models.OrganizationModel)">
             <summary>
-            Updates information of an existing university
+            Inserts a new Organization in system if not exist or update existing organization.
+            Only one organization allowed.
             </summary>
-            <param name="model">University model</param>
-            <returns>Update acknowledgement</returns>
+            <param name="model">Organization model.</param>
+            <returns>Insert acknowledgement.</returns>
         </member>
-        <member name="M:RestService.Services.IUniversityService.AddCampusesToUniversity(System.Int32,System.Collections.Generic.List{System.Int32})">
+        <member name="M:RestService.Services.IOrganizationService.AddPremisesToOrganization(System.Int32,System.Collections.Generic.List{System.Int32})">
             <summary>
-            Adds the campuses to university.
+            Adds the premises to organization.
             </summary>
-            <param name="universityId">The university identifier.</param>
-            <param name="campusIds">The campus ids.</param>
-            <returns>Campus added to university confirmation</returns>
+            <param name="organizationId">The organization identifier.</param>
+            <param name="premiseIds">The premise ids.</param>
+            <returns>
+            Premise added to organization confirmation
+            </returns>
         </member>
         <member name="T:RestService.Services.IUserService">
             <summary>

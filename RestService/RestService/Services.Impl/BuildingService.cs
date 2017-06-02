@@ -45,9 +45,9 @@
             return buildingModels.FirstOrDefault();
         }
 
-        List<BuildingModel> IBuildingService.GetBuildingsByCampus(int campusId)
+        List<BuildingModel> IBuildingService.GetBuildingsByPremise(int premiseID)
         {
-            var buildings = this.dbContext.Building.WhereActiveAccessibleBuilding(b => b.Campus.CampusID == campusId);
+            var buildings = this.dbContext.Building.WhereActiveAccessibleBuilding(b => b.Premise.PremiseID == premiseID);
             var buildingModels = new BuildingModelMapping().Map(buildings).ToList();
 
             this.LinkConsumptionWithBuilding(buildingModels);
@@ -68,7 +68,7 @@
             var building = new Building();
             building.BuildingName = model.BuildingName;
             building.BuildingDesc = model.BuildingDesc;
-            building.CampusID = model.CampusID;
+            building.PremiseID = model.PremiseID;
             building.CreatedBy = this.context.Current.UserId;
             building.CreatedOn = DateTime.UtcNow;
             building.ModifiedBy = this.context.Current.UserId;

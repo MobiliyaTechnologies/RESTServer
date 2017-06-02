@@ -11,5 +11,7 @@
         public Stream Blob { get; set; }
 
         public string StorageContainer { get; set; }
+
+        public bool IsPublicContainer { get; set; }
     }
 }

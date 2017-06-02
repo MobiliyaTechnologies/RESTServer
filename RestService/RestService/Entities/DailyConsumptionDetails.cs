@@ -27,5 +27,6 @@ namespace RestService.Entities
         public Nullable<System.DateTime> Timestamp { get; set; }
         public Nullable<double> Visibility { get; set; }
         public Nullable<double> kW_System { get; set; }
+        public string PiServerName { get; set; }
     }
 }

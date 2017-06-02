@@ -29,45 +29,26 @@ namespace RestService.Entities
         public virtual DbSet<Alerts> Alerts { get; set; }
         public virtual DbSet<AnomalyOutput> AnomalyOutput { get; set; }
         public virtual DbSet<Answers> Answers { get; set; }
-        public virtual DbSet<AzureLiveData> AzureLiveData { get; set; }
+        public virtual DbSet<ApplicationConfiguration> ApplicationConfiguration { get; set; }
+        public virtual DbSet<ApplicationConfigurationEntry> ApplicationConfigurationEntry { get; set; }
         public virtual DbSet<Building> Building { get; set; }
-        public virtual DbSet<Campus> Campus { get; set; }
         public virtual DbSet<ClassroomDetails> ClassroomDetails { get; set; }
         public virtual DbSet<DailyConsumptionDetails> DailyConsumptionDetails { get; set; }
         public virtual DbSet<DailyConsumptionPrediction> DailyConsumptionPrediction { get; set; }
         public virtual DbSet<DimDate> DimDate { get; set; }
         public virtual DbSet<Feedback> Feedback { get; set; }
-        public virtual DbSet<HalfHourlyData> HalfHourlyData { get; set; }
-        public virtual DbSet<HalfYearlyData> HalfYearlyData { get; set; }
+        public virtual DbSet<LiveData> LiveData { get; set; }
         public virtual DbSet<MeterDetails> MeterDetails { get; set; }
         public virtual DbSet<MonthlyConsumptionDetails> MonthlyConsumptionDetails { get; set; }
-        public virtual DbSet<MSLiveData> MSLiveData { get; set; }
-        public virtual DbSet<Person> Person { get; set; }
+        public virtual DbSet<Organization> Organization { get; set; }
         public virtual DbSet<PiServer> PiServer { get; set; }
+        public virtual DbSet<Premise> Premise { get; set; }
         public virtual DbSet<Questions> Questions { get; set; }
         public virtual DbSet<Role> Role { get; set; }
         public virtual DbSet<SensorData> SensorData { get; set; }
         public virtual DbSet<SensorLiveData> SensorLiveData { get; set; }
         public virtual DbSet<SensorMaster> SensorMaster { get; set; }
-        public virtual DbSet<TempMSLiveData> TempMSLiveData { get; set; }
-        public virtual DbSet<University> University { get; set; }
         public virtual DbSet<User> User { get; set; }
-        public virtual DbSet<UserSession> UserSession { get; set; }
         public virtual DbSet<WeeklyConsumptionPrediction> WeeklyConsumptionPrediction { get; set; }
-        public virtual DbSet<PowergridAzureMLData> PowergridAzureMLData { get; set; }
-        public virtual DbSet<RoleBK> RoleBK { get; set; }
-        public virtual DbSet<TempMLData> TempMLData { get; set; }
-        public virtual DbSet<ApplicationConfigurationEntry> ApplicationConfigurationEntry { get; set; }
-        public virtual DbSet<AzureAlerts> AzureAlerts { get; set; }
-        public virtual DbSet<AzureAnomalyOutput> AzureAnomalyOutput { get; set; }
-        public virtual DbSet<AzureDailyConsumptionPrediction> AzureDailyConsumptionPrediction { get; set; }
-        public virtual DbSet<AzureWeeklyConsumptionPrediction> AzureWeeklyConsumptionPrediction { get; set; }
-        public virtual DbSet<DailyConsumptionAzureDetails> DailyConsumptionAzureDetails { get; set; }
-        public virtual DbSet<MonthlyConsumptionAzureDetails> MonthlyConsumptionAzureDetails { get; set; }
-        public virtual DbSet<QueueLiveData> QueueLiveData { get; set; }
-        public virtual DbSet<SensorAzureLiveData> SensorAzureLiveData { get; set; }
-        public virtual DbSet<SensorAzureMaster> SensorAzureMaster { get; set; }
-        public virtual DbSet<ApplicationConfiguration> ApplicationConfiguration { get; set; }
-        public virtual DbSet<AzureMeterDetails> AzureMeterDetails { get; set; }
     }
 }

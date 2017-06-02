@@ -7,6 +7,7 @@
     using RestService.Enums;
     using RestService.Mappings;
     using RestService.Models;
+    using RestService.Utilities;
 
     public class ApplicationConfigurationService : IApplicationConfigurationService, IDisposable
     {
@@ -29,6 +30,32 @@
             if (applicationConfiguration == null)
             {
                 return new ResponseModel(StatusCode.Error, "Invalid application configuration type.");
+            }
+
+            // adding notificationClickActionEntry in database required for data services component.
+            if (applicationConfigurationModel.ApplicationConfigurationType.Trim().Equals(ApiConstant.FirebaseApplicationConfiguration, StringComparison.InvariantCultureIgnoreCase))
+            {
+                var notificationClickActionEntry = applicationConfiguration.ApplicationConfigurationEntry.FirstOrDefault(e => e.ConfigurationKey.Equals(ApiConstant.NotificationClickActionKey, StringComparison.InvariantCultureIgnoreCase));
+
+                if (notificationClickActionEntry == null)
+                {
+                    var configEntry = new ApplicationConfigurationEntry()
+                    {
+                        ConfigurationKey = ApiConstant.NotificationClickActionKey,
+                        ConfigurationValue = ApiConfiguration.NotificationClickAction,
+                        ApplicationConfigurationId = applicationConfiguration.Id,
+                        CreatedBy = this.context.Current.UserId,
+                        CreatedOn = DateTime.UtcNow
+                    };
+
+                    this.dbContext.ApplicationConfigurationEntry.Add(configEntry);
+                }
+                else if (!notificationClickActionEntry.ConfigurationValue.Equals(ApiConfiguration.NotificationClickAction, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    notificationClickActionEntry.ConfigurationValue = ApiConfiguration.NotificationClickAction;
+                    notificationClickActionEntry.ModifiedBy = this.context.Current.UserId;
+                    notificationClickActionEntry.ModifiedOn = DateTime.UtcNow;
+                }
             }
 
             foreach (var applicationConfigurationEntry in applicationConfigurationModel.ApplicationConfigurationEntries)

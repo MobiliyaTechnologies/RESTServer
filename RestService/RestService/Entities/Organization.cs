@@ -12,36 +12,30 @@ namespace RestService.Entities
     using System;
     using System.Collections.Generic;
     
-    public partial class Campus
+    public partial class Organization
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Campus()
+        public Organization()
         {
-            this.Building = new HashSet<Building>();
-            this.PiServer = new HashSet<PiServer>();
-            this.Role = new HashSet<Role>();
+            this.Premise = new HashSet<Premise>();
+            this.Premise1 = new HashSet<Premise>();
         }
     
-        public int CampusID { get; set; }
-        public string CampusName { get; set; }
-        public string CampusDesc { get; set; }
-        public int UniversityID { get; set; }
+        public int OrganizationID { get; set; }
+        public string OrganizationName { get; set; }
+        public string OrganizationDesc { get; set; }
+        public string OrganizationAddress { get; set; }
         public bool IsActive { get; set; }
         public Nullable<int> CreatedBy { get; set; }
         public Nullable<System.DateTime> CreatedOn { get; set; }
         public Nullable<int> ModifiedBy { get; set; }
         public Nullable<System.DateTime> ModifiedOn { get; set; }
         public bool IsDeleted { get; set; }
-        public decimal Longitude { get; set; }
-        public decimal Latitude { get; set; }
+        public string OrganizationLogo { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Building> Building { get; set; }
-        public virtual University University { get; set; }
+        public virtual ICollection<Premise> Premise { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PiServer> PiServer { get; set; }
-        public virtual University University1 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Role> Role { get; set; }
+        public virtual ICollection<Premise> Premise1 { get; set; }
     }
 }

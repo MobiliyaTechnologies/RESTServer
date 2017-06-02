@@ -85,10 +85,10 @@
                 statusCode = HttpStatusCode.BadRequest;
                 messages = "Invalid role model.";
             }
-            else if (roleModel.CampusIds.Count == 0)
+            else if (roleModel.PremiseIds.Count == 0)
             {
                 statusCode = HttpStatusCode.BadRequest;
-                messages = "Role must be created with campus ids.";
+                messages = "Role must be created with premise ids.";
             }
             else if (this.ModelState.IsValid)
             {

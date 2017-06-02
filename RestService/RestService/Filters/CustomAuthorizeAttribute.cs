@@ -52,7 +52,7 @@
                 userService = new UserService();
                 roleService = new RoleService();
 
-                userModel = userService.GetCurrentUser(this.GetClaimValue(B2C_ClaimTypes.ObjectIdentifier));
+                userModel = userService.GetCurrentUser(this.GetClaimValue(ApiConstant.B2cClaimObjectIdentifier));
 
                 if (userModel == null)
                 {
@@ -60,10 +60,10 @@
 
                     userModel = new UserModel
                     {
-                        B2C_ObjectIdentifier = this.GetClaimValue(B2C_ClaimTypes.ObjectIdentifier),
-                        FirstName = this.GetClaimValue(B2C_ClaimTypes.FirstName),
-                        LastName = this.GetClaimValue(B2C_ClaimTypes.LastName),
-                        Email = this.GetClaimValue(B2C_ClaimTypes.Email),
+                        B2C_ObjectIdentifier = this.GetClaimValue(ApiConstant.B2cClaimObjectIdentifier),
+                        FirstName = this.GetClaimValue(ApiConstant.B2cClaimFirstName),
+                        LastName = this.GetClaimValue(ApiConstant.B2cClaimLastName),
+                        Email = this.GetClaimValue(ApiConstant.B2cClaimEmail),
                         RoleId = newUserRole.Id
                     };
                     userModel.UserId = userService.CreateUser(userModel);

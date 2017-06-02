@@ -26,13 +26,13 @@
         List<MeterMonthlyConsumptionModel> GetMeterMonthlyConsumption(int buildingId);
 
         /// <summary>
-        /// Gets the meter monthly consumption per campus.
+        /// Gets the meter monthly consumption per premise.
         /// </summary>
-        /// <param name="campusId">The campus identifier.</param>
+        /// <param name="premiseID">The premise identifier.</param>
         /// <returns>
-        /// The current month electricity consumption per campus
+        /// The current month electricity consumption per premise
         /// </returns>
-        double GetMonthlyConsumptionPerCampus(int campusId);
+        double GetMonthlyConsumptionPerPremise(int premiseID);
 
         /// <summary>
         /// Gets the meter monthly consumption per building.

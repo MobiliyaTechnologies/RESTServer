@@ -37,7 +37,7 @@
                 foreach (var meterdetail in meterdetails)
                 {
                     var dailyConsumptionDetail = this.dbContext.DailyConsumptionDetails.Where(data =>
-                                            meterdetail.Serial.Equals(data.PowerScout, StringComparison.InvariantCultureIgnoreCase)
+                                            meterdetail.PowerScout.Equals(data.PowerScout, StringComparison.InvariantCultureIgnoreCase)
                                            && data.Timestamp.HasValue
                                            && today.Day == data.Timestamp.Value.Day
                                            && today.Month == data.Timestamp.Value.Month
@@ -77,7 +77,7 @@
 
                     if (isVaslidDate)
                     {
-                        dailyConsumptionPredictions = this.GetDailyConsumtionPredictionForMonth(meterdetail.Serial, monthDate);
+                        dailyConsumptionPredictions = this.GetDailyConsumtionPredictionForMonth(meterdetail.PowerScout, monthDate);
                     }
 
                     if (dailyConsumptionPredictions != null && dailyConsumptionPredictions.Count() > 0)
@@ -110,7 +110,7 @@
 
                     if (isVaslidDate)
                     {
-                        meterDailyConsumption = this.GetDailyConsumtionDetailsForMonth(meterDetail.Serial, monthDate);
+                        meterDailyConsumption = this.GetDailyConsumtionDetailsForMonth(meterDetail.PowerScout, monthDate);
                     }
 
                     if (meterDailyConsumption != null && meterDailyConsumption.Count() > 0)
@@ -149,7 +149,7 @@
 
                     if (isVaslidDate)
                     {
-                        dailyConsumptionPredictions = this.GetDailyConsumtionPredictionForMonth(meterdetail.Serial, monthDate);
+                        dailyConsumptionPredictions = this.GetDailyConsumtionPredictionForMonth(meterdetail.PowerScout, monthDate);
                     }
 
                     if (dailyConsumptionPredictions != null && dailyConsumptionPredictions.Count() > 0)
@@ -180,7 +180,7 @@
 
             foreach (var meterDetail in meterDetails)
             {
-                var monthlyConsumptionDetail = this.dbContext.MonthlyConsumptionDetails.FirstOrDefault(m => m.PowerScout.Equals(meterDetail.Serial, StringComparison.InvariantCultureIgnoreCase) && m.Month.Equals(currentMonth, StringComparison.InvariantCultureIgnoreCase) && m.Year.Equals(DateTime.UtcNow.Year.ToString()));
+                var monthlyConsumptionDetail = this.dbContext.MonthlyConsumptionDetails.FirstOrDefault(m => m.PowerScout.Equals(meterDetail.PowerScout, StringComparison.InvariantCultureIgnoreCase) && m.Month.Equals(currentMonth, StringComparison.InvariantCultureIgnoreCase) && m.Year.Equals(DateTime.UtcNow.Year.ToString()));
 
                 MeterMonthlyConsumptionModel meterMonthlyConsumption = monthlyConsumptionDetail == null ? new MeterMonthlyConsumptionModel { Powerscout = meterDetail.PowerScout }
                                                                                     : new MeterMonthlyConsumptionModelMapping().Map(monthlyConsumptionDetail);
@@ -192,16 +192,16 @@
             return meterMonthlyConsumptionModels;
         }
 
-        double IMeterService.GetMonthlyConsumptionPerCampus(int campusId)
+        double IMeterService.GetMonthlyConsumptionPerPremise(int premiseID)
         {
-            var meterDetails = this.GetMeterDetailsPerCampus(campusId);
+            var meterDetails = this.GetMeterDetailsPerPremise(premiseID);
             string currentMonth = DateTime.UtcNow.ToString("MMM");
 
             double monthly_KWH_Consumption = default(double);
 
             foreach (var meterDetail in meterDetails)
             {
-                var monthlyConsumptionDetail = this.dbContext.MonthlyConsumptionDetails.FirstOrDefault(m => m.PowerScout.Equals(meterDetail.Serial, StringComparison.InvariantCultureIgnoreCase) && m.Month.Equals(currentMonth, StringComparison.InvariantCultureIgnoreCase));
+                var monthlyConsumptionDetail = this.dbContext.MonthlyConsumptionDetails.FirstOrDefault(m => m.PowerScout.Equals(meterDetail.PowerScout, StringComparison.InvariantCultureIgnoreCase) && m.Month.Equals(currentMonth, StringComparison.InvariantCultureIgnoreCase));
 
                 if (monthlyConsumptionDetail != null && monthlyConsumptionDetail.Monthly_KWH_System.HasValue)
                 {
@@ -221,7 +221,7 @@
 
             foreach (var meterDetail in meterDetails)
             {
-                var monthlyConsumptionDetail = this.dbContext.MonthlyConsumptionDetails.FirstOrDefault(m => m.PowerScout.Equals(meterDetail.Serial, StringComparison.InvariantCultureIgnoreCase) && m.Month.Equals(currentMonth, StringComparison.InvariantCultureIgnoreCase));
+                var monthlyConsumptionDetail = this.dbContext.MonthlyConsumptionDetails.FirstOrDefault(m => m.PowerScout.Equals(meterDetail.PowerScout, StringComparison.InvariantCultureIgnoreCase) && m.Month.Equals(currentMonth, StringComparison.InvariantCultureIgnoreCase));
 
                 if (monthlyConsumptionDetail != null && monthlyConsumptionDetail.Monthly_KWH_System.HasValue)
                 {
@@ -297,7 +297,7 @@
 
                     if (isVaslidDate)
                     {
-                        dailyConsumptionDetailsForMonth = this.GetDailyConsumtionDetailsForMonth(meterDetail.Serial, monthDate);
+                        dailyConsumptionDetailsForMonth = this.GetDailyConsumtionDetailsForMonth(meterDetail.PowerScout, monthDate);
                     }
 
                     if (dailyConsumptionDetailsForMonth != null && dailyConsumptionDetailsForMonth.Count() > 0)
@@ -332,7 +332,7 @@
 
                     if (isVaslidDate)
                     {
-                        dailyConsumptionDetailsForMonth = this.GetDailyConsumtionDetailsForMonth(meterDetail.Serial, monthDate);
+                        dailyConsumptionDetailsForMonth = this.GetDailyConsumtionDetailsForMonth(meterDetail.PowerScout, monthDate);
                     }
 
                     if (dailyConsumptionDetailsForMonth == null || dailyConsumptionDetailsForMonth.Count() < 1)
@@ -371,13 +371,13 @@
 
             foreach (var meterDetail in meterDetails)
             {
-                var monthlyConsumptionDetails = this.dbContext.MonthlyConsumptionDetails.Where(m => m.PowerScout.Equals(meterDetail.Serial, StringComparison.InvariantCultureIgnoreCase) && m.Year.Equals(year.ToString()));
+                var monthlyConsumptionDetails = this.dbContext.MonthlyConsumptionDetails.Where(m => m.PowerScout.Equals(meterDetail.PowerScout, StringComparison.InvariantCultureIgnoreCase) && m.Year.Equals(year.ToString()));
 
                 MeterMonthWiseConsumptionModel meterMonthWiseConsumption = this.GetMeterMonthWiseConsumption(monthlyConsumptionDetails);
 
                 if (meterMonthWiseConsumption != null)
                 {
-                    meterMonthWiseConsumption.PowerScout = meterDetail.Serial;
+                    meterMonthWiseConsumption.PowerScout = meterDetail.PowerScout;
                     meterMonthWiseConsumption.Name = meterDetail.Breaker_details;
                     meterDataList.Add(meterMonthWiseConsumption);
                 }
@@ -561,9 +561,9 @@
             return meterdetails;
         }
 
-        private IQueryable<MeterDetails> GetMeterDetailsPerCampus(int campusId)
+        private IQueryable<MeterDetails> GetMeterDetailsPerPremise(int premiseID)
         {
-            var meterdetails = this.dbContext.MeterDetails.WhereActiveAccessibleMeterDetails(m => m.Building.Campus.CampusID == campusId);
+            var meterdetails = this.dbContext.MeterDetails.WhereActiveAccessibleMeterDetails(m => m.Building.Premise.PremiseID == premiseID);
             return meterdetails;
         }
     }

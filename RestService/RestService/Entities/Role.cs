@@ -18,7 +18,7 @@ namespace RestService.Entities
         public Role()
         {
             this.User = new HashSet<User>();
-            this.Campus = new HashSet<Campus>();
+            this.Premise = new HashSet<Premise>();
         }
     
         public int Id { get; set; }
@@ -34,6 +34,6 @@ namespace RestService.Entities
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<User> User { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Campus> Campus { get; set; }
+        public virtual ICollection<Premise> Premise { get; set; }
     }
 }

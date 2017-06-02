@@ -21,10 +21,10 @@
         InsightDataModel GetInsightDataByBuilding(int buildingId);
 
         /// <summary>
-        /// Gets the insight data by campus.
+        /// Gets the insight data by premise.
         /// </summary>
-        /// <param name="campusId">The campus identifier.</param>
-        /// <returns>The consumption and prediction of electricity for given campus.</returns>
-        InsightDataModel GetInsightDataByCampus(int campusId);
+        /// <param name="premiseID">The premise identifier.</param>
+        /// <returns>The consumption and prediction of electricity for given premise.</returns>
+        InsightDataModel GetInsightDataByPremise(int premiseID);
     }
 }

@@ -87,10 +87,10 @@
         /// <summary>
         /// Adds the pi server.
         /// It receive only multipart/form-data content-type.
-        /// Required fields - CampusId, PiServerName(must be unique), PiServerURL and CSV campus schedule file
+        /// Required fields - premiseId, PiServerName(must be unique), PiServerURL and CSV premise schedule file
         /// Sample request -
-        /// {  "PiServerID": 0,  "PiServerName": "", "PiServerDesc": "",  "CampusID": 1,  "PiServerURL": ""}
-        /// Campus schedule file with any name but must be CSV type.
+        /// {  "PiServerID": 0,  "PiServerName": "", "PiServerDesc": "",  "PremiseID": 1,  "PiServerURL": ""}
+        /// Premise schedule file with any name but must be CSV type.
         /// </summary>
         /// <returns>The PiServer added confirmation, or bad request error response if invalid parameters.</returns>
         [Route("AddPiServer")]
@@ -100,9 +100,9 @@
         {
             var model = this.GetPiServerModelFromRequest().Result;
 
-            if (model.CampusID == 0 || string.IsNullOrWhiteSpace(model.PiServerName) || string.IsNullOrWhiteSpace(model.PiServerURL) || model.CampusScheduleFile == null)
+            if (model.PremiseID == 0 || string.IsNullOrWhiteSpace(model.PiServerName) || string.IsNullOrWhiteSpace(model.PiServerURL) || model.PremiseScheduleFile == null)
             {
-                return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Missing required fields - CampusId, PiServerName, PiServerURL or CSV campus schedule file.");
+                return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Missing required fields - premiseId, PiServerName, PiServerURL or CSV premise schedule file.");
             }
 
             var data = this.piServerService.AddPiServer(model);
@@ -114,8 +114,8 @@
         /// It receive only multipart/form-data content-type.
         /// Required fields - PiServerID and fields to update.
         /// Sample request -
-        /// {  "PiServerID": 0,  "PiServerName": "", "PiServerDesc": "",  "CampusID": 1,  "PiServerURL": ""}
-        /// Campus schedule file with any name but must be CSV type, it's optional post only to update existing campus schedule.
+        /// {  "PiServerID": 0,  "PiServerName": "", "PiServerDesc": "",  "PremiseID": 1,  "PiServerURL": ""}
+        /// Premise schedule file with any name but must be CSV type, it's optional post only to update existing premise schedule.
         /// </summary>
         /// <returns>The PiServer updated confirmation, or bad request error response if invalid parameters.</returns>
         [Route("UpdatePiServer")]
@@ -179,15 +179,15 @@
 
             if (fileContent != null)
             {
-                piServerModel.CampusScheduleFile = await fileContent.ReadAsStreamAsync();
-                piServerModel.CampusScheduleFileType = fileContent.Headers.ContentType.ToString();
+                piServerModel.PremiseScheduleFile = await fileContent.ReadAsStreamAsync();
+                piServerModel.PremiseScheduleFileType = fileContent.Headers.ContentType.ToString();
             }
 
             piServerModel.PiServerName = this.GetFormDataValue(formDataContents, "PiServerName");
             piServerModel.PiServerDesc = this.GetFormDataValue(formDataContents, "PiServerDesc");
             piServerModel.PiServerURL = this.GetFormDataValue(formDataContents, "PiServerURL");
             piServerModel.PiServerID = Convert.ToInt32(this.GetFormDataValue(formDataContents, "PiServerID"));
-            piServerModel.CampusID = Convert.ToInt32(this.GetFormDataValue(formDataContents, "campusId"));
+            piServerModel.PremiseID = Convert.ToInt32(this.GetFormDataValue(formDataContents, "premiseID"));
 
             return piServerModel;
         }
