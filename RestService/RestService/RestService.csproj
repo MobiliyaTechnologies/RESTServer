@@ -405,7 +405,7 @@
     <Compile Include="Mappings\AnswerModelMapping.cs" />
     <Compile Include="Mappings\BuildingModelMapping.cs" />
     <Compile Include="Mappings\PremiseModelMapping.cs" />
-    <Compile Include="Mappings\ClassroomModelMapping.cs" />
+    <Compile Include="Mappings\RoomModelMapping.cs" />
     <Compile Include="Mappings\FeedbackModelMappings.cs" />
     <Compile Include="Mappings\MeterDailyConsumptionModelMapping.cs" />
     <Compile Include="Mappings\MeterDetailsModelMapping.cs" />
