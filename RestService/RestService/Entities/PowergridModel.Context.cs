@@ -32,7 +32,6 @@ namespace RestService.Entities
         public virtual DbSet<ApplicationConfiguration> ApplicationConfiguration { get; set; }
         public virtual DbSet<ApplicationConfigurationEntry> ApplicationConfigurationEntry { get; set; }
         public virtual DbSet<Building> Building { get; set; }
-        public virtual DbSet<ClassroomDetails> ClassroomDetails { get; set; }
         public virtual DbSet<DailyConsumptionDetails> DailyConsumptionDetails { get; set; }
         public virtual DbSet<DailyConsumptionPrediction> DailyConsumptionPrediction { get; set; }
         public virtual DbSet<DimDate> DimDate { get; set; }
@@ -45,6 +44,7 @@ namespace RestService.Entities
         public virtual DbSet<Premise> Premise { get; set; }
         public virtual DbSet<Questions> Questions { get; set; }
         public virtual DbSet<Role> Role { get; set; }
+        public virtual DbSet<RoomDetail> RoomDetail { get; set; }
         public virtual DbSet<SensorData> SensorData { get; set; }
         public virtual DbSet<SensorLiveData> SensorLiveData { get; set; }
         public virtual DbSet<SensorMaster> SensorMaster { get; set; }

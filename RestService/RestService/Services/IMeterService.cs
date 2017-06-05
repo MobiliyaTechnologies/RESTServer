@@ -59,16 +59,6 @@
         List<MeterMonthWiseConsumptionModel> GetMonthWiseConsumption(int buildingId, int year);
 
         /// <summary>
-        /// Gets the month wise consumption for offset.
-        /// </summary>
-        /// <param name="buildingId">The building identifier for which to get electricity consumption.</param>
-        /// <param name="month">The month.</param>
-        /// <param name="year">The year.</param>
-        /// <param name="offset">The offset.</param>
-        /// <returns>The consumption for given period.</returns>
-        List<MeterMonthWiseConsumptionModel> GetMonthWiseConsumptionForOffset(int buildingId, string month, int year, int offset);
-
-        /// <summary>
         /// Gets the week wise monthly consumption.
         /// </summary>
         /// <param name="buildingId">The building identifier for which to get electricity consumption.</param>
@@ -76,16 +66,6 @@
         /// <param name="year">The year.</param>
         /// <returns>The week wise consumption for given month and year.</returns>
         List<MeterWeekWiseMonthlyConsumptionModel> GetWeekWiseMonthlyConsumption(int buildingId, string month, int year);
-
-        /// <summary>
-        /// Gets the week wise monthly consumption for offset.
-        /// </summary>
-        /// <param name="buildingId">The building identifier for which to get electricity consumption.</param>
-        /// <param name="month">The month.</param>
-        /// <param name="year">The year.</param>
-        /// <param name="offset">The offset.</param>
-        /// <returns>The week wise consumption for given period.</returns>
-        List<MeterWeekWiseMonthlyConsumptionModel> GetWeekWiseMonthlyConsumptionForOffset(int buildingId, string month, int year, int offset);
 
         /// <summary>
         /// Gets the day wise monthly consumption.

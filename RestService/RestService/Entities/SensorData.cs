@@ -16,7 +16,7 @@ namespace RestService.Entities
     {
         public int Sensor_Log_Id { get; set; }
         public int Sensor_Id { get; set; }
-        public Nullable<int> Class_Id { get; set; }
+        public Nullable<int> Room_Id { get; set; }
         public Nullable<byte> Is_Light_ON { get; set; }
         public Nullable<double> Temperature { get; set; }
         public Nullable<double> Light_Intensity { get; set; }

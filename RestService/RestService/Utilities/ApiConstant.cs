@@ -18,6 +18,6 @@
 
         public static readonly string NotificationClickActionKey = "NotificationClickAction";
 
-
+        public static readonly string CsvFileType = ".csv";
     }
 }

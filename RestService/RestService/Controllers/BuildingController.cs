@@ -99,34 +99,6 @@
         }
 
         /// <summary>
-        /// Adds the building.
-        /// </summary>
-        /// <param name="buildingModel">The building model.</param>
-        /// <returns>The building created confirmation, or bad request error response if invalid parameters.</returns>
-        [Route("AddBuilding")]
-        [CustomAuthorize(UserRole = UserRole.SuperAdmin)]
-        [OverrideAuthorization]
-        [HttpPost]
-        [ResponseType(typeof(ResponseModel))]
-        public HttpResponseMessage AddBuilding([FromBody] BuildingModel buildingModel)
-        {
-            if (buildingModel == null)
-            {
-                return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Invalid building model.");
-            }
-
-            if (this.ModelState.IsValid)
-            {
-                var data = this.buildingService.AddBuilding(buildingModel);
-                return this.Request.CreateResponse(HttpStatusCode.OK, data);
-            }
-
-            // Create an error message for returning
-            string messages = string.Join("; ", this.ModelState.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage));
-            return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, messages);
-        }
-
-        /// <summary>
         /// Updates the building.
         /// Building id is required to update building details other fields are optional, passed only fields required to update.
         /// Building name and description are only modifiable fields.
@@ -144,25 +116,6 @@
             }
 
             var data = this.buildingService.UpdateBuilding(buildingModel);
-            return this.Request.CreateResponse(HttpStatusCode.OK, data);
-        }
-
-        /// <summary>
-        /// Deletes the building for given id.
-        /// </summary>
-        /// <param name="buildingId">The building identifier.</param>
-        /// <returns>The building deleted confirmation, or bad request error response if invalid parameters.</returns>
-        [Route("DeleteBuilding/{buildingId}")]
-        [HttpDelete]
-        [ResponseType(typeof(ResponseModel))]
-        public HttpResponseMessage DeleteBuilding(int buildingId)
-        {
-            if (buildingId < 1)
-            {
-                return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Building id must be grater than 0");
-            }
-
-            var data = this.buildingService.DeleteBuilding(buildingId);
             return this.Request.CreateResponse(HttpStatusCode.OK, data);
         }
 

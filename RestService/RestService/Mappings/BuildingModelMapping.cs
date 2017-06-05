@@ -16,9 +16,9 @@
                        BuildingID = s.BuildingID,
                        BuildingName = s.BuildingName,
                        BuildingDesc = s.BuildingDesc,
-                       PremiseID = s.PremiseID,
-                       Latitude = s.Latitude,
-                       Longitude = s.Longitude
+                       PremiseID = s.PremiseID ?? default(int),
+                       Latitude = s.Latitude ?? default(decimal),
+                       Longitude = s.Longitude ?? default(decimal)
                    };
         }
 

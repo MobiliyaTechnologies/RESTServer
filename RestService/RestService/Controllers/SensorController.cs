@@ -36,7 +36,7 @@
         }
 
         /// <summary>
-        /// Gets all sensors mapped to class.
+        /// Gets all sensors mapped to room.
         /// </summary>
         /// <returns>The sensor details.</returns>
         [Route("GetAllMapSensors")]
@@ -48,7 +48,7 @@
         }
 
         /// <summary>
-        /// Gets all sensors unmapped to class.
+        /// Gets all sensors unmapped to room.
         /// </summary>
         /// <returns>The sensor details.</returns>
         [Route("GetAllUnMapSensors")]
@@ -60,40 +60,40 @@
         }
 
         /// <summary>
-        /// Maps the sensor to class.
+        /// Maps the sensor to room.
         /// </summary>
         /// <param name="sensorId">The sensor identifier.</param>
-        /// <param name="classId">The class identifier.</param>
-        /// <returns>The sensor class mapping confirmation, or bad request error response if invalid parameters.</returns>
-        [Route("MapSensor/{sensorId}/{classId}")]
+        /// <param name="roomId">The room identifier.</param>
+        /// <returns>The sensor room mapping confirmation, or bad request error response if invalid parameters.</returns>
+        [Route("MapSensor/{sensorId}/{roomId}")]
         [HttpPut]
         [ResponseType(typeof(ResponseModel))]
-        public HttpResponseMessage MapSensor(int sensorId, int classId)
+        public HttpResponseMessage MapSensor(int sensorId, int roomId)
         {
-            if (sensorId < 1 || classId < 1)
+            if (sensorId < 1 || roomId < 1)
             {
-                return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Invalid sensor id or class id");
+                return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Invalid sensor id or room id");
             }
 
-            var data = this.sensorService.MapSensor(sensorId, classId);
+            var data = this.sensorService.MapSensor(sensorId, roomId);
             return this.Request.CreateResponse(HttpStatusCode.OK, data);
         }
 
         /// <summary>
-        /// Gets all sensors for class.
+        /// Gets all sensors for room.
         /// </summary>
-        /// <param name="classId">The class identifier.</param>
+        /// <param name="roomId">The room identifier.</param>
         /// <returns>The sensor details, or bad request error response if invalid parameters.</returns>
-        [Route("GetAllSensorsForClass/{classId}")]
+        [Route("GetAllSensorsForRoom/{roomId}")]
         [ResponseType(typeof(List<SensorModel>))]
-        public HttpResponseMessage GetAllSensorsForClass(int classId)
+        public HttpResponseMessage GetAllSensorsForRoom(int roomId)
         {
-            if (classId < 1)
+            if (roomId < 1)
             {
-                return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Invalid class id.");
+                return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Invalid room id.");
             }
 
-            var data = this.sensorService.GetAllSensorsForClass(classId);
+            var data = this.sensorService.GetAllSensorsForRoom(roomId);
             return this.Request.CreateResponse(HttpStatusCode.OK, data);
         }
 

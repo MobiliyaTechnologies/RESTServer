@@ -1,12 +1,12 @@
 ﻿namespace RestService.Models
 {
-    public class ClassroomModel
+    public class RoomModel
     {
-        public int ClassId { get; set; }
+        public int RoomId { get; set; }
 
-        public string ClassName { get; set; }
+        public string RoomName { get; set; }
 
-        public string ClassDescription { get; set; }
+        public string RoomDescription { get; set; }
 
         public int SensorId { get; set; }
 

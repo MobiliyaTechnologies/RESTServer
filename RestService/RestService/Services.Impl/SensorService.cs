@@ -22,13 +22,13 @@
         List<SensorModel> ISensorService.GetAllSensors()
         {
             var sensorModels = (from sensor in this.dbContext.SensorMaster
-                                let classRoomDetail = this.dbContext.ClassroomDetails.FirstOrDefault(c => c.Class_Id == sensor.Class_Id)
+                                let roomDetail = this.dbContext.RoomDetail.FirstOrDefault(c => c.Room_Id == sensor.Room_Id)
                                 select new SensorModel
                                 {
-                                    Class_Id = classRoomDetail.Class_Id,
-                                    Class_X = classRoomDetail.X,
-                                    Class_Y = classRoomDetail.Y,
-                                    Class_Name = classRoomDetail.Class_Name,
+                                    Room_Id = roomDetail.Room_Id,
+                                    Room_X = roomDetail.X,
+                                    Room_Y = roomDetail.Y,
+                                    Room_Name = roomDetail.Room_Name,
                                     X = sensor.X,
                                     Y = sensor.Y,
                                     Sensor_Id = sensor.Sensor_Id,
@@ -42,14 +42,14 @@
 
         List<SensorModel> ISensorService.GetAllMapSensors()
         {
-            var sensorModels = (from sensor in this.dbContext.SensorMaster.Where(s => s.Class_Id.HasValue && s.Class_Id > 0)
-                                let classRoomDetail = this.dbContext.ClassroomDetails.FirstOrDefault(c => c.Class_Id == sensor.Class_Id)
+            var sensorModels = (from sensor in this.dbContext.SensorMaster.Where(s => s.Room_Id.HasValue && s.Room_Id > 0)
+                                let roomDetail = this.dbContext.RoomDetail.FirstOrDefault(c => c.Room_Id == sensor.Room_Id)
                                 select new SensorModel
                                 {
-                                    Class_Id = classRoomDetail.Class_Id,
-                                    Class_X = classRoomDetail.X,
-                                    Class_Y = classRoomDetail.Y,
-                                    Class_Name = classRoomDetail.Class_Name,
+                                    Room_Id = roomDetail.Room_Id,
+                                    Room_X = roomDetail.X,
+                                    Room_Y = roomDetail.Y,
+                                    Room_Name = roomDetail.Room_Name,
                                     X = sensor.X,
                                     Y = sensor.Y,
                                     Sensor_Id = sensor.Sensor_Id,
@@ -64,7 +64,7 @@
         List<SensorModel> ISensorService.GetAllUnMapSensors()
         {
             var sensorModels = (from sensor in this.dbContext.SensorMaster
-                               where sensor.Class_Id == null || sensor.Class_Id < 1
+                               where sensor.Room_Id == null || sensor.Room_Id < 1
                                 select new SensorModel
                                 {
                                     Sensor_Id = sensor.Sensor_Id,
@@ -78,16 +78,16 @@
             return sensorModels;
         }
 
-        List<SensorModel> ISensorService.GetAllSensorsForClass(int classId)
+        List<SensorModel> ISensorService.GetAllSensorsForRoom(int roomId)
         {
-            var sensorModels = (from sensor in this.dbContext.SensorMaster.Where(s => s.Class_Id == classId)
-                                let classRoomDetail = this.dbContext.ClassroomDetails.FirstOrDefault(c => c.Class_Id == sensor.Class_Id)
+            var sensorModels = (from sensor in this.dbContext.SensorMaster.Where(s => s.Room_Id == roomId)
+                                let roomDetail = this.dbContext.RoomDetail.FirstOrDefault(c => c.Room_Id == sensor.Room_Id)
                                 select new SensorModel
                                 {
-                                    Class_Id = classRoomDetail.Class_Id,
-                                    Class_Name = classRoomDetail.Class_Name,
-                                    Class_X = classRoomDetail.X,
-                                    Class_Y = classRoomDetail.Y,
+                                    Room_Id = roomDetail.Room_Id,
+                                    Room_Name = roomDetail.Room_Name,
+                                    Room_X = roomDetail.X,
+                                    Room_Y = roomDetail.Y,
                                     Sensor_Id = sensor.Sensor_Id,
                                     Sensor_Name = sensor.Sensor_Name,
                                     X = sensor.X,
@@ -99,7 +99,7 @@
             return sensorModels;
         }
 
-        ResponseModel ISensorService.MapSensor(int sensorId, int classId)
+        ResponseModel ISensorService.MapSensor(int sensorId, int roomId)
         {
             ResponseModel responseModel = new ResponseModel();
             var sensorData = this.dbContext.SensorMaster.FirstOrDefault(s => s.Sensor_Id == sensorId);
@@ -111,7 +111,7 @@
             }
             else
             {
-                sensorData.Class_Id = classId;
+                sensorData.Room_Id = roomId;
                 this.dbContext.SaveChanges();
 
                 responseModel.Message = "Sensor mapped successfully";

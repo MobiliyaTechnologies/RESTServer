@@ -41,14 +41,14 @@
         {
             var alertDetailsModel = (from data in this.dbContext.SensorLiveData
                                      join sensorData in this.dbContext.SensorMaster on data.Sensor_Id equals sensorData.Sensor_Id
-                                     join classData in this.dbContext.ClassroomDetails on sensorData.Class_Id equals classData.Class_Id
+                                     join classData in this.dbContext.RoomDetail on sensorData.Room_Id equals classData.Room_Id
                                      where data.Sensor_Log_Id == sensorLogId
                                      select new AlertDetailsModel
                                      {
                                          Sensor_Id = data.Sensor_Id ?? default(int),
-                                         Class_Id = classData.Class_Id,
-                                         Class_Name = classData.Class_Name,
-                                         Class_Desc = classData.Class_Desc,
+                                         Room_Id = classData.Room_Id,
+                                         Room_Name = classData.Room_Name,
+                                         Room_Desc = classData.Room_Desc,
                                          Humidity = data.Humidity.HasValue ? Math.Round(data.Humidity.Value, 2) : default(double),
                                          Light_Intensity = data.Brightness.HasValue ? Math.Round(data.Brightness.Value, 2) : default(double),
                                          Temperature = data.Temperature.HasValue ? Math.Round(data.Temperature.Value, 2) : default(double),
@@ -64,7 +64,7 @@
                              where alerts.Alert_Type != "Recommendation"
                              join sensorData in this.dbContext.SensorMaster on alerts.Sensor_Id equals sensorData.Sensor_Id into temp1
                              from subsensor in temp1.DefaultIfEmpty()
-                             join classData in this.dbContext.ClassroomDetails on subsensor.Class_Id equals classData.Class_Id into temp
+                             join classData in this.dbContext.RoomDetail on subsensor.Room_Id equals classData.Room_Id into temp
                              from subclass in temp.DefaultIfEmpty()
                              orderby alerts.Timestamp descending // left outer join
                              select new AlertModel
@@ -78,8 +78,8 @@
                                  Sensor_Id = alerts.Sensor_Id,
                                  Sensor_Log_Id = alerts.Sensor_Log_Id,
                                  Timestamp = alerts.Timestamp ?? default(DateTime),
-                                 Class_Id = subclass.Class_Id,
-                                 Class_Name = subclass.Class_Name == null ? string.Empty : subclass.Class_Name
+                                 Room_Id = subclass.Room_Id,
+                                 Class_Name = subclass.Room_Name == null ? string.Empty : subclass.Room_Name
                              }).ToList();
 
             return alertList;
@@ -91,7 +91,7 @@
                              where alerts.Alert_Type == "Recommendation"
                              join sensorData in this.dbContext.SensorMaster on alerts.Sensor_Id equals sensorData.Sensor_Id into temp1
                              from subsensor in temp1.DefaultIfEmpty()
-                             join classData in this.dbContext.ClassroomDetails on subsensor.Class_Id equals classData.Class_Id into temp
+                             join classData in this.dbContext.RoomDetail on subsensor.Room_Id equals classData.Room_Id into temp
                              from subclass in temp.DefaultIfEmpty()
                              orderby alerts.Timestamp descending // left outer join
                              select new AlertModel
@@ -105,8 +105,8 @@
                                  Sensor_Id = alerts.Sensor_Id,
                                  Sensor_Log_Id = alerts.Sensor_Log_Id,
                                  Timestamp = (DateTime)alerts.Timestamp,
-                                 Class_Id = subclass.Class_Id,
-                                 Class_Name = subclass.Class_Name == null ? string.Empty : subclass.Class_Name
+                                 Room_Id = subclass.Room_Id,
+                                 Class_Name = subclass.Room_Name == null ? string.Empty : subclass.Room_Name
                              }).ToList();
 
             return alertList;

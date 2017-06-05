@@ -293,7 +293,7 @@
     <Compile Include="Controllers\ApplicationConfigurationController.cs" />
     <Compile Include="Controllers\BuildingController.cs" />
     <Compile Include="Controllers\PremiseController.cs" />
-    <Compile Include="Controllers\ClassroomController.cs" />
+    <Compile Include="Controllers\RoomController.cs" />
     <Compile Include="Controllers\EmailController.cs" />
     <Compile Include="Controllers\FeedbackController.cs" />
     <Compile Include="Controllers\InsightController.cs" />
@@ -323,9 +323,6 @@
       <DependentUpon>PowergridModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\Building.cs">
-      <DependentUpon>PowergridModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Entities\ClassroomDetails.cs">
       <DependentUpon>PowergridModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\DailyConsumptionDetails.cs">
@@ -379,6 +376,9 @@
     <Compile Include="Entities\Role.cs">
       <DependentUpon>PowergridModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\RoomDetail.cs">
+      <DependentUpon>PowergridModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\SensorData.cs">
       <DependentUpon>PowergridModel.tt</DependentUpon>
     </Compile>
@@ -423,7 +423,7 @@
     <Compile Include="Models\BlobStorageModel.cs" />
     <Compile Include="Models\BuildingModel.cs" />
     <Compile Include="Models\PremiseModel.cs" />
-    <Compile Include="Models\ClassroomModel.cs" />
+    <Compile Include="Models\RoomModel.cs" />
     <Compile Include="Models\EmailModel.cs" />
     <Compile Include="Models\ApplicationConfigurationModel.cs" />
     <Compile Include="Models\ApplicationConfigurationEntryModel.cs" />
@@ -454,7 +454,7 @@
     <Compile Include="Services.Impl\BlobStorageService.cs" />
     <Compile Include="Services.Impl\BuildingService.cs" />
     <Compile Include="Services.Impl\PremiseService.cs" />
-    <Compile Include="Services.Impl\ClassroomService.cs" />
+    <Compile Include="Services.Impl\RoomService.cs" />
     <Compile Include="Services.Impl\EmailService.cs" />
     <Compile Include="Services.Impl\FeedbackService.cs" />
     <Compile Include="Services.Impl\InsightService.cs" />
@@ -472,7 +472,7 @@
     <Compile Include="Services\IBlobStorageService.cs" />
     <Compile Include="Services\IBuildingService.cs" />
     <Compile Include="Services\IPremiseService.cs" />
-    <Compile Include="Services\IClassroomService.cs" />
+    <Compile Include="Services\IRoomService.cs" />
     <Compile Include="Services\IEmailService.cs" />
     <Compile Include="Services\IFeedbackService.cs" />
     <Compile Include="Services\IInsightService.cs" />

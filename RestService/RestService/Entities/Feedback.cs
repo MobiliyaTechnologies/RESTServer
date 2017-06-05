@@ -15,7 +15,7 @@ namespace RestService.Entities
     public partial class Feedback
     {
         public int FeedbackID { get; set; }
-        public Nullable<int> ClassID { get; set; }
+        public Nullable<int> RoomID { get; set; }
         public Nullable<int> QuestionID { get; set; }
         public Nullable<int> AnswerID { get; set; }
         public string FeedbackDesc { get; set; }
@@ -25,7 +25,7 @@ namespace RestService.Entities
         public Nullable<System.DateTime> ModiifiedOn { get; set; }
     
         public virtual Answers Answers { get; set; }
-        public virtual ClassroomDetails ClassroomDetails { get; set; }
+        public virtual RoomDetail RoomDetail { get; set; }
         public virtual Questions Questions { get; set; }
     }
 }

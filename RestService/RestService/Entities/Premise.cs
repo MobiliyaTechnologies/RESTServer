@@ -18,7 +18,6 @@ namespace RestService.Entities
         public Premise()
         {
             this.Building = new HashSet<Building>();
-            this.PiServer = new HashSet<PiServer>();
             this.Role = new HashSet<Role>();
         }
     
@@ -39,8 +38,6 @@ namespace RestService.Entities
         public virtual ICollection<Building> Building { get; set; }
         public virtual Organization Organization { get; set; }
         public virtual Organization Organization1 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PiServer> PiServer { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Role> Role { get; set; }
     }

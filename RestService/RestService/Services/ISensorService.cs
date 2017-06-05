@@ -27,23 +27,23 @@
         List<SensorModel> GetAllUnMapSensors();
 
         /// <summary>
-        /// Maps the sensor to classroom.
+        /// Maps the sensor to room.
         /// </summary>
         /// <param name="sensorId">The sensor identifier.</param>
-        /// <param name="classId">The class identifier.</param>
+        /// <param name="roomId">The room identifier.</param>
         /// <returns>
         /// The sensor mapped confirmation.
         /// </returns>
-        ResponseModel MapSensor(int sensorId, int classId);
+        ResponseModel MapSensor(int sensorId, int roomId);
 
         /// <summary>
-        /// Gets all sensors for class.
+        /// Gets all sensors for room.
         /// </summary>
-        /// <param name="classId">The class identifier.</param>
+        /// <param name="roomId">The room identifier.</param>
         /// <returns>
-        /// The class sensors.
+        /// The room sensors.
         /// </returns>
-        List<SensorModel> GetAllSensorsForClass(int classId);
+        List<SensorModel> GetAllSensorsForRoom(int roomId);
 
         /// <summary>
         /// Resets or remove all sensors.

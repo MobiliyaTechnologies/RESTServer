@@ -4,14 +4,14 @@
     using RestService.Models;
 
     /// <summary>
-    /// Provides classroom questions operation.
+    /// Provides room questions operation.
     /// </summary>
     public interface IQuestionService
     {
         /// <summary>
-        /// Gets the question answers for all classroom.
+        /// Gets the question answers for all room.
         /// </summary>
-        /// <returns>The clasroom question answer details.</returns>
+        /// <returns>The room question answer details.</returns>
         List<QuestionModel> GetQuestionAnswers();
     }
 }

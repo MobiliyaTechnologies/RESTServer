@@ -27,13 +27,13 @@
 
         List<MeterDailyConsumptionModel> IMeterService.GetMeterDailyConsumption(int buildingId)
         {
-            var utcOffset = Convert.ToDouble(ConfigurationManager.AppSettings["UTCOffset"]);
             var meterdetails = this.GetMeterDetails(buildingId);
             var meterDailyConsumptionModel = new List<MeterDailyConsumptionModel>();
-            DateTime today = DateTime.UtcNow.AddHours(utcOffset);
 
             if (meterdetails.Count() > 0)
             {
+                DateTime today = ServiceUtil.GetCurrentDateTime(meterdetails.First().UTCConversionTime);
+
                 foreach (var meterdetail in meterdetails)
                 {
                     var dailyConsumptionDetail = this.dbContext.DailyConsumptionDetails.Where(data =>
@@ -176,11 +176,12 @@
         {
             var meterDetails = this.GetMeterDetails(buildingId);
             List<MeterMonthlyConsumptionModel> meterMonthlyConsumptionModels = new List<MeterMonthlyConsumptionModel>();
-            string currentMonth = DateTime.UtcNow.ToString("MMM");
 
             foreach (var meterDetail in meterDetails)
             {
-                var monthlyConsumptionDetail = this.dbContext.MonthlyConsumptionDetails.FirstOrDefault(m => m.PowerScout.Equals(meterDetail.PowerScout, StringComparison.InvariantCultureIgnoreCase) && m.Month.Equals(currentMonth, StringComparison.InvariantCultureIgnoreCase) && m.Year.Equals(DateTime.UtcNow.Year.ToString()));
+                var currentDate = ServiceUtil.GetCurrentDateTime(meterDetail.UTCConversionTime);
+
+                var monthlyConsumptionDetail = this.dbContext.MonthlyConsumptionDetails.FirstOrDefault(m => m.PowerScout.Equals(meterDetail.PowerScout, StringComparison.InvariantCultureIgnoreCase) && m.Month.Equals(currentDate.ToString("MMM"), StringComparison.InvariantCultureIgnoreCase) && m.Year.Equals(currentDate.Year.ToString()));
 
                 MeterMonthlyConsumptionModel meterMonthlyConsumption = monthlyConsumptionDetail == null ? new MeterMonthlyConsumptionModel { Powerscout = meterDetail.PowerScout }
                                                                                     : new MeterMonthlyConsumptionModelMapping().Map(monthlyConsumptionDetail);
@@ -195,12 +196,13 @@
         double IMeterService.GetMonthlyConsumptionPerPremise(int premiseID)
         {
             var meterDetails = this.GetMeterDetailsPerPremise(premiseID);
-            string currentMonth = DateTime.UtcNow.ToString("MMM");
 
             double monthly_KWH_Consumption = default(double);
 
             foreach (var meterDetail in meterDetails)
             {
+                string currentMonth = ServiceUtil.GetCurrentDateTime(meterDetail.UTCConversionTime).ToString("MMM");
+
                 var monthlyConsumptionDetail = this.dbContext.MonthlyConsumptionDetails.FirstOrDefault(m => m.PowerScout.Equals(meterDetail.PowerScout, StringComparison.InvariantCultureIgnoreCase) && m.Month.Equals(currentMonth, StringComparison.InvariantCultureIgnoreCase));
 
                 if (monthlyConsumptionDetail != null && monthlyConsumptionDetail.Monthly_KWH_System.HasValue)
@@ -215,12 +217,12 @@
         double IMeterService.GetMonthlyConsumptionPerBuildings(int buildingId)
         {
             var meterDetails = this.GetMeterDetails(buildingId);
-            string currentMonth = DateTime.UtcNow.ToString("MMM");
-
             double monthly_KWH_Consumption = default(double);
 
             foreach (var meterDetail in meterDetails)
             {
+                string currentMonth = ServiceUtil.GetCurrentDateTime(meterDetail.UTCConversionTime).ToString("MMM");
+
                 var monthlyConsumptionDetail = this.dbContext.MonthlyConsumptionDetails.FirstOrDefault(m => m.PowerScout.Equals(meterDetail.PowerScout, StringComparison.InvariantCultureIgnoreCase) && m.Month.Equals(currentMonth, StringComparison.InvariantCultureIgnoreCase));
 
                 if (monthlyConsumptionDetail != null && monthlyConsumptionDetail.Monthly_KWH_System.HasValue)
@@ -230,55 +232,6 @@
             }
 
             return monthly_KWH_Consumption;
-        }
-
-        List<MeterMonthWiseConsumptionModel> IMeterService.GetMonthWiseConsumptionForOffset(int buildingId, string month, int year, int offset)
-        {
-            var meterDetails = this.GetMeterDetails(buildingId);
-            var meterMonthWiseConsumptions = new List<MeterMonthWiseConsumptionModel>();
-
-            DateTime endDate;
-            DateTime.TryParse("01-" + month + "-" + year, out endDate);
-            endDate = endDate.AddMonths(1).AddDays(-1);
-            DateTime startDate = endDate.AddMonths(-offset);
-
-            foreach (var meterDetail in meterDetails)
-            {
-                IQueryable<MonthlyConsumptionDetails> monthlyConsumptionDetails = from monthlyConsumptionDetail in this.dbContext.MonthlyConsumptionDetails
-                                                                                  where monthlyConsumptionDetail.PowerScout.Equals(meterDetail.PowerScout, StringComparison.InvariantCultureIgnoreCase)
-                                                                                  && (monthlyConsumptionDetail.Year.Equals(startDate.Year.ToString())
-                                                                                  || monthlyConsumptionDetail.Year.Equals(endDate.Year.ToString()))
-                                                                                  && DbFunctions.TruncateTime(monthlyConsumptionDetail.Timestamp)
-                                                                                  > startDate.Date
-                                                                                  && DbFunctions.TruncateTime(monthlyConsumptionDetail.Timestamp)
-                                                                                  <= endDate.Date
-                                                                                  orderby monthlyConsumptionDetail.Id descending
-                                                                                  select monthlyConsumptionDetail;
-
-                if (monthlyConsumptionDetails.Count() > 0)
-                {
-                    if (monthlyConsumptionDetails.Count() > offset)
-                    {
-                        monthlyConsumptionDetails = monthlyConsumptionDetails.Take((monthlyConsumptionDetails.Count() - offset) + 1);
-                    }
-
-                    var meterMonthWiseConsumption = this.GetMeterMonthWiseConsumption(monthlyConsumptionDetails);
-
-                    if (monthlyConsumptionDetails.Count() > 0)
-                    {
-                        meterMonthWiseConsumption.PowerScout = monthlyConsumptionDetails.First().PowerScout;
-                        meterMonthWiseConsumption.Name = monthlyConsumptionDetails.First().Breaker_details;
-                    }
-
-                    meterMonthWiseConsumptions.Add(meterMonthWiseConsumption);
-                }
-                else
-                {
-                    meterMonthWiseConsumptions.Add(new MeterMonthWiseConsumptionModel { PowerScout = meterDetail.PowerScout, Name = meterDetail.Breaker_details });
-                }
-            }
-
-            return meterMonthWiseConsumptions;
         }
 
         List<MeterWeekWiseMonthlyConsumptionModel> IMeterService.GetWeekWiseMonthlyConsumption(int buildingId, string month, int year)
@@ -313,55 +266,6 @@
             }
 
             return meterWeekWiseMonthlyConsumptions;
-        }
-
-        List<MeterWeekWiseMonthlyConsumptionModel> IMeterService.GetWeekWiseMonthlyConsumptionForOffset(int buildingId, string month, int year, int offset)
-        {
-            var meterDetails = this.GetMeterDetails(buildingId);
-            List<MeterWeekWiseMonthlyConsumptionModel> weekWiseConsumption = new List<MeterWeekWiseMonthlyConsumptionModel>();
-
-            DateTime monthDate;
-            var isVaslidDate = DateTime.TryParse("01-" + month + "-" + year, out monthDate);
-
-            foreach (var meterDetail in meterDetails)
-            {
-                MeterWeekWiseMonthlyConsumptionModel meterWeekWiseConsumption = new MeterWeekWiseMonthlyConsumptionModel();
-                while (meterWeekWiseConsumption.WeekWiseConsumption.Count < offset)
-                {
-                    IQueryable<DailyConsumptionDetails> dailyConsumptionDetailsForMonth = null;
-
-                    if (isVaslidDate)
-                    {
-                        dailyConsumptionDetailsForMonth = this.GetDailyConsumtionDetailsForMonth(meterDetail.PowerScout, monthDate);
-                    }
-
-                    if (dailyConsumptionDetailsForMonth == null || dailyConsumptionDetailsForMonth.Count() < 1)
-                    {
-                        weekWiseConsumption.Add(new MeterWeekWiseMonthlyConsumptionModel { PowerScout = meterDetail.PowerScout, Name = meterDetail.Breaker_details });
-                        break;
-                    }
-
-                    var weekWiseList = this.GetWeekWiseConsumptionFromMonthly(dailyConsumptionDetailsForMonth).WeekWiseConsumption;
-                    if (weekWiseList.Count + meterWeekWiseConsumption.WeekWiseConsumption.Count > offset)
-                    {
-                        weekWiseList.Reverse();
-                        meterWeekWiseConsumption.WeekWiseConsumption.AddRange(weekWiseList.Take(offset - meterWeekWiseConsumption.WeekWiseConsumption.Count));
-                    }
-                    else
-                    {
-                        meterWeekWiseConsumption.WeekWiseConsumption.AddRange(weekWiseList);
-                    }
-
-                    monthDate = monthDate.AddMonths(-1);
-                }
-
-                meterWeekWiseConsumption.PowerScout = meterDetail.PowerScout;
-                meterWeekWiseConsumption.Name = meterDetail.Breaker_details;
-
-                weekWiseConsumption.Add(meterWeekWiseConsumption);
-            }
-
-            return weekWiseConsumption;
         }
 
         List<MeterMonthWiseConsumptionModel> IMeterService.GetMonthWiseConsumption(int buildingId, int year)

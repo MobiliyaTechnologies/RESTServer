@@ -96,5 +96,10 @@
             dtDateTime = dtDateTime.AddSeconds(unixTimeStamp);
             return dtDateTime;
         }
+
+        public static DateTime GetCurrentDateTime(double uTCConversionTime)
+        {
+            return DateTime.UtcNow.AddHours(uTCConversionTime);
+        }
     }
 }

@@ -7,7 +7,7 @@
     {
         public int FeedbackId { get; set; }
 
-        public int ClassId { get; set; }
+        public int RoomId { get; set; }
 
         public int QuestionId { get; set; }
 
