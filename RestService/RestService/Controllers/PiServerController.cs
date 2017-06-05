@@ -85,37 +85,12 @@
         }
 
         /// <summary>
-        /// Adds the pi server.
-        /// It receive only multipart/form-data content-type.
-        /// Required fields - premiseId, PiServerName(must be unique), PiServerURL and CSV premise schedule file
-        /// Sample request -
-        /// {  "PiServerID": 0,  "PiServerName": "", "PiServerDesc": "",  "PremiseID": 1,  "PiServerURL": ""}
-        /// Premise schedule file with any name but must be CSV type.
-        /// </summary>
-        /// <returns>The PiServer added confirmation, or bad request error response if invalid parameters.</returns>
-        [Route("AddPiServer")]
-        [HttpPost]
-        [ResponseType(typeof(ResponseModel))]
-        public HttpResponseMessage AddPiServer()
-        {
-            var model = this.GetPiServerModelFromRequest().Result;
-
-            if (model.PremiseID == 0 || string.IsNullOrWhiteSpace(model.PiServerName) || string.IsNullOrWhiteSpace(model.PiServerURL) || model.PremiseScheduleFile == null)
-            {
-                return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Missing required fields - premiseId, PiServerName, PiServerURL or CSV premise schedule file.");
-            }
-
-            var data = this.piServerService.AddPiServer(model);
-            return this.Request.CreateResponse(HttpStatusCode.OK, data);
-        }
-
-        /// <summary>
         /// Updates the pi server.
         /// It receive only multipart/form-data content-type.
         /// Required fields - PiServerID and fields to update.
         /// Sample request -
-        /// {  "PiServerID": 0,  "PiServerName": "", "PiServerDesc": "",  "PremiseID": 1,  "PiServerURL": ""}
-        /// Premise schedule file with any name but must be CSV type, it's optional post only to update existing premise schedule.
+        /// {  "PiServerID": 0,  "PiServerDesc": ""}
+        /// Room schedule file with any name but must be CSV type, it's optional post only to update existing room schedule.
         /// </summary>
         /// <returns>The PiServer updated confirmation, or bad request error response if invalid parameters.</returns>
         [Route("UpdatePiServer")]
@@ -131,20 +106,6 @@
             }
 
             var data = this.piServerService.UpdatePiServer(model);
-            return this.Request.CreateResponse(HttpStatusCode.OK, data);
-        }
-
-        /// <summary>
-        /// Deletes the pi server for given PiServer identifier.
-        /// </summary>
-        /// <param name="piServerId">The pi server identifier.</param>
-        /// <returns>The PiServer deleted confirmation</returns>
-        [Route("DeletePiServer/{piServerId}")]
-        [HttpDelete]
-        [ResponseType(typeof(ResponseModel))]
-        public HttpResponseMessage DeletePiServer(int piServerId)
-        {
-            var data = this.piServerService.DeletePiServer(piServerId);
             return this.Request.CreateResponse(HttpStatusCode.OK, data);
         }
 
@@ -179,15 +140,14 @@
 
             if (fileContent != null)
             {
-                piServerModel.PremiseScheduleFile = await fileContent.ReadAsStreamAsync();
-                piServerModel.PremiseScheduleFileType = fileContent.Headers.ContentType.ToString();
+                piServerModel.RoomScheduleFile = await fileContent.ReadAsStreamAsync();
+                piServerModel.RoomScheduleFileType = fileContent.Headers.ContentType.ToString();
             }
 
             piServerModel.PiServerName = this.GetFormDataValue(formDataContents, "PiServerName");
             piServerModel.PiServerDesc = this.GetFormDataValue(formDataContents, "PiServerDesc");
             piServerModel.PiServerURL = this.GetFormDataValue(formDataContents, "PiServerURL");
             piServerModel.PiServerID = Convert.ToInt32(this.GetFormDataValue(formDataContents, "PiServerID"));
-            piServerModel.PremiseID = Convert.ToInt32(this.GetFormDataValue(formDataContents, "premiseID"));
 
             return piServerModel;
         }

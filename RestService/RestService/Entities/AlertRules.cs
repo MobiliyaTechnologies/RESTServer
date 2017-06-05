@@ -15,7 +15,7 @@ namespace RestService.Entities
     public partial class AlertRules
     {
         public int Rule_Id { get; set; }
-        public Nullable<int> Class_Id { get; set; }
+        public Nullable<int> Room_Id { get; set; }
         public string Parameter { get; set; }
         public string Condition { get; set; }
         public decimal Threshold { get; set; }

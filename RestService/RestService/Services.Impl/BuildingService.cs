@@ -24,11 +24,9 @@
             this.meterService = new MeterService();
         }
 
-        [CustomAuthorize(UserRole = UserRole.SuperAdmin)]
-        [OverrideAuthorization]
         List<BuildingModel> IBuildingService.GetAllBuildings()
         {
-            var buildings = this.context.Current.RoleType == UserRole.Student ? this.dbContext.Building.WhereActiveBuilding() : this.dbContext.Building.WhereActiveAccessibleBuilding();
+            var buildings = this.context.Current.RoleType == UserRole.Student || this.context.Current.RoleType == UserRole.SuperAdmin ? this.dbContext.Building.WhereActiveBuilding() : this.dbContext.Building.WhereActiveAccessibleBuilding();
 
             var buildingModels = new BuildingModelMapping().Map(buildings).ToList();
 
@@ -63,42 +61,6 @@
             return buildingModels.FirstOrDefault();
         }
 
-        ResponseModel IBuildingService.AddBuilding(BuildingModel model)
-        {
-            var building = new Building();
-            building.BuildingName = model.BuildingName;
-            building.BuildingDesc = model.BuildingDesc;
-            building.PremiseID = model.PremiseID;
-            building.CreatedBy = this.context.Current.UserId;
-            building.CreatedOn = DateTime.UtcNow;
-            building.ModifiedBy = this.context.Current.UserId;
-            building.ModifiedOn = DateTime.UtcNow;
-            building.IsActive = true;
-            building.IsDeleted = false;
-
-            this.dbContext.Building.Add(building);
-            this.dbContext.SaveChanges();
-            return new ResponseModel { Message = "Building added successfully", Status_Code = (int)StatusCode.Ok };
-        }
-
-        ResponseModel IBuildingService.DeleteBuilding(int buildingId)
-        {
-            var data = this.dbContext.Building.WhereActiveAccessibleBuilding(f => f.BuildingID == buildingId).FirstOrDefault();
-            if (data == null)
-            {
-                return new ResponseModel { Message = "Invalid Building", Status_Code = (int)StatusCode.Error };
-            }
-            else
-            {
-                data.IsActive = false;
-                data.IsDeleted = true;
-                data.ModifiedBy = this.context.Current.UserId;
-                data.ModifiedOn = DateTime.UtcNow;
-                this.dbContext.SaveChanges();
-                return new ResponseModel { Message = "Building deleted successfully", Status_Code = (int)StatusCode.Ok };
-            }
-        }
-
         ResponseModel IBuildingService.UpdateBuilding(BuildingModel model)
         {
             var data = this.dbContext.Building.WhereActiveAccessibleBuilding(f => f.BuildingID == model.BuildingID).FirstOrDefault();
@@ -117,6 +79,16 @@
                 if (!string.IsNullOrWhiteSpace(model.BuildingDesc))
                 {
                     data.BuildingDesc = model.BuildingDesc;
+                }
+
+                if (model.Latitude != default(decimal))
+                {
+                    data.Latitude = model.Latitude;
+                }
+
+                if (model.Longitude != default(decimal))
+                {
+                    data.Longitude = model.Longitude;
                 }
 
                 data.ModifiedBy = this.context.Current.UserId;

@@ -10,7 +10,6 @@
     public sealed class InsightService : IInsightService, IDisposable
     {
         private readonly PowerGridEntities dbContext;
-        private readonly double utcOffset;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="InsightService"/> class.
@@ -18,7 +17,6 @@
         public InsightService()
         {
             this.dbContext = new PowerGridEntities();
-            this.utcOffset = Convert.ToDouble(ConfigurationManager.AppSettings["UTCOffset"]);
         }
 
         InsightDataModel IInsightService.GetInsightData()
@@ -54,15 +52,20 @@
         {
             InsightDataModel insightData = new InsightDataModel();
 
-            var count = meterdetails.Count() * ((int)DateTime.UtcNow.AddHours(this.utcOffset).DayOfWeek == 0 ? 7 : (int)DateTime.UtcNow.AddHours(this.utcOffset).DayOfWeek);
+            if (meterdetails.Count() > 0)
+            {
+                var now = ServiceUtil.GetCurrentDateTime(meterdetails.First().UTCConversionTime);
 
-            var consumptionValue = this.dbContext.DailyConsumptionDetails.Where(d => meterdetails.Any(m => m.PowerScout.Equals(d.PowerScout, StringComparison.InvariantCultureIgnoreCase))).OrderByDescending(d => d.Timestamp).Take(count).Sum(data => data.Daily_KWH_System);
+                var count = meterdetails.Count() * ((int)now.DayOfWeek == 0 ? 7 : (int)now.DayOfWeek);
 
-            insightData.ConsumptionValue = consumptionValue.HasValue ? Math.Round(consumptionValue.Value, 2) : default(double);
+                var consumptionValue = this.dbContext.DailyConsumptionDetails.Where(d => meterdetails.Any(m => m.PowerScout.Equals(d.PowerScout, StringComparison.InvariantCultureIgnoreCase))).OrderByDescending(d => d.Timestamp).Take(count).Sum(data => data.Daily_KWH_System);
 
-            var predictedValue = this.dbContext.WeeklyConsumptionPrediction.Where(w => meterdetails.Any(m => m.PowerScout.Equals(w.PowerScout, StringComparison.InvariantCultureIgnoreCase))).OrderByDescending(w => w.End_Time).Take(meterdetails.Count()).Sum(w => w.Weekly_Predicted_KWH_System);
+                insightData.ConsumptionValue = consumptionValue.HasValue ? Math.Round(consumptionValue.Value, 2) : default(double);
 
-            insightData.PredictedValue = predictedValue.HasValue ? Math.Round(predictedValue.Value, 2) : default(double);
+                var predictedValue = this.dbContext.WeeklyConsumptionPrediction.Where(w => meterdetails.Any(m => m.PowerScout.Equals(w.PowerScout, StringComparison.InvariantCultureIgnoreCase))).OrderByDescending(w => w.End_Time).Take(meterdetails.Count()).Sum(w => w.Weekly_Predicted_KWH_System);
+
+                insightData.PredictedValue = predictedValue.HasValue ? Math.Round(predictedValue.Value, 2) : default(double);
+            }
 
             return insightData;
         }

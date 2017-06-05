@@ -28,22 +28,6 @@
         PiServerModel GetPiServerByName(string piServerName);
 
         /// <summary>
-        /// Inserts a new PiServer in system
-        /// </summary>
-        /// <param name="model">PiServer model</param>
-        /// <returns>Insert acknowledgment.</returns>
-        ResponseModel AddPiServer(PiServerModel model);
-
-        /// <summary>
-        /// Removes an existing PiServer from system
-        /// </summary>
-        /// <param name="piServerId">The pi server identifier.</param>
-        /// <returns>
-        /// Delete acknowledgment.
-        /// </returns>
-        ResponseModel DeletePiServer(int piServerId);
-
-        /// <summary>
         /// Updates information of an existing PiServer
         /// </summary>
         /// <param name="model">PiServer model</param>

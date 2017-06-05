@@ -14,7 +14,7 @@
                    select new FeedbackModel
                    {
                        AnswerID = s.AnswerID ?? default(int),
-                       ClassId = s.ClassID ?? default(int),
+                       RoomId = s.RoomID ?? default(int),
                        FeedbackId = s.FeedbackID,
                        FeedbackDesc = s.FeedbackDesc
                    };

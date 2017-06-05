@@ -9,7 +9,7 @@
     public interface IFeedbackService
     {
         /// <summary>
-        /// Stores the student feedback for a classroom.
+        /// Stores the student feedback for a room.
         /// </summary>
         /// <param name="feedbackModel">The feedbackModel to be stored.</param>
         /// <returns>
@@ -40,13 +40,13 @@
         ResponseModel UpdateFeedback(FeedbackModel feedbackModel);
 
         /// <summary>
-        /// Gets the feedback for given classroom.
+        /// Gets the feedback for given room.
         /// </summary>
-        /// <param name="classId">The class identifier.</param>
+        /// <param name="roomId">The room identifier.</param>
         /// <returns>
-        /// The class feedback.
+        /// The room feedback.
         /// </returns>
-        List<FeedbackCountModel> GetFeedbackCount(int classId);
+        List<FeedbackCountModel> GetFeedbackCount(int roomId);
 
         /// <summary>
         /// Resets or remove all feedback.

@@ -98,20 +98,20 @@
         }
 
         /// <summary>
-        /// Gets the feedback count details for given class identifier.
+        /// Gets the feedback count details for given room identifier.
         /// </summary>
-        /// <param name="classId">The class identifier.</param>
+        /// <param name="roomId">The room identifier.</param>
         /// <returns>The feedback details, or bad request error response if invalid parameters.</returns>
-        [Route("GetFeedbackCount/{classId}")]
+        [Route("GetFeedbackCount/{roomId}")]
         [ResponseType(typeof(List<FeedbackModel>))]
-        public HttpResponseMessage GetFeedbackCount(int classId)
+        public HttpResponseMessage GetFeedbackCount(int roomId)
         {
-            if (classId < 1)
+            if (roomId < 1)
             {
-                return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Class id must be grater than 0.");
+                return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Room id must be grater than 0.");
             }
 
-            var data = this.feedbackService.GetFeedbackCount(classId);
+            var data = this.feedbackService.GetFeedbackCount(roomId);
             return this.Request.CreateResponse(HttpStatusCode.OK, data);
         }
 

@@ -90,10 +90,9 @@
             return source;
         }
 
-        public static IQueryable<PiServer> WhereActiveAccessiblePiServer(this IQueryable<PiServer> source, Expression<Func<PiServer, bool>> predicate = null)
+        public static IQueryable<PiServer> WhereActivePiServer(this IQueryable<PiServer> source, Expression<Func<PiServer, bool>> predicate = null)
         {
-            source = source.Where(b => b.IsActive && !b.IsDeleted && b.Premise != null && b.Premise.IsActive && !b.Premise.IsDeleted &&
-            b.Premise.Role.Any(r => r.IsActive && !r.IsDeleted && r.Id == Context.Current.RoleId));
+            source = source.Where(b => b.IsActive && !b.IsDeleted);
 
             if (predicate != null)
             {

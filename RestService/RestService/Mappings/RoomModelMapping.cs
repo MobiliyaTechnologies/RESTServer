@@ -5,16 +5,16 @@
     using RestService.Entities;
     using RestService.Models;
 
-    public class ClassroomModelMapping
+    public class RoomModelMapping
     {
-        public IQueryable<ClassroomModel> Map(IQueryable<ClassroomDetails> source)
+        public IQueryable<RoomModel> Map(IQueryable<RoomDetail> source)
         {
             return from s in source
-                   select new ClassroomModel
+                   select new RoomModel
                    {
-                       ClassDescription = s.Class_Desc,
-                       ClassId = s.Class_Id,
-                       ClassName = s.Class_Name,
+                       RoomDescription = s.Room_Desc,
+                       RoomId = s.Room_Id,
+                       RoomName = s.Room_Name,
                        Building = s.Building,
                        Breaker_details = s.Breaker_details,
                        X = s.X ?? default(double),
@@ -22,9 +22,9 @@
                    };
         }
 
-        public ClassroomModel Map(ClassroomDetails source)
+        public RoomModel Map(RoomDetail source)
         {
-            return source == null ? null : this.Map(new List<ClassroomDetails> { source }.AsQueryable()).First();
+            return source == null ? null : this.Map(new List<RoomDetail> { source }.AsQueryable()).First();
         }
     }
 }

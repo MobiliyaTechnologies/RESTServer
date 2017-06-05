@@ -11,40 +11,40 @@
     using RestService.Services.Impl;
 
     [RoutePrefix("api")]
-    public class ClassroomController : ApiController
+    public class RoomController : ApiController
     {
-        private IClassroomService classroomService;
+        private IRoomService roomService;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ClassroomController"/> class.
+        /// Initializes a new instance of the <see cref="RoomController"/> class.
         /// </summary>
-        public ClassroomController()
+        public RoomController()
         {
-            this.classroomService = new ClassroomService();
+            this.roomService = new RoomService();
         }
 
         /// <summary>
-        /// Gets all classrooms.
+        /// Gets all rooms.
         /// </summary>
-        /// <returns>The classroom details.</returns>
-        [Route("GetAllClassrooms")]
-        [ResponseType(typeof(List<ClassroomModel>))]
-        public HttpResponseMessage GetAllClassrooms()
+        /// <returns>The rooms detail.</returns>
+        [Route("GetAllRooms")]
+        [ResponseType(typeof(List<RoomModel>))]
+        public HttpResponseMessage GetAllRooms()
         {
-            var data = this.classroomService.GetAllClassrooms();
+            var data = this.roomService.GetAllRooms();
             return this.Request.CreateResponse(HttpStatusCode.OK, data);
         }
 
         /// <summary>
-        /// Gets the classroom by building.
+        /// Gets the rooms by building.
         /// </summary>
         /// <param name="buildingId">The building identifier.</param>
-        /// <returns>The classroom details.</returns>
-        [Route("GetClassroomByBuilding/{buildingId}")]
-        [ResponseType(typeof(List<ClassroomModel>))]
-        public HttpResponseMessage GetClassroomByBuilding(int buildingId)
+        /// <returns>The room details.</returns>
+        [Route("GetRoomByBuilding/{buildingId}")]
+        [ResponseType(typeof(List<RoomModel>))]
+        public HttpResponseMessage GetRoomByBuilding(int buildingId)
         {
-            var data = this.classroomService.GetClassroomByBuilding(buildingId);
+            var data = this.roomService.GetRoomByBuilding(buildingId);
             return this.Request.CreateResponse(HttpStatusCode.OK, data);
         }
 
@@ -54,9 +54,9 @@
         /// <param name="disposing">true to release both managed and unmanaged resources; false to release only unmanaged resources.</param>
         protected override void Dispose(bool disposing)
         {
-            if (disposing && this.classroomService != null)
+            if (disposing && this.roomService != null)
             {
-                (this.classroomService as IDisposable).Dispose();
+                (this.roomService as IDisposable).Dispose();
             }
 
             base.Dispose(disposing);

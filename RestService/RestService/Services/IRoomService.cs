@@ -4,23 +4,23 @@
     using RestService.Models;
 
     /// <summary>
-    /// Provides classroom operation.
+    /// Provides room related operation.
     /// </summary>
-    public interface IClassroomService
+    public interface IRoomService
     {
         /// <summary>
-        /// Gets all classrooms.
+        /// Gets all rooms.
         /// </summary>
-        /// <returns>All classrooms data</returns>
-        List<ClassroomModel> GetAllClassrooms();
+        /// <returns>All rooms data</returns>
+        List<RoomModel> GetAllRooms();
 
         /// <summary>
-        /// Gets all building's classrooms.
+        /// Gets all building's rooms.
         /// </summary>
         /// <param name="buildingId">The building identifier.</param>
         /// <returns>
-        /// The building's classrooms.
+        /// The building's rooms.
         /// </returns>
-        List<ClassroomModel> GetClassroomByBuilding(int buildingId);
+        List<RoomModel> GetRoomByBuilding(int buildingId);
     }
 }

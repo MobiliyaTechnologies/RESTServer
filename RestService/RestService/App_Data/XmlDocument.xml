@@ -637,13 +637,6 @@
             <param name="longitude">The longitude.</param>
             <returns>The building detail if found else not found error response, or bad request error response if invalid location details.</returns>
         </member>
-        <member name="M:RestService.Controllers.BuildingController.AddBuilding(RestService.Models.BuildingModel)">
-            <summary>
-            Adds the building.
-            </summary>
-            <param name="buildingModel">The building model.</param>
-            <returns>The building created confirmation, or bad request error response if invalid parameters.</returns>
-        </member>
         <member name="M:RestService.Controllers.BuildingController.UpdateBuilding(RestService.Models.BuildingModel)">
             <summary>
             Updates the building.
@@ -652,13 +645,6 @@
             </summary>
             <param name="buildingModel">The building model.</param>
             <returns>The building updated confirmation, or bad request error response if invalid parameters. </returns>
-        </member>
-        <member name="M:RestService.Controllers.BuildingController.DeleteBuilding(System.Int32)">
-            <summary>
-            Deletes the building for given id.
-            </summary>
-            <param name="buildingId">The building identifier.</param>
-            <returns>The building deleted confirmation, or bad request error response if invalid parameters.</returns>
         </member>
         <member name="M:RestService.Controllers.BuildingController.Dispose(System.Boolean)">
             <summary>
@@ -741,25 +727,25 @@
             </summary>
             <param name="disposing">true to release both managed and unmanaged resources; false to release only unmanaged resources.</param>
         </member>
-        <member name="M:RestService.Controllers.ClassroomController.#ctor">
+        <member name="M:RestService.Controllers.RoomController.#ctor">
             <summary>
-            Initializes a new instance of the <see cref="T:RestService.Controllers.ClassroomController"/> class.
+            Initializes a new instance of the <see cref="T:RestService.Controllers.RoomController"/> class.
             </summary>
         </member>
-        <member name="M:RestService.Controllers.ClassroomController.GetAllClassrooms">
+        <member name="M:RestService.Controllers.RoomController.GetAllRooms">
             <summary>
-            Gets all classrooms.
+            Gets all rooms.
             </summary>
-            <returns>The classroom details.</returns>
+            <returns>The rooms detail.</returns>
         </member>
-        <member name="M:RestService.Controllers.ClassroomController.GetClassroomByBuilding(System.Int32)">
+        <member name="M:RestService.Controllers.RoomController.GetRoomByBuilding(System.Int32)">
             <summary>
-            Gets the classroom by building.
+            Gets the rooms by building.
             </summary>
             <param name="buildingId">The building identifier.</param>
-            <returns>The classroom details.</returns>
+            <returns>The room details.</returns>
         </member>
-        <member name="M:RestService.Controllers.ClassroomController.Dispose(System.Boolean)">
+        <member name="M:RestService.Controllers.RoomController.Dispose(System.Boolean)">
             <summary>
             Releases the unmanaged resources that are used by the object and, optionally, releases the managed resources.
             </summary>
@@ -818,9 +804,9 @@
         </member>
         <member name="M:RestService.Controllers.FeedbackController.GetFeedbackCount(System.Int32)">
             <summary>
-            Gets the feedback count details for given class identifier.
+            Gets the feedback count details for given room identifier.
             </summary>
-            <param name="classId">The class identifier.</param>
+            <param name="roomId">The room identifier.</param>
             <returns>The feedback details, or bad request error response if invalid parameters.</returns>
         </member>
         <member name="M:RestService.Controllers.FeedbackController.ResetFeedback">
@@ -967,34 +953,16 @@
             <param name="piServerName">Name of the pi server.</param>
             <returns>The PiServer detail if found else not found error response, or bad request error response if invalid PiServer name.</returns>
         </member>
-        <member name="M:RestService.Controllers.PiServerController.AddPiServer">
-            <summary>
-            Adds the pi server.
-            It receive only multipart/form-data content-type.
-            Required fields - premiseId, PiServerName(must be unique), PiServerURL and CSV premise schedule file
-            Sample request -
-            {  "PiServerID": 0,  "PiServerName": "", "PiServerDesc": "",  "PremiseID": 1,  "PiServerURL": ""}
-            Premise schedule file with any name but must be CSV type.
-            </summary>
-            <returns>The PiServer added confirmation, or bad request error response if invalid parameters.</returns>
-        </member>
         <member name="M:RestService.Controllers.PiServerController.UpdatePiServer">
             <summary>
             Updates the pi server.
             It receive only multipart/form-data content-type.
             Required fields - PiServerID and fields to update.
             Sample request -
-            {  "PiServerID": 0,  "PiServerName": "", "PiServerDesc": "",  "PremiseID": 1,  "PiServerURL": ""}
-            Premise schedule file with any name but must be CSV type, it's optional post only to update existing premise schedule.
+            {  "PiServerID": 0,  "PiServerDesc": ""}
+            Room schedule file with any name but must be CSV type, it's optional post only to update existing room schedule.
             </summary>
             <returns>The PiServer updated confirmation, or bad request error response if invalid parameters.</returns>
-        </member>
-        <member name="M:RestService.Controllers.PiServerController.DeletePiServer(System.Int32)">
-            <summary>
-            Deletes the pi server for given PiServer identifier.
-            </summary>
-            <param name="piServerId">The pi server identifier.</param>
-            <returns>The PiServer deleted confirmation</returns>
         </member>
         <member name="M:RestService.Controllers.PiServerController.Dispose(System.Boolean)">
             <summary>
@@ -1083,29 +1051,29 @@
         </member>
         <member name="M:RestService.Controllers.SensorController.GetAllMapSensors">
             <summary>
-            Gets all sensors mapped to class.
+            Gets all sensors mapped to room.
             </summary>
             <returns>The sensor details.</returns>
         </member>
         <member name="M:RestService.Controllers.SensorController.GetAllUnMapSensors">
             <summary>
-            Gets all sensors unmapped to class.
+            Gets all sensors unmapped to room.
             </summary>
             <returns>The sensor details.</returns>
         </member>
         <member name="M:RestService.Controllers.SensorController.MapSensor(System.Int32,System.Int32)">
             <summary>
-            Maps the sensor to class.
+            Maps the sensor to room.
             </summary>
             <param name="sensorId">The sensor identifier.</param>
-            <param name="classId">The class identifier.</param>
-            <returns>The sensor class mapping confirmation, or bad request error response if invalid parameters.</returns>
+            <param name="roomId">The room identifier.</param>
+            <returns>The sensor room mapping confirmation, or bad request error response if invalid parameters.</returns>
         </member>
-        <member name="M:RestService.Controllers.SensorController.GetAllSensorsForClass(System.Int32)">
+        <member name="M:RestService.Controllers.SensorController.GetAllSensorsForRoom(System.Int32)">
             <summary>
-            Gets all sensors for class.
+            Gets all sensors for room.
             </summary>
-            <param name="classId">The class identifier.</param>
+            <param name="roomId">The room identifier.</param>
             <returns>The sensor details, or bad request error response if invalid parameters.</returns>
         </member>
         <member name="M:RestService.Controllers.SensorController.ResetSensors">
@@ -1275,12 +1243,12 @@
             Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
             </summary>
         </member>
-        <member name="M:RestService.Services.Impl.ClassroomService.#ctor">
+        <member name="M:RestService.Services.Impl.RoomService.#ctor">
             <summary>
-            Initializes a new instance of the <see cref="T:RestService.Services.Impl.ClassroomService"/> class.
+            Initializes a new instance of the <see cref="T:RestService.Services.Impl.RoomService"/> class.
             </summary>
         </member>
-        <member name="M:RestService.Services.Impl.ClassroomService.System#IDisposable#Dispose">
+        <member name="M:RestService.Services.Impl.RoomService.System#IDisposable#Dispose">
             <summary>
             Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
             </summary>
@@ -1515,22 +1483,6 @@
             <param name="longitude">The longitude.</param>
             <returns>The building situated at given location.</returns>
         </member>
-        <member name="M:RestService.Services.IBuildingService.AddBuilding(RestService.Models.BuildingModel)">
-            <summary>
-            Inserts a new Building in system
-            </summary>
-            <param name="model">Building model</param>
-            <returns>Insert acknowledgment</returns>
-        </member>
-        <member name="M:RestService.Services.IBuildingService.DeleteBuilding(System.Int32)">
-            <summary>
-            Removes an existing Building from system
-            </summary>
-            <param name="buildingId">The building identifier.</param>
-            <returns>
-            Delete acknowledgment.
-            </returns>
-        </member>
         <member name="M:RestService.Services.IBuildingService.UpdateBuilding(RestService.Models.BuildingModel)">
             <summary>
             Updates information of an existing Building
@@ -1611,24 +1563,24 @@
             <param name="buildingIds">The building ids.</param>
             <returns>Association confirmation.</returns>
         </member>
-        <member name="T:RestService.Services.IClassroomService">
+        <member name="T:RestService.Services.IRoomService">
             <summary>
-            Provides classroom operation.
+            Provides room related operation.
             </summary>
         </member>
-        <member name="M:RestService.Services.IClassroomService.GetAllClassrooms">
+        <member name="M:RestService.Services.IRoomService.GetAllRooms">
             <summary>
-            Gets all classrooms.
+            Gets all rooms.
             </summary>
-            <returns>All classrooms data</returns>
+            <returns>All rooms data</returns>
         </member>
-        <member name="M:RestService.Services.IClassroomService.GetClassroomByBuilding(System.Int32)">
+        <member name="M:RestService.Services.IRoomService.GetRoomByBuilding(System.Int32)">
             <summary>
-            Gets all building's classrooms.
+            Gets all building's rooms.
             </summary>
             <param name="buildingId">The building identifier.</param>
             <returns>
-            The building's classrooms.
+            The building's rooms.
             </returns>
         </member>
         <member name="T:RestService.Services.IEmailService">
@@ -1652,7 +1604,7 @@
         </member>
         <member name="M:RestService.Services.IFeedbackService.StoreFeedback(RestService.Models.FeedbackModel)">
             <summary>
-            Stores the student feedback for a classroom.
+            Stores the student feedback for a room.
             </summary>
             <param name="feedbackModel">The feedbackModel to be stored.</param>
             <returns>
@@ -1683,11 +1635,11 @@
         </member>
         <member name="M:RestService.Services.IFeedbackService.GetFeedbackCount(System.Int32)">
             <summary>
-            Gets the feedback for given classroom.
+            Gets the feedback for given room.
             </summary>
-            <param name="classId">The class identifier.</param>
+            <param name="roomId">The room identifier.</param>
             <returns>
-            The class feedback.
+            The room feedback.
             </returns>
         </member>
         <member name="M:RestService.Services.IFeedbackService.ResetFeedback">
@@ -1775,16 +1727,6 @@
             <param name="year">The year.</param>
             <returns>The month wise consumptions for given year/</returns>
         </member>
-        <member name="M:RestService.Services.IMeterService.GetMonthWiseConsumptionForOffset(System.Int32,System.String,System.Int32,System.Int32)">
-            <summary>
-            Gets the month wise consumption for offset.
-            </summary>
-            <param name="buildingId">The building identifier for which to get electricity consumption.</param>
-            <param name="month">The month.</param>
-            <param name="year">The year.</param>
-            <param name="offset">The offset.</param>
-            <returns>The consumption for given period.</returns>
-        </member>
         <member name="M:RestService.Services.IMeterService.GetWeekWiseMonthlyConsumption(System.Int32,System.String,System.Int32)">
             <summary>
             Gets the week wise monthly consumption.
@@ -1793,16 +1735,6 @@
             <param name="month">The month.</param>
             <param name="year">The year.</param>
             <returns>The week wise consumption for given month and year.</returns>
-        </member>
-        <member name="M:RestService.Services.IMeterService.GetWeekWiseMonthlyConsumptionForOffset(System.Int32,System.String,System.Int32,System.Int32)">
-            <summary>
-            Gets the week wise monthly consumption for offset.
-            </summary>
-            <param name="buildingId">The building identifier for which to get electricity consumption.</param>
-            <param name="month">The month.</param>
-            <param name="year">The year.</param>
-            <param name="offset">The offset.</param>
-            <returns>The week wise consumption for given period.</returns>
         </member>
         <member name="M:RestService.Services.IMeterService.GetDayWiseMonthlyConsumption(System.Int32,System.String,System.Int32)">
             <summary>
@@ -1853,22 +1785,6 @@
             Returns a specific PiServer by fetching based on PiServer name
             </returns>
         </member>
-        <member name="M:RestService.Services.IPiServerService.AddPiServer(RestService.Models.PiServerModel)">
-            <summary>
-            Inserts a new PiServer in system
-            </summary>
-            <param name="model">PiServer model</param>
-            <returns>Insert acknowledgment.</returns>
-        </member>
-        <member name="M:RestService.Services.IPiServerService.DeletePiServer(System.Int32)">
-            <summary>
-            Removes an existing PiServer from system
-            </summary>
-            <param name="piServerId">The pi server identifier.</param>
-            <returns>
-            Delete acknowledgment.
-            </returns>
-        </member>
         <member name="M:RestService.Services.IPiServerService.UpdatePiServer(RestService.Models.PiServerModel)">
             <summary>
             Updates information of an existing PiServer
@@ -1878,14 +1794,14 @@
         </member>
         <member name="T:RestService.Services.IQuestionService">
             <summary>
-            Provides classroom questions operation.
+            Provides room questions operation.
             </summary>
         </member>
         <member name="M:RestService.Services.IQuestionService.GetQuestionAnswers">
             <summary>
-            Gets the question answers for all classroom.
+            Gets the question answers for all room.
             </summary>
-            <returns>The clasroom question answer details.</returns>
+            <returns>The room question answer details.</returns>
         </member>
         <member name="M:RestService.Services.IRoleService.GetAllRoles">
             <summary>
@@ -1954,21 +1870,21 @@
         </member>
         <member name="M:RestService.Services.ISensorService.MapSensor(System.Int32,System.Int32)">
             <summary>
-            Maps the sensor to classroom.
+            Maps the sensor to room.
             </summary>
             <param name="sensorId">The sensor identifier.</param>
-            <param name="classId">The class identifier.</param>
+            <param name="roomId">The room identifier.</param>
             <returns>
             The sensor mapped confirmation.
             </returns>
         </member>
-        <member name="M:RestService.Services.ISensorService.GetAllSensorsForClass(System.Int32)">
+        <member name="M:RestService.Services.ISensorService.GetAllSensorsForRoom(System.Int32)">
             <summary>
-            Gets all sensors for class.
+            Gets all sensors for room.
             </summary>
-            <param name="classId">The class identifier.</param>
+            <param name="roomId">The room identifier.</param>
             <returns>
-            The class sensors.
+            The room sensors.
             </returns>
         </member>
         <member name="M:RestService.Services.ISensorService.ResetSensors">

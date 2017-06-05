@@ -19,16 +19,13 @@
         [MaxLength(500)]
         public string PiServerDesc { get; set; }
 
-        [Range(1, int.MaxValue)]
-        public int PremiseID { get; set; }
-
         [Required]
         public string PiServerURL { get; set; }
 
         [JsonIgnore]
-        public Stream PremiseScheduleFile { get; set; }
+        public Stream RoomScheduleFile { get; set; }
 
         [JsonIgnore]
-        public string PremiseScheduleFileType { get; set; }
+        public string RoomScheduleFileType { get; set; }
     }
 }

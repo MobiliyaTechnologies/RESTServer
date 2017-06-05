@@ -17,7 +17,7 @@
 
         public string Alert_Desc { get; set; }
 
-        public int? Class_Id { get; set; }
+        public int? Room_Id { get; set; }
 
         public string Class_Name { get; set; }
 

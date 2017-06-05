@@ -23,15 +23,15 @@ namespace RestService.Entities
         public int BuildingID { get; set; }
         public string BuildingName { get; set; }
         public string BuildingDesc { get; set; }
-        public int PremiseID { get; set; }
+        public Nullable<int> PremiseID { get; set; }
         public bool IsActive { get; set; }
         public Nullable<int> CreatedBy { get; set; }
         public Nullable<System.DateTime> CreatedOn { get; set; }
         public Nullable<int> ModifiedBy { get; set; }
         public Nullable<System.DateTime> ModifiedOn { get; set; }
         public bool IsDeleted { get; set; }
-        public decimal Latitude { get; set; }
-        public decimal Longitude { get; set; }
+        public Nullable<decimal> Latitude { get; set; }
+        public Nullable<decimal> Longitude { get; set; }
     
         public virtual Premise Premise { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

@@ -6,11 +6,11 @@
     {
         public int Sensor_Id { get; set; }
 
-        public int Class_Id { get; set; }
+        public int Room_Id { get; set; }
 
-        public string Class_Name { get; set; }
+        public string Room_Name { get; set; }
 
-        public string Class_Desc { get; set; }
+        public string Room_Desc { get; set; }
 
         public double Temperature { get; set; }
 

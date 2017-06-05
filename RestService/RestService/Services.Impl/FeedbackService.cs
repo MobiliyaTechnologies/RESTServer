@@ -75,18 +75,18 @@
             return new FeedbackModelMappings().Map(feedbacks).ToList();
         }
 
-        List<FeedbackCountModel> IFeedbackService.GetFeedbackCount(int classId)
+        List<FeedbackCountModel> IFeedbackService.GetFeedbackCount(int roomId)
         {
             List<FeedbackCountModel> feedbackCount = new List<FeedbackCountModel>();
             var answerList = (from answer in this.dbContext.Answers select answer).ToList();
 
-            var feedbackDetail = (from feedback in this.dbContext.Feedback where feedback.ClassID == classId select feedback).ToList();
-            var classDetails = (from classData in this.dbContext.ClassroomDetails where classData.Class_Id == classId select classData).FirstOrDefault();
+            var feedbackDetail = (from feedback in this.dbContext.Feedback where feedback.RoomID == roomId select feedback).ToList();
+            var roomDetails = (from roomData in this.dbContext.RoomDetail where roomData.Room_Id == roomId select roomData).FirstOrDefault();
 
             answerList.All(answer =>
             {
                 var answerCount = feedbackDetail.Where(feedback => feedback.AnswerID == answer.AnswerID).ToList().Count();
-                feedbackCount.Add(new FeedbackCountModel { AnswerCount = answerCount, AnswerDesc = answer.AnswerDesc, AnswerId = answer.AnswerID, ClassId = classId, ClassName = classDetails.Class_Name });
+                feedbackCount.Add(new FeedbackCountModel { AnswerCount = answerCount, AnswerDesc = answer.AnswerDesc, AnswerId = answer.AnswerID, RoomId = roomId, RoomName = roomDetails.Room_Name });
                 return true;
             });
             var threshold = feedbackCount.Sum(feedback => feedback.AnswerCount) * 0.6;
@@ -100,7 +100,7 @@
 
         ResponseModel IFeedbackService.ResetFeedback()
         {
-            var feedbacks = this.dbContext.Feedback.Where(data => data.FeedbackID > 200 && data.ClassID == 2);
+            var feedbacks = this.dbContext.Feedback.Where(data => data.FeedbackID > 200 && data.RoomID == 2);
             if (feedbacks.Count() > 0)
             {
                 this.dbContext.Feedback.RemoveRange(feedbacks);
@@ -136,7 +136,7 @@
         private ResponseModel StoreFeedback(FeedbackModel feedbackModel)
         {
             var feedback = new Feedback();
-            feedback.ClassID = feedbackModel.ClassId;
+            feedback.RoomID = feedbackModel.RoomId;
             feedback.QuestionID = feedbackModel.QuestionId;
             feedback.AnswerID = feedback.AnswerID;
             feedback.FeedbackDesc = feedbackModel.FeedbackDesc == null ? string.Empty : feedbackModel.FeedbackDesc;
@@ -160,8 +160,8 @@
             var feedbackCount = new List<FeedbackCountModel>();
 
             var answers = this.dbContext.Answers;
-            var feedbackDetail = this.dbContext.Feedback.Where(f => f.ClassID == feedbackModel.ClassId);
-            var classDetails = this.dbContext.ClassroomDetails.FirstOrDefault(c => c.Class_Id == feedbackModel.ClassId);
+            var feedbackDetail = this.dbContext.Feedback.Where(f => f.RoomID == feedbackModel.RoomId);
+            var classDetails = this.dbContext.RoomDetail.FirstOrDefault(c => c.Room_Id == feedbackModel.RoomId);
 
             foreach (var answer in answers)
             {
@@ -171,8 +171,8 @@
                     AnswerCount = answerCount,
                     AnswerDesc = answer.AnswerDesc,
                     AnswerId = answer.AnswerID,
-                    ClassId = feedbackModel.ClassId,
-                    ClassName = classDetails.Class_Name
+                    RoomId = feedbackModel.RoomId,
+                    RoomName = classDetails.Room_Name
                 });
             }
 
@@ -205,7 +205,7 @@
 
             foreach (var exception in exceptionData)
             {
-                notificationModel.NotificationMessage = "Students are feeling " + exception.AnswerDesc + " in the class " + exception.ClassName + ". Take appropriate measures.";
+                notificationModel.NotificationMessage = "Students are feeling " + exception.AnswerDesc + " in the class " + exception.RoomName + ". Take appropriate measures.";
 
                 if (!string.IsNullOrWhiteSpace(notificationModel.NotificationAuthorizationKey) && !string.IsNullOrWhiteSpace(notificationModel.NotificationSender) && !string.IsNullOrWhiteSpace(notificationModel.NotificationReceiver))
                 {

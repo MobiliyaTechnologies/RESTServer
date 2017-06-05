@@ -12,17 +12,17 @@ namespace RestService.Entities
     using System;
     using System.Collections.Generic;
     
-    public partial class ClassroomDetails
+    public partial class RoomDetail
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public ClassroomDetails()
+        public RoomDetail()
         {
             this.Feedback = new HashSet<Feedback>();
         }
     
-        public int Class_Id { get; set; }
-        public string Class_Name { get; set; }
-        public string Class_Desc { get; set; }
+        public int Room_Id { get; set; }
+        public string Room_Name { get; set; }
+        public string Room_Desc { get; set; }
         public string Building { get; set; }
         public string Breaker_details { get; set; }
         public Nullable<double> X { get; set; }

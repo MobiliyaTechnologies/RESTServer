@@ -8,41 +8,41 @@
     using RestService.Models;
     using RestService.Utilities;
 
-    public sealed class ClassroomService : IClassroomService, IDisposable
+    public sealed class RoomService : IRoomService, IDisposable
     {
         private readonly PowerGridEntities dbContext;
         private readonly IContextInfoAccessorService context;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ClassroomService"/> class.
+        /// Initializes a new instance of the <see cref="RoomService"/> class.
         /// </summary>
-        public ClassroomService()
+        public RoomService()
         {
             this.dbContext = new PowerGridEntities();
             this.context = new ContextInfoAccessorService();
         }
 
-        List<ClassroomModel> IClassroomService.GetAllClassrooms()
+        List<RoomModel> IRoomService.GetAllRooms()
         {
             var accessibleBuildings = this.context.Current.RoleType == Enums.UserRole.Student ? this.dbContext.Building.WhereActiveBuilding().Select(b => b.BuildingName.Trim()) : this.dbContext.Building.WhereActiveAccessibleBuilding().Select(b => b.BuildingName.Trim());
 
-            var classroomDetails = this.dbContext.ClassroomDetails.Where(c => accessibleBuildings.Any(b => b.Equals(c.Building.Trim(), StringComparison.InvariantCultureIgnoreCase)));
+            var classroomDetails = this.dbContext.RoomDetail.Where(c => accessibleBuildings.Any(b => b.Equals(c.Building.Trim(), StringComparison.InvariantCultureIgnoreCase)));
 
-            return new ClassroomModelMapping().Map(classroomDetails).ToList();
+            return new RoomModelMapping().Map(classroomDetails).ToList();
         }
 
-        List<ClassroomModel> IClassroomService.GetClassroomByBuilding(int buildingId)
+        List<RoomModel> IRoomService.GetRoomByBuilding(int buildingId)
         {
             var accessibleBuilding = this.dbContext.Building.WhereActiveAccessibleBuilding(data => data.BuildingID == buildingId).FirstOrDefault();
 
             if (accessibleBuilding == null)
             {
-                return new List<ClassroomModel>();
+                return new List<RoomModel>();
             }
 
-            var classroomDetails = this.dbContext.ClassroomDetails.Where(c => c.Building.Trim().Equals(accessibleBuilding.BuildingName.Trim(), StringComparison.InvariantCultureIgnoreCase));
+            var classroomDetails = this.dbContext.RoomDetail.Where(c => c.Building.Trim().Equals(accessibleBuilding.BuildingName.Trim(), StringComparison.InvariantCultureIgnoreCase));
 
-            return new ClassroomModelMapping().Map(classroomDetails).ToList();
+            return new RoomModelMapping().Map(classroomDetails).ToList();
         }
 
         /// <summary>

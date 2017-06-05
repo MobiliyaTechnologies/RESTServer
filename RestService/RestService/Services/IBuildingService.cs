@@ -36,22 +36,6 @@
         BuildingModel GetBuildingByLocation(decimal latitude, decimal longitude);
 
         /// <summary>
-        /// Inserts a new Building in system
-        /// </summary>
-        /// <param name="model">Building model</param>
-        /// <returns>Insert acknowledgment</returns>
-        ResponseModel AddBuilding(BuildingModel model);
-
-        /// <summary>
-        /// Removes an existing Building from system
-        /// </summary>
-        /// <param name="buildingId">The building identifier.</param>
-        /// <returns>
-        /// Delete acknowledgment.
-        /// </returns>
-        ResponseModel DeleteBuilding(int buildingId);
-
-        /// <summary>
         /// Updates information of an existing Building
         /// </summary>
         /// <param name="model">Building model</param>
