@@ -646,6 +646,19 @@
             <param name="buildingModel">The building model.</param>
             <returns>The building updated confirmation, or bad request error response if invalid parameters. </returns>
         </member>
+        <member name="M:RestService.Controllers.BuildingController.AddRoomsToBuilding(System.Int32)">
+            <summary>
+            Adds the rooms to building.
+            It receive only multipart/form-data content-type.
+            It only accept rooms details in CSV file format.
+            Sample Format -> RoomName, X, Y.
+            RoomName - it must be valid string, if already exist than it's ignored.
+            X - must be valid double value else ignored.
+            Y - must be valid double value else ignored.
+            </summary>
+            <param name="buildingId">The building identifier.</param>
+            <returns>The rooms added to building confirmation.</returns>
+        </member>
         <member name="M:RestService.Controllers.BuildingController.Dispose(System.Boolean)">
             <summary>
             Releases the unmanaged resources that are used by the object and, optionally, releases the managed resources.
@@ -744,6 +757,20 @@
             </summary>
             <param name="buildingId">The building identifier.</param>
             <returns>The room details.</returns>
+        </member>
+        <member name="M:RestService.Controllers.RoomController.DeleteRoom(System.Int32)">
+            <summary>
+            Deletes the room.
+            </summary>
+            <param name="roomId">The room identifier.</param>
+            <returns>The room deleted confirmation.</returns>
+        </member>
+        <member name="M:RestService.Controllers.RoomController.UpdateRoom(RestService.Models.RoomModel)">
+            <summary>
+            Updates the room.
+            </summary>
+            <param name="roomModel">The room model.</param>
+            <returns>The room updated confirmation.</returns>
         </member>
         <member name="M:RestService.Controllers.RoomController.Dispose(System.Boolean)">
             <summary>
@@ -1582,6 +1609,28 @@
             <returns>
             The building's rooms.
             </returns>
+        </member>
+        <member name="M:RestService.Services.IRoomService.AddRoomsToBuilding(System.Int32,System.Collections.Generic.List{RestService.Models.RoomModel})">
+            <summary>
+            Adds the rooms to building.
+            </summary>
+            <param name="buildingId">The building identifier.</param>
+            <param name="roomModels">The room models.</param>
+            <returns>The rooms added confirmations.</returns>
+        </member>
+        <member name="M:RestService.Services.IRoomService.DeleteRoom(System.Int32)">
+            <summary>
+            Deletes the room.
+            </summary>
+            <param name="roomId">The room identifier.</param>
+            <returns>The room deleted confirmation.</returns>
+        </member>
+        <member name="M:RestService.Services.IRoomService.UpdateRoom(RestService.Models.RoomModel)">
+            <summary>
+            Updates the room.
+            </summary>
+            <param name="roomModel">The room model.</param>
+            <returns></returns>
         </member>
         <member name="T:RestService.Services.IEmailService">
             <summary>

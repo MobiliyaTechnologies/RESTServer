@@ -18,6 +18,7 @@ namespace RestService.Entities
         public Building()
         {
             this.MeterDetails = new HashSet<MeterDetails>();
+            this.RoomDetail = new HashSet<RoomDetail>();
         }
     
         public int BuildingID { get; set; }
@@ -36,5 +37,7 @@ namespace RestService.Entities
         public virtual Premise Premise { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<MeterDetails> MeterDetails { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<RoomDetail> RoomDetail { get; set; }
     }
 }

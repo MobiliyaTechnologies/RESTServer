@@ -2,27 +2,27 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
     using System.Net;
     using System.Net.Http;
-    using System.Web;
+    using System.Threading.Tasks;
     using System.Web.Http;
     using System.Web.Http.Description;
-    using RestService.Enums;
-    using RestService.Filters;
     using RestService.Models;
     using RestService.Services;
     using RestService.Services.Impl;
-    using RestService.Utilities;
 
     [RoutePrefix("api")]
     public class BuildingController : ApiController
     {
         private readonly IBuildingService buildingService;
+        private readonly IRoomService roomService;
 
         public BuildingController()
         {
             this.buildingService = new BuildingService();
+            this.roomService = new RoomService();
         }
 
         /// <summary>
@@ -120,6 +120,38 @@
         }
 
         /// <summary>
+        /// Adds the rooms to building.
+        /// It receive only multipart/form-data content-type.
+        /// It only accept rooms details in CSV file format.
+        /// Sample Format -> RoomName, X, Y.
+        /// RoomName - it must be valid string, if already exist than it's ignored.
+        /// X - must be valid double value else ignored.
+        /// Y - must be valid double value else ignored.
+        /// </summary>
+        /// <param name="buildingId">The building identifier.</param>
+        /// <returns>The rooms added to building confirmation.</returns>
+        [HttpPost]
+        [Route("AddRoomsToBuilding/{buildingId}")]
+        public HttpResponseMessage AddRoomsToBuilding(int buildingId)
+        {
+            if (buildingId < 1)
+            {
+                return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Building id must be grater than 0.");
+            }
+
+            var roomModels = this.GetRooms().Result;
+
+            if (roomModels.Count() == 0)
+            {
+                return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Invalid room details.");
+            }
+
+            var responseModel = this.roomService.AddRoomsToBuilding(buildingId, roomModels);
+
+            return this.Request.CreateResponse(HttpStatusCode.OK, responseModel);
+        }
+
+        /// <summary>
         /// Releases the unmanaged resources that are used by the object and, optionally, releases the managed resources.
         /// </summary>
         /// <param name="disposing">true to release both managed and unmanaged resources; false to release only unmanaged resources.</param>
@@ -131,6 +163,67 @@
             }
 
             base.Dispose(disposing);
+        }
+
+        private async Task<List<RoomModel>> GetRooms()
+        {
+            // Check if the request contains multipart/form-data.
+            if (!this.Request.Content.IsMimeMultipartContent())
+            {
+                throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType);
+            }
+
+            var piServerModel = new PiServerModel();
+
+            var contents = await this.Request.Content.ReadAsMultipartAsync();
+
+            var fileContent = contents.Contents.FirstOrDefault(c => c.Headers.ContentType != null && c.Headers.ContentType.MediaType.Equals("application/vnd.ms-excel") && c.Headers.ContentLength > 0);
+
+            if (fileContent != null)
+            {
+                List<RoomModel> rooms;
+                using (var roomCSV = await fileContent.ReadAsStreamAsync())
+                {
+                    rooms = this.GetRoomFromCSV(roomCSV);
+                }
+
+                return rooms;
+            }
+            else
+            {
+                throw new HttpResponseException(HttpStatusCode.BadRequest);
+            }
+        }
+
+        private List<RoomModel> GetRoomFromCSV(Stream roomCSV)
+        {
+            var rooms = new List<RoomModel>();
+            using (var reader = new StreamReader(roomCSV))
+            {
+                while (!reader.EndOfStream)
+                {
+                    var values = reader.ReadLine().Split(',');
+
+                    if (values.Count() == 3)
+                    {
+                        var roomName = values[0];
+                        var x = string.IsNullOrWhiteSpace(values[1]) ? default(double) : Convert.ToDouble(values[1]);
+                        var y = string.IsNullOrWhiteSpace(values[2]) ? default(double) : Convert.ToDouble(values[2]);
+
+                        if (x > 0 && y > 0 && !string.IsNullOrWhiteSpace(roomName))
+                        {
+                            rooms.Add(new RoomModel
+                            {
+                                RoomName = roomName.Trim(),
+                                X = x,
+                                Y = y
+                            });
+                        }
+                    }
+                }
+            }
+
+            return rooms;
         }
     }
 }

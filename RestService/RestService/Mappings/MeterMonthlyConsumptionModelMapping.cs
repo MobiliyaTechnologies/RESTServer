@@ -18,9 +18,7 @@
                        Year = s.Year,
                        Powerscout = s.PowerScout,
                        Monthly_KWH_Consumption = s.Monthly_KWH_System ?? default(double),
-                       Monthly_Electric_Cost = s.Monthly_electric_cost ?? default(double),
-                       Current_Month = s.current_month ?? default(DateTime),
-                       Last_Month = s.last_month ?? default(DateTime)
+                       Monthly_Electric_Cost = s.Monthly_electric_cost ?? default(double)
                    };
         }
 
