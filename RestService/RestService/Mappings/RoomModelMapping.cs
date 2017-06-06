@@ -12,11 +12,9 @@
             return from s in source
                    select new RoomModel
                    {
-                       RoomDescription = s.Room_Desc,
                        RoomId = s.Room_Id,
                        RoomName = s.Room_Name,
-                       Building = s.Building,
-                       Breaker_details = s.Breaker_details,
+                       Building = s.Building.BuildingName,
                        X = s.X ?? default(double),
                        Y = s.Y ?? default(double)
                    };

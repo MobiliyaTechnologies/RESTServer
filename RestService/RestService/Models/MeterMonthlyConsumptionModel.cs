@@ -17,9 +17,5 @@
         public double Monthly_KWH_Consumption { get; set; }
 
         public double Monthly_Electric_Cost { get; set; }
-
-        public DateTime Current_Month { get; set; }
-
-        public DateTime Last_Month { get; set; }
     }
 }

@@ -48,7 +48,6 @@
                                          Sensor_Id = data.Sensor_Id ?? default(int),
                                          Room_Id = classData.Room_Id,
                                          Room_Name = classData.Room_Name,
-                                         Room_Desc = classData.Room_Desc,
                                          Humidity = data.Humidity.HasValue ? Math.Round(data.Humidity.Value, 2) : default(double),
                                          Light_Intensity = data.Brightness.HasValue ? Math.Round(data.Brightness.Value, 2) : default(double),
                                          Temperature = data.Temperature.HasValue ? Math.Round(data.Temperature.Value, 2) : default(double),

@@ -49,12 +49,6 @@ namespace RestService.Entities
         public Nullable<double> kW_System { get; set; }
         public string days { get; set; }
         public string time_period { get; set; }
-        public Nullable<System.DateTime> current_week { get; set; }
-        public Nullable<System.DateTime> last_week { get; set; }
-        public Nullable<System.DateTime> current_day { get; set; }
-        public Nullable<System.DateTime> previous_day { get; set; }
-        public Nullable<System.DateTime> current_month { get; set; }
-        public Nullable<System.DateTime> last_month { get; set; }
         public string PiServerName { get; set; }
     }
 }

@@ -24,25 +24,16 @@
 
         List<RoomModel> IRoomService.GetAllRooms()
         {
-            var accessibleBuildings = this.context.Current.RoleType == Enums.UserRole.Student ? this.dbContext.Building.WhereActiveBuilding().Select(b => b.BuildingName.Trim()) : this.dbContext.Building.WhereActiveAccessibleBuilding().Select(b => b.BuildingName.Trim());
+            var roomDetails = this.dbContext.RoomDetail.WhereActiveAccessibleRoom();
 
-            var classroomDetails = this.dbContext.RoomDetail.Where(c => accessibleBuildings.Any(b => b.Equals(c.Building.Trim(), StringComparison.InvariantCultureIgnoreCase)));
-
-            return new RoomModelMapping().Map(classroomDetails).ToList();
+            return new RoomModelMapping().Map(roomDetails).ToList();
         }
 
         List<RoomModel> IRoomService.GetRoomByBuilding(int buildingId)
         {
-            var accessibleBuilding = this.dbContext.Building.WhereActiveAccessibleBuilding(data => data.BuildingID == buildingId).FirstOrDefault();
+            var roomDetails = this.dbContext.RoomDetail.WhereActiveAccessibleRoom(b => b.BuildingID == buildingId);
 
-            if (accessibleBuilding == null)
-            {
-                return new List<RoomModel>();
-            }
-
-            var classroomDetails = this.dbContext.RoomDetail.Where(c => c.Building.Trim().Equals(accessibleBuilding.BuildingName.Trim(), StringComparison.InvariantCultureIgnoreCase));
-
-            return new RoomModelMapping().Map(classroomDetails).ToList();
+            return new RoomModelMapping().Map(roomDetails).ToList();
         }
 
         /// <summary>
@@ -54,6 +45,70 @@
             {
                 this.dbContext.Dispose();
             }
+        }
+
+        ResponseModel IRoomService.AddRoomsToBuilding(int buildingId, List<RoomModel> roomModels)
+        {
+            var isAccessibleBuilding = this.dbContext.Building.WhereActiveAccessibleBuilding(b => b.BuildingID == buildingId).Any();
+
+            if (!isAccessibleBuilding)
+            {
+                return new ResponseModel(Enums.StatusCode.Error, "User does not have a permission to add rooms in building.");
+            }
+
+            var existingRoom = this.dbContext.RoomDetail.WhereActiveAccessibleRoom(b => b.BuildingID == buildingId).Select(r => r.Room_Name);
+
+            roomModels = roomModels.Where(r => !existingRoom.Any(e => e.Equals(r.RoomName, StringComparison.InvariantCultureIgnoreCase))).ToList();
+
+            foreach (var roomModel in roomModels)
+            {
+                var room = new RoomDetail
+                {
+                    Room_Name = roomModel.RoomName,
+                    X = roomModel.X,
+                    Y = roomModel.Y,
+                    BuildingID = buildingId
+                };
+
+                this.dbContext.RoomDetail.Add(room);
+            }
+
+            this.dbContext.SaveChanges();
+
+            return new ResponseModel(Enums.StatusCode.Ok, "Room added to building successfully.");
+        }
+
+        ResponseModel IRoomService.DeleteRoom(int roomId)
+        {
+            var roomDetail = this.dbContext.RoomDetail.WhereActiveAccessibleRoom(b => b.Room_Id == roomId).FirstOrDefault();
+
+            if (roomDetail == null)
+            {
+                return new ResponseModel(Enums.StatusCode.Error, "Room does not exist or user does not have a permission for this room.");
+            }
+
+            this.dbContext.RoomDetail.Remove(roomDetail);
+            this.dbContext.SaveChanges();
+
+            return new ResponseModel(Enums.StatusCode.Ok, "Room deleted successfully.");
+        }
+
+        ResponseModel IRoomService.UpdateRoom(RoomModel roomModel)
+        {
+            var roomDetail = this.dbContext.RoomDetail.WhereActiveAccessibleRoom(b => b.Room_Id == roomModel.RoomId).FirstOrDefault();
+
+            if (roomDetail == null)
+            {
+                return new ResponseModel(Enums.StatusCode.Error, "Room does not exist or user does not have a permission for this room.");
+            }
+
+            roomDetail.Room_Name = string.IsNullOrWhiteSpace(roomModel.RoomName) ? roomDetail.Room_Name : roomModel.RoomName;
+            roomDetail.X = roomModel.X == default(double) ? roomDetail.X : roomModel.X;
+            roomDetail.Y = roomModel.Y == default(double) ? roomDetail.Y : roomModel.Y;
+
+            this.dbContext.SaveChanges();
+
+            return new ResponseModel(Enums.StatusCode.Ok, "Room updated successfully.");
         }
     }
 }

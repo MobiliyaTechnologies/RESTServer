@@ -22,12 +22,11 @@ namespace RestService.Entities
     
         public int Room_Id { get; set; }
         public string Room_Name { get; set; }
-        public string Room_Desc { get; set; }
-        public string Building { get; set; }
-        public string Breaker_details { get; set; }
         public Nullable<double> X { get; set; }
         public Nullable<double> Y { get; set; }
+        public int BuildingID { get; set; }
     
+        public virtual Building Building { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Feedback> Feedback { get; set; }
     }

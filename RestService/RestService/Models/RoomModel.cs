@@ -6,13 +6,9 @@
 
         public string RoomName { get; set; }
 
-        public string RoomDescription { get; set; }
-
         public int SensorId { get; set; }
 
         public string Building { get; set; }
-
-        public string Breaker_details { get; set; }
 
         public double X { get; set; }
 

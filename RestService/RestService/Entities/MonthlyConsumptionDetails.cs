@@ -22,8 +22,6 @@ namespace RestService.Entities
         public Nullable<double> Monthly_KWH_System { get; set; }
         public Nullable<double> Monthly_electric_cost { get; set; }
         public Nullable<System.DateTime> Timestamp { get; set; }
-        public Nullable<System.DateTime> current_month { get; set; }
-        public Nullable<System.DateTime> last_month { get; set; }
         public string Building { get; set; }
         public string PiServerName { get; set; }
     }
