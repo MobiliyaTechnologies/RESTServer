@@ -21,5 +21,7 @@
         public decimal Longitude { get; set; }
 
         public double MonthlyConsumption { get; set; }
+
+        public double MonthlyPrediction { get; set; }
     }
 }

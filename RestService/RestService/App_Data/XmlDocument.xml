@@ -665,6 +665,18 @@
             </summary>
             <param name="disposing">true to release both managed and unmanaged resources; false to release only unmanaged resources.</param>
         </member>
+        <member name="T:RestService.Controllers.ConfigurationController">
+            <summary>
+            Provides configuration APIs.
+            </summary>
+            <seealso cref="T:System.Web.Http.ApiController" />
+        </member>
+        <member name="M:RestService.Controllers.ConfigurationController.GetMobileConfiguration">
+            <summary>
+            Gets the B2C configuration.
+            </summary>
+            <returns>The b2c configuration dictionary.</returns>
+        </member>
         <member name="M:RestService.Controllers.PremiseController.#ctor">
             <summary>
             Initializes a new instance of the <see cref="T:RestService.Controllers.PremiseController"/> class.
@@ -1743,22 +1755,22 @@
             <param name="buildingId">The building identifier for which to get electricity consumption.</param>
             <returns>The current month consumption.</returns>
         </member>
-        <member name="M:RestService.Services.IMeterService.GetMonthlyConsumptionPerPremise(System.Int32)">
+        <member name="M:RestService.Services.IMeterService.GetMonthlyConsumptionPredictionPerPremise(System.Int32)">
             <summary>
-            Gets the meter monthly consumption per premise.
+            Gets the meter monthly consumption and prediction per premise.
             </summary>
             <param name="premiseID">The premise identifier.</param>
             <returns>
-            The current month electricity consumption per premise
+            The current month electricity consumption and prediction per premise
             </returns>
         </member>
-        <member name="M:RestService.Services.IMeterService.GetMonthlyConsumptionPerBuildings(System.Int32)">
+        <member name="M:RestService.Services.IMeterService.GetMonthlyConsumptionPredictionPerBuildings(System.Int32)">
             <summary>
-            Gets the meter monthly consumption per building.
+            Gets the meter monthly consumption and prediction per building.
             </summary>
             <param name="buildingId">The building identifier.</param>
             <returns>
-            The current month electricity consumption per building.
+            The current month electricity consumption and prediction per building.
             </returns>
         </member>
         <member name="M:RestService.Services.IMeterService.GetMeterDailyConsumption(System.Int32)">

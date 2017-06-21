@@ -114,7 +114,9 @@
         {
             foreach (var buildingModel in buildingModels)
             {
-                buildingModel.MonthlyConsumption = this.meterService.GetMonthlyConsumptionPerBuildings(buildingModel.BuildingID);
+                var monthlyConsumptionPrediction = this.meterService.GetMonthlyConsumptionPredictionPerBuildings(buildingModel.BuildingID);
+                buildingModel.MonthlyConsumption = monthlyConsumptionPrediction.Consumption;
+                buildingModel.MonthlyPrediction = monthlyConsumptionPrediction.Prediction;
             }
         }
     }

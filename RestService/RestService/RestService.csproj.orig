@@ -35,7 +35,6 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>App_Data/XmlDocument.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -73,22 +72,10 @@
     <Reference Include="Microsoft.ApplicationInsights, Version=2.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.ApplicationInsights.2.3.0\lib\net45\Microsoft.ApplicationInsights.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Azure.KeyVault.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Azure.KeyVault.Core.1.0.0\lib\net40\Microsoft.Azure.KeyVault.Core.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.3\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Microsoft.Data.Edm, Version=5.8.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Data.Edm.5.8.2\lib\net40\Microsoft.Data.Edm.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Data.OData, Version=5.8.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Data.OData.5.8.2\lib\net40\Microsoft.Data.OData.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Data.Services.Client, Version=5.8.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Data.Services.Client.5.8.2\lib\net40\Microsoft.Data.Services.Client.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.IdentityModel.Logging, Version=1.1.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.IdentityModel.Logging.1.1.3\lib\net451\Microsoft.IdentityModel.Logging.dll</HintPath>
     </Reference>
@@ -122,12 +109,6 @@
     <Reference Include="Microsoft.Owin.Security.Twitter, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Owin.Security.Twitter.3.0.1\lib\net45\Microsoft.Owin.Security.Twitter.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.WindowsAzure.Configuration, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.WindowsAzure.ConfigurationManager.3.2.3\lib\net40\Microsoft.WindowsAzure.Configuration.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.WindowsAzure.Storage, Version=8.1.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\WindowsAzure.Storage.8.1.2\lib\net45\Microsoft.WindowsAzure.Storage.dll</HintPath>
-    </Reference>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.10.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -148,9 +129,6 @@
     </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
-    <Reference Include="System.Spatial, Version=5.8.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Spatial.5.8.2\lib\net40\System.Spatial.dll</HintPath>
-    </Reference>
     <Reference Include="System.Web.Cors, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.Cors.5.2.3\lib\net45\System.Web.Cors.dll</HintPath>
       <Private>True</Private>
@@ -259,6 +237,7 @@
   <ItemGroup>
     <Compile Include="App_Start\OpenIdConnectCachingSecurityTokenProvider.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="App_Start\SwaggerConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Areas\HelpPage\ApiDescriptionExtensions.cs" />
     <Compile Include="Areas\HelpPage\App_Start\HelpPageConfig.cs" />
@@ -292,9 +271,8 @@
     <Compile Include="Controllers\AnomalyController.cs" />
     <Compile Include="Controllers\ApplicationConfigurationController.cs" />
     <Compile Include="Controllers\BuildingController.cs" />
-    <Compile Include="Controllers\ConfigurationController.cs" />
-    <Compile Include="Controllers\PremiseController.cs" />
-    <Compile Include="Controllers\RoomController.cs" />
+    <Compile Include="Controllers\CampusController.cs" />
+    <Compile Include="Controllers\ClassroomController.cs" />
     <Compile Include="Controllers\EmailController.cs" />
     <Compile Include="Controllers\FeedbackController.cs" />
     <Compile Include="Controllers\InsightController.cs" />
@@ -303,7 +281,7 @@
     <Compile Include="Controllers\QuestionController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\SensorController.cs" />
-    <Compile Include="Controllers\OrganizationController.cs" />
+    <Compile Include="Controllers\UniversityController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Entities\AlertRules.cs">
       <DependentUpon>PowergridModel.tt</DependentUpon>
@@ -323,7 +301,31 @@
     <Compile Include="Entities\ApplicationConfigurationEntry.cs">
       <DependentUpon>PowergridModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\AzureAlerts.cs">
+      <DependentUpon>PowergridModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\AzureAnomalyOutput.cs">
+      <DependentUpon>PowergridModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\AzureDailyConsumptionPrediction.cs">
+      <DependentUpon>PowergridModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\AzureLiveData.cs">
+      <DependentUpon>PowergridModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\AzureWeeklyConsumptionPrediction.cs">
+      <DependentUpon>PowergridModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\Building.cs">
+      <DependentUpon>PowergridModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\Campus.cs">
+      <DependentUpon>PowergridModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\ClassroomDetails.cs">
+      <DependentUpon>PowergridModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\DailyConsumptionAzureDetails.cs">
       <DependentUpon>PowergridModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\DailyConsumptionDetails.cs">
@@ -338,19 +340,31 @@
     <Compile Include="Entities\Feedback.cs">
       <DependentUpon>PowergridModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Entities\LiveData.cs">
+    <Compile Include="Entities\HalfHourlyData.cs">
+      <DependentUpon>PowergridModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\HalfYearlyData.cs">
       <DependentUpon>PowergridModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\MeterDetails.cs">
       <DependentUpon>PowergridModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\MonthlyConsumptionAzureDetails.cs">
+      <DependentUpon>PowergridModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\MonthlyConsumptionDetails.cs">
       <DependentUpon>PowergridModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Entities\Organization.cs">
+    <Compile Include="Entities\MSLiveData.cs">
+      <DependentUpon>PowergridModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\Person.cs">
       <DependentUpon>PowergridModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\PiServer.cs">
+      <DependentUpon>PowergridModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\PowergridAzureMLData.cs">
       <DependentUpon>PowergridModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\PowergridModel.Context.cs">
@@ -368,16 +382,22 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>PowergridModel.edmx</DependentUpon>
     </Compile>
-    <Compile Include="Entities\Premise.cs">
+    <Compile Include="Entities\Questions.cs">
       <DependentUpon>PowergridModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Entities\Questions.cs">
+    <Compile Include="Entities\QueueLiveData.cs">
       <DependentUpon>PowergridModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\Role.cs">
       <DependentUpon>PowergridModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Entities\RoomDetail.cs">
+    <Compile Include="Entities\RoleBK.cs">
+      <DependentUpon>PowergridModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\SensorAzureLiveData.cs">
+      <DependentUpon>PowergridModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\SensorAzureMaster.cs">
       <DependentUpon>PowergridModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\SensorData.cs">
@@ -389,7 +409,19 @@
     <Compile Include="Entities\SensorMaster.cs">
       <DependentUpon>PowergridModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\TempMLData.cs">
+      <DependentUpon>PowergridModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\TempMSLiveData.cs">
+      <DependentUpon>PowergridModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\University.cs">
+      <DependentUpon>PowergridModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\User.cs">
+      <DependentUpon>PowergridModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\UserSession.cs">
       <DependentUpon>PowergridModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\WeeklyConsumptionPrediction.cs">
@@ -405,8 +437,8 @@
     <Compile Include="Mappings\AnomalyInfoModelMapping.cs" />
     <Compile Include="Mappings\AnswerModelMapping.cs" />
     <Compile Include="Mappings\BuildingModelMapping.cs" />
-    <Compile Include="Mappings\PremiseModelMapping.cs" />
-    <Compile Include="Mappings\RoomModelMapping.cs" />
+    <Compile Include="Mappings\CampusModelMapping.cs" />
+    <Compile Include="Mappings\ClassroomModelMapping.cs" />
     <Compile Include="Mappings\FeedbackModelMappings.cs" />
     <Compile Include="Mappings\MeterDailyConsumptionModelMapping.cs" />
     <Compile Include="Mappings\MeterDetailsModelMapping.cs" />
@@ -414,23 +446,25 @@
     <Compile Include="Mappings\PiServerModelMapping.cs" />
     <Compile Include="Mappings\QuestionModelMapping.cs" />
     <Compile Include="Mappings\RoleModelMapping.cs" />
-    <Compile Include="Mappings\OrganizationModelMapping.cs" />
+    <Compile Include="Mappings\UniversityModelMapping.cs" />
     <Compile Include="Mappings\ApplicationConfigurationModelMapping.cs" />
     <Compile Include="Mappings\UserModelMapping.cs" />
     <Compile Include="Models\AlertDetailsModel.cs" />
     <Compile Include="Models\AlertModel.cs" />
     <Compile Include="Models\AnomalyInfoModel.cs" />
     <Compile Include="Models\AnswerModel.cs" />
-    <Compile Include="Models\BlobStorageModel.cs" />
     <Compile Include="Models\BuildingModel.cs" />
-    <Compile Include="Models\ConsumptionPredictionModel.cs" />
-    <Compile Include="Models\PremiseModel.cs" />
-    <Compile Include="Models\RoomModel.cs" />
+    <Compile Include="Models\CampusModel.cs" />
+    <Compile Include="Models\ClassroomModel.cs" />
+
     <Compile Include="Models\EmailModel.cs" />
+
     <Compile Include="Models\ApplicationConfigurationModel.cs" />
     <Compile Include="Models\ApplicationConfigurationEntryModel.cs" />
+
     <Compile Include="Models\FeedbackCountModel.cs" />
     <Compile Include="Models\FeedbackModel.cs" />
+    <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\InsightDataModel.cs" />
     <Compile Include="Models\MeterDailyConsumptionModel.cs" />
     <Compile Include="Models\MeterDayWiseMonthlyConsumptionModel.cs" />
@@ -441,22 +475,20 @@
     <Compile Include="Models\MeterURLKeyModel.cs" />
     <Compile Include="Models\MeterWeekWiseMonthlyConsumptionModel.cs" />
     <Compile Include="Models\MonthListModel.cs" />
-    <Compile Include="Models\NotificationModel.cs" />
     <Compile Include="Models\PiServerModel.cs" />
     <Compile Include="Models\QuestionModel.cs" />
     <Compile Include="Models\ResponseModel.cs" />
     <Compile Include="Models\RoleModel.cs" />
     <Compile Include="Models\SensorModel.cs" />
-    <Compile Include="Models\OrganizationModel.cs" />
+    <Compile Include="Models\UniversityModel.cs" />
     <Compile Include="Models\UserModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services.Impl\AlertService.cs" />
     <Compile Include="Services.Impl\AnomalyService.cs" />
     <Compile Include="Services.Impl\ApplicationConfigurationService.cs" />
-    <Compile Include="Services.Impl\BlobStorageService.cs" />
     <Compile Include="Services.Impl\BuildingService.cs" />
-    <Compile Include="Services.Impl\PremiseService.cs" />
-    <Compile Include="Services.Impl\RoomService.cs" />
+    <Compile Include="Services.Impl\CampusService.cs" />
+    <Compile Include="Services.Impl\ClassroomService.cs" />
     <Compile Include="Services.Impl\EmailService.cs" />
     <Compile Include="Services.Impl\FeedbackService.cs" />
     <Compile Include="Services.Impl\InsightService.cs" />
@@ -465,16 +497,15 @@
     <Compile Include="Services.Impl\QuestionService.cs" />
     <Compile Include="Services.Impl\RoleService.cs" />
     <Compile Include="Services.Impl\SensorService.cs" />
-    <Compile Include="Services.Impl\OrganizationService.cs" />
+    <Compile Include="Services.Impl\UniversityService.cs" />
     <Compile Include="Services.Impl\ContextInfoAccessorService.cs" />
     <Compile Include="Services.Impl\UserService.cs" />
     <Compile Include="Services\IAlertService.cs" />
     <Compile Include="Services\IAnomalyService.cs" />
     <Compile Include="Services\IApplicationConfigurationService.cs" />
-    <Compile Include="Services\IBlobStorageService.cs" />
     <Compile Include="Services\IBuildingService.cs" />
-    <Compile Include="Services\IPremiseService.cs" />
-    <Compile Include="Services\IRoomService.cs" />
+    <Compile Include="Services\ICampusService.cs" />
+    <Compile Include="Services\IClassroomService.cs" />
     <Compile Include="Services\IEmailService.cs" />
     <Compile Include="Services\IFeedbackService.cs" />
     <Compile Include="Services\IInsightService.cs" />
@@ -483,17 +514,16 @@
     <Compile Include="Services\IQuestionService.cs" />
     <Compile Include="Services\IRoleService.cs" />
     <Compile Include="Services\ISensorService.cs" />
-    <Compile Include="Services\IOrganizationService.cs" />
+    <Compile Include="Services\IUniversityService.cs" />
     <Compile Include="Services\IContextInfoAccessorService.cs" />
     <Compile Include="Services\IUserService.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Utilities\ApiConfiguration.cs" />
-    <Compile Include="Utilities\ApiConstant.cs" />
+    <Compile Include="Utilities\B2C_ClaimTypes.cs" />
     <Compile Include="Utilities\QueryableExtention.cs" />
     <Compile Include="Utilities\ServiceUtil.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Data\XmlDocument.xml" />
     <Content Include="Areas\HelpPage\HelpPage.css" />
     <Content Include="Entities\PowergridModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -559,9 +589,7 @@
     <Folder Include="App_Data\jobs\continuous\DataUtilWebJob\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="packages.config">
-      <SubType>Designer</SubType>
-    </Content>
+    <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />

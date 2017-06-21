@@ -203,7 +203,9 @@
         {
             foreach (var premiseModel in premiseModels)
             {
-                premiseModel.MonthlyConsumption = this.meterService.GetMonthlyConsumptionPerPremise(premiseModel.PremiseID);
+                var monthlyConsumptionPrediction = this.meterService.GetMonthlyConsumptionPredictionPerPremise(premiseModel.PremiseID);
+                premiseModel.MonthlyConsumption = monthlyConsumptionPrediction.Consumption;
+                premiseModel.MonthlyPrediction = monthlyConsumptionPrediction.Prediction;
             }
         }
     }
