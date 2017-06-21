@@ -20,6 +20,8 @@
 
         public double MonthlyConsumption { get; set; }
 
+        public double MonthlyPrediction { get; set; }
+
         public decimal Latitude { get; set; }
 
         public decimal Longitude { get; set; }

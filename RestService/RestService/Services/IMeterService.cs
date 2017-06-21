@@ -26,22 +26,22 @@
         List<MeterMonthlyConsumptionModel> GetMeterMonthlyConsumption(int buildingId);
 
         /// <summary>
-        /// Gets the meter monthly consumption per premise.
+        /// Gets the meter monthly consumption and prediction per premise.
         /// </summary>
         /// <param name="premiseID">The premise identifier.</param>
         /// <returns>
-        /// The current month electricity consumption per premise
+        /// The current month electricity consumption and prediction per premise
         /// </returns>
-        double GetMonthlyConsumptionPerPremise(int premiseID);
+        ConsumptionPredictionModel GetMonthlyConsumptionPredictionPerPremise(int premiseID);
 
         /// <summary>
-        /// Gets the meter monthly consumption per building.
+        /// Gets the meter monthly consumption and prediction per building.
         /// </summary>
         /// <param name="buildingId">The building identifier.</param>
         /// <returns>
-        /// The current month electricity consumption per building.
+        /// The current month electricity consumption and prediction per building.
         /// </returns>
-        double GetMonthlyConsumptionPerBuildings(int buildingId);
+        ConsumptionPredictionModel GetMonthlyConsumptionPredictionPerBuildings(int buildingId);
 
         /// <summary>
         /// Gets the meter daily consumption.

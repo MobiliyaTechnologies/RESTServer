@@ -14,6 +14,14 @@
         public static readonly string B2cClientId = GetConfigData("b2c:ClientId");
         public static readonly string B2cSignUpPolicy = GetConfigData("b2c:SignUpPolicyId");
         public static readonly string B2cSignInPolicy = GetConfigData("b2c:SignInPolicyId");
+        public static readonly string B2cClientSecret = GetConfigData("b2c:ClientSecret");
+        public static readonly string B2cChangePasswordPolicy = GetConfigData("b2c:ChangePasswordPolicy");
+
+        public static readonly string B2cMobileAuthorizeURL = GetConfigData("b2c:MobileAuthorizeURL");
+        public static readonly string B2cMobileTokenURL = GetConfigData("b2c:MobileTokenURL");
+        public static readonly string B2cMobileTokenURLIOS = GetConfigData("b2c:MobileTokenURLIOS");
+        public static readonly string B2cMobileChangePasswordURL = GetConfigData("b2c:MobileChangePasswordURL");
+        public static readonly string B2cMobileRedirectUrl = GetConfigData("b2c:MobileRedirectUrl");
 
         public static readonly string EmailHost = GetConfigData("EmailHost");
         public static readonly string EmailSender = GetConfigData("EmailSender");

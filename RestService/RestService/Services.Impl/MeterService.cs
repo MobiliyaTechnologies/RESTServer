@@ -169,7 +169,22 @@
         List<MeterDetailsModel> IMeterService.GetMeterList(int buildingId)
         {
             var meterDetails = this.GetMeterDetails(buildingId);
-            return new MeterDetailsModelMapping().Map(meterDetails).ToList();
+            var meterDetailModels = new List<MeterDetailsModel>();
+
+            foreach (var meterDetail in meterDetails.ToList())
+            {
+                var meterDetailModel = new MeterDetailsModel
+                {
+                    Id = meterDetail.Id,
+                    PowerScout = meterDetail.PowerScout,
+                    Name = meterDetail.Breaker_details,
+                    MonthlyConsumption = this.GetMonthlyConsumption(new List<MeterDetails> { meterDetail }.AsQueryable()),
+                    MonthlyPrediction = this.GetMonthlyPrediction(new List<MeterDetails> { meterDetail }.AsQueryable())
+                };
+                meterDetailModels.Add(meterDetailModel);
+            }
+
+            return meterDetailModels;
         }
 
         List<MeterMonthlyConsumptionModel> IMeterService.GetMeterMonthlyConsumption(int buildingId)
@@ -193,45 +208,29 @@
             return meterMonthlyConsumptionModels;
         }
 
-        double IMeterService.GetMonthlyConsumptionPerPremise(int premiseID)
+        ConsumptionPredictionModel IMeterService.GetMonthlyConsumptionPredictionPerPremise(int premiseID)
         {
             var meterDetails = this.GetMeterDetailsPerPremise(premiseID);
 
-            double monthly_KWH_Consumption = default(double);
-
-            foreach (var meterDetail in meterDetails)
+            var cunsumptionPrediction = new ConsumptionPredictionModel
             {
-                string currentMonth = ServiceUtil.GetCurrentDateTime(meterDetail.UTCConversionTime).ToString("MMM");
+                Consumption = this.GetMonthlyConsumption(meterDetails),
+                Prediction = this.GetMonthlyPrediction(meterDetails)
+            };
 
-                var monthlyConsumptionDetail = this.dbContext.MonthlyConsumptionDetails.FirstOrDefault(m => m.PowerScout.Equals(meterDetail.PowerScout, StringComparison.InvariantCultureIgnoreCase) && m.Month.Equals(currentMonth, StringComparison.InvariantCultureIgnoreCase));
-
-                if (monthlyConsumptionDetail != null && monthlyConsumptionDetail.Monthly_KWH_System.HasValue)
-                {
-                    monthly_KWH_Consumption = monthly_KWH_Consumption + monthlyConsumptionDetail.Monthly_KWH_System.Value;
-                }
-            }
-
-            return monthly_KWH_Consumption;
+            return cunsumptionPrediction;
         }
 
-        double IMeterService.GetMonthlyConsumptionPerBuildings(int buildingId)
+        ConsumptionPredictionModel IMeterService.GetMonthlyConsumptionPredictionPerBuildings(int buildingId)
         {
             var meterDetails = this.GetMeterDetails(buildingId);
-            double monthly_KWH_Consumption = default(double);
-
-            foreach (var meterDetail in meterDetails)
+            var cunsumptionPrediction = new ConsumptionPredictionModel
             {
-                string currentMonth = ServiceUtil.GetCurrentDateTime(meterDetail.UTCConversionTime).ToString("MMM");
+                Consumption = this.GetMonthlyConsumption(meterDetails),
+                Prediction = this.GetMonthlyPrediction(meterDetails)
+            };
 
-                var monthlyConsumptionDetail = this.dbContext.MonthlyConsumptionDetails.FirstOrDefault(m => m.PowerScout.Equals(meterDetail.PowerScout, StringComparison.InvariantCultureIgnoreCase) && m.Month.Equals(currentMonth, StringComparison.InvariantCultureIgnoreCase));
-
-                if (monthlyConsumptionDetail != null && monthlyConsumptionDetail.Monthly_KWH_System.HasValue)
-                {
-                    monthly_KWH_Consumption = monthly_KWH_Consumption + monthlyConsumptionDetail.Monthly_KWH_System.Value;
-                }
-            }
-
-            return monthly_KWH_Consumption;
+            return cunsumptionPrediction;
         }
 
         List<MeterWeekWiseMonthlyConsumptionModel> IMeterService.GetWeekWiseMonthlyConsumption(int buildingId, string month, int year)
@@ -469,6 +468,46 @@
         {
             var meterdetails = this.dbContext.MeterDetails.WhereActiveAccessibleMeterDetails(m => m.Building.Premise.PremiseID == premiseID);
             return meterdetails;
+        }
+
+        private double GetMonthlyConsumption(IQueryable<MeterDetails> meterDetails)
+        {
+            double monthly_KWH_Consumption = default(double);
+
+            foreach (var meterDetail in meterDetails)
+            {
+                string currentMonth = ServiceUtil.GetCurrentDateTime(meterDetail.UTCConversionTime).ToString("MMM");
+
+                var monthlyConsumptionDetail = this.dbContext.MonthlyConsumptionDetails.FirstOrDefault(m => m.PowerScout.Equals(meterDetail.PowerScout, StringComparison.InvariantCultureIgnoreCase) && m.Month.Equals(currentMonth, StringComparison.InvariantCultureIgnoreCase));
+
+                if (monthlyConsumptionDetail != null && monthlyConsumptionDetail.Monthly_KWH_System.HasValue)
+                {
+                    monthly_KWH_Consumption = monthly_KWH_Consumption + monthlyConsumptionDetail.Monthly_KWH_System.Value;
+                }
+            }
+
+            return monthly_KWH_Consumption;
+        }
+
+        private double GetMonthlyPrediction(IQueryable<MeterDetails> meterDetails)
+        {
+            double monthly_KWH_Prediction = default(double);
+
+            foreach (var meterDetail in meterDetails)
+            {
+                var currentMonth = ServiceUtil.GetCurrentDateTime(meterDetail.UTCConversionTime);
+
+              var dailyPredictions = (from dailyConsumptionPrediction in this.dbContext.DailyConsumptionPrediction
+                where meterDetail.PowerScout.Equals(dailyConsumptionPrediction.PowerScout, StringComparison.InvariantCultureIgnoreCase)
+                && dailyConsumptionPrediction.Timestamp.HasValue && dailyConsumptionPrediction.Daily_Predicted_KWH_System.HasValue
+                && currentMonth.Month == dailyConsumptionPrediction.Timestamp.Value.Month
+                && currentMonth.Year == dailyConsumptionPrediction.Timestamp.Value.Year
+                select dailyConsumptionPrediction.Daily_Predicted_KWH_System).Sum().Value;
+
+                monthly_KWH_Prediction = monthly_KWH_Prediction + dailyPredictions;
+            }
+
+            return monthly_KWH_Prediction;
         }
     }
 }
