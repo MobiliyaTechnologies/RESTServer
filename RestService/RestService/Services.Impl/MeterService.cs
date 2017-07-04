@@ -497,14 +497,17 @@
             {
                 var currentMonth = ServiceUtil.GetCurrentDateTime(meterDetail.UTCConversionTime);
 
-              var dailyPredictions = (from dailyConsumptionPrediction in this.dbContext.DailyConsumptionPrediction
-                where meterDetail.PowerScout.Equals(dailyConsumptionPrediction.PowerScout, StringComparison.InvariantCultureIgnoreCase)
-                && dailyConsumptionPrediction.Timestamp.HasValue && dailyConsumptionPrediction.Daily_Predicted_KWH_System.HasValue
-                && currentMonth.Month == dailyConsumptionPrediction.Timestamp.Value.Month
-                && currentMonth.Year == dailyConsumptionPrediction.Timestamp.Value.Year
-                select dailyConsumptionPrediction.Daily_Predicted_KWH_System).Sum().Value;
+                var dailyPredictions = (from dailyConsumptionPrediction in this.dbContext.DailyConsumptionPrediction
+                                        where meterDetail.PowerScout.Equals(dailyConsumptionPrediction.PowerScout, StringComparison.InvariantCultureIgnoreCase)
+                                        && dailyConsumptionPrediction.Timestamp.HasValue && dailyConsumptionPrediction.Daily_Predicted_KWH_System.HasValue
+                                        && currentMonth.Month == dailyConsumptionPrediction.Timestamp.Value.Month
+                                        && currentMonth.Year == dailyConsumptionPrediction.Timestamp.Value.Year
+                                        select dailyConsumptionPrediction.Daily_Predicted_KWH_System).Sum();
 
-                monthly_KWH_Prediction = monthly_KWH_Prediction + dailyPredictions;
+                if (dailyPredictions.HasValue)
+                {
+                    monthly_KWH_Prediction = monthly_KWH_Prediction + dailyPredictions.Value;
+                }
             }
 
             return monthly_KWH_Prediction;
