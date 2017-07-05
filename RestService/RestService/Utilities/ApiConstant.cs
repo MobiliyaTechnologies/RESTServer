@@ -6,9 +6,9 @@
 
         public static readonly string B2cClaimEmail = "emails";
 
-        public static readonly string B2cClaimFirstName = "name";
+        public static readonly string B2cClaimFirstName = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname";
 
-        public static readonly string B2cClaimLastName = "surname";
+        public static readonly string B2cClaimLastName = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname";
 
         public static readonly string BlobStorageApplicationConfiguration = "BlobStorage";
 

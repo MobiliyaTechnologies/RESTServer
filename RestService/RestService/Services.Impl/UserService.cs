@@ -32,6 +32,21 @@
                 throw new ArgumentException(string.Format("Role does not exists for id - {0}", userModel.RoleId));
             }
 
+            if (string.IsNullOrWhiteSpace(userModel.B2C_ObjectIdentifier))
+            {
+                throw new ArgumentException("Can not create user, invalid object identifier.");
+            }
+
+            if (string.IsNullOrWhiteSpace(userModel.FirstName))
+            {
+                throw new ArgumentException("Can not create user, invalid user name.");
+            }
+
+            if (string.IsNullOrWhiteSpace(userModel.Email))
+            {
+                throw new ArgumentException("Can not create user, invalid user email.");
+            }
+
             var user = new User
             {
                 B2C_ObjectIdentifier = userModel.B2C_ObjectIdentifier,
@@ -51,6 +66,11 @@
 
         ResponseModel IUserService.DeleteUser(string b2cObjectIdentifier)
         {
+            if (string.IsNullOrWhiteSpace(b2cObjectIdentifier))
+            {
+                throw new ArgumentException("Invalid user identifier.");
+            }
+
             var user = this.dbContext.User.WhereActiveUser(u => u.B2C_ObjectIdentifier == b2cObjectIdentifier).FirstOrDefault();
 
             if (user == null)
@@ -68,6 +88,11 @@
 
         UserModel IUserService.GetCurrentUser(string b2cObjectIdentifier)
         {
+            if (string.IsNullOrWhiteSpace(b2cObjectIdentifier))
+            {
+                throw new ArgumentException("Invalid user identifier.");
+            }
+
             var user = this.dbContext.User.WhereActiveUser(u => u.B2C_ObjectIdentifier.Equals(b2cObjectIdentifier)).FirstOrDefault();
 
             if (user == null)
