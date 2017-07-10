@@ -139,5 +139,17 @@
 
             return source;
         }
+
+        public static IQueryable<RoomDetail> WhereActiveRoom(this IQueryable<RoomDetail> source, Expression<Func<RoomDetail, bool>> predicate = null)
+        {
+            source = source.Where(b => b.Building != null && b.Building.IsActive && !b.Building.IsDeleted && b.Building.Premise != null && b.Building.Premise.IsActive && !b.Building.Premise.IsDeleted);
+
+            if (predicate != null)
+            {
+                source = source.Where(predicate);
+            }
+
+            return source;
+        }
     }
 }
