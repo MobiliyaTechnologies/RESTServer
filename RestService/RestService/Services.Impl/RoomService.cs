@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using RestService.Entities;
+    using RestService.Enums;
     using RestService.Mappings;
     using RestService.Models;
     using RestService.Utilities;
@@ -24,7 +25,7 @@
 
         List<RoomModel> IRoomService.GetAllRooms()
         {
-            var roomDetails = this.dbContext.RoomDetail.WhereActiveAccessibleRoom();
+            var roomDetails = this.context.Current.RoleType == UserRole.Student || this.context.Current.RoleType == UserRole.SuperAdmin ? this.dbContext.RoomDetail.WhereActiveRoom() : this.dbContext.RoomDetail.WhereActiveAccessibleRoom();
 
             return new RoomModelMapping().Map(roomDetails).ToList();
         }
