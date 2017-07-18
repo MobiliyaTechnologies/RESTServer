@@ -173,8 +173,6 @@
                 throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType);
             }
 
-            var piServerModel = new PiServerModel();
-
             var contents = await this.Request.Content.ReadAsMultipartAsync();
 
             var fileContent = contents.Contents.FirstOrDefault(c => c.Headers.ContentType != null && c.Headers.ContentType.MediaType.Equals("application/vnd.ms-excel") && c.Headers.ContentLength > 0);

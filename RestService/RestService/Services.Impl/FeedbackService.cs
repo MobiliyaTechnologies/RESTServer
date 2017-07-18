@@ -138,7 +138,7 @@
             var feedback = new Feedback();
             feedback.RoomID = feedbackModel.RoomId;
             feedback.QuestionID = feedbackModel.QuestionId;
-            feedback.AnswerID = feedback.AnswerID;
+            feedback.AnswerID = feedbackModel.AnswerID;
             feedback.FeedbackDesc = feedbackModel.FeedbackDesc == null ? string.Empty : feedbackModel.FeedbackDesc;
             feedback.CreatedBy = this.context.Current.UserId;
             feedback.ModifiedBy = this.context.Current.UserId;
@@ -188,7 +188,7 @@
 
             var applicationConfigurationEntry = this.applicationConfigurationService.GetApplicationConfiguration(ApiConstant.FirebaseApplicationConfiguration);
 
-            var notificationAuthEntry = applicationConfigurationEntry.ApplicationConfigurationEntries.FirstOrDefault(a => a.ConfigurationKey.Equals("NotificationAuthorizationKey", StringComparison.InvariantCultureIgnoreCase));
+            var notificationAuthEntry = applicationConfigurationEntry.ApplicationConfigurationEntries.FirstOrDefault(a => a.ConfigurationKey.Equals("ApiKey", StringComparison.InvariantCultureIgnoreCase));
 
             var notificationSenderEntry = applicationConfigurationEntry.ApplicationConfigurationEntries.FirstOrDefault(a => a.ConfigurationKey.Equals("NotificationSender", StringComparison.InvariantCultureIgnoreCase));
 
@@ -205,7 +205,7 @@
 
             foreach (var exception in exceptionData)
             {
-                notificationModel.NotificationMessage = "Students are feeling " + exception.AnswerDesc + " in the class " + exception.RoomName + ". Take appropriate measures.";
+                notificationModel.NotificationMessage = "People are feeling " + exception.AnswerDesc + " in the room " + exception.RoomName + ". Take appropriate measures.";
 
                 if (!string.IsNullOrWhiteSpace(notificationModel.NotificationAuthorizationKey) && !string.IsNullOrWhiteSpace(notificationModel.NotificationSender) && !string.IsNullOrWhiteSpace(notificationModel.NotificationReceiver))
                 {
