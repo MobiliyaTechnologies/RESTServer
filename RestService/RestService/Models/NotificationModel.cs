@@ -26,14 +26,6 @@
             }
         }
 
-        public string NotificationIcon
-        {
-            get
-            {
-                return ApiConfiguration.NotificationIcon;
-            }
-        }
-
         public string NotificationTitle { get; set; }
 
         public string NotificationMessage { get; set; }
