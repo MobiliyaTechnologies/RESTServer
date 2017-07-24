@@ -205,7 +205,18 @@
 
             foreach (var exception in exceptionData)
             {
-                notificationModel.NotificationMessage = "People are feeling " + exception.AnswerDesc + " in the room " + exception.RoomName + ". Take appropriate measures.";
+                if (exception.AnswerDesc.Contains("Hot"))
+                {
+                    notificationModel.NotificationMessage = "Temperature in room " + exception.RoomName + " seems to be warmer than average, Take appropriate measures.";
+                }
+                else if (exception.AnswerDesc.Contains("Cold"))
+                {
+                    notificationModel.NotificationMessage = "Temperature in room " + exception.RoomName + " seems to be colder than average, Take appropriate measures.";
+                }
+                else
+                {
+                    notificationModel.NotificationMessage = "Temperature in room " + exception.RoomName + " seems to be normal, No action required.";
+                }
 
                 if (!string.IsNullOrWhiteSpace(notificationModel.NotificationAuthorizationKey) && !string.IsNullOrWhiteSpace(notificationModel.NotificationSender) && !string.IsNullOrWhiteSpace(notificationModel.NotificationReceiver))
                 {

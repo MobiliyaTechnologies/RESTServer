@@ -7,7 +7,6 @@
     {
         public static readonly string NotificationURL = GetConfigData("NotificationURL");
         public static readonly string NotificationClickAction = GetConfigData("NotificationClickAction");
-        public static readonly string NotificationIcon = GetConfigData("NotificationIcon");
 
         public static readonly string B2cAadInstance = GetConfigData("b2c:AadInstance");
         public static readonly string B2cTenant = GetConfigData("b2c:Tenant");
