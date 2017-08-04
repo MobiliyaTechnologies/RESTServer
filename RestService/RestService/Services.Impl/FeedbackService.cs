@@ -70,7 +70,7 @@
 
         List<FeedbackModel> IFeedbackService.GetAllFeedback()
         {
-            var feedbacks = this.dbContext.Feedback;
+            var feedbacks = this.dbContext.Feedback.WhereInDateRange();
 
             return new FeedbackModelMappings().Map(feedbacks).ToList();
         }

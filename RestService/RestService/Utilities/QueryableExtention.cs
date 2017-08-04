@@ -1,9 +1,13 @@
 ﻿namespace RestService.Utilities
 {
     using System;
+    using System.Data.Entity;
     using System.Linq;
     using System.Linq.Expressions;
+    using System.Net.Http;
+    using System.Web;
     using RestService.Entities;
+    using RestService.Enums;
     using RestService.Services;
     using RestService.Services.Impl;
 
@@ -150,6 +154,137 @@
             }
 
             return source;
+        }
+
+        public static IQueryable<Feedback> WhereInDateRange(this IQueryable<Feedback> source)
+        {
+            DateTime startDate, endDate;
+            GetStartAndEndDate(out startDate, out endDate);
+
+            if (startDate != DateTime.MinValue)
+            {
+                source = source.Where(s => DbFunctions.TruncateTime(s.CreatedOn) >= startDate);
+            }
+
+            if (endDate != DateTime.MinValue)
+            {
+                source = source.Where(s => DbFunctions.TruncateTime(s.CreatedOn) <= endDate);
+            }
+
+            return source;
+        }
+
+        public static IQueryable<Alerts> WhereInDateRange(this IQueryable<Alerts> source)
+        {
+            DateTime startDate, endDate;
+            GetStartAndEndDate(out startDate, out endDate);
+
+            if (startDate != DateTime.MinValue)
+            {
+                source = source.Where(s => DbFunctions.TruncateTime(s.Timestamp) >= startDate);
+            }
+
+            if (endDate != DateTime.MinValue)
+            {
+                source = source.Where(s => DbFunctions.TruncateTime(s.Timestamp) <= endDate);
+            }
+
+            return source;
+        }
+
+        public static IQueryable<DailyConsumptionDetails> WhereInDateRange(this IQueryable<DailyConsumptionDetails> source)
+        {
+            DateTime startDate, endDate;
+            GetStartAndEndDate(out startDate, out endDate);
+
+            if (startDate != DateTime.MinValue)
+            {
+                source = source.Where(s => DbFunctions.TruncateTime(s.Timestamp) >= startDate);
+            }
+
+            if (endDate != DateTime.MinValue)
+            {
+                source = source.Where(s => DbFunctions.TruncateTime(s.Timestamp) <= endDate);
+            }
+
+            return source;
+        }
+
+        public static IQueryable<WeeklyConsumptionPrediction> WhereInDateRange(this IQueryable<WeeklyConsumptionPrediction> source)
+        {
+            DateTime startDate, endDate;
+            GetStartAndEndDate(out startDate, out endDate);
+            if (startDate != DateTime.MinValue)
+            {
+                source = source.Where(s => DbFunctions.TruncateTime(s.Start_Time) >= startDate);
+            }
+
+            if (endDate != DateTime.MinValue)
+            {
+                source = source.Where(s => DbFunctions.TruncateTime(s.End_Time) <= endDate);
+            }
+
+            return source;
+        }
+
+        public static void GetStartAndEndDate(out DateTime startDate, out DateTime endDate)
+        {
+            startDate = DateTime.MinValue;
+            endDate = DateTime.MinValue;
+
+            DateFilter dateFilter = default(DateFilter);
+            var count = 0;
+
+            try
+            {
+                var request = (HttpRequestMessage)HttpContext.Current.Items["MS_HttpRequestMessage"];
+                var queryParam = request.GetQueryNameValuePairs().ToDictionary(x => x.Key, x => x.Value);
+
+                if (queryParam.ContainsKey("DateFilter"))
+                {
+                    var value = Convert.ToInt32(queryParam["DateFilter"]);
+                    if (typeof(DateFilter).IsEnumDefined(value))
+                    {
+                        dateFilter = (DateFilter)value;
+                    }
+                }
+
+                if (queryParam.ContainsKey("Count"))
+                {
+                    count = Convert.ToInt32(queryParam["Count"]);
+                }
+            }
+            catch (Exception)
+            {
+            }
+
+            switch (dateFilter)
+            {
+                case DateFilter.Day:
+                    startDate = endDate = DateTime.Today.AddDays(count);
+                    break;
+
+                case DateFilter.Week:
+                    startDate = DateTime.Today.AddDays(-((int)DateTime.Today.DayOfWeek));
+                    var lastDayOfWeek = 6 + (7 * count);
+                    endDate = startDate.AddDays(lastDayOfWeek);
+                    break;
+
+                case DateFilter.Month:
+                    startDate = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
+                    endDate = startDate.AddMonths(count);
+                    endDate = new DateTime(endDate.Year, endDate.Month, DateTime.DaysInMonth(startDate.Year, endDate.Month));
+                    break;
+
+                case DateFilter.Year:
+                    startDate = new DateTime(DateTime.Today.Year, 1, 1);
+                    var year = startDate.Year + count;
+                    endDate = new DateTime(year, 12, 31);
+                    break;
+
+                default:
+                    break;
+            }
         }
     }
 }
