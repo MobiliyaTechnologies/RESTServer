@@ -212,10 +212,15 @@
         {
             var meterDetails = this.GetMeterDetailsPerPremise(premiseID);
 
+            DateTime startDate, endDate;
+            QueryableExtention.GetStartAndEndDate(out startDate, out endDate);
+
+            var inDateRange = startDate != DateTime.MinValue || endDate != DateTime.MinValue;
+
             var cunsumptionPrediction = new ConsumptionPredictionModel
             {
-                Consumption = this.GetMonthlyConsumption(meterDetails),
-                Prediction = this.GetMonthlyPrediction(meterDetails)
+                Consumption = inDateRange ? this.GetGivenDateConsumption(meterDetails, startDate, endDate) : this.GetMonthlyConsumption(meterDetails),
+                Prediction = inDateRange ? this.GetGivenDatePrediction(meterDetails, startDate, endDate) : this.GetMonthlyPrediction(meterDetails)
             };
 
             return cunsumptionPrediction;
@@ -476,9 +481,9 @@
 
             foreach (var meterDetail in meterDetails)
             {
-                string currentMonth = ServiceUtil.GetCurrentDateTime(meterDetail.UTCConversionTime).ToString("MMM");
+                var currentMonth = ServiceUtil.GetCurrentDateTime(meterDetail.UTCConversionTime);
 
-                var monthlyConsumptionDetail = this.dbContext.MonthlyConsumptionDetails.FirstOrDefault(m => m.PowerScout.Equals(meterDetail.PowerScout, StringComparison.InvariantCultureIgnoreCase) && m.Month.Equals(currentMonth, StringComparison.InvariantCultureIgnoreCase));
+                var monthlyConsumptionDetail = this.dbContext.MonthlyConsumptionDetails.FirstOrDefault(m => m.PowerScout.Equals(meterDetail.PowerScout, StringComparison.InvariantCultureIgnoreCase) && m.Timestamp.HasValue && m.Timestamp.Value.Month == currentMonth.Month && m.Timestamp.Value.Year == currentMonth.Year);
 
                 if (monthlyConsumptionDetail != null && monthlyConsumptionDetail.Monthly_KWH_System.HasValue)
                 {
@@ -511,6 +516,67 @@
             }
 
             return monthly_KWH_Prediction;
+        }
+
+        private double GetGivenDateConsumption(IQueryable<MeterDetails> meterDetails, DateTime startDate, DateTime endDate)
+        {
+            double daily_KWH_Consumption = default(double);
+
+            foreach (var meterDetail in meterDetails)
+            {
+                var dailyConsumptionDetail = this.dbContext.DailyConsumptionDetails.Where(m => m.PowerScout.Equals(meterDetail.PowerScout, StringComparison.InvariantCultureIgnoreCase) && m.Daily_KWH_System.HasValue && m.Timestamp.HasValue);
+
+                if (startDate != DateTime.MinValue)
+                {
+                    dailyConsumptionDetail = dailyConsumptionDetail.Where(s => DbFunctions.TruncateTime(s.Timestamp) >= startDate);
+                }
+
+                if (endDate != DateTime.MinValue)
+                {
+                    dailyConsumptionDetail = dailyConsumptionDetail.Where(s => DbFunctions.TruncateTime(s.Timestamp) <= endDate);
+                }
+
+                var consumptionSum = dailyConsumptionDetail.Sum(d => d.Daily_KWH_System);
+
+                if (consumptionSum.HasValue)
+                {
+                    daily_KWH_Consumption = daily_KWH_Consumption + consumptionSum.Value;
+                }
+            }
+
+            return daily_KWH_Consumption;
+        }
+
+        private double GetGivenDatePrediction(IQueryable<MeterDetails> meterDetails, DateTime startDate, DateTime endDate)
+        {
+            double daily_KWH_Prediction = default(double);
+
+            foreach (var meterDetail in meterDetails)
+            {
+                var dailyPredictions = this.dbContext.DailyConsumptionPrediction.Where(dailyConsumptionPrediction =>
+                                        meterDetail.PowerScout.Equals(dailyConsumptionPrediction.PowerScout, StringComparison.InvariantCultureIgnoreCase)
+                                       && dailyConsumptionPrediction.Timestamp.HasValue && dailyConsumptionPrediction.Daily_Predicted_KWH_System.HasValue
+                                        );
+
+                if (startDate != DateTime.MinValue)
+                {
+                    dailyPredictions = dailyPredictions.Where(s => DbFunctions.TruncateTime(s.Timestamp) >= startDate);
+                }
+
+                if (endDate != DateTime.MinValue)
+                {
+                    dailyPredictions = dailyPredictions.Where(s => DbFunctions.TruncateTime(s.Timestamp) <= endDate);
+                }
+
+                var predictionSum = dailyPredictions.Sum(d => d.Daily_Predicted_KWH_System);
+
+                if (predictionSum.HasValue)
+                {
+                    daily_KWH_Prediction = daily_KWH_Prediction + predictionSum.Value;
+                }
+            }
+
+            return daily_KWH_Prediction;
         }
     }
 }

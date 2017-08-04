@@ -395,6 +395,7 @@
     <Compile Include="Entities\WeeklyConsumptionPrediction.cs">
       <DependentUpon>PowergridModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Enums\DateFilter.cs" />
     <Compile Include="Enums\DayofWeek.cs" />
     <Compile Include="Enums\UserRole.cs" />
     <Compile Include="Enums\StatusCode.cs" />

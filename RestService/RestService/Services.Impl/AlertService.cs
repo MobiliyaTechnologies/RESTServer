@@ -6,6 +6,7 @@
     using RestService.Entities;
     using RestService.Enums;
     using RestService.Models;
+    using RestService.Utilities;
 
     public sealed class AlertService : IAlertService, IDisposable
     {
@@ -59,7 +60,7 @@
 
         List<AlertModel> IAlertService.GetAllAlerts()
         {
-            var alertList = (from alerts in this.dbContext.Alerts
+            var alertList = (from alerts in this.dbContext.Alerts.WhereInDateRange()
                              where alerts.Alert_Type != "Recommendation"
                              join sensorData in this.dbContext.SensorMaster on alerts.Sensor_Id equals sensorData.Sensor_Id into temp1
                              from subsensor in temp1.DefaultIfEmpty()
@@ -86,7 +87,7 @@
 
         List<AlertModel> IAlertService.GetRecommendations()
         {
-            var alertList = (from alerts in this.dbContext.Alerts
+            var alertList = (from alerts in this.dbContext.Alerts.WhereInDateRange()
                              where alerts.Alert_Type == "Recommendation"
                              join sensorData in this.dbContext.SensorMaster on alerts.Sensor_Id equals sensorData.Sensor_Id into temp1
                              from subsensor in temp1.DefaultIfEmpty()
