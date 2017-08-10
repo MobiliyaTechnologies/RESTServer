@@ -233,7 +233,6 @@
             endDate = DateTime.MinValue;
 
             DateFilter dateFilter = default(DateFilter);
-            var count = 0;
 
             try
             {
@@ -248,38 +247,80 @@
                         dateFilter = (DateFilter)value;
                     }
                 }
-
-                if (queryParam.ContainsKey("Count"))
-                {
-                    count = Convert.ToInt32(queryParam["Count"]);
-                }
             }
             catch (Exception)
             {
             }
 
+            var lastDayOfWeek = 0;
             switch (dateFilter)
             {
-                case DateFilter.Day:
-                    startDate = endDate = DateTime.Today.AddDays(count);
+                case DateFilter.Yesterday:
+                    var lastMonth = DateTime.Today.AddMonths(-1);
+                    startDate = endDate = new DateTime(lastMonth.Year, lastMonth.Month, DateTime.DaysInMonth(lastMonth.Year, lastMonth.Month));
                     break;
 
-                case DateFilter.Week:
-                    startDate = DateTime.Today.AddDays(-((int)DateTime.Today.DayOfWeek));
-                    var lastDayOfWeek = 6 + (7 * count);
+                case DateFilter.Todaty:
+                    startDate = endDate = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
+                    break;
+
+                case DateFilter.Week1:
+                    startDate = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
+                     lastDayOfWeek = 6 - (int)startDate.DayOfWeek;
                     endDate = startDate.AddDays(lastDayOfWeek);
                     break;
 
-                case DateFilter.Month:
+                case DateFilter.Week2:
                     startDate = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
-                    endDate = startDate.AddMonths(count);
+                     lastDayOfWeek = (6 - (int)startDate.DayOfWeek) + 7;
+                    endDate = startDate.AddDays(lastDayOfWeek);
+                    break;
+
+                case DateFilter.Week3:
+                    startDate = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
+                    lastDayOfWeek = (6 - (int)startDate.DayOfWeek) + 14;
+                    endDate = startDate.AddDays(lastDayOfWeek);
+                    break;
+
+                case DateFilter.Week4:
+                    startDate = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
+                    lastDayOfWeek = (6 - (int)startDate.DayOfWeek) + 21;
+                    endDate = startDate.AddDays(lastDayOfWeek);
+                    break;
+
+                case DateFilter.Month1:
+                    startDate = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
+                    endDate = new DateTime(startDate.Year, startDate.Month, DateTime.DaysInMonth(startDate.Year, startDate.Month));
+                    break;
+
+                case DateFilter.Month2:
+                    startDate = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
+                    endDate = startDate.AddMonths(1);
                     endDate = new DateTime(endDate.Year, endDate.Month, DateTime.DaysInMonth(startDate.Year, endDate.Month));
                     break;
 
-                case DateFilter.Year:
-                    startDate = new DateTime(DateTime.Today.Year, 1, 1);
-                    var year = startDate.Year + count;
-                    endDate = new DateTime(year, 12, 31);
+                case DateFilter.Month3:
+                    startDate = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
+                    endDate = startDate.AddMonths(2);
+                    endDate = new DateTime(endDate.Year, endDate.Month, DateTime.DaysInMonth(startDate.Year, endDate.Month));
+                    break;
+
+                case DateFilter.Month4:
+                    startDate = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
+                    endDate = startDate.AddMonths(3);
+                    endDate = new DateTime(endDate.Year, endDate.Month, DateTime.DaysInMonth(startDate.Year, endDate.Month));
+                    break;
+
+                case DateFilter.Month5:
+                    startDate = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
+                    endDate = startDate.AddMonths(4);
+                    endDate = new DateTime(endDate.Year, endDate.Month, DateTime.DaysInMonth(startDate.Year, endDate.Month));
+                    break;
+
+                case DateFilter.Month6:
+                    startDate = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
+                    endDate = startDate.AddMonths(5);
+                    endDate = new DateTime(endDate.Year, endDate.Month, DateTime.DaysInMonth(startDate.Year, endDate.Month));
                     break;
 
                 default:
