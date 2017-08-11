@@ -253,6 +253,8 @@
             }
 
             var lastDayOfWeek = 0;
+            var monthDate = default(DateTime);
+
             switch (dateFilter)
             {
                 case DateFilter.Yesterday:
@@ -294,33 +296,33 @@
                     break;
 
                 case DateFilter.Month2:
-                    startDate = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
-                    endDate = startDate.AddMonths(1);
-                    endDate = new DateTime(endDate.Year, endDate.Month, DateTime.DaysInMonth(startDate.Year, endDate.Month));
+                    monthDate = DateTime.Today.AddMonths(1);
+                    startDate = new DateTime(monthDate.Year, monthDate.Month, 1);
+                    endDate = new DateTime(monthDate.Year, monthDate.Month, DateTime.DaysInMonth(monthDate.Year, monthDate.Month));
                     break;
 
                 case DateFilter.Month3:
-                    startDate = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
-                    endDate = startDate.AddMonths(2);
-                    endDate = new DateTime(endDate.Year, endDate.Month, DateTime.DaysInMonth(startDate.Year, endDate.Month));
+                    monthDate = DateTime.Today.AddMonths(2);
+                    startDate = new DateTime(monthDate.Year, monthDate.Month, 1);
+                    endDate = new DateTime(monthDate.Year, monthDate.Month, DateTime.DaysInMonth(monthDate.Year, monthDate.Month));
                     break;
 
                 case DateFilter.Month4:
-                    startDate = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
-                    endDate = startDate.AddMonths(3);
-                    endDate = new DateTime(endDate.Year, endDate.Month, DateTime.DaysInMonth(startDate.Year, endDate.Month));
+                    monthDate = DateTime.Today.AddMonths(3);
+                    startDate = new DateTime(monthDate.Year, monthDate.Month, 1);
+                    endDate = new DateTime(monthDate.Year, monthDate.Month, DateTime.DaysInMonth(monthDate.Year, monthDate.Month));
                     break;
 
                 case DateFilter.Month5:
-                    startDate = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
-                    endDate = startDate.AddMonths(4);
-                    endDate = new DateTime(endDate.Year, endDate.Month, DateTime.DaysInMonth(startDate.Year, endDate.Month));
+                    monthDate = DateTime.Today.AddMonths(4);
+                    startDate = new DateTime(monthDate.Year, monthDate.Month, 1);
+                    endDate = new DateTime(monthDate.Year, monthDate.Month, DateTime.DaysInMonth(monthDate.Year, monthDate.Month));
                     break;
 
                 case DateFilter.Month6:
-                    startDate = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
-                    endDate = startDate.AddMonths(5);
-                    endDate = new DateTime(endDate.Year, endDate.Month, DateTime.DaysInMonth(startDate.Year, endDate.Month));
+                    monthDate = DateTime.Today.AddMonths(5);
+                    startDate = new DateTime(monthDate.Year, monthDate.Month, 1);
+                    endDate = new DateTime(monthDate.Year, monthDate.Month, DateTime.DaysInMonth(monthDate.Year, monthDate.Month));
                     break;
 
                 default:
