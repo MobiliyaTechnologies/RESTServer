@@ -37,11 +37,6 @@
                 throw new ArgumentException("Can not create user, invalid object identifier.");
             }
 
-            if (string.IsNullOrWhiteSpace(userModel.FirstName))
-            {
-                throw new ArgumentException("Can not create user, invalid user name.");
-            }
-
             if (string.IsNullOrWhiteSpace(userModel.Email))
             {
                 throw new ArgumentException("Can not create user, invalid user email.");
