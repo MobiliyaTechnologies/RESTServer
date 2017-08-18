@@ -1,6 +1,7 @@
 ﻿namespace RestService.Utilities
 {
     using System;
+    using System.Collections.Generic;
     using System.Data.Entity;
     using System.Linq;
     using System.Linq.Expressions;
@@ -179,14 +180,16 @@
             DateTime startDate, endDate;
             GetStartAndEndDate(out startDate, out endDate);
 
+            var noFilter = new List<string> { "Device Alert", "Temperature Alert" };
+
             if (startDate != DateTime.MinValue)
             {
-                source = source.Where(s => DbFunctions.TruncateTime(s.Timestamp) >= startDate);
+                source = source.Where(s => DbFunctions.TruncateTime(s.Timestamp) >= startDate || noFilter.Contains(s.Alert_Type));
             }
 
             if (endDate != DateTime.MinValue)
             {
-                source = source.Where(s => DbFunctions.TruncateTime(s.Timestamp) <= endDate);
+                source = source.Where(s => DbFunctions.TruncateTime(s.Timestamp) <= endDate || noFilter.Contains(s.Alert_Type));
             }
 
             return source;

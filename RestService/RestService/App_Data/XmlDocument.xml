@@ -1755,7 +1755,7 @@
             <param name="buildingId">The building identifier for which to get electricity consumption.</param>
             <returns>The current month consumption.</returns>
         </member>
-        <member name="M:RestService.Services.IMeterService.GetMonthlyConsumptionPredictionPerPremise(System.Int32)">
+        <member name="M:RestService.Services.IMeterService.GetMonthlyConsumptionPredictionPerPremise(System.Nullable{System.Int32})">
             <summary>
             Gets the meter monthly consumption and prediction per premise.
             </summary>

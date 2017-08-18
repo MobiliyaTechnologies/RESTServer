@@ -208,7 +208,7 @@
             return meterMonthlyConsumptionModels;
         }
 
-        ConsumptionPredictionModel IMeterService.GetMonthlyConsumptionPredictionPerPremise(int premiseID)
+        ConsumptionPredictionModel IMeterService.GetMonthlyConsumptionPredictionPerPremise(int? premiseID)
         {
             var meterDetails = this.GetMeterDetailsPerPremise(premiseID);
             return this.GetConsumptionPrediction(meterDetails);
@@ -467,9 +467,15 @@
             return meterdetails;
         }
 
-        private IQueryable<MeterDetails> GetMeterDetailsPerPremise(int premiseID)
+        private IQueryable<MeterDetails> GetMeterDetailsPerPremise(int? premiseID)
         {
-            var meterdetails = this.dbContext.MeterDetails.WhereActiveAccessibleMeterDetails(m => m.Building.Premise.PremiseID == premiseID);
+            var meterdetails = this.dbContext.MeterDetails.WhereActiveAccessibleMeterDetails();
+
+            if (premiseID.HasValue)
+            {
+                meterdetails = meterdetails.Where(m => m.Building.Premise.PremiseID == premiseID);
+            }
+
             return meterdetails;
         }
 
