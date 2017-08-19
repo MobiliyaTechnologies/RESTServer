@@ -538,6 +538,7 @@
     <None Include="Properties\PublishProfiles\CSUWebApp - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
     <None Include="Properties\PublishProfiles\CustomProfile1.pubxml" />
+    <None Include="Properties\PublishProfiles\emdemositerest - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\emtestdeployrest - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\emtestrest - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\EnergyManagementAPI - Web Deploy.pubxml" />

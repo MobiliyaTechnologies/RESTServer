@@ -1,6 +1,7 @@
 ﻿namespace RestService.Utilities
 {
     using System;
+    using System.Collections.Generic;
     using System.Data.Entity;
     using System.Linq;
     using System.Linq.Expressions;
@@ -179,14 +180,16 @@
             DateTime startDate, endDate;
             GetStartAndEndDate(out startDate, out endDate);
 
+            var noFilter = new List<string> { "Device Alert", "Temperature Alert" };
+
             if (startDate != DateTime.MinValue)
             {
-                source = source.Where(s => DbFunctions.TruncateTime(s.Timestamp) >= startDate);
+                source = source.Where(s => DbFunctions.TruncateTime(s.Timestamp) >= startDate || noFilter.Contains(s.Alert_Type));
             }
 
             if (endDate != DateTime.MinValue)
             {
-                source = source.Where(s => DbFunctions.TruncateTime(s.Timestamp) <= endDate);
+                source = source.Where(s => DbFunctions.TruncateTime(s.Timestamp) <= endDate || noFilter.Contains(s.Alert_Type));
             }
 
             return source;
@@ -233,7 +236,6 @@
             endDate = DateTime.MinValue;
 
             DateFilter dateFilter = default(DateFilter);
-            var count = 0;
 
             try
             {
@@ -248,38 +250,82 @@
                         dateFilter = (DateFilter)value;
                     }
                 }
-
-                if (queryParam.ContainsKey("Count"))
-                {
-                    count = Convert.ToInt32(queryParam["Count"]);
-                }
             }
             catch (Exception)
             {
             }
 
+            var lastDayOfWeek = 0;
+            var monthDate = default(DateTime);
+
             switch (dateFilter)
             {
-                case DateFilter.Day:
-                    startDate = endDate = DateTime.Today.AddDays(count);
+                case DateFilter.Yesterday:
+                    var lastMonth = DateTime.Today.AddMonths(-1);
+                    startDate = endDate = new DateTime(lastMonth.Year, lastMonth.Month, DateTime.DaysInMonth(lastMonth.Year, lastMonth.Month));
                     break;
 
-                case DateFilter.Week:
-                    startDate = DateTime.Today.AddDays(-((int)DateTime.Today.DayOfWeek));
-                    var lastDayOfWeek = 6 + (7 * count);
+                case DateFilter.Todaty:
+                    startDate = endDate = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
+                    break;
+
+                case DateFilter.Week1:
+                    startDate = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
+                     lastDayOfWeek = 6 - (int)startDate.DayOfWeek;
                     endDate = startDate.AddDays(lastDayOfWeek);
                     break;
 
-                case DateFilter.Month:
+                case DateFilter.Week2:
                     startDate = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
-                    endDate = startDate.AddMonths(count);
-                    endDate = new DateTime(endDate.Year, endDate.Month, DateTime.DaysInMonth(startDate.Year, endDate.Month));
+                     lastDayOfWeek = (6 - (int)startDate.DayOfWeek) + 7;
+                    endDate = startDate.AddDays(lastDayOfWeek);
                     break;
 
-                case DateFilter.Year:
-                    startDate = new DateTime(DateTime.Today.Year, 1, 1);
-                    var year = startDate.Year + count;
-                    endDate = new DateTime(year, 12, 31);
+                case DateFilter.Week3:
+                    startDate = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
+                    lastDayOfWeek = (6 - (int)startDate.DayOfWeek) + 14;
+                    endDate = startDate.AddDays(lastDayOfWeek);
+                    break;
+
+                case DateFilter.Week4:
+                    startDate = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
+                    lastDayOfWeek = (6 - (int)startDate.DayOfWeek) + 21;
+                    endDate = startDate.AddDays(lastDayOfWeek);
+                    break;
+
+                case DateFilter.Month1:
+                    startDate = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
+                    endDate = new DateTime(startDate.Year, startDate.Month, DateTime.DaysInMonth(startDate.Year, startDate.Month));
+                    break;
+
+                case DateFilter.Month2:
+                    monthDate = DateTime.Today.AddMonths(1);
+                    startDate = new DateTime(monthDate.Year, monthDate.Month, 1);
+                    endDate = new DateTime(monthDate.Year, monthDate.Month, DateTime.DaysInMonth(monthDate.Year, monthDate.Month));
+                    break;
+
+                case DateFilter.Month3:
+                    monthDate = DateTime.Today.AddMonths(2);
+                    startDate = new DateTime(monthDate.Year, monthDate.Month, 1);
+                    endDate = new DateTime(monthDate.Year, monthDate.Month, DateTime.DaysInMonth(monthDate.Year, monthDate.Month));
+                    break;
+
+                case DateFilter.Month4:
+                    monthDate = DateTime.Today.AddMonths(3);
+                    startDate = new DateTime(monthDate.Year, monthDate.Month, 1);
+                    endDate = new DateTime(monthDate.Year, monthDate.Month, DateTime.DaysInMonth(monthDate.Year, monthDate.Month));
+                    break;
+
+                case DateFilter.Month5:
+                    monthDate = DateTime.Today.AddMonths(4);
+                    startDate = new DateTime(monthDate.Year, monthDate.Month, 1);
+                    endDate = new DateTime(monthDate.Year, monthDate.Month, DateTime.DaysInMonth(monthDate.Year, monthDate.Month));
+                    break;
+
+                case DateFilter.Month6:
+                    monthDate = DateTime.Today.AddMonths(5);
+                    startDate = new DateTime(monthDate.Year, monthDate.Month, 1);
+                    endDate = new DateTime(monthDate.Year, monthDate.Month, DateTime.DaysInMonth(monthDate.Year, monthDate.Month));
                     break;
 
                 default:

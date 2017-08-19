@@ -208,10 +208,20 @@
             return meterMonthlyConsumptionModels;
         }
 
-        ConsumptionPredictionModel IMeterService.GetMonthlyConsumptionPredictionPerPremise(int premiseID)
+        ConsumptionPredictionModel IMeterService.GetMonthlyConsumptionPredictionPerPremise(int? premiseID)
         {
             var meterDetails = this.GetMeterDetailsPerPremise(premiseID);
+            return this.GetConsumptionPrediction(meterDetails);
+        }
 
+        ConsumptionPredictionModel IMeterService.GetMonthlyConsumptionPredictionPerBuildings(int buildingId)
+        {
+            var meterDetails = this.GetMeterDetails(buildingId);
+            return this.GetConsumptionPrediction(meterDetails);
+        }
+
+        private ConsumptionPredictionModel GetConsumptionPrediction(IQueryable<MeterDetails> meterDetails)
+        {
             DateTime startDate, endDate;
             QueryableExtention.GetStartAndEndDate(out startDate, out endDate);
 
@@ -221,18 +231,6 @@
             {
                 Consumption = inDateRange ? this.GetGivenDateConsumption(meterDetails, startDate, endDate) : this.GetMonthlyConsumption(meterDetails),
                 Prediction = inDateRange ? this.GetGivenDatePrediction(meterDetails, startDate, endDate) : this.GetMonthlyPrediction(meterDetails)
-            };
-
-            return cunsumptionPrediction;
-        }
-
-        ConsumptionPredictionModel IMeterService.GetMonthlyConsumptionPredictionPerBuildings(int buildingId)
-        {
-            var meterDetails = this.GetMeterDetails(buildingId);
-            var cunsumptionPrediction = new ConsumptionPredictionModel
-            {
-                Consumption = this.GetMonthlyConsumption(meterDetails),
-                Prediction = this.GetMonthlyPrediction(meterDetails)
             };
 
             return cunsumptionPrediction;
@@ -469,9 +467,15 @@
             return meterdetails;
         }
 
-        private IQueryable<MeterDetails> GetMeterDetailsPerPremise(int premiseID)
+        private IQueryable<MeterDetails> GetMeterDetailsPerPremise(int? premiseID)
         {
-            var meterdetails = this.dbContext.MeterDetails.WhereActiveAccessibleMeterDetails(m => m.Building.Premise.PremiseID == premiseID);
+            var meterdetails = this.dbContext.MeterDetails.WhereActiveAccessibleMeterDetails();
+
+            if (premiseID.HasValue)
+            {
+                meterdetails = meterdetails.Where(m => m.Building.Premise.PremiseID == premiseID);
+            }
+
             return meterdetails;
         }
 

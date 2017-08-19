@@ -32,7 +32,7 @@
         /// <returns>
         /// The current month electricity consumption and prediction per premise
         /// </returns>
-        ConsumptionPredictionModel GetMonthlyConsumptionPredictionPerPremise(int premiseID);
+        ConsumptionPredictionModel GetMonthlyConsumptionPredictionPerPremise(int? premiseID = null);
 
         /// <summary>
         /// Gets the meter monthly consumption and prediction per building.

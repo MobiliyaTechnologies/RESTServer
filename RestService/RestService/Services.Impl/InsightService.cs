@@ -3,6 +3,8 @@
     using System;
     using System.Configuration;
     using System.Linq;
+    using System.Net.Http;
+    using System.Web;
     using RestService.Entities;
     using RestService.Models;
     using RestService.Utilities;
@@ -10,6 +12,7 @@
     public sealed class InsightService : IInsightService, IDisposable
     {
         private readonly PowerGridEntities dbContext;
+        private readonly IMeterService meterService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="InsightService"/> class.
@@ -17,10 +20,17 @@
         public InsightService()
         {
             this.dbContext = new PowerGridEntities();
+            this.meterService = new MeterService();
         }
 
         InsightDataModel IInsightService.GetInsightData()
         {
+            if (this.HasDemoDateFilter())
+            {
+                var consumptionPrediction = this.meterService.GetMonthlyConsumptionPredictionPerPremise();
+                return new InsightDataModel { ConsumptionValue = consumptionPrediction.Consumption, PredictedValue = consumptionPrediction.Prediction };
+            }
+
             var meterdetails = this.dbContext.MeterDetails.WhereActiveAccessibleMeterDetails();
             return this.GetInsightData(meterdetails);
         }
@@ -68,6 +78,22 @@
             }
 
             return insightData;
+        }
+
+        private bool HasDemoDateFilter()
+        {
+            try
+            {
+                var request = (HttpRequestMessage)HttpContext.Current.Items["MS_HttpRequestMessage"];
+                var queryParam = request.GetQueryNameValuePairs().ToDictionary(x => x.Key, x => x.Value);
+
+                return queryParam.ContainsKey("DateFilter");
+            }
+            catch (Exception)
+            {
+            }
+
+            return false;
         }
     }
 }
