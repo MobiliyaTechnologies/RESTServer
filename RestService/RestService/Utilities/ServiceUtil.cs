@@ -55,6 +55,7 @@
                         body = notificationModel.NotificationMessage,
                         title = notificationModel.NotificationTitle,
                         click_action = notificationModel.NotificationClickAction,
+                        icon = notificationModel.NotificationIcon,
                         sound = "default"
                     },
                     to = notificationModel.NotificationReceiver

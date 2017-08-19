@@ -202,7 +202,6 @@
                 NotificationTitle = "Temperature Alert"
             };
 
-
             foreach (var exception in exceptionData)
             {
                 if (exception.AnswerDesc.Contains("Hot"))
