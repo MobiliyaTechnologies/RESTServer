@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Data.Entity;
     using System.Linq;
     using RestService.Entities;
     using RestService.Enums;
@@ -160,7 +161,10 @@
             var feedbackCount = new List<FeedbackCountModel>();
 
             var answers = this.dbContext.Answers;
-            var feedbackDetail = this.dbContext.Feedback.Where(f => f.RoomID == feedbackModel.RoomId);
+
+            // get only todays feedback.
+            var feedbackDetail = this.dbContext.Feedback.Where(f => f.RoomID == feedbackModel.RoomId && f.CreatedOn.HasValue && DbFunctions.TruncateTime(f.CreatedOn.Value) == DbFunctions.TruncateTime(DateTime.UtcNow));
+
             var classDetails = this.dbContext.RoomDetail.FirstOrDefault(c => c.Room_Id == feedbackModel.RoomId);
 
             foreach (var answer in answers)
