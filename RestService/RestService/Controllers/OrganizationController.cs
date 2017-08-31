@@ -16,9 +16,7 @@
     using RestService.Services.Impl;
     using RestService.Utilities;
 
-    [RoutePrefix("api")]
-    [CustomAuthorize(UserRole = UserRole.SuperAdmin)]
-    [OverrideAuthorization]
+    [RoutePrefix("api")]   
     public class OrganizationController : ApiController
     {
         private readonly IOrganizationService organizationService;
@@ -65,6 +63,8 @@
         [Route("AddOrganization")]
         [HttpPost]
         [ResponseType(typeof(ResponseModel))]
+        [CustomAuthorize(UserRole = UserRole.SuperAdmin)]
+        [OverrideAuthorization]
         public HttpResponseMessage AddOrganization()
         {
             var organizationModel = this.GetOrganizationModelFromRequest().Result;
@@ -83,6 +83,8 @@
         [Route("AddPremisesToOrganization/{organizationId}")]
         [HttpPut]
         [ResponseType(typeof(ResponseModel))]
+        [CustomAuthorize(UserRole = UserRole.SuperAdmin)]
+        [OverrideAuthorization]
         public HttpResponseMessage AddPremisesToOrganization(int organizationId, [FromBody] List<int> premiseIds)
         {
             if (organizationId < 1 || premiseIds.Count() < 1 || premiseIds.Any(c => c < 1))
