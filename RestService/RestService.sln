@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26730.8
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestService", "RestService\RestService.csproj", "{2DB4B76C-B10D-4775-97B2-D957021CA800}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EnergyManagementScheduler.WebJob", "EnergyManagementScheduler.WebJob\EnergyManagementScheduler.WebJob.csproj", "{AA7938CD-63B4-4C32-B1FD-8CC5B908DD12}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,8 +17,15 @@ Global
 		{2DB4B76C-B10D-4775-97B2-D957021CA800}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2DB4B76C-B10D-4775-97B2-D957021CA800}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2DB4B76C-B10D-4775-97B2-D957021CA800}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AA7938CD-63B4-4C32-B1FD-8CC5B908DD12}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AA7938CD-63B4-4C32-B1FD-8CC5B908DD12}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AA7938CD-63B4-4C32-B1FD-8CC5B908DD12}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AA7938CD-63B4-4C32-B1FD-8CC5B908DD12}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7DBF35F1-EE7A-49BD-A154-1A0C385EA5F3}
 	EndGlobalSection
 EndGlobal

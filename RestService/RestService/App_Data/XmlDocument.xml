@@ -1224,6 +1224,30 @@
             </summary>
             <param name="disposing">true to release both managed and unmanaged resources; false to release only unmanaged resources.</param>
         </member>
+        <member name="T:RestService.ErrorHandler.AiExceptionLogger">
+            <summary>
+             Represents an unhandled exception logger.
+            </summary>
+            <seealso cref="T:System.Web.Http.ExceptionHandling.ExceptionLogger" />
+        </member>
+        <member name="M:RestService.ErrorHandler.AiExceptionLogger.#ctor(Microsoft.ApplicationInsights.TelemetryClient)">
+            <summary>
+            Initializes a new instance of the <see cref="T:RestService.ErrorHandler.AiExceptionLogger"/> class.
+            </summary>
+            <param name="telemetryClient">The telemetry client.</param>
+        </member>
+        <member name="M:RestService.ErrorHandler.AiExceptionLogger.Dispose">
+            <summary>
+            Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+            Flushes the telemetry client.
+            </summary>
+        </member>
+        <member name="M:RestService.ErrorHandler.AiExceptionLogger.Log(System.Web.Http.ExceptionHandling.ExceptionLoggerContext)">
+            <summary>
+            logs the exception synchronously.
+            </summary>
+            <param name="context">The exception logger context.</param>
+        </member>
         <member name="T:RestService.Models.ResponseModel">
             <summary>
             Provides status of current operations.

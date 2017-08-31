@@ -32,7 +32,7 @@
 
         List<RoomModel> IRoomService.GetRoomByBuilding(int buildingId)
         {
-            var roomDetails = this.dbContext.RoomDetail.WhereActiveAccessibleRoom(b => b.BuildingID == buildingId);
+            var roomDetails = this.context.Current.RoleType == UserRole.Student? this.dbContext.RoomDetail.WhereActiveRoom(b => b.BuildingID == buildingId) : this.dbContext.RoomDetail.WhereActiveAccessibleRoom(b => b.BuildingID == buildingId);
 
             return new RoomModelMapping().Map(roomDetails).ToList();
         }

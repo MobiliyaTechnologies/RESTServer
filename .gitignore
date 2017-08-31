@@ -3,3 +3,6 @@ bin
 obj
 packages
 .vs
+/RestService.zip
+/RestService/RestService/Properties/PublishProfiles/emtest - Web Deploy.pubxml.user
+/RestService/RestService/Properties/PublishProfiles/emtest - Web Deploy.pubxml

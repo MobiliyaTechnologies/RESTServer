@@ -34,6 +34,8 @@
 
         public static readonly string BlobPublicContainer = GetConfigData("BlobPublicContainer");
 
+        public static readonly string ApplicationInsightsInstrumentationKey = GetConfigData("applicationInsights:InstrumentationKey");
+
         private static string GetConfigData(string key)
         {
             return ConfigurationManager.AppSettings[key];

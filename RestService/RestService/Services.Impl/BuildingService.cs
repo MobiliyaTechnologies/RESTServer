@@ -33,7 +33,7 @@
             this.LinkConsumptionWithBuilding(buildingModels);
             return buildingModels;
         }
-      
+
         BuildingModel IBuildingService.GetBuildingByID(int buildingID)
         {
             var buildings = this.dbContext.Building.WhereActiveAccessibleBuilding(data => data.BuildingID == buildingID);
@@ -45,7 +45,8 @@
 
         List<BuildingModel> IBuildingService.GetBuildingsByPremise(int premiseID)
         {
-            var buildings = this.dbContext.Building.WhereActiveAccessibleBuilding(b => b.Premise.PremiseID == premiseID);
+            var buildings = this.context.Current.RoleType == UserRole.Student ? this.dbContext.Building.WhereActiveBuilding(b => b.Premise.PremiseID == premiseID) : this.dbContext.Building.WhereActiveAccessibleBuilding(b => b.Premise.PremiseID == premiseID);
+
             var buildingModels = new BuildingModelMapping().Map(buildings).ToList();
 
             this.LinkConsumptionWithBuilding(buildingModels);
