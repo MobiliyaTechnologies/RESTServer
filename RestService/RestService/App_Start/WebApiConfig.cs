@@ -2,7 +2,11 @@
 {
     using System.Web.Http;
     using System.Web.Http.Cors;
+    using System.Web.Http.ExceptionHandling;
+    using Microsoft.ApplicationInsights;
+    using RestService.ErrorHandler;
     using RestService.Filters;
+    using RestService.Utilities;
 
     public static class WebApiConfig
     {
@@ -23,6 +27,11 @@
                 defaults: new { id = RouteParameter.Optional });
 
             config.Filters.Add(new CustomAuthorizeAttribute());
+
+            // set application insights instrumentation key.
+            Microsoft.ApplicationInsights.Extensibility.TelemetryConfiguration.Active.InstrumentationKey = ApiConfiguration.ApplicationInsightsInstrumentationKey;
+
+            config.Services.Add(typeof(IExceptionLogger), new AiExceptionLogger(new TelemetryClient()));
         }
     }
 }
