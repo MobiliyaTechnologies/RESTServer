@@ -1,0 +1,147 @@
+This document contains the list of Third Party Software included with
+EM REST-API-Server, along with the license information.
+
+Third Party Software may impose additional restrictions and it is the
+user's responsibility to ensure that they have met the licensing
+requirements of REST-API-Server and the relevant license of the Third Party
+Software they are using.
+
+Antlr
+url - http://www.antlr3.org/
+License - ANTLR 3 License   
+Reference - http://www.antlr3.org/license.html
+
+EntityFramework
+url - http://www.entityframeworktutorial.net/
+License - MICROSOFT SOFTWARE LICENSE 
+Reference - https://msdn.microsoft.com/en-us/library/dn467385(v=vs.113).aspx
+
+log4net
+url - https://logging.apache.org/log4net/
+License - Apache License
+Reference - https://logging.apache.org/log4net/license.html
+
+Microsoft.ApplicationInsights
+url - https://docs.microsoft.com/en-us/azure/application-insights/app-insights-overview
+License - MIT
+Reference - http://go.microsoft.com/fwlink/?LinkID=510709
+
+Microsoft.AspNet
+url - https://www.asp.net/
+License - MICROSOFT SOFTWARE LICENSE 
+Reference - http://www.microsoft.com/web/webpi/eula/net_library_eula_ENU.htm
+
+Microsoft.Azure.KeyVault.Core
+url - https://github.com/Azure/azure-sdk-for-net
+License - MIT
+Reference - https://raw.githubusercontent.com/Microsoft/dotnet/master/LICENSE
+
+Microsoft.CodeDom.Providers.DotNetCompilerPlatform
+url - http://www.asp.net/
+License - MICROSOFT SOFTWARE LICENSE
+Reference - http://www.microsoft.com/web/webpi/eula/net_library_eula_ENU.htm
+
+Microsoft.Data
+url - http://odata.github.io/
+License - MIT
+Reference - https://github.com/OData/odata.github.io/blob/master/License.txt
+
+Microsoft.IdentityModel.Logging
+url - https://github.com/AzureAD/azure-activedirectory-identitymodel-extensions-for-dotnet
+License - MIT
+Reference - https://github.com/AzureAD/azure-activedirectory-identitymodel-extensions-for-dotnet/blob/master/LICENSE.txt
+
+Microsoft.Net.Compilers
+url - http://msdn.com/roslyn
+License - MICROSOFT SOFTWARE LICENSE
+Reference - http://go.microsoft.com/fwlink/?LinkId=529444
+
+Microsoft.Owin
+url - https://github.com/aspnet/AspNetKatana/
+License - MICROSOFT SOFTWARE LICENSE
+Reference - https://www.microsoft.com/web/webpi/eula/net_library_eula_enu.htm
+
+Microsoft.Web.Infrastructure
+url - https://www.asp.net/
+License - MICROSOFT SOFTWARE LICENSE
+Reference - http://go.microsoft.com/fwlink/?LinkID=214339
+
+Microsoft.WindowsAzure.ConfigurationManager
+url - https://azure.microsoft.com
+License - Apache License
+Reference - https://raw.githubusercontent.com/WindowsAzure/azure-sdk-for-net/master/LICENSE.txt
+
+Modernizr
+url - https://modernizr.com/
+License - MIT
+Reference - https://opensource.org/licenses/MIT
+
+Newtonsoft.Json
+url - http://www.newtonsoft.com/json
+License - MIT
+Reference - https://raw.githubusercontent.com/JamesNK/Newtonsoft.Json/master/LICENSE.md
+
+Owin
+url - https://github.com/owin-contrib/owin-hosting/
+License - Apache License
+Reference - https://github.com/owin-contrib/owin-hosting/blob/master/LICENSE.txt
+
+Respond
+url - https://github.com/scottjehl/Respond
+License - MIT
+Reference - https://github.com/scottjehl/Respond/blob/master/LICENSE-MIT
+
+StyleCop.Analyzers
+url - https://github.com/DotNetAnalyzers/StyleCopAnalyzers
+License - Apache License
+Reference - https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/LICENSE
+
+Swashbuckle
+url - https://github.com/domaindrivendev/Swashbuckle
+License - 3-Clause BSD License
+Reference - https://github.com/domaindrivendev/Swashbuckle/blob/master/LICENSE
+
+System.ComponentModel.EventBasedAsync
+url - https://www.microsoft.com/net
+License - MICROSOFT SOFTWARE LICENSE
+Reference - http://go.microsoft.com/fwlink/?LinkId=329770
+
+System.Dynamic.Runtime
+url - https://dot.net/
+License - MICROSOFT SOFTWARE LICENSE
+Reference - http://go.microsoft.com/fwlink/?LinkId=329770
+
+System.IdentityModel.Tokens.Jwt
+url - https://github.com/AzureAD/azure-activedirectory-identitymodel-extensions-for-dotnet
+License - MIT
+Reference - https://github.com/AzureAD/azure-activedirectory-identitymodel-extensions-for-dotnet/blob/master/LICENSE.txt
+
+System.Linq.Queryable
+url - https://dot.net/
+License - MICROSOFT SOFTWARE LICENSE
+Reference - http://go.microsoft.com/fwlink/?LinkId=329770
+
+System.Net.Requests
+url - https://dot.net/
+License - MICROSOFT SOFTWARE LICENSE
+Reference - http://go.microsoft.com/fwlink/?LinkId=329770
+
+System.Spatial
+url - http://odata.github.io/
+License - MIT
+Reference - https://github.com/OData/odata.github.io/blob/master/License.txt
+
+WebActivatorEx
+url - https://github.com/davidebbo/WebActivator
+License - Apache License
+Reference - http://www.opensource.org/licenses/ms-pl
+
+WebGrease
+url - http://webgrease.codeplex.com/
+License - MICROSOFT SOFTWARE LICENSE
+Reference - http://www.microsoft.com/web/webpi/eula/aspnetcomponent_rtw_ENU.htm
+
+WindowsAzure.Storage
+url - https://docs.microsoft.com/en-us/azure/storage/
+License - Apache License
+Reference -  https://raw.githubusercontent.com/WindowsAzure/azure-sdk-for-net/master/LICENSE.txt
