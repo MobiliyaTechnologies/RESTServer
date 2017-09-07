@@ -3,71 +3,64 @@
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
+
+### Introduction
+
+```
+It contains following projects
+1. RestService - It contain back end API's. For API's help page redirect to http://<Hosted URL>/Help.
+2. EnergyManagementScheduler.WebJob - It contain scheduler to run periodic jobs for - Anomaly detection, Consumption Alert, Daily and Monthly Consumption, Daily and weekly prediction on half hourly power scout data.
+
+```
+
 ### Prerequisites
 
 What things you need to install the software and how to install them
 
 ```
-Give examples
+1.	Active Azure subscription.
+2.	Microsoft SQL Server.
+3.	Email host to send emails.	
+4.	Google firebase used for notification.						
+5.	B2C Application with sign-up, sign-in and change password policy.
+6.	Azure storage.
+7. 	Add value for following configurations,
+    a.	RestService Configuration - 	
+        ⦁	b2c:Tenant - B2C application id.
+        ⦁	b2c:ClientId - Valid client id, API only accepts tokens from its own clients.
+        ⦁	b2c:SignUpPolicyId - B2c sign-in policy.
+        ⦁	b2c:SignInPolicyId - B2c sign-up policy.
+        ⦁	b2c:ChangePasswordPolicy - B2c change password policy.
+        ⦁	b2c:ClientSecret - B2c app key.
+        ⦁	EmailHost
+        ⦁	EmailHostPassword
+        ⦁	EmailHostPort
+        ⦁	EmailSender
+        ⦁	BlobStorageConnectionString - azure storage connection string.
+        ⦁	NotificationURL - google firebase url.
+        ⦁	NotificationClickAction - google firebase click action.
+        ⦁	PowerGridEntities - Entity framework generated sql server connection string, change data source, user id and password. 
+	b. EnergyManagementScheduler.WebJob configuration
+        ⦁	DbConnectionString - sql server connection string.
+        ⦁	NotificationURL - google firebase url.
+        ⦁	NotificationClickAction - google firebase click action.
+        ⦁	MeterKwhCost - default 0.04.
+        ⦁	AnomalyThreshold - default 0.6.
+        ⦁	AzureWebJobsDashboard - azure storage connection string.
+        ⦁	AzureWebJobsStorage- azure storage connection string.	
 ```
 
 ### Installing
 
 A step by step series of examples that tell you have to get a development env running
 
-Say what the step will be
 
 ```
-Give the example
-```
-
-And repeat
-
-```
-until finished
-```
-
-End with an example of getting some data out of the system or using it for a little demo
-
-## Running the tests
-
-Explain how to run the automated tests for this system
-
-### Break down into end to end tests
-
-Explain what these tests test and why
+1. Clone or download source code.
+2. Open code in microsoft visual studio and rebuild it.
+3. Create and publish database.
+4. Host Api on IIS.
+5. Run EnergyManagementScheduler.WebJob project.
 
 ```
-Give an example
-```
-
-### And coding style tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-## Deployment
-
-Add additional notes about how to deploy this on a live system
-
-## Built With
-
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
-
-## Contributing
-
-Please read [CONTRIBUTING.md] for details on our code of conduct, and the process for submitting pull requests to us.
-
-## Versioning
-
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
-
-## License
-
-Currently keep this open
